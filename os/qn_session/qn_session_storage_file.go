@@ -8,22 +8,21 @@ package qn_session
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/internal/json"
 	"os"
 	"time"
 
-	"github.com/qnsoft/common/crypto/gaes"
+	"github.com/gogf/gf/os/gtime"
+	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/internal/intlog"
+	"github.com/qnsoft/common/internal/json"
 
-	"github.com/qnsoft/common/os/gtimer"
+	"github.com/qnsoft/common/crypto/gaes"
 
 	"github.com/qnsoft/common/container/gset"
 	"github.com/qnsoft/common/encoding/gbinary"
 
-	"github.com/qnsoft/common/os/gtime"
-
 	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/gtimer"
 )
 
 // StorageFile implements the Session Storage interface with file system.

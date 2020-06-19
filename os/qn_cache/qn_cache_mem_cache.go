@@ -7,17 +7,18 @@
 package qn_cache
 
 import (
-	"github.com/qnsoft/common/container/qn_var"
 	"math"
 	"sync"
 	"time"
 
+	"github.com/qnsoft/common/container/qn_var"
+	"github.com/qnsoft/common/os/gtime"
+	"github.com/qnsoft/common/os/gtimer"
+
 	"github.com/qnsoft/common/container/glist"
 	"github.com/qnsoft/common/container/gset"
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/os/gtimer"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Internal cache object.

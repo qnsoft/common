@@ -1,13 +1,14 @@
 package qn_pool_test
 
 import (
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gfpool"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/text/gstr"
 	"os"
 	"testing"
+
+	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/text/gstr"
+	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/gfpool"
+	"github.com/qnsoft/common/test/gtest"
 )
 
 func Test_ConcurrentOS(t *testing.T) {

@@ -7,11 +7,12 @@
 package qn_http
 
 import (
-	"github.com/qnsoft/common/errors/gerror"
 	"net/http"
 	"reflect"
 
-	"github.com/qnsoft/common/util/gutil"
+	"github.com/qnsoft/common/errors/gerror"
+
+	gutil "github.com/qnsoft/common/util/qn_util"
 )
 
 // Middleware is the plugin for request workflow management.

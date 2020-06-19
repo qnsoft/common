@@ -9,12 +9,12 @@ package qn_var_test
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/qnsoft/common/util/gconv"
 	"testing"
 	"time"
 
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/test/gtest"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Set(t *testing.T) {

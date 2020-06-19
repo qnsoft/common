@@ -7,10 +7,10 @@
 package qn_res_test
 
 import (
-	"github.com/qnsoft/common/os/gtime"
 	"strings"
 	"testing"
 
+	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/os/gfile"
 
 	"github.com/qnsoft/common/debug/gdebug"

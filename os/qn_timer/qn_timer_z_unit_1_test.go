@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gogf/gf/os/gtimer"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/os/gtimer"
 	"github.com/qnsoft/common/test/gtest"
 )
 

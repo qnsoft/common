@@ -9,13 +9,14 @@ package qn_http
 import (
 	"crypto/tls"
 	"fmt"
-	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/util/gutil"
 	"net/http"
 	"strconv"
 	"time"
 
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/internal/intlog"
+	gutil "github.com/qnsoft/common/util/qn_util"
+
+	gconv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/os/gsession"
 

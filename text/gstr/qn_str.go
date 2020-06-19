@@ -16,11 +16,10 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/gogf/gf/util/grand"
 	"github.com/qnsoft/common/internal/utils"
 
-	"github.com/qnsoft/common/util/gconv"
-
-	"github.com/qnsoft/common/util/grand"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Replace returns a copy of the string <origin>

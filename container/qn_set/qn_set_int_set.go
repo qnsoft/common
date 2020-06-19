@@ -12,7 +12,7 @@ import (
 
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/internal/rwmutex"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 type IntSet struct {

@@ -11,10 +11,10 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/gogf/gf/os/gtimer"
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/os/glog"
-	"github.com/qnsoft/common/os/gtimer"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Timed task entry.

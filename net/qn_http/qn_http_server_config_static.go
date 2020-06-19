@@ -13,10 +13,10 @@ import (
 	"strings"
 
 	"github.com/qnsoft/common/os/gres"
+	"github.com/qnsoft/common/util/gconv"
 
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/util/gconv"
 )
 
 // staticPathItem is the item struct for static path configuration.

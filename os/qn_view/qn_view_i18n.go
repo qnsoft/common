@@ -6,7 +6,7 @@
 
 package qn_view
 
-import "github.com/qnsoft/common/util/gconv"
+import gconv "github.com/qnsoft/common/util/qn_conv"
 
 // i18nTranslate translate the content with i18n feature.
 func (view *View) i18nTranslate(content string, params Params) string {

@@ -16,7 +16,7 @@ import (
 
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 const (

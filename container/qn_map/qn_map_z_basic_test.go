@@ -9,10 +9,9 @@ package qn_map_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/util/gutil"
-
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/util/gutil"
 )
 
 func getValue() interface{} {

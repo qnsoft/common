@@ -7,7 +7,7 @@
 package qn_var
 
 import (
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Struct maps value of <v> to <pointer>.

@@ -7,9 +7,10 @@
 package qn_type
 
 import (
-	"github.com/qnsoft/common/util/gconv"
 	"strconv"
 	"sync/atomic"
+
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Uint32 is a struct for concurrent-safe operation for type uint32.

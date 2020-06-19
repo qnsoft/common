@@ -7,8 +7,9 @@
 package qn_file_test
 
 import (
-	"github.com/qnsoft/common/util/gconv"
 	"testing"
+
+	gconv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/test/gtest"

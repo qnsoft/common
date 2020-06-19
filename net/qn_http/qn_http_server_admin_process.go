@@ -22,7 +22,7 @@ import (
 	"github.com/qnsoft/common/os/gproc"
 	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/os/gtimer"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 const (

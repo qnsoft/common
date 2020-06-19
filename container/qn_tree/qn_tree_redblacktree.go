@@ -10,8 +10,8 @@ import (
 	"fmt"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
-	"github.com/qnsoft/common/util/gutil"
+	gconv "github.com/qnsoft/common/util/qn_conv"
+	gutil "github.com/qnsoft/common/util/qn_util"
 
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/internal/rwmutex"

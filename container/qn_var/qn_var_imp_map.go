@@ -6,7 +6,7 @@
 
 package qn_var
 
-import "github.com/qnsoft/common/util/gconv"
+import gconv "github.com/qnsoft/common/util/qn_conv"
 
 // Map converts and returns <v> as map[string]interface{}.
 func (v *VarImp) Map(tags ...string) map[string]interface{} {

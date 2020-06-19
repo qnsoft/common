@@ -7,13 +7,14 @@
 package qn_log_test
 
 import (
+	"sync"
+	"testing"
+
 	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/test/gtest"
 	"github.com/qnsoft/common/text/gstr"
-	"sync"
-	"testing"
 )
 
 func Test_Concurrent(t *testing.T) {

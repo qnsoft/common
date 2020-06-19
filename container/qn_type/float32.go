@@ -7,11 +7,12 @@
 package qn_type
 
 import (
-	"github.com/qnsoft/common/util/gconv"
 	"math"
 	"strconv"
 	"sync/atomic"
 	"unsafe"
+
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Float32 is a struct for concurrent-safe operation for type float32.

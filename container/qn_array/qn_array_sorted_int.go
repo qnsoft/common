@@ -9,9 +9,10 @@ package qn_array
 import (
 	"bytes"
 	"fmt"
-	"github.com/qnsoft/common/internal/json"
 	"math"
 	"sort"
+
+	"github.com/qnsoft/common/internal/json"
 
 	"github.com/qnsoft/common/internal/rwmutex"
 	"github.com/qnsoft/common/util/gconv"

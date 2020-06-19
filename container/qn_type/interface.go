@@ -7,9 +7,10 @@
 package qn_type
 
 import (
-	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
 	"sync/atomic"
+
+	"github.com/qnsoft/common/internal/json"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Interface is a struct for concurrent-safe operation for type interface{}.

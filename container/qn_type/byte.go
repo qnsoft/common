@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"sync/atomic"
 
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Byte is a struct for concurrent-safe operation for type byte.

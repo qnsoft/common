@@ -11,7 +11,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/qnsoft/common/os/gtimer"
+	"github.com/gogf/gf/os/gtimer"
 )
 
 const (

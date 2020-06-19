@@ -7,11 +7,12 @@
 package qn_http
 
 import (
-	"github.com/qnsoft/common/errors/gerror"
 	"strings"
 
+	"github.com/qnsoft/common/errors/gerror"
+
 	"github.com/qnsoft/common/encoding/gurl"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // BuildParams builds the request string for the http client. The <params> can be type of:

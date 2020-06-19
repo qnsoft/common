@@ -12,8 +12,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/gogf/gf/os/gtime"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/test/gtest"

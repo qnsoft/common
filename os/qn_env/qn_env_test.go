@@ -10,10 +10,10 @@ import (
 	"os"
 	"testing"
 
+	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/os/genv"
-	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_GEnv_All(t *testing.T) {

@@ -8,14 +8,15 @@ package qn_http
 
 import (
 	"errors"
-	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/util/grand"
 	"io"
 	"mime/multipart"
 	"strconv"
 	"strings"
+
+	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/util/grand"
+	"github.com/qnsoft/common/internal/intlog"
+	"github.com/qnsoft/common/os/gfile"
 )
 
 // UploadFile wraps the multipart uploading file with more and convenient features.

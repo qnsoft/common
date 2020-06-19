@@ -8,12 +8,12 @@ package qn_http_test
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/text/gstr"
 	"testing"
 	"time"
 
+	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/gtime"
+	"github.com/qnsoft/common/text/gstr"
 	"github.com/qnsoft/common/util/gconv"
 
 	"github.com/qnsoft/common/frame/g"

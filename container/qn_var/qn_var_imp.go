@@ -7,14 +7,15 @@
 package qn_var
 
 import (
-	"github.com/qnsoft/common/internal/json"
 	"time"
+
+	"github.com/qnsoft/common/internal/json"
+	"github.com/qnsoft/common/os/gtime"
 
 	"github.com/qnsoft/common/internal/empty"
 
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // VarImp is an universal variable type implementer.

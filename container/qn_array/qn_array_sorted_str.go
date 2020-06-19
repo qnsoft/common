@@ -8,11 +8,12 @@ package qn_array
 
 import (
 	"bytes"
-	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/text/gstr"
 	"math"
 	"sort"
 	"strings"
+
+	"github.com/qnsoft/common/internal/json"
+	"github.com/qnsoft/common/text/gstr"
 
 	"github.com/qnsoft/common/internal/rwmutex"
 	"github.com/qnsoft/common/util/gconv"

@@ -7,13 +7,14 @@
 package qn_type_test
 
 import (
+	"math"
+	"sync"
+	"testing"
+
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/test/gtest"
 	"github.com/qnsoft/common/util/gconv"
-	"math"
-	"sync"
-	"testing"
 )
 
 func Test_Int64(t *testing.T) {

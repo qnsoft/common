@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/qnsoft/common/os/gtimer"
+	"github.com/gogf/gf/os/gtimer"
 )
 
 func Example_add() {

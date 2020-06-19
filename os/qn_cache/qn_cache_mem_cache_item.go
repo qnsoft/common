@@ -6,9 +6,7 @@
 
 package qn_cache
 
-import (
-	"github.com/qnsoft/common/os/gtime"
-)
+import "github.com/qnsoft/common/os/gtime"
 
 // IsExpired checks whether <item> is expired.
 func (item *memCacheItem) IsExpired() bool {

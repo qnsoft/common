@@ -11,11 +11,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/qnsoft/common/container/qn_array"
+	"github.com/gogf/gf/os/gtimer"
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/glog"
-	"github.com/qnsoft/common/os/gtimer"
 )
 
 type Cron struct {

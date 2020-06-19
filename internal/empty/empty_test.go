@@ -12,7 +12,7 @@ import (
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/internal/empty"
 	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 type TestPerson interface {

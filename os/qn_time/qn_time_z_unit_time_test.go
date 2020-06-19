@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/test/gtest"
 )
 

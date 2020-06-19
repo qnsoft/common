@@ -9,10 +9,11 @@
 package qn_cfg_test
 
 import (
-	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/os/gtime"
 	"os"
 	"testing"
+
+	"github.com/gogf/gf/os/gtime"
+	"github.com/qnsoft/common/debug/gdebug"
 
 	"github.com/qnsoft/common/encoding/gjson"
 	"github.com/qnsoft/common/frame/g"

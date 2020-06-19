@@ -14,7 +14,7 @@ import (
 
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/os/glog"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 const (

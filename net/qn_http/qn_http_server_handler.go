@@ -12,8 +12,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/qnsoft/common/text/gstr"
-
+	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/errors/gerror"
 
 	"github.com/qnsoft/common/os/gres"
@@ -21,7 +21,6 @@ import (
 	"github.com/qnsoft/common/encoding/ghtml"
 	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gspath"
-	"github.com/qnsoft/common/os/gtime"
 )
 
 // ServeHTTP is the default handler for http request.

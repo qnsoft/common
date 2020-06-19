@@ -8,11 +8,12 @@ package qn_tcp_test
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/net/gtcp"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
 	"testing"
 	"time"
+
+	"github.com/qnsoft/common/net/gtcp"
+	"github.com/qnsoft/common/test/gtest"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Pool_Package_Basic(t *testing.T) {

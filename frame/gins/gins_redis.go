@@ -8,8 +8,9 @@ package gins
 
 import (
 	"fmt"
+
 	"github.com/qnsoft/common/database/gredis"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 const (

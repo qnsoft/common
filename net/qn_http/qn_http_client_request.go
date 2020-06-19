@@ -10,8 +10,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/internal/utils"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -20,10 +18,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/qnsoft/common/internal/json"
+	"github.com/qnsoft/common/internal/utils"
+	"github.com/qnsoft/common/util/gconv"
+
 	"github.com/qnsoft/common/encoding/gparser"
 	"github.com/qnsoft/common/text/gregex"
 	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gconv"
 
 	"github.com/qnsoft/common/os/gfile"
 )

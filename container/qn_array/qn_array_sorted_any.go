@@ -9,16 +9,17 @@ package qn_array
 import (
 	"bytes"
 	"fmt"
-	"github.com/qnsoft/common/internal/empty"
-	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gutil"
 	"math"
 	"sort"
 
-	"github.com/qnsoft/common/internal/rwmutex"
+	"github.com/qnsoft/common/internal/empty"
+	"github.com/qnsoft/common/internal/json"
+	"github.com/qnsoft/common/text/gstr"
 	"github.com/qnsoft/common/util/gconv"
 	"github.com/qnsoft/common/util/grand"
+	gutil "github.com/qnsoft/common/util/qn_util"
+
+	"github.com/qnsoft/common/internal/rwmutex"
 )
 
 // SortedArray is a golang sorted array with rich features.

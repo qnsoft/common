@@ -8,15 +8,16 @@ package gins_test
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/frame/gins"
 	"testing"
 	"time"
 
+	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/frame/gins"
+
 	"github.com/qnsoft/common/os/gcfg"
+	"github.com/qnsoft/common/os/gtime"
 
 	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/test/gtest"
 )
 

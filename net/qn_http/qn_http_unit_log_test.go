@@ -10,11 +10,11 @@ package qn_http_test
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/text/gstr"
 	"testing"
 	"time"
 
+	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
 	"github.com/qnsoft/common/os/gfile"

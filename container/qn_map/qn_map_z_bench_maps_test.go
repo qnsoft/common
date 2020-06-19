@@ -12,7 +12,7 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/util/gutil"
+	gutil "github.com/qnsoft/common/util/qn_util"
 )
 
 var hashMap = gmap.New(true)

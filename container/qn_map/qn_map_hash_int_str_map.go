@@ -8,11 +8,11 @@ package qn_map
 
 import (
 	"github.com/qnsoft/common/internal/json"
+	"github.com/qnsoft/common/util/gconv"
 
 	"github.com/qnsoft/common/internal/empty"
 
 	"github.com/qnsoft/common/internal/rwmutex"
-	"github.com/qnsoft/common/util/gconv"
 )
 
 type IntStrMap struct {

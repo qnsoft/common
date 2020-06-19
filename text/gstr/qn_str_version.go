@@ -9,7 +9,7 @@ package qn_str
 import (
 	"strings"
 
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // CompareVersion compares <a> and <b> as standard GNU version.

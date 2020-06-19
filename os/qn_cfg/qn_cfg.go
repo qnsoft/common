@@ -12,8 +12,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/os/gres"
+	"github.com/qnsoft/common/text/gstr"
 
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/qn_array"

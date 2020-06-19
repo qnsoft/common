@@ -10,12 +10,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gfsnotify"
-	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 func TestWatcher_AddOnce(t *testing.T) {

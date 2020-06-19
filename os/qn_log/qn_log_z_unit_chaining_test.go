@@ -9,12 +9,13 @@ package qn_log
 import (
 	"bytes"
 	"fmt"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/text/gstr"
 	"testing"
 	"time"
+
+	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/text/gstr"
+	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/test/gtest"
 )
 
 func Test_To(t *testing.T) {

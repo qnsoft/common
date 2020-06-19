@@ -7,10 +7,11 @@
 package qn_time_test
 
 import (
+	"testing"
+
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/test/gtest"
-	"testing"
 )
 
 func Test_Json_Pointer(t *testing.T) {

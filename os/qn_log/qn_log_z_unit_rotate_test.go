@@ -7,14 +7,15 @@
 package qn_log_test
 
 import (
+	"testing"
+	"time"
+
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/test/gtest"
 	"github.com/qnsoft/common/text/gstr"
-	"testing"
-	"time"
 )
 
 func Test_Rotate_Size(t *testing.T) {

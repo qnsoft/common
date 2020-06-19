@@ -8,14 +8,15 @@ package qn_log
 
 import (
 	"fmt"
+	"time"
+
+	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/encoding/gcompress"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/os/gtimer"
 	"github.com/qnsoft/common/text/gregex"
-	"time"
 )
 
 // rotateFileBySize rotates the current logging file according to the

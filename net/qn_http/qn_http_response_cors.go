@@ -8,10 +8,11 @@
 package qn_http
 
 import (
-	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gconv"
 	"net/http"
 	"net/url"
+
+	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/util/gconv"
 )
 
 // CORSOptions is the options for CORS feature.

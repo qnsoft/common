@@ -17,7 +17,7 @@ import (
 	"net/smtp"
 	"strings"
 
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // SMTP is the structure for smtp connection

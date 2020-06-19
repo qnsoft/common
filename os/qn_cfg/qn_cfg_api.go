@@ -10,10 +10,10 @@ import (
 	"errors"
 	"time"
 
+	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/encoding/gjson"
 
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/os/gtime"
 )
 
 func (c *Config) Get(pattern string, def ...interface{}) interface{} {

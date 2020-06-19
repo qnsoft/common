@@ -10,7 +10,7 @@ import (
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/internal/empty"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/util/gutil"
+	gutil "github.com/qnsoft/common/util/qn_util"
 )
 
 // NewVar returns a qn_var.Var.

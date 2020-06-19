@@ -12,7 +12,7 @@ import (
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/database/gredis"
 	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // StorageRedisHashTable implements the Session Storage interface with redis hash table.

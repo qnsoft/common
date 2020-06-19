@@ -7,10 +7,11 @@
 package qn_file_test
 
 import (
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/test/gtest"
 	"testing"
+
+	"github.com/gogf/gf/os/gtime"
+	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/test/gtest"
 )
 
 func Test_Copy(t *testing.T) {

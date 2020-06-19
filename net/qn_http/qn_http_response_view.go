@@ -11,7 +11,7 @@ import (
 	"github.com/qnsoft/common/os/gcfg"
 	"github.com/qnsoft/common/os/gview"
 	"github.com/qnsoft/common/util/gmode"
-	"github.com/qnsoft/common/util/gutil"
+	gutil "github.com/qnsoft/common/util/qn_util"
 )
 
 // WriteTpl parses and responses given template file.

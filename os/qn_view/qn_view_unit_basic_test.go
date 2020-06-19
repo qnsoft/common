@@ -7,20 +7,21 @@
 package qn_view_test
 
 import (
-	"github.com/qnsoft/common/encoding/ghtml"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/util/gconv"
 	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/text/gstr"
+	"github.com/qnsoft/common/encoding/ghtml"
+	gconv "github.com/qnsoft/common/util/qn_conv"
+
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gview"
 	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/text/gstr"
 )
 
 func init() {

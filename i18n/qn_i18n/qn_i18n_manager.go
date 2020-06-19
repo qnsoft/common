@@ -20,7 +20,7 @@ import (
 
 	"github.com/qnsoft/common/text/gregex"
 
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/encoding/gjson"
 

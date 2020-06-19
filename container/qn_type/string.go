@@ -8,8 +8,9 @@ package qn_type
 
 import (
 	"bytes"
-	"github.com/qnsoft/common/util/gconv"
 	"sync/atomic"
+
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // String is a struct for concurrent-safe operation for type string.

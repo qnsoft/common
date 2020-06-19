@@ -9,10 +9,9 @@ package qn_i18n_test
 import (
 	"testing"
 
+	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/os/gres"
-
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/frame/g"
 

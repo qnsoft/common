@@ -9,13 +9,14 @@ package qn_log
 import (
 	"errors"
 	"fmt"
-	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/util/gconv"
-	"github.com/qnsoft/common/util/gutil"
 	"io"
 	"strings"
 	"time"
+
+	"github.com/qnsoft/common/internal/intlog"
+	"github.com/qnsoft/common/os/gfile"
+	gconv "github.com/qnsoft/common/util/qn_conv"
+	gutil "github.com/qnsoft/common/util/qn_util"
 )
 
 // Config is the configuration object for logger.

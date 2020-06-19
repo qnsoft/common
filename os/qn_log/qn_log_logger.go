@@ -10,22 +10,23 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gfpool"
-	"github.com/qnsoft/common/os/gmlock"
-	"github.com/qnsoft/common/os/gtimer"
 	"io"
 	"os"
 	"strings"
 	"sync"
 	"time"
 
+	"github.com/gogf/gf/os/gtime"
+	"github.com/qnsoft/common/internal/intlog"
+	"github.com/qnsoft/common/os/gfpool"
+	"github.com/qnsoft/common/os/gmlock"
+	"github.com/qnsoft/common/os/gtimer"
+	gconv "github.com/qnsoft/common/util/qn_conv"
+
 	"github.com/qnsoft/common/debug/gdebug"
 
 	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/text/gregex"
-	"github.com/qnsoft/common/util/gconv"
 )
 
 // Logger is the struct for logging management.

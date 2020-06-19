@@ -8,13 +8,13 @@ package qn_http
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/debug/gdebug"
 	"reflect"
 	"strings"
 
+	"github.com/qnsoft/common/debug/gdebug"
 	"github.com/qnsoft/common/text/gstr"
 
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 type (

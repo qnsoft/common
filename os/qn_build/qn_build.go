@@ -15,7 +15,7 @@ import (
 	"github.com/qnsoft/common/encoding/gbase64"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 var (

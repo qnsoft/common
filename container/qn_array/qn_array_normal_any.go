@@ -10,11 +10,12 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"math"
+	"sort"
+
 	"github.com/qnsoft/common/internal/empty"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/text/gstr"
-	"math"
-	"sort"
 
 	"github.com/qnsoft/common/internal/rwmutex"
 	"github.com/qnsoft/common/util/gconv"

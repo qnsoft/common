@@ -11,10 +11,11 @@ import (
 	"bytes"
 	"encoding/hex"
 	"fmt"
+
 	"github.com/qnsoft/common/encoding/gbase64"
 	"github.com/qnsoft/common/encoding/gcompress"
 	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/os/gfile"
 )

@@ -7,13 +7,14 @@
 package gins_test
 
 import (
-	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/frame/gins"
-	"github.com/qnsoft/common/os/gtime"
 	"testing"
 	"time"
 
+	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/frame/gins"
+
 	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/test/gtest"
 )
 

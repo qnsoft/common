@@ -9,14 +9,15 @@
 package qn_array_test
 
 import (
-	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/internal/json"
 	"testing"
 	"time"
 
+	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/internal/json"
+	"github.com/qnsoft/common/util/gconv"
+
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
 )
 
 func Test_Array_Basic(t *testing.T) {

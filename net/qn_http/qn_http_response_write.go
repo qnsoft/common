@@ -9,11 +9,12 @@ package qn_http
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/internal/json"
 	"net/http"
 
-	"github.com/qnsoft/common/encoding/gparser"
+	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/util/gconv"
+
+	"github.com/qnsoft/common/encoding/gparser"
 )
 
 // Write writes <content> to the response buffer.

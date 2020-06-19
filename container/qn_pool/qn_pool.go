@@ -11,10 +11,10 @@ import (
 	"errors"
 	"time"
 
+	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/os/gtimer"
 	"github.com/qnsoft/common/container/glist"
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/os/gtimer"
 )
 
 // Pool is an Object-Reusable Pool.

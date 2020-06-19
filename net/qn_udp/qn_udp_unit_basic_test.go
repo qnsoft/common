@@ -8,12 +8,13 @@ package qn_udp_test
 
 import (
 	"fmt"
+	"testing"
+	"time"
+
 	"github.com/qnsoft/common/net/gudp"
 	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
-	"testing"
-	"time"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Basic(t *testing.T) {

@@ -7,11 +7,12 @@
 package qn_type_test
 
 import (
+	"testing"
+
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/test/gtest"
 	"github.com/qnsoft/common/util/gconv"
-	"testing"
 )
 
 func Test_String(t *testing.T) {

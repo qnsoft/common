@@ -8,14 +8,15 @@ package qn_view
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/util/gutil"
 	"strings"
+
+	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/text/gstr"
+	gutil "github.com/qnsoft/common/util/qn_util"
 
 	"github.com/qnsoft/common/encoding/ghtml"
 	"github.com/qnsoft/common/encoding/gurl"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 
 	htmltpl "html/template"
 )

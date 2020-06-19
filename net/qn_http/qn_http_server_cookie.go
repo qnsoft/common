@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/gogf/gf/os/gtime"
 )
 
 // Cookie for HTTP COOKIE management.

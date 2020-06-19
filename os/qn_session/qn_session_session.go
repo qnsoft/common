@@ -8,13 +8,14 @@ package qn_session
 
 import (
 	"errors"
-	"github.com/qnsoft/common/internal/intlog"
 	"time"
+
+	"github.com/gogf/gf/os/gtime"
+	"github.com/qnsoft/common/internal/intlog"
 
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/util/gconv"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Session struct for storing single session data,

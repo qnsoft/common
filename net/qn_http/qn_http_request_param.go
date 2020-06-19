@@ -9,6 +9,11 @@ package qn_http
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
+	"mime/multipart"
+	"reflect"
+	"strings"
+
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/encoding/gjson"
 	"github.com/qnsoft/common/encoding/gurl"
@@ -17,12 +22,8 @@ import (
 	"github.com/qnsoft/common/internal/utils"
 	"github.com/qnsoft/common/text/gregex"
 	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gconv"
 	"github.com/qnsoft/common/util/gvalid"
-	"io/ioutil"
-	"mime/multipart"
-	"reflect"
-	"strings"
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 var (

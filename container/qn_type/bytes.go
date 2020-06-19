@@ -9,8 +9,9 @@ package qn_type
 import (
 	"bytes"
 	"encoding/base64"
-	"github.com/qnsoft/common/util/gconv"
 	"sync/atomic"
+
+	gconv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Bytes is a struct for concurrent-safe operation for type []byte.

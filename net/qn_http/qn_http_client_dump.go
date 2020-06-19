@@ -8,11 +8,11 @@ package qn_http
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/internal/utils"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 
+	"github.com/qnsoft/common/internal/utils"
 	"github.com/qnsoft/common/util/gconv"
 )
 

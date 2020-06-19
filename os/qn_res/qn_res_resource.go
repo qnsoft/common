@@ -8,12 +8,12 @@ package qn_res
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/internal/intlog"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/gogf/gf/os/gtime"
+	"github.com/qnsoft/common/internal/intlog"
 
 	"github.com/qnsoft/common/container/gtree"
 	"github.com/qnsoft/common/os/gfile"

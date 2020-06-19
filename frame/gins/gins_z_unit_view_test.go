@@ -8,12 +8,13 @@ package gins
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/os/gcfg"
 	"testing"
 
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/os/gcfg"
 	"github.com/qnsoft/common/os/gtime"
+
+	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/test/gtest"
 )
 
