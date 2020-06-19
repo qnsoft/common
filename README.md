@@ -1,2 +1,1 @@
-# common
-golang开发中间件
+# common 企能工具库2010
