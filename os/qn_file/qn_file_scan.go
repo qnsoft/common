@@ -7,10 +7,11 @@
 package qn_file
 
 import (
-	"github.com/qnsoft/common/text/gstr"
 	"os"
 	"path/filepath"
 	"sort"
+
+	"github.com/gogf/gf/text/gstr"
 )
 
 // ScanDir returns all sub-files with absolute paths of given <path>,

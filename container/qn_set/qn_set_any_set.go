@@ -10,9 +10,9 @@ package qn_set
 import (
 	"bytes"
 
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/internal/rwmutex"
-	"github.com/qnsoft/common/text/gstr"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 

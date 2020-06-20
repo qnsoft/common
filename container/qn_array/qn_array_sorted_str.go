@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/text/qn_str"
 
 	"github.com/qnsoft/common/internal/rwmutex"
 	"github.com/qnsoft/common/util/qn_conv"
@@ -647,7 +647,7 @@ func (a *SortedStrArray) String() string {
 	buffer := bytes.NewBuffer(nil)
 	buffer.WriteByte('[')
 	for k, v := range a.array {
-		buffer.WriteString(`"` + gstr.QuoteMeta(v, `"\`) + `"`)
+		buffer.WriteString(`"` + qn_str.QuoteMeta(v, `"\`) + `"`)
 		if k != len(a.array)-1 {
 			buffer.WriteByte(',')
 		}

@@ -210,26 +210,26 @@ func Convert(i interface{}, t string, params ...interface{}) interface{} {
 
 	case "qn_time", "qn_time.Time":
 		if len(params) > 0 {
-			if v := qn_time(i, String(params[0])); v != nil {
+			if v := QNtime(i, String(params[0])); v != nil {
 				return *v
 			} else {
 				return *qn_time.New()
 			}
 		}
-		if v := qn_time(i); v != nil {
+		if v := QNtime(i); v != nil {
 			return *v
 		} else {
 			return *qn_time.New()
 		}
 	case "*qn_time.Time":
 		if len(params) > 0 {
-			if v := qn_time(i, String(params[0])); v != nil {
+			if v := QNtime(i, String(params[0])); v != nil {
 				return v
 			} else {
 				return qn_time.New()
 			}
 		}
-		if v := qn_time(i); v != nil {
+		if v := QNtime(i); v != nil {
 			return v
 		} else {
 			return qn_time.New()

@@ -13,7 +13,6 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/text/gstr"
-
 	"github.com/qnsoft/common/text/qn_regex"
 )
 

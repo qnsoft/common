@@ -21,7 +21,7 @@ func Time(i interface{}, format ...string) time.Time {
 			return v
 		}
 	}
-	if t := qn_time(i, format...); t != nil {
+	if t := QNtime(i, format...); t != nil {
 		return t.Time
 	}
 	return time.Time{}
@@ -47,7 +47,7 @@ func Duration(i interface{}) time.Duration {
 // The parameter <format> can be used to specify the format of <i>.
 // If no <format> given, it converts <i> using qn_time.NewFromTimeStamp if <i> is numeric,
 // or using qn_time.StrToTime if <i> is string.
-func qn_time(i interface{}, format ...string) *qn_time.Time {
+func QNtime(i interface{}, format ...string) *qn_time.Time {
 	if i == nil {
 		return nil
 	}

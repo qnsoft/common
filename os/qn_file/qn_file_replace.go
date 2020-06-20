@@ -6,9 +6,7 @@
 
 package qn_file
 
-import (
-	"github.com/qnsoft/common/text/gstr"
-)
+import "github.com/gogf/gf/text/gstr"
 
 // ReplaceFile replaces content for file <path>.
 func ReplaceFile(search, replace, path string) error {

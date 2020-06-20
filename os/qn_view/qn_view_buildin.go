@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/os/qn_time"
-	"github.com/qnsoft/common/text/gstr"
 	qn_util "github.com/qnsoft/common/util/qn_util"
 
 	"github.com/qnsoft/common/encoding/qn_html"

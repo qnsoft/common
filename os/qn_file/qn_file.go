@@ -14,8 +14,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/text/gstr"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 

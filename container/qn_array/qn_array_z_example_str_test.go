@@ -10,12 +10,12 @@ import (
 	"fmt"
 
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 )
 
 func ExampleStrArray_Walk() {
 	var array qn_array.StrArray
-	tables := g.SliceStr{"user", "user_detail"}
+	tables := qn.SliceStr{"user", "user_detail"}
 	prefix := "gf_"
 	array.Append(tables...)
 	// Add prefix for given table names.

@@ -8,7 +8,8 @@ package qn_array_test
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/frame/g"
+
+	"github.com/qnsoft/common/frame/qn"
 
 	"github.com/qnsoft/common/container/qn_array"
 )
@@ -73,7 +74,7 @@ func ExampleNew() {
 }
 
 func ExampleArray_Iterator() {
-	array := qn_array.NewArrayFrom(g.Slice{"a", "b", "c"})
+	array := qn_array.NewArrayFrom(qn.Slice{"a", "b", "c"})
 	// Iterator is alias of IteratorAsc, which iterates the array readonly in ascending order
 	//  with given callback function <f>.
 	// If <f> returns true, then it continues iterating; or false to stop.
@@ -98,7 +99,7 @@ func ExampleArray_Iterator() {
 }
 
 func ExampleArray_Reverse() {
-	array := qn_array.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	array := qn_array.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 	// Reverse makes array with elements in reverse order.
 	fmt.Println(array.Reverse().Slice())
@@ -108,14 +109,14 @@ func ExampleArray_Reverse() {
 }
 
 func ExampleArray_Shuffle() {
-	array := qn_array.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	array := qn_array.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 	// Shuffle randomly shuffles the array.
 	fmt.Println(array.Shuffle().Slice())
 }
 
 func ExampleArray_Rands() {
-	array := qn_array.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	array := qn_array.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 	// Randomly retrieve and return 2 items from the array.
 	// It does not delete the items from array.
@@ -127,7 +128,7 @@ func ExampleArray_Rands() {
 }
 
 func ExampleArray_PopRand() {
-	array := qn_array.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	array := qn_array.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 	// Randomly retrieve and return 2 items from the array.
 	// It does not delete the items from array.
@@ -139,7 +140,7 @@ func ExampleArray_PopRand() {
 }
 
 func ExampleArray_Join() {
-	array := qn_array.NewFrom(g.Slice{"a", "b", "c", "d"})
+	array := qn_array.NewFrom(qn.Slice{"a", "b", "c", "d"})
 	fmt.Println(array.Join(","))
 
 	// Output:
@@ -147,7 +148,7 @@ func ExampleArray_Join() {
 }
 
 func ExampleArray_Chunk() {
-	array := qn_array.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	array := qn_array.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 	// Chunk splits an array into multiple arrays,
 	// the size of each array is determined by <size>.
@@ -240,9 +241,9 @@ func ExampleArray_Contains() {
 }
 
 func ExampleArray_Merge() {
-	array1 := qn_array.NewFrom(g.Slice{1, 2})
-	array2 := qn_array.NewFrom(g.Slice{3, 4})
-	slice1 := g.Slice{5, 6}
+	array1 := qn_array.NewFrom(qn.Slice{1, 2})
+	array2 := qn_array.NewFrom(qn.Slice{3, 4})
+	slice1 := qn.Slice{5, 6}
 	slice2 := []int{7, 8}
 	slice3 := []string{"9", "0"}
 	fmt.Println(array1.Slice())
@@ -259,8 +260,8 @@ func ExampleArray_Merge() {
 }
 
 func ExampleArray_FilterEmpty() {
-	array1 := qn_array.NewFrom(g.Slice{0, 1, 2, nil, "", g.Slice{}, "john"})
-	array2 := qn_array.NewFrom(g.Slice{0, 1, 2, nil, "", g.Slice{}, "john"})
+	array1 := qn_array.NewFrom(qn.Slice{0, 1, 2, nil, "", qn.Slice{}, "john"})
+	array2 := qn_array.NewFrom(qn.Slice{0, 1, 2, nil, "", qn.Slice{}, "john"})
 	fmt.Printf("%#v\n", array1.FilterNil().Slice())
 	fmt.Printf("%#v\n", array2.FilterEmpty().Slice())
 
@@ -270,8 +271,8 @@ func ExampleArray_FilterEmpty() {
 }
 
 func ExampleArray_FilterNil() {
-	array1 := qn_array.NewFrom(g.Slice{0, 1, 2, nil, "", g.Slice{}, "john"})
-	array2 := qn_array.NewFrom(g.Slice{0, 1, 2, nil, "", g.Slice{}, "john"})
+	array1 := qn_array.NewFrom(qn.Slice{0, 1, 2, nil, "", qn.Slice{}, "john"})
+	array2 := qn_array.NewFrom(qn.Slice{0, 1, 2, nil, "", qn.Slice{}, "john"})
 	fmt.Printf("%#v\n", array1.FilterNil().Slice())
 	fmt.Printf("%#v\n", array2.FilterEmpty().Slice())
 

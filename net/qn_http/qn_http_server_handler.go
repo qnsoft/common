@@ -12,9 +12,9 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/errors/qn_error"
 	"github.com/qnsoft/common/os/qn_time"
-	"github.com/qnsoft/common/text/gstr"
 
 	"github.com/qnsoft/common/os/gres"
 

@@ -14,8 +14,8 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/os/genv"
-	"github.com/qnsoft/common/text/gstr"
 	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/os/qn_file"

@@ -4,11 +4,11 @@ import (
 	"os"
 	"testing"
 
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/os/gfpool"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/test/qn_test"
-	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_ConcurrentOS(t *testing.T) {

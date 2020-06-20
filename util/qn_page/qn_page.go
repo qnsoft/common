@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/qnsoft/common/text/gstr"
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/util/qn_conv"
 )
 

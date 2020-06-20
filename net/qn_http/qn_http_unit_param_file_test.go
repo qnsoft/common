@@ -11,10 +11,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/debug/gdebug"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_time"
-	"github.com/qnsoft/common/text/gstr"
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"

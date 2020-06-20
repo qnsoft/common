@@ -13,10 +13,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/qnsoft/common/text/gstr"
-
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/text/gstr"
 )
 
 func createTestFile(filename, content string) error {

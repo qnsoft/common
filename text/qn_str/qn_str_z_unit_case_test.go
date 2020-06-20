@@ -11,7 +11,7 @@ package qn_str_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/text/gstr"
+	"github.com/gogf/gf/text/gstr"
 )
 
 func Test_CamelCase(t *testing.T) {

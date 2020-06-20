@@ -12,9 +12,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/internal/json"
-
-	"github.com/qnsoft/common/text/gstr"
 
 	"errors"
 

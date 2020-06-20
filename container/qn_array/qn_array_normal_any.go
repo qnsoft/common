@@ -15,7 +15,7 @@ import (
 
 	"github.com/qnsoft/common/internal/empty"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/text/qn_str"
 
 	"github.com/qnsoft/common/internal/rwmutex"
 	"github.com/qnsoft/common/util/qn_conv"
@@ -707,10 +707,10 @@ func (a *Array) String() string {
 	s := ""
 	for k, v := range a.array {
 		s = qn_conv.String(v)
-		if gstr.IsNumeric(s) {
+		if qn_str.IsNumeric(s) {
 			buffer.WriteString(s)
 		} else {
-			buffer.WriteString(`"` + gstr.QuoteMeta(s, `"\`) + `"`)
+			buffer.WriteString(`"` + qn_str.QuoteMeta(s, `"\`) + `"`)
 		}
 		if k != len(a.array)-1 {
 			buffer.WriteByte(',')

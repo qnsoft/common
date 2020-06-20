@@ -14,9 +14,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/text/gstr"
 )
 
 // ZipPath compresses <paths> to <dest> using zip compressing algorithm.

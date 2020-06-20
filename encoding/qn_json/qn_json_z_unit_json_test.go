@@ -9,10 +9,10 @@ package qn_json_test
 import (
 	"testing"
 
+	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/encoding/qn_json"
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/test/qn_test"
-	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_ToJson(t *testing.T) {
