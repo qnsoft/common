@@ -18,8 +18,8 @@ import (
 
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/encoding/qn_json"
-	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gproc"
+	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/os/qn_timer"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
@@ -129,7 +129,7 @@ func forkReloadProcess(newExeFilePath ...string) error {
 	buffer, _ := qn_json.Encode(sfm)
 	p.Env = append(p.Env, gADMIN_ACTION_RELOAD_ENVKEY+"="+string(buffer))
 	if _, err := p.Start(); err != nil {
-		glog.Errorf("%d: fork process failed, error:%s, %s", gproc.Pid(), err.Error(), string(buffer))
+		qn_log.Errorf("%d: fork process failed, error:%s, %s", gproc.Pid(), err.Error(), string(buffer))
 		return err
 	}
 	return nil
@@ -146,7 +146,7 @@ func forkRestartProcess(newExeFilePath ...string) error {
 	env = append(env, gADMIN_ACTION_RESTART_ENVKEY+"=1")
 	p := gproc.NewProcess(path, os.Args, env)
 	if _, err := p.Start(); err != nil {
-		glog.Errorf("%d: fork process failed, error:%s", gproc.Pid(), err.Error())
+		qn_log.Errorf("%d: fork process failed, error:%s", gproc.Pid(), err.Error())
 		return err
 	}
 	return nil
@@ -197,14 +197,14 @@ func restartWebServers(signal string, newExeFilePath ...string) error {
 		}
 	} else {
 		if err := forkReloadProcess(newExeFilePath...); err != nil {
-			glog.Printf("%d: server restarts failed", gproc.Pid())
+			qn_log.Printf("%d: server restarts failed", gproc.Pid())
 			serverProcessStatus.Set(gADMIN_ACTION_NONE)
 			return err
 		} else {
 			if len(signal) > 0 {
-				glog.Printf("%d: server restarting by signal: %s", gproc.Pid(), signal)
+				qn_log.Printf("%d: server restarting by signal: %s", gproc.Pid(), signal)
 			} else {
-				glog.Printf("%d: server restarting by web admin", gproc.Pid())
+				qn_log.Printf("%d: server restarting by web admin", gproc.Pid())
 			}
 
 		}
@@ -216,11 +216,11 @@ func restartWebServers(signal string, newExeFilePath ...string) error {
 func shutdownWebServers(signal ...string) {
 	serverProcessStatus.Set(gADMIN_ACTION_SHUTINGDOWN)
 	if len(signal) > 0 {
-		glog.Printf("%d: server shutting down by signal: %s", gproc.Pid(), signal[0])
+		qn_log.Printf("%d: server shutting down by signal: %s", gproc.Pid(), signal[0])
 		forceCloseWebServers()
 		allDoneChan <- struct{}{}
 	} else {
-		glog.Printf("%d: server shutting down by api", gproc.Pid())
+		qn_log.Printf("%d: server shutting down by api", gproc.Pid())
 		qn_timer.SetTimeout(time.Second, func() {
 			forceCloseWebServers()
 			allDoneChan <- struct{}{}

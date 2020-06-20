@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/gogf/gf/text/gstr"
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 )
 
 // BindHandler registers a handler function to server with given pattern.
@@ -27,7 +27,7 @@ func (s *Server) doBindHandler(
 	middleware []HandlerFunc, source string,
 ) {
 	s.setHandler(pattern, &handlerItem{
-		itemName:   gdebug.FuncPath(handler),
+		itemName:   qn_debug.FuncPath(handler),
 		itemType:   gHANDLER_TYPE_HANDLER,
 		itemFunc:   handler,
 		middleware: middleware,

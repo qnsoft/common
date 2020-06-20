@@ -14,14 +14,14 @@ import (
 	"github.com/gorilla/websocket"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_WebSocket(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/ws", func(r *ghttp.Request) {
+	s.BindHandler("/ws", func(r *qn_http.Request) {
 		ws, err := r.WebSocket()
 		if err != nil {
 			r.Exit()

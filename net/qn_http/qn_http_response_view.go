@@ -8,8 +8,8 @@
 package qn_http
 
 import (
-	"github.com/qnsoft/common/os/gcfg"
 	"github.com/qnsoft/common/os/gview"
+	"github.com/qnsoft/common/os/qn_cfg"
 	"github.com/qnsoft/common/util/gmode"
 	qn_util "github.com/qnsoft/common/util/qn_util"
 )
@@ -86,7 +86,7 @@ func (r *Response) buildInVars(params ...map[string]interface{}) map[string]inte
 	})
 	// Note that it should assign no Config variable to template
 	// if there's no configuration file.
-	if c := gcfg.Instance(); c.Available() {
+	if c := qn_cfg.Instance(); c.Available() {
 		m["Config"] = c.GetMap(".")
 	}
 	return m

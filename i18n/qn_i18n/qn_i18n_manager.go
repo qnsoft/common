@@ -14,7 +14,7 @@ import (
 
 	"github.com/qnsoft/common/internal/intlog"
 
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 
 	"github.com/qnsoft/common/os/gfsnotify"
 
@@ -24,8 +24,8 @@ import (
 
 	"github.com/qnsoft/common/encoding/qn_json"
 
-	"github.com/qnsoft/common/os/gres"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_res"
 )
 
 // Manager, it is concurrent safe, supporting hot reload.
@@ -81,8 +81,8 @@ func DefaultOptions() Options {
 	)
 	if realPath != "" {
 		path = realPath
-		// To avoid of the source path of GF: github.com/gogf/i18n/gi18n
-		if qn_file.Exists(path + qn_file.Separator + "gi18n") {
+		// To avoid of the source path of GF: github.com/gogf/i18n/qn_i18n
+		if qn_file.Exists(path + qn_file.Separator + "qn_i18n") {
 			path = ""
 		}
 	}
@@ -95,7 +95,7 @@ func DefaultOptions() Options {
 
 // SetPath sets the directory path storing i18n files.
 func (m *Manager) SetPath(path string) error {
-	if gres.Contains(path) {
+	if qn_res.Contains(path) {
 		m.options.Path = path
 	} else {
 		realPath, _ := qn_file.Search(path)
@@ -189,8 +189,8 @@ func (m *Manager) init() {
 
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	if gres.Contains(m.options.Path) {
-		files := gres.ScanDirFile(m.options.Path, "*.*", true)
+	if qn_res.Contains(m.options.Path) {
+		files := qn_res.ScanDirFile(m.options.Path, "*.*", true)
 		if len(files) > 0 {
 			var (
 				path  string
@@ -216,7 +216,7 @@ func (m *Manager) init() {
 						m.data[lang][k] = qn_conv.String(v)
 					}
 				} else {
-					glog.Errorf("load i18n file '%s' failed: %v", name, err)
+					qn_log.Errorf("load i18n file '%s' failed: %v", name, err)
 				}
 			}
 		}
@@ -251,7 +251,7 @@ func (m *Manager) init() {
 					m.data[lang][k] = qn_conv.String(v)
 				}
 			} else {
-				glog.Errorf("load i18n file '%s' failed: %v", file, err)
+				qn_log.Errorf("load i18n file '%s' failed: %v", file, err)
 			}
 		}
 		// Monitor changes of i18n files for hot reload feature.

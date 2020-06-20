@@ -16,7 +16,7 @@ import (
 	"github.com/qnsoft/common/errors/qn_error"
 	"github.com/qnsoft/common/os/qn_time"
 
-	"github.com/qnsoft/common/os/gres"
+	"github.com/qnsoft/common/os/qn_res"
 
 	"github.com/qnsoft/common/encoding/qn_html"
 	"github.com/qnsoft/common/os/gspath"
@@ -169,7 +169,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // searchStaticFile searches the file with given URI.
 // It returns a file struct specifying the file information.
 func (s *Server) searchStaticFile(uri string) *StaticFile {
-	var file *gres.File
+	var file *qn_res.File
 	var path string
 	var dir bool
 	// Firstly search the StaticPaths mapping.
@@ -180,7 +180,7 @@ func (s *Server) searchStaticFile(uri string) *StaticFile {
 				if len(uri) > len(item.prefix) && uri[len(item.prefix)] != '/' {
 					continue
 				}
-				file = gres.GetWithIndex(item.path+uri[len(item.prefix):], s.config.IndexFiles)
+				file = qn_res.GetWithIndex(item.path+uri[len(item.prefix):], s.config.IndexFiles)
 				if file != nil {
 					return &StaticFile{
 						File:  file,
@@ -201,7 +201,7 @@ func (s *Server) searchStaticFile(uri string) *StaticFile {
 	// Secondly search the root and searching paths.
 	if len(s.config.SearchPaths) > 0 {
 		for _, p := range s.config.SearchPaths {
-			file = gres.GetWithIndex(p+uri, s.config.IndexFiles)
+			file = qn_res.GetWithIndex(p+uri, s.config.IndexFiles)
 			if file != nil {
 				return &StaticFile{
 					File:  file,
@@ -218,7 +218,7 @@ func (s *Server) searchStaticFile(uri string) *StaticFile {
 	}
 	// Lastly search the resource manager.
 	if len(s.config.StaticPaths) == 0 && len(s.config.SearchPaths) == 0 {
-		if file = gres.GetWithIndex(uri, s.config.IndexFiles); file != nil {
+		if file = qn_res.GetWithIndex(uri, s.config.IndexFiles); file != nil {
 			return &StaticFile{
 				File:  file,
 				IsDir: file.FileInfo().IsDir(),

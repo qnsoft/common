@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/encoding/qn_compress"
 	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gtime"
@@ -21,8 +21,8 @@ import (
 func Test_ZipPath(t *testing.T) {
 	// file
 	qn_test.C(t, func(t *qn_test.T) {
-		srcPath := gdebug.TestDataPath("zip", "path1", "1.txt")
-		dstPath := gdebug.TestDataPath("zip", "zip.zip")
+		srcPath := qn_debug.TestDataPath("zip", "path1", "1.txt")
+		dstPath := qn_debug.TestDataPath("zip", "zip.zip")
 
 		t.Assert(gfile.Exists(dstPath), false)
 		t.Assert(qn_compress.ZipPath(srcPath, dstPath), nil)
@@ -43,8 +43,8 @@ func Test_ZipPath(t *testing.T) {
 	// multiple files
 	qn_test.C(t, func(t *qn_test.T) {
 		var (
-			srcPath1 = gdebug.TestDataPath("zip", "path1", "1.txt")
-			srcPath2 = gdebug.TestDataPath("zip", "path2", "2.txt")
+			srcPath1 = qn_debug.TestDataPath("zip", "path1", "1.txt")
+			srcPath2 = qn_debug.TestDataPath("zip", "path2", "2.txt")
 			dstPath  = gfile.TempDir(gtime.TimestampNanoStr(), "zip.zip")
 		)
 		if p := gfile.Dir(dstPath); !gfile.Exists(p) {
@@ -76,8 +76,8 @@ func Test_ZipPath(t *testing.T) {
 	// one dir and one file.
 	qn_test.C(t, func(t *qn_test.T) {
 		var (
-			srcPath1 = gdebug.TestDataPath("zip", "path1")
-			srcPath2 = gdebug.TestDataPath("zip", "path2", "2.txt")
+			srcPath1 = qn_debug.TestDataPath("zip", "path1")
+			srcPath2 = qn_debug.TestDataPath("zip", "path2", "2.txt")
 			dstPath  = gfile.TempDir(gtime.TimestampNanoStr(), "zip.zip")
 		)
 		if p := gfile.Dir(dstPath); !gfile.Exists(p) {
@@ -108,8 +108,8 @@ func Test_ZipPath(t *testing.T) {
 	})
 	// directory.
 	qn_test.C(t, func(t *qn_test.T) {
-		srcPath := gdebug.TestDataPath("zip")
-		dstPath := gdebug.TestDataPath("zip", "zip.zip")
+		srcPath := qn_debug.TestDataPath("zip")
+		dstPath := qn_debug.TestDataPath("zip", "zip.zip")
 
 		pwd := gfile.Pwd()
 		err := gfile.Chdir(srcPath)
@@ -142,10 +142,10 @@ func Test_ZipPath(t *testing.T) {
 	// multiple directory paths joined using char ','.
 	qn_test.C(t, func(t *qn_test.T) {
 		var (
-			srcPath  = gdebug.TestDataPath("zip")
-			srcPath1 = gdebug.TestDataPath("zip", "path1")
-			srcPath2 = gdebug.TestDataPath("zip", "path2")
-			dstPath  = gdebug.TestDataPath("zip", "zip.zip")
+			srcPath  = qn_debug.TestDataPath("zip")
+			srcPath1 = qn_debug.TestDataPath("zip", "path1")
+			srcPath2 = qn_debug.TestDataPath("zip", "path2")
+			dstPath  = qn_debug.TestDataPath("zip", "zip.zip")
 		)
 		pwd := gfile.Pwd()
 		err := gfile.Chdir(srcPath)
@@ -182,9 +182,9 @@ func Test_ZipPath(t *testing.T) {
 func Test_ZipPathWriter(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		var (
-			srcPath  = gdebug.TestDataPath("zip")
-			srcPath1 = gdebug.TestDataPath("zip", "path1")
-			srcPath2 = gdebug.TestDataPath("zip", "path2")
+			srcPath  = qn_debug.TestDataPath("zip")
+			srcPath1 = qn_debug.TestDataPath("zip", "path1")
+			srcPath2 = qn_debug.TestDataPath("zip", "path2")
 		)
 		pwd := gfile.Pwd()
 		err := gfile.Chdir(srcPath)

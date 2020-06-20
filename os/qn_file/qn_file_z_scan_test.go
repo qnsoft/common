@@ -9,7 +9,7 @@ package qn_file_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 
 	"github.com/qnsoft/common/os/qn_file"
 
@@ -17,7 +17,7 @@ import (
 )
 
 func Test_ScanDir(t *testing.T) {
-	teatPath := gdebug.TestDataPath()
+	teatPath := qn_debug.TestDataPath()
 	qn_test.C(t, func(t *qn_test.T) {
 		files, err := qn_file.ScanDir(teatPath, "*", false)
 		t.Assert(err, nil)
@@ -36,7 +36,7 @@ func Test_ScanDir(t *testing.T) {
 }
 
 func Test_ScanDirFunc(t *testing.T) {
-	teatPath := gdebug.TestDataPath()
+	teatPath := qn_debug.TestDataPath()
 	qn_test.C(t, func(t *qn_test.T) {
 		files, err := qn_file.ScanDirFunc(teatPath, "*", true, func(path string) string {
 			if qn_file.Name(path) != "file1" {
@@ -51,7 +51,7 @@ func Test_ScanDirFunc(t *testing.T) {
 }
 
 func Test_ScanDirFile(t *testing.T) {
-	teatPath := gdebug.TestDataPath()
+	teatPath := qn_debug.TestDataPath()
 	qn_test.C(t, func(t *qn_test.T) {
 		files, err := qn_file.ScanDirFile(teatPath, "*", false)
 		t.Assert(err, nil)

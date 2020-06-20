@@ -4,7 +4,7 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-// Package gi18n implements internationalization and localization.
+// Package qn_i18n implements internationalization and localization.
 package qn_i18n
 
 var (

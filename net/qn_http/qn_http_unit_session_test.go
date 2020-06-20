@@ -12,23 +12,23 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Session_Cookie(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/set", func(r *ghttp.Request) {
+	s.BindHandler("/set", func(r *qn_http.Request) {
 		r.Session.Set(r.GetString("k"), r.GetString("v"))
 	})
-	s.BindHandler("/get", func(r *ghttp.Request) {
+	s.BindHandler("/get", func(r *qn_http.Request) {
 		r.Response.Write(r.Session.Get(r.GetString("k")))
 	})
-	s.BindHandler("/remove", func(r *ghttp.Request) {
+	s.BindHandler("/remove", func(r *qn_http.Request) {
 		r.Session.Remove(r.GetString("k"))
 	})
-	s.BindHandler("/clear", func(r *ghttp.Request) {
+	s.BindHandler("/clear", func(r *qn_http.Request) {
 		r.Session.Clear()
 	})
 	s.SetPort(p)
@@ -38,7 +38,7 @@ func Test_Session_Cookie(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetBrowserMode(true)
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		r1, e1 := client.Get("/set?k=key1&v=100")
@@ -66,16 +66,16 @@ func Test_Session_Cookie(t *testing.T) {
 func Test_Session_Header(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/set", func(r *ghttp.Request) {
+	s.BindHandler("/set", func(r *qn_http.Request) {
 		r.Session.Set(r.GetString("k"), r.GetString("v"))
 	})
-	s.BindHandler("/get", func(r *ghttp.Request) {
+	s.BindHandler("/get", func(r *qn_http.Request) {
 		r.Response.Write(r.Session.Get(r.GetString("k")))
 	})
-	s.BindHandler("/remove", func(r *ghttp.Request) {
+	s.BindHandler("/remove", func(r *qn_http.Request) {
 		r.Session.Remove(r.GetString("k"))
 	})
-	s.BindHandler("/clear", func(r *ghttp.Request) {
+	s.BindHandler("/clear", func(r *qn_http.Request) {
 		r.Session.Clear()
 	})
 	s.SetPort(p)
@@ -85,7 +85,7 @@ func Test_Session_Header(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		response, e1 := client.Get("/set?k=key1&v=100")
 		if response != nil {
@@ -117,11 +117,11 @@ func Test_Session_StorageFile(t *testing.T) {
 	sessionId := ""
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/set", func(r *ghttp.Request) {
+	s.BindHandler("/set", func(r *qn_http.Request) {
 		r.Session.Set(r.GetString("k"), r.GetString("v"))
 		r.Response.Write(r.GetString("k"), "=", r.GetString("v"))
 	})
-	s.BindHandler("/get", func(r *ghttp.Request) {
+	s.BindHandler("/get", func(r *qn_http.Request) {
 		r.Response.Write(r.Session.Get(r.GetString("k")))
 	})
 	s.SetPort(p)
@@ -132,7 +132,7 @@ func Test_Session_StorageFile(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		response, e1 := client.Get("/set?k=key&v=100")
 		if response != nil {
@@ -145,7 +145,7 @@ func Test_Session_StorageFile(t *testing.T) {
 	})
 	time.Sleep(time.Second)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader(s.GetSessionIdName(), sessionId)
 		t.Assert(client.GetContent("/get?k=key"), "100")

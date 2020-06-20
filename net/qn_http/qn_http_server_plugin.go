@@ -18,5 +18,5 @@ type Plugin interface {
 
 // Plugin adds plugin to server.
 func (s *Server) Plugin(plugin ...Plugin) {
-	s.plugins = append(s.plugins, plugin...)
+	s.pluqn_ins = append(s.pluqn_ins, plugin...)
 }

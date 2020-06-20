@@ -13,7 +13,7 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/frame/gmvc"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -21,7 +21,7 @@ type ControllerRest struct {
 	gmvc.Controller
 }
 
-func (c *ControllerRest) Init(r *ghttp.Request) {
+func (c *ControllerRest) Init(r *qn_http.Request) {
 	c.Controller.Init(r)
 	c.Response.Write("1")
 }
@@ -63,7 +63,7 @@ func Test_Router_ControllerRest(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "1Controller Get2")

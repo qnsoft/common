@@ -13,14 +13,14 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Client_Basic(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/hello", func(r *ghttp.Request) {
+	s.BindHandler("/hello", func(r *qn_http.Request) {
 		r.Response.Write("hello")
 	})
 	s.SetPort(p)
@@ -31,13 +31,13 @@ func Test_Client_Basic(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
 		url := fmt.Sprintf("http://127.0.0.1:%d", p)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(url)
 
-		t.Assert(ghttp.GetContent(""), ``)
+		t.Assert(qn_http.GetContent(""), ``)
 		t.Assert(client.GetContent("/hello"), `hello`)
 
-		_, err := ghttp.Post("")
+		_, err := qn_http.Post("")
 		t.AssertNE(err, nil)
 	})
 }
@@ -45,7 +45,7 @@ func Test_Client_Basic(t *testing.T) {
 func Test_Client_BasicAuth(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/auth", func(r *ghttp.Request) {
+	s.BindHandler("/auth", func(r *qn_http.Request) {
 		if r.BasicAuth("admin", "admin") {
 			r.Response.Write("1")
 		} else {
@@ -69,7 +69,7 @@ func Test_Client_BasicAuth(t *testing.T) {
 func Test_Client_Cookie(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/cookie", func(r *ghttp.Request) {
+	s.BindHandler("/cookie", func(r *qn_http.Request) {
 		r.Response.Write(r.Cookie.Get("test"))
 	})
 	s.SetPort(p)
@@ -79,7 +79,7 @@ func Test_Client_Cookie(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		c := ghttp.NewClient()
+		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		c.SetCookie("test", "0123456789")
@@ -90,7 +90,7 @@ func Test_Client_Cookie(t *testing.T) {
 func Test_Client_MapParam(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/map", func(r *ghttp.Request) {
+	s.BindHandler("/map", func(r *qn_http.Request) {
 		r.Response.Write(r.Get("test"))
 	})
 	s.SetPort(p)
@@ -100,7 +100,7 @@ func Test_Client_MapParam(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		c := ghttp.NewClient()
+		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(c.GetContent("/map", g.Map{"test": "1234567890"}), "1234567890")
@@ -110,7 +110,7 @@ func Test_Client_MapParam(t *testing.T) {
 func Test_Client_Cookies(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/cookie", func(r *ghttp.Request) {
+	s.BindHandler("/cookie", func(r *qn_http.Request) {
 		r.Cookie.Set("test1", "1")
 		r.Cookie.Set("test2", "2")
 		r.Response.Write("ok")
@@ -122,7 +122,7 @@ func Test_Client_Cookies(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		c := ghttp.NewClient()
+		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		resp, err := c.Get("/cookie")
@@ -143,10 +143,10 @@ func Test_Client_Cookies(t *testing.T) {
 func Test_Client_Chain_Header(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/header1", func(r *ghttp.Request) {
+	s.BindHandler("/header1", func(r *qn_http.Request) {
 		r.Response.Write(r.Header.Get("test1"))
 	})
-	s.BindHandler("/header2", func(r *ghttp.Request) {
+	s.BindHandler("/header2", func(r *qn_http.Request) {
 		r.Response.Write(r.Header.Get("test2"))
 	})
 	s.SetPort(p)
@@ -156,7 +156,7 @@ func Test_Client_Chain_Header(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		c := ghttp.NewClient()
+		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(c.Header(g.MapStrStr{"test1": "1234567890"}).GetContent("/header1"), "1234567890")
@@ -168,7 +168,7 @@ func Test_Client_Chain_Header(t *testing.T) {
 func Test_Client_Chain_Context(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/context", func(r *ghttp.Request) {
+	s.BindHandler("/context", func(r *qn_http.Request) {
 		time.Sleep(1 * time.Second)
 		r.Response.Write("ok")
 	})
@@ -179,7 +179,7 @@ func Test_Client_Chain_Context(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		c := ghttp.NewClient()
+		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		ctx, _ := context.WithTimeout(context.Background(), 100*time.Millisecond)
@@ -193,7 +193,7 @@ func Test_Client_Chain_Context(t *testing.T) {
 func Test_Client_Chain_Timeout(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/timeout", func(r *ghttp.Request) {
+	s.BindHandler("/timeout", func(r *qn_http.Request) {
 		time.Sleep(1 * time.Second)
 		r.Response.Write("ok")
 	})
@@ -204,7 +204,7 @@ func Test_Client_Chain_Timeout(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		c := ghttp.NewClient()
+		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(c.Timeout(100*time.Millisecond).GetContent("/timeout"), "")
 		t.Assert(c.Timeout(2000*time.Millisecond).GetContent("/timeout"), "ok")
@@ -214,7 +214,7 @@ func Test_Client_Chain_Timeout(t *testing.T) {
 func Test_Client_Chain_ContentJson(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/json", func(r *ghttp.Request) {
+	s.BindHandler("/json", func(r *qn_http.Request) {
 		r.Response.Write(r.Get("name"), r.Get("score"))
 	})
 	s.SetPort(p)
@@ -224,7 +224,7 @@ func Test_Client_Chain_ContentJson(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		c := ghttp.NewClient()
+		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(c.ContentJson().PostContent("/json", g.Map{
 			"name":  "john",
@@ -243,7 +243,7 @@ func Test_Client_Chain_ContentJson(t *testing.T) {
 func Test_Client_Chain_ContentXml(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/xml", func(r *ghttp.Request) {
+	s.BindHandler("/xml", func(r *qn_http.Request) {
 		r.Response.Write(r.Get("name"), r.Get("score"))
 	})
 	s.SetPort(p)
@@ -253,7 +253,7 @@ func Test_Client_Chain_ContentXml(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		c := ghttp.NewClient()
+		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(c.ContentXml().PostContent("/xml", g.Map{
 			"name":  "john",

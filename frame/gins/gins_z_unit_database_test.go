@@ -4,14 +4,14 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-package gins_test
+package qn_ins_test
 
 import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/frame/gins"
+	"github.com/qnsoft/common/debug/qn_debug"
+	"github.com/qnsoft/common/frame/qn_ins"
 
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_time"
@@ -20,7 +20,7 @@ import (
 
 func Test_Database(t *testing.T) {
 	databaseContent := qn_file.GetContents(
-		gdebug.TestDataPath("database", "config.toml"),
+		qn_debug.TestDataPath("database", "config.toml"),
 	)
 	qn_test.C(t, func(t *qn_test.T) {
 		var err error
@@ -33,18 +33,18 @@ func Test_Database(t *testing.T) {
 		err = qn_file.PutContents(qn_file.Join(dirPath, name), databaseContent)
 		t.Assert(err, nil)
 
-		err = gins.Config().AddPath(dirPath)
+		err = qn_ins.Config().AddPath(dirPath)
 		t.Assert(err, nil)
 
-		defer gins.Config().Clear()
+		defer qn_ins.Config().Clear()
 
 		// for gfsnotify callbacks to refresh cache of config file
 		time.Sleep(500 * time.Millisecond)
 
-		//fmt.Println("gins Test_Database", Config().Get("test"))
+		//fmt.Println("qn_ins Test_Database", Config().Get("test"))
 
-		dbDefault := gins.Database()
-		dbTest := gins.Database("test")
+		dbDefault := qn_ins.Database()
+		dbTest := qn_ins.Database("test")
 		t.AssertNE(dbDefault, nil)
 		t.AssertNE(dbTest, nil)
 

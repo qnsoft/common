@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/qnsoft/common/os/gres"
+	"github.com/qnsoft/common/os/qn_res"
 
 	"github.com/qnsoft/common/os/qn_file"
 )
@@ -42,7 +42,7 @@ func newResponse(s *Server, w http.ResponseWriter) *Response {
 // ServeFile serves the file to the response.
 func (r *Response) ServeFile(path string, allowIndex ...bool) {
 	serveFile := (*StaticFile)(nil)
-	if file := gres.Get(path); file != nil {
+	if file := qn_res.Get(path); file != nil {
 		serveFile = &StaticFile{
 			File:  file,
 			IsDir: file.FileInfo().IsDir(),
@@ -65,7 +65,7 @@ func (r *Response) ServeFileDownload(path string, name ...string) {
 	if len(name) > 0 {
 		downloadName = name[0]
 	}
-	if file := gres.Get(path); file != nil {
+	if file := qn_res.Get(path); file != nil {
 		serveFile = &StaticFile{
 			File:  file,
 			IsDir: file.FileInfo().IsDir(),

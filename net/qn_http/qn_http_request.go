@@ -14,9 +14,9 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gres"
 	"github.com/qnsoft/common/os/gsession"
 	"github.com/qnsoft/common/os/gview"
+	"github.com/qnsoft/common/os/qn_res"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/util/guid"
 
@@ -59,7 +59,7 @@ type Request struct {
 
 // StaticFile is the file struct for static file service.
 type StaticFile struct {
-	File  *gres.File // Resource file object.
+	File  *qn_res.File // Resource file object.
 	Path  string     // File path.
 	IsDir bool       // Is directory.
 }

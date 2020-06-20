@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/gmutex"
@@ -249,7 +249,7 @@ func Test_Mutex_TryRLockFunc(t *testing.T) {
 		go func() {
 			mu.LockFunc(func() {
 				array.Append(1)
-				glog.Println("lock1 done")
+				qn_log.Println("lock1 done")
 				time.Sleep(2000 * time.Millisecond)
 			})
 		}()

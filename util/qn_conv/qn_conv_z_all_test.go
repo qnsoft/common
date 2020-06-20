@@ -10,7 +10,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/test/qn_test"
@@ -651,7 +650,7 @@ func Test_Convert_All(t *testing.T) {
 func Test_Time_All(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		t.AssertEQ(qn_conv.Duration(""), time.Duration(int64(0)))
-		t.AssertEQ(qn_conv.qn_time(""), qn_time.New())
+		t.AssertEQ(qn_conv.QNtime(""), qn_time.New())
 	})
 }
 
@@ -1319,7 +1318,7 @@ func Test_Struct_Time_All(t *testing.T) {
 		}
 		now := time.Now()
 		user := new(User)
-		qn_conv.Struct(g.Map{
+		qn_conv.Struct(qn.Map{
 			"create_time": now,
 		}, user)
 		t.Assert(user.CreateTime.UTC().String(), now.UTC().String())
@@ -1331,7 +1330,7 @@ func Test_Struct_Time_All(t *testing.T) {
 		}
 		now := time.Now()
 		user := new(User)
-		qn_conv.Struct(g.Map{
+		qn_conv.Struct(qn.Map{
 			"create_time": &now,
 		}, user)
 		t.Assert(user.CreateTime.UTC().String(), now.UTC().String())
@@ -1343,7 +1342,7 @@ func Test_Struct_Time_All(t *testing.T) {
 		}
 		now := time.Now()
 		user := new(User)
-		qn_conv.Struct(g.Map{
+		qn_conv.Struct(qn.Map{
 			"create_time": &now,
 		}, user)
 		t.Assert(user.CreateTime.Time.UTC().String(), now.UTC().String())

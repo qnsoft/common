@@ -11,7 +11,7 @@ import (
 	"net"
 
 	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
@@ -79,17 +79,17 @@ func (s *Server) Close() error {
 func (s *Server) Run() error {
 	if s.handler == nil {
 		err := errors.New("start running failed: socket handler not defined")
-		glog.Error(err)
+		qn_log.Error(err)
 		return err
 	}
 	addr, err := net.ResolveUDPAddr("udp", s.address)
 	if err != nil {
-		glog.Error(err)
+		qn_log.Error(err)
 		return err
 	}
 	conn, err := net.ListenUDP("udp", addr)
 	if err != nil {
-		glog.Error(err)
+		qn_log.Error(err)
 		return err
 	}
 	s.conn = NewConnByNetConn(conn)

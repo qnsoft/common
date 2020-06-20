@@ -14,14 +14,14 @@ import (
 	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/container/gtype"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 
 	"github.com/qnsoft/common/container/glist"
 	"github.com/qnsoft/common/text/qn_regex"
 )
 
 const (
-	gFILTER_KEY = "/net/ghttp/ghttp"
+	gFILTER_KEY = "/net/qn_http/qn_http"
 )
 
 var (
@@ -69,7 +69,7 @@ func (s *Server) parsePattern(pattern string) (domain, method, path string, err 
 func (s *Server) setHandler(pattern string, handler *handlerItem) {
 	handler.itemId = handlerIdGenerator.Add(1)
 	if handler.source == "" {
-		_, file, line := gdebug.CallerWithFilter(gFILTER_KEY)
+		_, file, line := qn_debug.CallerWithFilter(gFILTER_KEY)
 		handler.source = fmt.Sprintf(`%s:%d`, file, line)
 	}
 	domain, method, uri, err := s.parsePattern(pattern)

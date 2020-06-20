@@ -332,7 +332,7 @@ func Fields(str string) []string {
 	return strings.Fields(str)
 }
 
-// HasPrefix tests whether the string s begins with prefix.
+// HasPrefix tests whether the string s beqn_ins with prefix.
 func HasPrefix(s, prefix string) bool {
 	return strings.HasPrefix(s, prefix)
 }

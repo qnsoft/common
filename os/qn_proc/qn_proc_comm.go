@@ -25,8 +25,8 @@ type MsgRequest struct {
 	Data    []byte // Request data.
 }
 
-// MsgResponse is the response structure for process communication.
-type MsgResponse struct {
+// Msqn_response is the response structure for process communication.
+type Msqn_response struct {
 	Code    int    // 1: OK; Other: Error.
 	Message string // Response message.
 	Data    []byte // Response data.

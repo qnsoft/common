@@ -14,7 +14,7 @@ import (
 	"github.com/qnsoft/common/internal/json"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -28,15 +28,15 @@ func Test_Params_Json_Request(t *testing.T) {
 	}
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/get", func(r *ghttp.Request) {
+	s.BindHandler("/get", func(r *qn_http.Request) {
 		r.Response.WriteExit(r.Get("id"), r.Get("name"))
 	})
-	s.BindHandler("/map", func(r *ghttp.Request) {
+	s.BindHandler("/map", func(r *qn_http.Request) {
 		if m := r.GetMap(); len(m) > 0 {
 			r.Response.WriteExit(m["id"], m["name"], m["password1"], m["password2"])
 		}
 	})
-	s.BindHandler("/parse", func(r *ghttp.Request) {
+	s.BindHandler("/parse", func(r *qn_http.Request) {
 		if m := r.GetMap(); len(m) > 0 {
 			var user *User
 			if err := r.Parse(&user); err != nil {
@@ -52,7 +52,7 @@ func Test_Params_Json_Request(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/get", `{"id":1,"name":"john","password1":"123Abc!@#","password2":"123Abc!@#"}`), `1john`)
@@ -74,7 +74,7 @@ func Test_Params_Json_Response(t *testing.T) {
 
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/json1", func(r *ghttp.Request) {
+	s.BindHandler("/json1", func(r *qn_http.Request) {
 		r.Response.WriteJson(User{
 			Uid:     100,
 			Name:    "john",
@@ -83,7 +83,7 @@ func Test_Params_Json_Response(t *testing.T) {
 			Pass2:   "456",
 		})
 	})
-	s.BindHandler("/json2", func(r *ghttp.Request) {
+	s.BindHandler("/json2", func(r *qn_http.Request) {
 		r.Response.WriteJson(&User{
 			Uid:     100,
 			Name:    "john",
@@ -92,7 +92,7 @@ func Test_Params_Json_Response(t *testing.T) {
 			Pass2:   "456",
 		})
 	})
-	s.BindHandler("/json3", func(r *ghttp.Request) {
+	s.BindHandler("/json3", func(r *qn_http.Request) {
 		type Message struct {
 			Code  int    `json:"code"`
 			Body  string `json:"body,omitempty"`
@@ -113,7 +113,7 @@ func Test_Params_Json_Response(t *testing.T) {
 		}
 		r.Response.WriteJson(responseJson)
 	})
-	s.BindHandler("/json4", func(r *ghttp.Request) {
+	s.BindHandler("/json4", func(r *qn_http.Request) {
 		type Message struct {
 			Code  int    `json:"code"`
 			Body  string `json:"body,omitempty"`
@@ -141,7 +141,7 @@ func Test_Params_Json_Response(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		map1 := make(map[string]interface{})

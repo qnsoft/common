@@ -12,19 +12,19 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Context(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.Middleware(func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.Middleware(func(r *qn_http.Request) {
 			r.SetCtxVar("traceid", 123)
 			r.Middleware.Next()
 		})
-		group.GET("/", func(r *ghttp.Request) {
+		group.GET("/", func(r *qn_http.Request) {
 			r.Response.Write(r.GetCtxVar("traceid"))
 		})
 	})
@@ -35,7 +35,7 @@ func Test_Context(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), `123`)

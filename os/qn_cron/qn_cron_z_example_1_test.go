@@ -10,12 +10,12 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/os/gcron"
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 )
 
 func Example_cronAddSingleton() {
 	gcron.AddSingleton("* * * * * *", func() {
-		glog.Println("doing")
+		qn_log.Println("doing")
 		time.Sleep(2 * time.Second)
 	})
 	select {}

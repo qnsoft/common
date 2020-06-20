@@ -14,7 +14,7 @@ import (
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_timer"
 )
 
@@ -33,7 +33,7 @@ func New() *Cron {
 		status:   gtype.NewInt(STATUS_RUNNING),
 		entries:  gmap.NewStrAnyMap(true),
 		logPath:  gtype.NewString(),
-		logLevel: gtype.NewInt(glog.LEVEL_PROD),
+		logLevel: gtype.NewInt(qn_log.LEVEL_PROD),
 	}
 }
 

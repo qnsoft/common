@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_timer"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
@@ -116,7 +116,7 @@ func (entry *Entry) check() {
 			return
 
 		case STATUS_CLOSED:
-			glog.Path(path).Level(level).Debugf("[gcron] %s(%s) %s removed", entry.Name, entry.schedule.pattern, entry.jobName)
+			qn_log.Path(path).Level(level).Debugf("[gcron] %s(%s) %s removed", entry.Name, entry.schedule.pattern, entry.jobName)
 			entry.Close()
 
 		case STATUS_READY:
@@ -132,12 +132,12 @@ func (entry *Entry) check() {
 			if times < 2000000000 && times > 1000000000 {
 				entry.times.Set(gDEFAULT_TIMES)
 			}
-			glog.Path(path).Level(level).Debugf("[gcron] %s(%s) %s start", entry.Name, entry.schedule.pattern, entry.jobName)
+			qn_log.Path(path).Level(level).Debugf("[gcron] %s(%s) %s start", entry.Name, entry.schedule.pattern, entry.jobName)
 			defer func() {
 				if err := recover(); err != nil {
-					glog.Path(path).Level(level).Errorf("[gcron] %s(%s) %s end with error: %v", entry.Name, entry.schedule.pattern, entry.jobName, err)
+					qn_log.Path(path).Level(level).Errorf("[gcron] %s(%s) %s end with error: %v", entry.Name, entry.schedule.pattern, entry.jobName, err)
 				} else {
-					glog.Path(path).Level(level).Debugf("[gcron] %s(%s) %s end", entry.Name, entry.schedule.pattern, entry.jobName)
+					qn_log.Path(path).Level(level).Debugf("[gcron] %s(%s) %s end", entry.Name, entry.schedule.pattern, entry.jobName)
 				}
 				if entry.entry.Status() == STATUS_CLOSED {
 					entry.Close()

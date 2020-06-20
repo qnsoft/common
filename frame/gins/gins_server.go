@@ -4,11 +4,12 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-package gins
+package qn_ins
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/net/ghttp"
+
+	"github.com/qnsoft/common/net/qn_http"
 )
 
 const (
@@ -16,10 +17,10 @@ const (
 )
 
 // Server returns an instance of http server with specified name.
-func Server(name ...interface{}) *ghttp.Server {
+func Server(name ...interface{}) *qn_http.Server {
 	instanceKey := fmt.Sprintf("%s.%v", gFRAME_CORE_COMPONENT_NAME_SERVER, name)
 	return instances.GetOrSetFuncLock(instanceKey, func() interface{} {
-		s := ghttp.GetServer(name...)
+		s := qn_http.GetServer(name...)
 		// To avoid file no found error while it's not necessary.
 		if Config().Available() {
 			var m map[string]interface{}
@@ -39,5 +40,5 @@ func Server(name ...interface{}) *ghttp.Server {
 			_ = getViewInstance()
 		}
 		return s
-	}).(*ghttp.Server)
+	}).(*qn_http.Server)
 }

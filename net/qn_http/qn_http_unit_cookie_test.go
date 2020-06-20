@@ -12,20 +12,20 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Cookie(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/set", func(r *ghttp.Request) {
+	s.BindHandler("/set", func(r *qn_http.Request) {
 		r.Cookie.Set(r.GetString("k"), r.GetString("v"))
 	})
-	s.BindHandler("/get", func(r *ghttp.Request) {
+	s.BindHandler("/get", func(r *qn_http.Request) {
 		r.Response.Write(r.Cookie.Get(r.GetString("k")))
 	})
-	s.BindHandler("/remove", func(r *ghttp.Request) {
+	s.BindHandler("/remove", func(r *qn_http.Request) {
 		r.Cookie.Remove(r.GetString("k"))
 	})
 	s.SetPort(p)
@@ -35,7 +35,7 @@ func Test_Cookie(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetBrowserMode(true)
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		r1, e1 := client.Get("/set?k=key1&v=100")

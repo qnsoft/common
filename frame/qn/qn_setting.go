@@ -6,11 +6,11 @@
 
 package qn
 
-import "github.com/qnsoft/common/net/ghttp"
+import "github.com/qnsoft/common/net/qn_http"
 
 // SetServerGraceful enables/disables graceful reload feature of http Web Server.
 // This feature is disabled in default.
-// Deprecated, use configuration of ghttp.Server for controlling this feature.
+// Deprecated, use configuration of qn_http.Server for controlling this feature.
 func SetServerGraceful(enabled bool) {
-	ghttp.SetGraceful(enabled)
+	qn_http.SetGraceful(enabled)
 }

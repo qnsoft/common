@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/qnsoft/common/os/gres"
+	"github.com/qnsoft/common/os/qn_res"
 	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/qn_array"
@@ -51,14 +51,14 @@ func (s *Server) SetFileServerEnabled(enabled bool) {
 // SetServerRoot sets the document root for static service.
 func (s *Server) SetServerRoot(root string) {
 	realPath := root
-	if !gres.Contains(realPath) {
+	if !qn_res.Contains(realPath) {
 		if p, err := qn_file.Search(root); err != nil {
-			s.Logger().Fatal(fmt.Sprintf(`[ghttp] SetServerRoot failed: %v`, err))
+			s.Logger().Fatal(fmt.Sprintf(`[qn_http] SetServerRoot failed: %v`, err))
 		} else {
 			realPath = p
 		}
 	}
-	s.Logger().Debug("[ghttp] SetServerRoot path:", realPath)
+	s.Logger().Debug("[qn_http] SetServerRoot path:", realPath)
 	s.config.SearchPaths = []string{strings.TrimRight(realPath, qn_file.Separator)}
 	s.config.FileServerEnabled = true
 }
@@ -66,9 +66,9 @@ func (s *Server) SetServerRoot(root string) {
 // AddSearchPath add searching directory path for static file service.
 func (s *Server) AddSearchPath(path string) {
 	realPath := path
-	if !gres.Contains(realPath) {
+	if !qn_res.Contains(realPath) {
 		if p, err := qn_file.Search(path); err != nil {
-			s.Logger().Fatal(fmt.Sprintf(`[ghttp] AddSearchPath failed: %v`, err))
+			s.Logger().Fatal(fmt.Sprintf(`[qn_http] AddSearchPath failed: %v`, err))
 		} else {
 			realPath = p
 		}
@@ -80,9 +80,9 @@ func (s *Server) AddSearchPath(path string) {
 // AddStaticPath sets the uri to static directory path mapping for static file service.
 func (s *Server) AddStaticPath(prefix string, path string) {
 	realPath := path
-	if !gres.Contains(realPath) {
+	if !qn_res.Contains(realPath) {
 		if p, err := qn_file.Search(path); err != nil {
-			s.Logger().Fatal(fmt.Sprintf(`[ghttp] AddStaticPath failed: %v`, err))
+			s.Logger().Fatal(fmt.Sprintf(`[qn_http] AddStaticPath failed: %v`, err))
 		} else {
 			realPath = p
 		}

@@ -14,10 +14,10 @@ import (
 	"time"
 
 	"github.com/gogf/gf/text/gstr"
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -27,7 +27,7 @@ func Test_Static_ServerRoot(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		path := fmt.Sprintf(`%s/qn_http/static/test/%d`, qn_file.TempDir(), p)
 		defer qn_file.Remove(path)
 		qn_file.PutContents(path+"/index.htm", "index")
 		s.SetServerRoot(path)
@@ -35,7 +35,7 @@ func Test_Static_ServerRoot(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "index")
@@ -54,7 +54,7 @@ func Test_Static_ServerRoot(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "index")
@@ -66,12 +66,12 @@ func Test_Static_ServerRoot_Security(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		s.SetServerRoot(gdebug.TestDataPath("static1"))
+		s.SetServerRoot(qn_debug.TestDataPath("static1"))
 		s.SetPort(p)
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "index")
@@ -87,7 +87,7 @@ func Test_Static_Folder_Forbidden(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		path := fmt.Sprintf(`%s/qn_http/static/test/%d`, qn_file.TempDir(), p)
 		defer qn_file.Remove(path)
 		qn_file.PutContents(path+"/test.html", "test")
 		s.SetServerRoot(path)
@@ -95,7 +95,7 @@ func Test_Static_Folder_Forbidden(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Forbidden")
@@ -108,7 +108,7 @@ func Test_Static_IndexFolder(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		path := fmt.Sprintf(`%s/qn_http/static/test/%d`, qn_file.TempDir(), p)
 		defer qn_file.Remove(path)
 		qn_file.PutContents(path+"/test.html", "test")
 		s.SetIndexFolder(true)
@@ -117,7 +117,7 @@ func Test_Static_IndexFolder(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.AssertNE(client.GetContent("/"), "Forbidden")
@@ -131,7 +131,7 @@ func Test_Static_IndexFiles1(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		path := fmt.Sprintf(`%s/qn_http/static/test/%d`, qn_file.TempDir(), p)
 		defer qn_file.Remove(path)
 		qn_file.PutContents(path+"/index.html", "index")
 		qn_file.PutContents(path+"/test.html", "test")
@@ -140,7 +140,7 @@ func Test_Static_IndexFiles1(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "index")
@@ -153,7 +153,7 @@ func Test_Static_IndexFiles2(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		path := fmt.Sprintf(`%s/qn_http/static/test/%d`, qn_file.TempDir(), p)
 		defer qn_file.Remove(path)
 		qn_file.PutContents(path+"/test.html", "test")
 		s.SetIndexFiles([]string{"index.html", "test.html"})
@@ -162,7 +162,7 @@ func Test_Static_IndexFiles2(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "test")
@@ -175,8 +175,8 @@ func Test_Static_AddSearchPath1(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
-		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d`, qn_file.TempDir(), p, p)
+		path1 := fmt.Sprintf(`%s/qn_http/static/test/%d`, qn_file.TempDir(), p)
+		path2 := fmt.Sprintf(`%s/qn_http/static/test/%d/%d`, qn_file.TempDir(), p, p)
 		defer qn_file.Remove(path1)
 		defer qn_file.Remove(path2)
 		qn_file.PutContents(path2+"/test.html", "test")
@@ -186,7 +186,7 @@ func Test_Static_AddSearchPath1(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Forbidden")
@@ -198,8 +198,8 @@ func Test_Static_AddSearchPath2(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
-		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d`, qn_file.TempDir(), p, p)
+		path1 := fmt.Sprintf(`%s/qn_http/static/test/%d`, qn_file.TempDir(), p)
+		path2 := fmt.Sprintf(`%s/qn_http/static/test/%d/%d`, qn_file.TempDir(), p, p)
 		defer qn_file.Remove(path1)
 		defer qn_file.Remove(path2)
 		qn_file.PutContents(path1+"/test.html", "test1")
@@ -210,7 +210,7 @@ func Test_Static_AddSearchPath2(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Forbidden")
@@ -222,8 +222,8 @@ func Test_Static_AddStaticPath(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
-		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d`, qn_file.TempDir(), p, p)
+		path1 := fmt.Sprintf(`%s/qn_http/static/test/%d`, qn_file.TempDir(), p)
+		path2 := fmt.Sprintf(`%s/qn_http/static/test/%d/%d`, qn_file.TempDir(), p, p)
 		defer qn_file.Remove(path1)
 		defer qn_file.Remove(path2)
 		qn_file.PutContents(path1+"/test.html", "test1")
@@ -234,7 +234,7 @@ func Test_Static_AddStaticPath(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Forbidden")
@@ -247,8 +247,8 @@ func Test_Static_AddStaticPath_Priority(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d/test`, qn_file.TempDir(), p)
-		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d/test`, qn_file.TempDir(), p, p)
+		path1 := fmt.Sprintf(`%s/qn_http/static/test/%d/test`, qn_file.TempDir(), p)
+		path2 := fmt.Sprintf(`%s/qn_http/static/test/%d/%d/test`, qn_file.TempDir(), p, p)
 		defer qn_file.Remove(path1)
 		defer qn_file.Remove(path2)
 		qn_file.PutContents(path1+"/test.html", "test1")
@@ -259,7 +259,7 @@ func Test_Static_AddStaticPath_Priority(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Forbidden")
@@ -272,7 +272,7 @@ func Test_Static_Rewrite(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		path := fmt.Sprintf(`%s/qn_http/static/test/%d`, qn_file.TempDir(), p)
 		defer qn_file.Remove(path)
 		qn_file.PutContents(path+"/test1.html", "test1")
 		qn_file.PutContents(path+"/test2.html", "test2")
@@ -286,7 +286,7 @@ func Test_Static_Rewrite(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Forbidden")

@@ -9,7 +9,7 @@ package qn_base64_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 
 	"github.com/qnsoft/common/encoding/qn_base64"
 	"github.com/qnsoft/common/test/qn_test"
@@ -67,7 +67,7 @@ func Test_Basic(t *testing.T) {
 }
 
 func Test_File(t *testing.T) {
-	path := gdebug.TestDataPath("test")
+	path := qn_debug.TestDataPath("test")
 	expect := "dGVzdA=="
 	qn_test.C(t, func(t *qn_test.T) {
 		b, err := qn_base64.EncodeFile(path)

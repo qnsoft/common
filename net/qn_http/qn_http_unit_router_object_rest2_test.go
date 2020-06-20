@@ -12,33 +12,33 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 type ObjectRest2 struct{}
 
-func (o *ObjectRest2) Init(r *ghttp.Request) {
+func (o *ObjectRest2) Init(r *qn_http.Request) {
 	r.Response.Write("1")
 }
 
-func (o *ObjectRest2) Shut(r *ghttp.Request) {
+func (o *ObjectRest2) Shut(r *qn_http.Request) {
 	r.Response.Write("2")
 }
 
-func (o *ObjectRest2) Get(r *ghttp.Request) {
+func (o *ObjectRest2) Get(r *qn_http.Request) {
 	r.Response.Write("Object Get", r.Get("id"))
 }
 
-func (o *ObjectRest2) Put(r *ghttp.Request) {
+func (o *ObjectRest2) Put(r *qn_http.Request) {
 	r.Response.Write("Object Put", r.Get("id"))
 }
 
-func (o *ObjectRest2) Post(r *ghttp.Request) {
+func (o *ObjectRest2) Post(r *qn_http.Request) {
 	r.Response.Write("Object Post", r.Get("id"))
 }
 
-func (o *ObjectRest2) Delete(r *ghttp.Request) {
+func (o *ObjectRest2) Delete(r *qn_http.Request) {
 	r.Response.Write("Object Delete", r.Get("id"))
 }
 
@@ -53,7 +53,7 @@ func Test_Router_ObjectRest_Id(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/object/99"), "1Object Get992")

@@ -9,7 +9,7 @@ package qn_valid
 import (
 	"fmt"
 
-	"github.com/qnsoft/common/i18n/gi18n"
+	"github.com/qnsoft/common/i18n/qn_i18n"
 )
 
 // defaultMessages is the default error messages.
@@ -67,7 +67,7 @@ func getErrorMessageByRule(ruleKey string, customMsgMap map[string]string) strin
 	if content != "" {
 		return content
 	}
-	content = gi18n.GetContent(fmt.Sprintf(`gf.qn_valid.rule.%s`, ruleKey))
+	content = qn_i18n.GetContent(fmt.Sprintf(`gf.qn_valid.rule.%s`, ruleKey))
 	if content == "" {
 		content = defaultMessages[ruleKey]
 	}

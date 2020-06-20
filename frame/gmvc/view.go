@@ -7,12 +7,13 @@
 package gmvc
 
 import (
-	"github.com/qnsoft/common/frame/gins"
 	"sync"
+
+	"github.com/qnsoft/common/frame/qn_ins"
 
 	"github.com/qnsoft/common/util/gmode"
 
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/os/gview"
 )
 
@@ -23,13 +24,13 @@ type View struct {
 	mu       sync.RWMutex
 	view     *gview.View
 	data     gview.Params
-	response *ghttp.Response
+	response *qn_http.Response
 }
 
 // NewView creates and returns a controller view object.
-func NewView(w *ghttp.Response) *View {
+func NewView(w *qn_http.Response) *View {
 	return &View{
-		view:     gins.View(),
+		view:     qn_ins.View(),
 		data:     make(gview.Params),
 		response: w,
 	}

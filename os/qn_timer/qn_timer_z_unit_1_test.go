@@ -55,7 +55,7 @@ func TestTimer_Start_Stop_Close(t *testing.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.Add(200*time.Millisecond, func() {
-			//glog.Println("add...")
+			//qn_log.Println("add...")
 			array.Append(1)
 		})
 		t.Assert(array.Len(), 0)
@@ -228,15 +228,15 @@ func TestTimer_AddLeveledEntry1(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
-		//glog.Println("start")
+		//qn_log.Println("start")
 		timer.DelayAdd(1000*time.Millisecond, 1000*time.Millisecond, func() {
-			//glog.Println("add")
+			//qn_log.Println("add")
 			array.Append(1)
 		})
 		time.Sleep(1500 * time.Millisecond)
 		t.Assert(array.Len(), 0)
 		time.Sleep(1300 * time.Millisecond)
-		//glog.Println("check")
+		//qn_log.Println("check")
 		t.Assert(array.Len(), 1)
 	})
 }

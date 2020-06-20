@@ -12,26 +12,26 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Router_Basic1(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/:name", func(r *ghttp.Request) {
+	s.BindHandler("/:name", func(r *qn_http.Request) {
 		r.Response.Write("/:name")
 	})
-	s.BindHandler("/:name/update", func(r *ghttp.Request) {
+	s.BindHandler("/:name/update", func(r *qn_http.Request) {
 		r.Response.Write(r.Get("name"))
 	})
-	s.BindHandler("/:name/:action", func(r *ghttp.Request) {
+	s.BindHandler("/:name/:action", func(r *qn_http.Request) {
 		r.Response.Write(r.Get("action"))
 	})
-	s.BindHandler("/:name/*any", func(r *ghttp.Request) {
+	s.BindHandler("/:name/*any", func(r *qn_http.Request) {
 		r.Response.Write(r.Get("any"))
 	})
-	s.BindHandler("/user/list/{field}.html", func(r *ghttp.Request) {
+	s.BindHandler("/user/list/{field}.html", func(r *qn_http.Request) {
 		r.Response.Write(r.Get("field"))
 	})
 	s.SetPort(p)
@@ -41,7 +41,7 @@ func Test_Router_Basic1(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/john"), "")
 		t.Assert(client.GetContent("/john/update"), "john")
@@ -53,10 +53,10 @@ func Test_Router_Basic1(t *testing.T) {
 func Test_Router_Basic2(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/{hash}", func(r *ghttp.Request) {
+	s.BindHandler("/{hash}", func(r *qn_http.Request) {
 		r.Response.Write(r.Get("hash"))
 	})
-	s.BindHandler("/{hash}.{type}", func(r *ghttp.Request) {
+	s.BindHandler("/{hash}.{type}", func(r *qn_http.Request) {
 		r.Response.Write(r.Get("type"))
 	})
 	s.SetPort(p)
@@ -66,7 +66,7 @@ func Test_Router_Basic2(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/data"), "data")
 		t.Assert(client.GetContent("/data.json"), "json")
@@ -77,10 +77,10 @@ func Test_Router_Basic2(t *testing.T) {
 func Test_Router_Method(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("GET:/get", func(r *ghttp.Request) {
+	s.BindHandler("GET:/get", func(r *qn_http.Request) {
 
 	})
-	s.BindHandler("POST:/post", func(r *ghttp.Request) {
+	s.BindHandler("POST:/post", func(r *qn_http.Request) {
 
 	})
 	s.SetPort(p)
@@ -90,7 +90,7 @@ func Test_Router_Method(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		resp1, err := client.Get("/get")
@@ -119,8 +119,8 @@ func Test_Router_Method(t *testing.T) {
 func Test_Router_ExtraChar(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/api", func(group *ghttp.RouterGroup) {
-		group.GET("/test", func(r *ghttp.Request) {
+	s.Group("/api", func(group *qn_http.RouterGroup) {
+		group.GET("/test", func(r *qn_http.Request) {
 			r.Response.Write("test")
 		})
 	})
@@ -131,7 +131,7 @@ func Test_Router_ExtraChar(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/api/test"), "test")
@@ -144,16 +144,16 @@ func Test_Router_ExtraChar(t *testing.T) {
 func Test_Router_Status(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/200", func(r *ghttp.Request) {
+	s.BindHandler("/200", func(r *qn_http.Request) {
 		r.Response.WriteStatus(200)
 	})
-	s.BindHandler("/300", func(r *ghttp.Request) {
+	s.BindHandler("/300", func(r *qn_http.Request) {
 		r.Response.WriteStatus(300)
 	})
-	s.BindHandler("/400", func(r *ghttp.Request) {
+	s.BindHandler("/400", func(r *qn_http.Request) {
 		r.Response.WriteStatus(400)
 	})
-	s.BindHandler("/500", func(r *ghttp.Request) {
+	s.BindHandler("/500", func(r *qn_http.Request) {
 		r.Response.WriteStatus(500)
 	})
 	s.SetPort(p)
@@ -163,7 +163,7 @@ func Test_Router_Status(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		resp1, err := client.Get("/200")
@@ -196,10 +196,10 @@ func Test_Router_Status(t *testing.T) {
 func Test_Router_CustomStatusHandler(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/", func(r *ghttp.Request) {
+	s.BindHandler("/", func(r *qn_http.Request) {
 		r.Response.Write("hello")
 	})
-	s.BindStatusHandler(404, func(r *ghttp.Request) {
+	s.BindStatusHandler(404, func(r *qn_http.Request) {
 		r.Response.Write("404 page")
 	})
 	s.SetPort(p)
@@ -209,7 +209,7 @@ func Test_Router_CustomStatusHandler(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "hello")
@@ -225,7 +225,7 @@ func Test_Router_CustomStatusHandler(t *testing.T) {
 func Test_Router_404(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/", func(r *ghttp.Request) {
+	s.BindHandler("/", func(r *qn_http.Request) {
 		r.Response.Write("hello")
 	})
 	s.SetPort(p)
@@ -235,7 +235,7 @@ func Test_Router_404(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "hello")
@@ -249,16 +249,16 @@ func Test_Router_404(t *testing.T) {
 func Test_Router_Priority(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/admin", func(r *ghttp.Request) {
+	s.BindHandler("/admin", func(r *qn_http.Request) {
 		r.Response.Write("admin")
 	})
-	s.BindHandler("/admin-{page}", func(r *ghttp.Request) {
+	s.BindHandler("/admin-{page}", func(r *qn_http.Request) {
 		r.Response.Write("admin-{page}")
 	})
-	s.BindHandler("/admin-goods", func(r *ghttp.Request) {
+	s.BindHandler("/admin-goods", func(r *qn_http.Request) {
 		r.Response.Write("admin-goods")
 	})
-	s.BindHandler("/admin-goods-{page}", func(r *ghttp.Request) {
+	s.BindHandler("/admin-goods-{page}", func(r *qn_http.Request) {
 		r.Response.Write("admin-goods-{page}")
 	})
 	s.SetPort(p)
@@ -268,7 +268,7 @@ func Test_Router_Priority(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/admin"), "admin")

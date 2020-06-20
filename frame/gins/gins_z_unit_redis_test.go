@@ -4,14 +4,14 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-package gins_test
+package qn_ins_test
 
 import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/frame/gins"
+	"github.com/qnsoft/common/debug/qn_debug"
+	"github.com/qnsoft/common/frame/qn_ins"
 
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_time"
@@ -20,7 +20,7 @@ import (
 
 func Test_Redis(t *testing.T) {
 	redisContent := qn_file.GetContents(
-		gdebug.TestDataPath("redis", "config.toml"),
+		qn_debug.TestDataPath("redis", "config.toml"),
 	)
 
 	qn_test.C(t, func(t *qn_test.T) {
@@ -34,19 +34,19 @@ func Test_Redis(t *testing.T) {
 		err = qn_file.PutContents(qn_file.Join(dirPath, name), redisContent)
 		t.Assert(err, nil)
 
-		err = gins.Config().AddPath(dirPath)
+		err = qn_ins.Config().AddPath(dirPath)
 		t.Assert(err, nil)
 
-		defer gins.Config().Clear()
+		defer qn_ins.Config().Clear()
 
 		// for gfsnotify callbacks to refresh cache of config file
 		time.Sleep(500 * time.Millisecond)
 
-		//fmt.Println("gins Test_Redis", Config().Get("test"))
+		//fmt.Println("qn_ins Test_Redis", Config().Get("test"))
 
-		redisDefault := gins.Redis()
-		redisCache := gins.Redis("cache")
-		redisDisk := gins.Redis("disk")
+		redisDefault := qn_ins.Redis()
+		redisCache := qn_ins.Redis("cache")
+		redisDisk := qn_ins.Redis("disk")
 		t.AssertNE(redisDefault, nil)
 		t.AssertNE(redisCache, nil)
 		t.AssertNE(redisDisk, nil)

@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/gogf/gf/text/gstr"
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
@@ -241,7 +241,7 @@ func (g *RouterGroup) Middleware(handlers ...HandlerFunc) *RouterGroup {
 
 // preBindToLocalArray adds the route registering parameters to internal variable array for lazily registering feature.
 func (g *RouterGroup) preBindToLocalArray(bindType string, pattern string, object interface{}, params ...interface{}) *RouterGroup {
-	_, file, line := gdebug.CallerWithFilter(gFILTER_KEY)
+	_, file, line := qn_debug.CallerWithFilter(gFILTER_KEY)
 	preBindItems = append(preBindItems, &preBindItem{
 		group:    g,
 		bindType: bindType,

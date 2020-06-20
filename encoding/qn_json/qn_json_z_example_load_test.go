@@ -9,19 +9,19 @@ package qn_json_test
 import (
 	"fmt"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/encoding/qn_json"
 )
 
 func Example_loadJson() {
-	jsonFilePath := gdebug.TestDataPath("json", "data1.json")
+	jsonFilePath := qn_debug.TestDataPath("json", "data1.json")
 	j, _ := qn_json.Load(jsonFilePath)
 	fmt.Println(j.Get("name"))
 	fmt.Println(j.Get("score"))
 }
 
 func Example_loadXml() {
-	jsonFilePath := gdebug.TestDataPath("xml", "data1.xml")
+	jsonFilePath := qn_debug.TestDataPath("xml", "data1.xml")
 	j, _ := qn_json.Load(jsonFilePath)
 	fmt.Println(j.Get("doc.name"))
 	fmt.Println(j.Get("doc.score"))

@@ -10,12 +10,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/qnsoft/common/i18n/gi18n"
+	"github.com/qnsoft/common/i18n/qn_i18n"
 	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/glog"
-	"github.com/qnsoft/common/os/gres"
 	"github.com/qnsoft/common/os/gspath"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_log"
+	"github.com/qnsoft/common/os/qn_res"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 	qn_util "github.com/qnsoft/common/util/qn_util"
 )
@@ -27,7 +27,7 @@ type Config struct {
 	DefaultFile string                 // Default template file for parsing.
 	Delimiters  []string               // Custom template delimiters.
 	AutoEncode  bool                   // Automatically encodes and provides safe html output, which is good for avoiding XSS.
-	I18nManager *gi18n.Manager         // I18n manager for the view.
+	I18nManager *qn_i18n.Manager       // I18n manager for the view.
 }
 
 const (
@@ -39,7 +39,7 @@ const (
 func DefaultConfig() Config {
 	return Config{
 		DefaultFile: defaultParsinqn_file,
-		I18nManager: gi18n.Instance(),
+		I18nManager: qn_i18n.Instance(),
 		Delimiters:  make([]string, 2),
 	}
 }
@@ -101,7 +101,7 @@ func (view *View) SetPath(path string) error {
 		isDir    = false
 		realPath = ""
 	)
-	if file := gres.Get(path); file != nil {
+	if file := qn_res.Get(path); file != nil {
 		realPath = path
 		isDir = file.FileInfo().IsDir()
 	} else {
@@ -126,7 +126,7 @@ func (view *View) SetPath(path string) error {
 	if realPath == "" {
 		err := errors.New(fmt.Sprintf(`[gview] SetPath failed: path "%s" does not exist`, path))
 		if errorPrint() {
-			glog.Error(err)
+			qn_log.Error(err)
 		}
 		return err
 	}
@@ -134,7 +134,7 @@ func (view *View) SetPath(path string) error {
 	if !isDir {
 		err := errors.New(fmt.Sprintf(`[gview] SetPath failed: path "%s" should be directory type`, path))
 		if errorPrint() {
-			glog.Error(err)
+			qn_log.Error(err)
 		}
 		return err
 	}
@@ -145,7 +145,7 @@ func (view *View) SetPath(path string) error {
 	view.paths.Clear()
 	view.paths.Append(realPath)
 	view.fileCacheMap.Clear()
-	//glog.Debug("[gview] SetPath:", realPath)
+	//qn_log.Debug("[gview] SetPath:", realPath)
 	return nil
 }
 
@@ -155,7 +155,7 @@ func (view *View) AddPath(path string) error {
 		isDir    = false
 		realPath = ""
 	)
-	if file := gres.Get(path); file != nil {
+	if file := qn_res.Get(path); file != nil {
 		realPath = path
 		isDir = file.FileInfo().IsDir()
 	} else {
@@ -180,7 +180,7 @@ func (view *View) AddPath(path string) error {
 	if realPath == "" {
 		err := errors.New(fmt.Sprintf(`[gview] AddPath failed: path "%s" does not exist`, path))
 		if errorPrint() {
-			glog.Error(err)
+			qn_log.Error(err)
 		}
 		return err
 	}
@@ -188,7 +188,7 @@ func (view *View) AddPath(path string) error {
 	if !isDir {
 		err := errors.New(fmt.Sprintf(`[gview] AddPath failed: path "%s" should be directory type`, path))
 		if errorPrint() {
-			glog.Error(err)
+			qn_log.Error(err)
 		}
 		return err
 	}
@@ -260,6 +260,6 @@ func (view *View) BindFuncMap(funcMap FuncMap) {
 }
 
 // SetI18n binds i18n manager to current view engine.
-func (view *View) SetI18n(manager *gi18n.Manager) {
+func (view *View) SetI18n(manager *qn_i18n.Manager) {
 	view.config.I18nManager = manager
 }

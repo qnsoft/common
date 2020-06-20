@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
@@ -20,7 +20,7 @@ import (
 
 func Test_Rotate_Size(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		l := glog.New()
+		l := qn_log.New()
 		p := qn_file.TempDir(qn_time.TimestampNanoStr())
 		err := l.SetConfigWithMap(g.Map{
 			"Path":                 p,
@@ -58,7 +58,7 @@ func Test_Rotate_Size(t *testing.T) {
 
 func Test_Rotate_Expire(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		l := glog.New()
+		l := qn_log.New()
 		p := qn_file.TempDir(qn_time.TimestampNanoStr())
 		err := l.SetConfigWithMap(g.Map{
 			"Path":                 p,

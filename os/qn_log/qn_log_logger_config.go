@@ -191,7 +191,7 @@ func (l *Logger) SetPath(path string) error {
 	}
 	if !qn_file.Exists(path) {
 		if err := qn_file.Mkdir(path); err != nil {
-			//fmt.Fprintln(os.Stderr, fmt.Sprintf(`[glog] mkdir "%s" failed: %s`, path, err.Error()))
+			//fmt.Fprintln(os.Stderr, fmt.Sprintf(`[qn_log] mkdir "%s" failed: %s`, path, err.Error()))
 			return err
 		}
 	}

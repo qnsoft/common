@@ -22,8 +22,8 @@ import (
 
 	"github.com/qnsoft/common/os/gview"
 
-	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_log"
 )
 
 const (
@@ -170,7 +170,7 @@ type ServerConfig struct {
 	// ==================================
 
 	// Logger specifies the logger for server.
-	Logger *glog.Logger
+	Logger *qn_log.Logger
 
 	// LogPath specifies the directory for storing logging files.
 	LogPath string
@@ -257,7 +257,7 @@ func Config() ServerConfig {
 		SessionMaxAge:     time.Hour * 24,
 		SessionIdName:     "gfsessionid",
 		SessionPath:       gsession.DefaultStorageFilePath,
-		Logger:            glog.New(),
+		Logger:            qn_log.New(),
 		LogStdout:         true,
 		ErrorStack:        true,
 		ErrorLogEnabled:   true,
@@ -379,7 +379,7 @@ func (s *Server) EnableHTTPS(certFile, keyFile string, tlsConfig ...*tls.Config)
 		}
 	}
 	if certFileRealPath == "" {
-		s.Logger().Fatal(fmt.Sprintf(`[ghttp] EnableHTTPS failed: certFile "%s" does not exist`, certFile))
+		s.Logger().Fatal(fmt.Sprintf(`[qn_http] EnableHTTPS failed: certFile "%s" does not exist`, certFile))
 	}
 	keyFileRealPath := qn_file.RealPath(keyFile)
 	if keyFileRealPath == "" {
@@ -389,7 +389,7 @@ func (s *Server) EnableHTTPS(certFile, keyFile string, tlsConfig ...*tls.Config)
 		}
 	}
 	if keyFileRealPath == "" {
-		s.Logger().Fatal(fmt.Sprintf(`[ghttp] EnableHTTPS failed: keyFile "%s" does not exist`, keyFile))
+		s.Logger().Fatal(fmt.Sprintf(`[qn_http] EnableHTTPS failed: keyFile "%s" does not exist`, keyFile))
 	}
 	s.config.HTTPSCertPath = certFileRealPath
 	s.config.HTTPSKeyPath = keyFileRealPath

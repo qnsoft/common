@@ -24,10 +24,10 @@ const (
 	gPACKAGE_TEMPLATE = `
 package %s
 
-import "github.com/qnsoft/common/os/gres"
+import "github.com/qnsoft/common/os/qn_res"
 
 func init() {
-	if err := gres.Add("%s"); err != nil {
+	if err := qn_res.Add("%s"); err != nil {
 		panic("add binary content to resource manager failed: " + err.Error())
 	}
 }

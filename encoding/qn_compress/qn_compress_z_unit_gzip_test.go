@@ -9,7 +9,7 @@ package qn_compress_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gtime"
 
@@ -44,7 +44,7 @@ func Test_Gzip_UnGzip(t *testing.T) {
 }
 
 func Test_Gzip_UnGzip_File(t *testing.T) {
-	srcPath := gdebug.TestDataPath("gzip", "file.txt")
+	srcPath := qn_debug.TestDataPath("gzip", "file.txt")
 	dstPath1 := gfile.TempDir(gtime.TimestampNanoStr(), "gzip.zip")
 	dstPath2 := gfile.TempDir(gtime.TimestampNanoStr(), "file.txt")
 

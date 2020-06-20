@@ -4,7 +4,7 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-package gins
+package qn_ins
 
 import (
 	"fmt"
@@ -79,9 +79,9 @@ func Database(name ...string) gdb.DB {
 
 		if db, err := gdb.New(name...); err == nil {
 			// Initialize logger for ORM.
-			m := config.GetMap(fmt.Sprintf("database.%s", gLOGGER_NODE_NAME))
+			m := config.GetMap(fmt.Sprintf("database.%s", qn_logGER_NODE_NAME))
 			if m == nil {
-				m = config.GetMap(gLOGGER_NODE_NAME)
+				m = config.GetMap(qn_logGER_NODE_NAME)
 			}
 			if m != nil {
 				if err := db.GetLogger().SetConfigWithMap(m); err != nil {

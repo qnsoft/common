@@ -20,18 +20,18 @@ func TestCron_Add_Close(t *testing.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		_, err1 := cron.Add("* * * * * *", func() {
-			//glog.Println("cron1")
+			//qn_log.Println("cron1")
 			array.Append(1)
 		})
 		_, err2 := cron.Add("* * * * * *", func() {
-			//glog.Println("cron2")
+			//qn_log.Println("cron2")
 			array.Append(1)
 		}, "test")
 		_, err3 := cron.Add("* * * * * *", func() {
 			array.Append(1)
 		}, "test")
 		_, err4 := cron.Add("@every 2s", func() {
-			//glog.Println("cron3")
+			//qn_log.Println("cron3")
 			array.Append(1)
 		})
 		t.Assert(err1, nil)

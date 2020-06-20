@@ -7,8 +7,9 @@
 package qn_http
 
 import (
-	"github.com/qnsoft/common/debug/gdebug"
 	"net/http"
+
+	"github.com/qnsoft/common/debug/qn_debug"
 )
 
 // BindHookHandler registers handler for specified hook.
@@ -19,7 +20,7 @@ func (s *Server) BindHookHandler(pattern string, hook string, handler HandlerFun
 func (s *Server) doBindHookHandler(pattern string, hook string, handler HandlerFunc, source string) {
 	s.setHandler(pattern, &handlerItem{
 		itemType: gHANDLER_TYPE_HOOK,
-		itemName: gdebug.FuncPath(handler),
+		itemName: qn_debug.FuncPath(handler),
 		itemFunc: handler,
 		hookName: hook,
 		source:   source,

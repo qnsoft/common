@@ -8,9 +8,10 @@ package qn_cfg_test
 
 import (
 	"fmt"
+
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gcfg"
+	"github.com/qnsoft/common/os/qn_cfg"
 )
 
 func Example_mapSliceChange() {
@@ -18,8 +19,8 @@ func Example_mapSliceChange() {
 	defer intlog.SetEnabled(true)
 	// For testing/example only.
 	content := `{"map":{"key":"value"}, "slice":[59,90]}`
-	gcfg.SetContent(content)
-	defer gcfg.RemoveContent()
+	qn_cfg.SetContent(content)
+	defer qn_cfg.RemoveContent()
 
 	m := g.Cfg().GetMap("map")
 	fmt.Println(m)

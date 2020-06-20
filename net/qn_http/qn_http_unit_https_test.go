@@ -11,26 +11,26 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/text/gstr"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_HTTPS_Basic(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.GET("/test", func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.GET("/test", func(r *qn_http.Request) {
 			r.Response.Write("test")
 		})
 	})
 	s.EnableHTTPS(
-		gdebug.TestDataPath("https", "server.crt"),
-		gdebug.TestDataPath("https", "server.key"),
+		qn_debug.TestDataPath("https", "server.crt"),
+		qn_debug.TestDataPath("https", "server.key"),
 	)
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
@@ -61,14 +61,14 @@ func Test_HTTPS_HTTP_Basic(t *testing.T) {
 		portHttps, _ = ports.PopRand()
 	)
 	s := g.Server(qn_time.TimestampNanoStr())
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.GET("/test", func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.GET("/test", func(r *qn_http.Request) {
 			r.Response.Write("test")
 		})
 	})
 	s.EnableHTTPS(
-		gdebug.TestDataPath("https", "server.crt"),
-		gdebug.TestDataPath("https", "server.key"),
+		qn_debug.TestDataPath("https", "server.crt"),
+		qn_debug.TestDataPath("https", "server.key"),
 	)
 	s.SetPort(portHttp)
 	s.SetHTTPSPort(portHttps)

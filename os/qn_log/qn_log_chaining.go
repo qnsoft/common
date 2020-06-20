@@ -11,7 +11,7 @@ import (
 	"io"
 )
 
-// Expose returns the default logger of glog.
+// Expose returns the default logger of qn_log.
 func Expose() *Logger {
 	return logger
 }

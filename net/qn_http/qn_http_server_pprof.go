@@ -52,7 +52,7 @@ func (p *utilPProf) Index(r *Request) {
 		buffer, _ := gview.ParseContent(`
             <html>
             <head>
-                <title>gf ghttp pprof</title>
+                <title>gf qn_http pprof</title>
             </head>
             {{$uri := .uri}}
             <body>

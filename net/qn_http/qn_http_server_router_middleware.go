@@ -7,7 +7,7 @@
 package qn_http
 
 import (
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 )
 
 const (
@@ -23,7 +23,7 @@ func (s *Server) BindMiddleware(pattern string, handlers ...HandlerFunc) {
 	for _, handler := range handlers {
 		s.setHandler(pattern, &handlerItem{
 			itemType: gHANDLER_TYPE_MIDDLEWARE,
-			itemName: gdebug.FuncPath(handler),
+			itemName: qn_debug.FuncPath(handler),
 			itemFunc: handler,
 		})
 	}
@@ -36,7 +36,7 @@ func (s *Server) BindMiddlewareDefault(handlers ...HandlerFunc) {
 	for _, handler := range handlers {
 		s.setHandler(gDEFAULT_MIDDLEWARE_PATTERN, &handlerItem{
 			itemType: gHANDLER_TYPE_MIDDLEWARE,
-			itemName: gdebug.FuncPath(handler),
+			itemName: qn_debug.FuncPath(handler),
 			itemFunc: handler,
 		})
 	}

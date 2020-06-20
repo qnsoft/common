@@ -13,22 +13,22 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/encoding/qn_html"
 	"github.com/qnsoft/common/os/gview"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Template_Basic(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New(gdebug.TestDataPath("template", "basic"))
+		v := gview.New(qn_debug.TestDataPath("template", "basic"))
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.SetView(v)
-		s.BindHandler("/", func(r *ghttp.Request) {
+		s.BindHandler("/", func(r *qn_http.Request) {
 			err := r.Response.WriteTpl("index.html", g.Map{
 				"name": "john",
 			})
@@ -39,7 +39,7 @@ func Test_Template_Basic(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Name:john")
@@ -49,12 +49,12 @@ func Test_Template_Basic(t *testing.T) {
 
 func Test_Template_Encode(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New(gdebug.TestDataPath("template", "basic"))
+		v := gview.New(qn_debug.TestDataPath("template", "basic"))
 		v.SetAutoEncode(true)
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.SetView(v)
-		s.BindHandler("/", func(r *ghttp.Request) {
+		s.BindHandler("/", func(r *qn_http.Request) {
 			err := r.Response.WriteTpl("index.html", g.Map{
 				"name": "john",
 			})
@@ -65,7 +65,7 @@ func Test_Template_Encode(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Name:john")
@@ -75,17 +75,17 @@ func Test_Template_Encode(t *testing.T) {
 
 func Test_Template_Layout1(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New(gdebug.TestDataPath("template", "layout1"))
+		v := gview.New(qn_debug.TestDataPath("template", "layout1"))
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.SetView(v)
-		s.BindHandler("/layout", func(r *ghttp.Request) {
+		s.BindHandler("/layout", func(r *qn_http.Request) {
 			err := r.Response.WriteTpl("layout.html", g.Map{
 				"mainTpl": "main/main1.html",
 			})
 			t.Assert(err, nil)
 		})
-		s.BindHandler("/nil", func(r *ghttp.Request) {
+		s.BindHandler("/nil", func(r *qn_http.Request) {
 			err := r.Response.WriteTpl("layout.html", nil)
 			t.Assert(err, nil)
 		})
@@ -94,7 +94,7 @@ func Test_Template_Layout1(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -105,23 +105,23 @@ func Test_Template_Layout1(t *testing.T) {
 
 func Test_Template_Layout2(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New(gdebug.TestDataPath("template", "layout2"))
+		v := gview.New(qn_debug.TestDataPath("template", "layout2"))
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.SetView(v)
-		s.BindHandler("/main1", func(r *ghttp.Request) {
+		s.BindHandler("/main1", func(r *qn_http.Request) {
 			err := r.Response.WriteTpl("layout.html", g.Map{
 				"mainTpl": "main/main1.html",
 			})
 			t.Assert(err, nil)
 		})
-		s.BindHandler("/main2", func(r *ghttp.Request) {
+		s.BindHandler("/main2", func(r *qn_http.Request) {
 			err := r.Response.WriteTpl("layout.html", g.Map{
 				"mainTpl": "main/main2.html",
 			})
 			t.Assert(err, nil)
 		})
-		s.BindHandler("/nil", func(r *ghttp.Request) {
+		s.BindHandler("/nil", func(r *qn_http.Request) {
 			err := r.Response.WriteTpl("layout.html", nil)
 			t.Assert(err, nil)
 		})
@@ -130,7 +130,7 @@ func Test_Template_Layout2(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -148,7 +148,7 @@ func Test_Template_XSS(t *testing.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.SetView(v)
-		s.BindHandler("/", func(r *ghttp.Request) {
+		s.BindHandler("/", func(r *qn_http.Request) {
 			err := r.Response.WriteTplContent("{{if eq 1 1}}{{.v}}{{end}}", g.Map{
 				"v": c,
 			})
@@ -159,7 +159,7 @@ func Test_Template_XSS(t *testing.T) {
 		s.Start()
 		defer s.Shutdown()
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), qn_html.Entities(c))

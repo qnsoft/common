@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -20,15 +20,15 @@ func Test_Router_Group_Hook1(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	group := s.Group("/api")
-	group.GET("/handler", func(r *ghttp.Request) {
+	group.GET("/handler", func(r *qn_http.Request) {
 		r.Response.Write("1")
 	})
-	group.ALL("/handler", func(r *ghttp.Request) {
+	group.ALL("/handler", func(r *qn_http.Request) {
 		r.Response.Write("0")
-	}, ghttp.HOOK_BEFORE_SERVE)
-	group.ALL("/handler", func(r *ghttp.Request) {
+	}, qn_http.HOOK_BEFORE_SERVE)
+	group.ALL("/handler", func(r *qn_http.Request) {
 		r.Response.Write("2")
-	}, ghttp.HOOK_AFTER_SERVE)
+	}, qn_http.HOOK_AFTER_SERVE)
 
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
@@ -37,7 +37,7 @@ func Test_Router_Group_Hook1(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/api/handler"), "012")
 		t.Assert(client.PostContent("/api/handler"), "02")
@@ -49,15 +49,15 @@ func Test_Router_Group_Hook2(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	g := s.Group("/api")
-	g.GET("/handler", func(r *ghttp.Request) {
+	g.GET("/handler", func(r *qn_http.Request) {
 		r.Response.Write("1")
 	})
-	g.GET("/*", func(r *ghttp.Request) {
+	g.GET("/*", func(r *qn_http.Request) {
 		r.Response.Write("0")
-	}, ghttp.HOOK_BEFORE_SERVE)
-	g.GET("/*", func(r *ghttp.Request) {
+	}, qn_http.HOOK_BEFORE_SERVE)
+	g.GET("/*", func(r *qn_http.Request) {
 		r.Response.Write("2")
-	}, ghttp.HOOK_AFTER_SERVE)
+	}, qn_http.HOOK_AFTER_SERVE)
 
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
@@ -66,7 +66,7 @@ func Test_Router_Group_Hook2(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/api/handler"), "012")
 		t.Assert(client.PostContent("/api/handler"), "Not Found")
@@ -79,15 +79,15 @@ func Test_Router_Group_Hook3(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	s.Group("/api").Bind([]g.Slice{
-		{"ALL", "handler", func(r *ghttp.Request) {
+		{"ALL", "handler", func(r *qn_http.Request) {
 			r.Response.Write("1")
 		}},
-		{"ALL", "/*", func(r *ghttp.Request) {
+		{"ALL", "/*", func(r *qn_http.Request) {
 			r.Response.Write("0")
-		}, ghttp.HOOK_BEFORE_SERVE},
-		{"ALL", "/*", func(r *ghttp.Request) {
+		}, qn_http.HOOK_BEFORE_SERVE},
+		{"ALL", "/*", func(r *qn_http.Request) {
 			r.Response.Write("2")
-		}, ghttp.HOOK_AFTER_SERVE},
+		}, qn_http.HOOK_AFTER_SERVE},
 	})
 
 	s.SetPort(p)
@@ -97,7 +97,7 @@ func Test_Router_Group_Hook3(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/api/handler"), "012")
 		t.Assert(client.PostContent("/api/handler"), "012")

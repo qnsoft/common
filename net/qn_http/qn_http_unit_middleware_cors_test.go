@@ -12,16 +12,16 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Middleware_CORS1(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/api.v2", func(group *ghttp.RouterGroup) {
+	s.Group("/api.v2", func(group *qn_http.RouterGroup) {
 		group.Middleware(MiddlewareCORS)
-		group.POST("/user/list", func(r *ghttp.Request) {
+		group.POST("/user/list", func(r *qn_http.Request) {
 			r.Response.Write("list")
 		})
 	})
@@ -31,7 +31,7 @@ func Test_Middleware_CORS1(t *testing.T) {
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		// Common Checks.
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -56,7 +56,7 @@ func Test_Middleware_CORS1(t *testing.T) {
 	})
 	// OPTIONS GET
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader("Access-Control-Request-Method", "GET")
 		resp, err := client.Options("/api.v2/user/list")
@@ -68,7 +68,7 @@ func Test_Middleware_CORS1(t *testing.T) {
 	})
 	// OPTIONS POST
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader("Access-Control-Request-Method", "POST")
 		resp, err := client.Options("/api.v2/user/list")
@@ -82,9 +82,9 @@ func Test_Middleware_CORS1(t *testing.T) {
 func Test_Middleware_CORS2(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/api.v2", func(group *ghttp.RouterGroup) {
+	s.Group("/api.v2", func(group *qn_http.RouterGroup) {
 		group.Middleware(MiddlewareCORS)
-		group.GET("/user/list/{type}", func(r *ghttp.Request) {
+		group.GET("/user/list/{type}", func(r *qn_http.Request) {
 			r.Response.Write(r.Get("type"))
 		})
 	})
@@ -94,7 +94,7 @@ func Test_Middleware_CORS2(t *testing.T) {
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		// Common Checks.
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -112,7 +112,7 @@ func Test_Middleware_CORS2(t *testing.T) {
 	})
 	// OPTIONS GET None.
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader("Access-Control-Request-Method", "GET")
 		resp, err := client.Options("/api.v2/user")
@@ -123,7 +123,7 @@ func Test_Middleware_CORS2(t *testing.T) {
 	})
 	// OPTIONS GET
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader("Access-Control-Request-Method", "GET")
 		resp, err := client.Options("/api.v2/user/list/1")
@@ -134,7 +134,7 @@ func Test_Middleware_CORS2(t *testing.T) {
 	})
 	// OPTIONS POST
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader("Access-Control-Request-Method", "POST")
 		resp, err := client.Options("/api.v2/user/list/1")

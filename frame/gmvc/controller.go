@@ -8,21 +8,21 @@
 package gmvc
 
 import (
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 )
 
-// Controller is used for controller register of ghttp.Server.
+// Controller is used for controller register of qn_http.Server.
 type Controller struct {
-	Request  *ghttp.Request
-	Response *ghttp.Response
-	Server   *ghttp.Server
-	Cookie   *ghttp.Cookie
-	Session  *ghttp.Session
+	Request  *qn_http.Request
+	Response *qn_http.Response
+	Server   *qn_http.Server
+	Cookie   *qn_http.Cookie
+	Session  *qn_http.Session
 	View     *View
 }
 
 // Init is the callback function for each request initialization.
-func (c *Controller) Init(r *ghttp.Request) {
+func (c *Controller) Init(r *qn_http.Request) {
 	c.Request = r
 	c.Response = r.Response
 	c.Server = r.Server

@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/test/qn_test"
@@ -26,10 +26,10 @@ func Test_Log(t *testing.T) {
 		logDir := qn_file.TempDir(qn_time.TimestampNanoStr())
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		s.BindHandler("/hello", func(r *ghttp.Request) {
+		s.BindHandler("/hello", func(r *qn_http.Request) {
 			r.Response.Write("hello")
 		})
-		s.BindHandler("/error", func(r *ghttp.Request) {
+		s.BindHandler("/error", func(r *qn_http.Request) {
 			panic("custom error")
 		})
 		s.SetLogPath(logDir)
@@ -41,7 +41,7 @@ func Test_Log(t *testing.T) {
 		defer s.Shutdown()
 		defer qn_file.Remove(logDir)
 		time.Sleep(100 * time.Millisecond)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/hello"), "hello")

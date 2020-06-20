@@ -4,14 +4,14 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-package gins
+package qn_ins
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/os/gcfg"
+	"github.com/qnsoft/common/debug/qn_debug"
+	"github.com/qnsoft/common/os/qn_cfg"
 	"github.com/qnsoft/common/os/qn_time"
 
 	"github.com/qnsoft/common/os/qn_file"
@@ -53,9 +53,9 @@ func Test_View(t *testing.T) {
 func Test_View_Config(t *testing.T) {
 	// view1 test1
 	qn_test.C(t, func(t *qn_test.T) {
-		dirPath := gdebug.TestDataPath("view1")
-		gcfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
-		defer gcfg.ClearContent()
+		dirPath := qn_debug.TestDataPath("view1")
+		qn_cfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
+		defer qn_cfg.ClearContent()
 		defer instances.Clear()
 
 		view := View("test1")
@@ -75,9 +75,9 @@ func Test_View_Config(t *testing.T) {
 	})
 	// view1 test2
 	qn_test.C(t, func(t *qn_test.T) {
-		dirPath := gdebug.TestDataPath("view1")
-		gcfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
-		defer gcfg.ClearContent()
+		dirPath := qn_debug.TestDataPath("view1")
+		qn_cfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
+		defer qn_cfg.ClearContent()
 		defer instances.Clear()
 
 		view := View("test2")
@@ -97,9 +97,9 @@ func Test_View_Config(t *testing.T) {
 	})
 	// view2
 	qn_test.C(t, func(t *qn_test.T) {
-		dirPath := gdebug.TestDataPath("view2")
-		gcfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
-		defer gcfg.ClearContent()
+		dirPath := qn_debug.TestDataPath("view2")
+		qn_cfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
+		defer qn_cfg.ClearContent()
 		defer instances.Clear()
 
 		view := View()
@@ -119,9 +119,9 @@ func Test_View_Config(t *testing.T) {
 	})
 	// view2
 	qn_test.C(t, func(t *qn_test.T) {
-		dirPath := gdebug.TestDataPath("view2")
-		gcfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
-		defer gcfg.ClearContent()
+		dirPath := qn_debug.TestDataPath("view2")
+		qn_cfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
+		defer qn_cfg.ClearContent()
 		defer instances.Clear()
 
 		view := View("test100")

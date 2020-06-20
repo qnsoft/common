@@ -7,20 +7,20 @@
 package qn
 
 import (
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 )
 
 // SetDebug disables/enables debug level for logging component globally.
 func SetDebug(debug bool) {
-	glog.SetDebug(debug)
+	qn_log.SetDebug(debug)
 }
 
 // SetLogLevel sets the logging level globally.
 func SetLogLevel(level int) {
-	glog.SetLevel(level)
+	qn_log.SetLevel(level)
 }
 
 // GetLogLevel returns the global logging level.
 func GetLogLevel() int {
-	return glog.GetLevel()
+	return qn_log.GetLevel()
 }

@@ -12,14 +12,14 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_GetUrl(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/url", func(r *ghttp.Request) {
+	s.BindHandler("/url", func(r *qn_http.Request) {
 		r.Response.Write(r.GetUrl())
 	})
 	s.SetPort(p)
@@ -30,7 +30,7 @@ func Test_GetUrl(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
 		prefix := fmt.Sprintf("http://127.0.0.1:%d", p)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetBrowserMode(true)
 		client.SetPrefix(prefix)
 

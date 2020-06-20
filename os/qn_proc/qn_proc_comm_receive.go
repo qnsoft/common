@@ -16,8 +16,8 @@ import (
 	"github.com/qnsoft/common/container/gqueue"
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/net/gtcp"
-	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_log"
 )
 
 var (
@@ -71,7 +71,7 @@ func receiveTcpListening() {
 	// Start listening.
 	for {
 		if conn, err := listen.Accept(); err != nil {
-			glog.Error(err)
+			qn_log.Error(err)
 		} else if conn != nil {
 			go receiveTcpHandler(gtcp.NewConnByNetConn(conn))
 		}
@@ -81,7 +81,7 @@ func receiveTcpListening() {
 // receiveTcpHandler is the connection handler for receiving data.
 func receiveTcpHandler(conn *gtcp.Conn) {
 	var result []byte
-	var response MsgResponse
+	var response Msqn_response
 	for {
 		response.Code = 0
 		response.Message = ""
@@ -91,7 +91,7 @@ func receiveTcpHandler(conn *gtcp.Conn) {
 			// Package decoding.
 			msg := new(MsgRequest)
 			if err := json.Unmarshal(buffer, msg); err != nil {
-				//glog.Error(err)
+				//qn_log.Error(err)
 				continue
 			}
 			if msg.RecvPid != Pid() {
@@ -112,15 +112,15 @@ func receiveTcpHandler(conn *gtcp.Conn) {
 		if err == nil {
 			result, err = json.Marshal(response)
 			if err != nil {
-				glog.Error(err)
+				qn_log.Error(err)
 			}
 			if err := conn.SendPkg(result); err != nil {
-				glog.Error(err)
+				qn_log.Error(err)
 			}
 		} else {
 			// Just close the connection if any error occurs.
 			if err := conn.Close(); err != nil {
-				glog.Error(err)
+				qn_log.Error(err)
 			}
 			break
 		}

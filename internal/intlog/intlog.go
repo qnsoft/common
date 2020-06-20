@@ -9,10 +9,11 @@ package intlog
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/internal/cmdenv"
 	"path/filepath"
 	"time"
+
+	"github.com/qnsoft/common/debug/qn_debug"
+	"github.com/qnsoft/common/internal/cmdenv"
 )
 
 const (
@@ -67,7 +68,7 @@ func Error(v ...interface{}) {
 		return
 	}
 	array := append([]interface{}{now(), "[INTE]", file()}, v...)
-	array = append(array, "\n"+gdebug.StackWithFilter(gFILTER_KEY))
+	array = append(array, "\n"+qn_debug.StackWithFilter(gFILTER_KEY))
 	fmt.Println(array...)
 }
 
@@ -78,7 +79,7 @@ func Errorf(format string, v ...interface{}) {
 	}
 	fmt.Printf(
 		now()+" [INTE] "+file()+" "+format+"\n%s\n",
-		append(v, gdebug.StackWithFilter(gFILTER_KEY))...,
+		append(v, qn_debug.StackWithFilter(gFILTER_KEY))...,
 	)
 }
 
@@ -89,6 +90,6 @@ func now() string {
 
 // file returns caller file name along with its line number.
 func file() string {
-	_, p, l := gdebug.CallerWithFilter(gFILTER_KEY)
+	_, p, l := qn_debug.CallerWithFilter(gFILTER_KEY)
 	return fmt.Sprintf(`%s:%d`, filepath.Base(p), l)
 }

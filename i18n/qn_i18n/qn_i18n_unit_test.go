@@ -9,26 +9,26 @@ package qn_i18n_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/os/gres"
+	"github.com/qnsoft/common/os/qn_res"
 	"github.com/qnsoft/common/os/qn_time"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/frame/g"
 
-	"github.com/qnsoft/common/i18n/gi18n"
+	"github.com/qnsoft/common/i18n/qn_i18n"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/os/qn_file"
 
 	"github.com/qnsoft/common/test/qn_test"
 
-	_ "github.com/qnsoft/common/os/gres/testdata/data"
+	_ "github.com/qnsoft/common/os/qn_res/testdata/data"
 )
 
 func Test_Basic(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		i18n := gi18n.New(gi18n.Options{
-			Path: gdebug.TestDataPath("i18n"),
+		i18n := qn_i18n.New(qn_i18n.Options{
+			Path: qn_debug.TestDataPath("i18n"),
 		})
 		i18n.SetLanguage("none")
 		t.Assert(i18n.T("{#hello}{#world}"), "{#hello}{#world}")
@@ -44,8 +44,8 @@ func Test_Basic(t *testing.T) {
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
-		i18n := gi18n.New(gi18n.Options{
-			Path: gdebug.TestDataPath("i18n-file"),
+		i18n := qn_i18n.New(qn_i18n.Options{
+			Path: qn_debug.TestDataPath("i18n-file"),
 		})
 		i18n.SetLanguage("none")
 		t.Assert(i18n.T("{#hello}{#world}"), "{#hello}{#world}")
@@ -58,8 +58,8 @@ func Test_Basic(t *testing.T) {
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
-		i18n := gi18n.New(gi18n.Options{
-			Path: gdebug.CallerDirectory() + qn_file.Separator + "testdata" + qn_file.Separator + "i18n-dir",
+		i18n := qn_i18n.New(qn_i18n.Options{
+			Path: qn_debug.CallerDirectory() + qn_file.Separator + "testdata" + qn_file.Separator + "i18n-dir",
 		})
 		i18n.SetLanguage("none")
 		t.Assert(i18n.T("{#hello}{#world}"), "{#hello}{#world}")
@@ -74,38 +74,38 @@ func Test_Basic(t *testing.T) {
 
 func Test_DefaultManager(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		err := gi18n.SetPath(gdebug.TestDataPath("i18n"))
+		err := qn_i18n.SetPath(qn_debug.TestDataPath("i18n"))
 		t.Assert(err, nil)
 
-		gi18n.SetLanguage("none")
-		t.Assert(gi18n.T("{#hello}{#world}"), "{#hello}{#world}")
+		qn_i18n.SetLanguage("none")
+		t.Assert(qn_i18n.T("{#hello}{#world}"), "{#hello}{#world}")
 
-		gi18n.SetLanguage("ja")
-		t.Assert(gi18n.T("{#hello}{#world}"), "こんにちは世界")
+		qn_i18n.SetLanguage("ja")
+		t.Assert(qn_i18n.T("{#hello}{#world}"), "こんにちは世界")
 
-		gi18n.SetLanguage("zh-CN")
-		t.Assert(gi18n.T("{#hello}{#world}"), "你好世界")
+		qn_i18n.SetLanguage("zh-CN")
+		t.Assert(qn_i18n.T("{#hello}{#world}"), "你好世界")
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
-		err := gi18n.SetPath(gdebug.CallerDirectory() + qn_file.Separator + "testdata" + qn_file.Separator + "i18n-dir")
+		err := qn_i18n.SetPath(qn_debug.CallerDirectory() + qn_file.Separator + "testdata" + qn_file.Separator + "i18n-dir")
 		t.Assert(err, nil)
 
-		gi18n.SetLanguage("none")
-		t.Assert(gi18n.Translate("{#hello}{#world}"), "{#hello}{#world}")
+		qn_i18n.SetLanguage("none")
+		t.Assert(qn_i18n.Translate("{#hello}{#world}"), "{#hello}{#world}")
 
-		gi18n.SetLanguage("ja")
-		t.Assert(gi18n.Translate("{#hello}{#world}"), "こんにちは世界")
+		qn_i18n.SetLanguage("ja")
+		t.Assert(qn_i18n.Translate("{#hello}{#world}"), "こんにちは世界")
 
-		gi18n.SetLanguage("zh-CN")
-		t.Assert(gi18n.Translate("{#hello}{#world}"), "你好世界")
+		qn_i18n.SetLanguage("zh-CN")
+		t.Assert(qn_i18n.Translate("{#hello}{#world}"), "你好世界")
 	})
 }
 
 func Test_Instance(t *testing.T) {
-	gres.Dump()
+	qn_res.Dump()
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gi18n.Instance()
+		m := qn_i18n.Instance()
 		err := m.SetPath("i18n-dir")
 		t.Assert(err, nil)
 		m.SetLanguage("zh-CN")
@@ -113,7 +113,7 @@ func Test_Instance(t *testing.T) {
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gi18n.Instance()
+		m := qn_i18n.Instance()
 		t.Assert(m.T("{#hello}{#world}"), "你好世界")
 	})
 
@@ -122,7 +122,7 @@ func Test_Instance(t *testing.T) {
 	})
 	// Default language is: en
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gi18n.Instance(qn_conv.String(qn_time.TimestampNano()))
+		m := qn_i18n.Instance(qn_conv.String(qn_time.TimestampNano()))
 		t.Assert(m.T("{#hello}{#world}"), "HelloWorld")
 	})
 }

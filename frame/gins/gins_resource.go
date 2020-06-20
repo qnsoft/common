@@ -4,14 +4,14 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-package gins
+package qn_ins
 
 import (
-	"github.com/qnsoft/common/os/gres"
+	"github.com/qnsoft/common/os/qn_res"
 )
 
 // Resource returns an instance of Resource.
 // The parameter <name> is the name for the instance.
-func Resource(name ...string) *gres.Resource {
-	return gres.Instance(name...)
+func Resource(name ...string) *qn_res.Resource {
+	return qn_res.Instance(name...)
 }

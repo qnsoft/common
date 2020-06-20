@@ -8,7 +8,7 @@
 //
 // Eg:
 // s := smtp.New("smtp.exmail.qq.com:25", "notify@a.com", "password")
-// glog.Println(s.SendMail("notify@a.com", "ulric@b.com;rain@c.com", "subject", "body, <font color=red>red</font>"))
+// qn_log.Println(s.SendMail("notify@a.com", "ulric@b.com;rain@c.com", "subject", "body, <font color=red>red</font>"))
 package qn_smtp
 
 import (

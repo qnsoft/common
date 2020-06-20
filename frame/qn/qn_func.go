@@ -9,7 +9,7 @@ package qn
 import (
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/internal/empty"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	qn_util "github.com/qnsoft/common/util/qn_util"
 )
 
@@ -20,7 +20,7 @@ func NewVar(i interface{}, safe ...bool) Var {
 
 // Wait blocks until all the web servers shutdown.
 func Wait() {
-	ghttp.Wait()
+	qn_http.Wait()
 }
 
 // Dump dumps a variable to stdout with more manually readable.

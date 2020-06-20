@@ -17,8 +17,8 @@ import (
 
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/internal/cmdenv"
-	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_log"
 )
 
 // View object for template engine.
@@ -78,7 +78,7 @@ func New(path ...string) *View {
 				}
 			} else {
 				if errorPrint() {
-					glog.Errorf("Template directory path does not exist: %s", envPath)
+					qn_log.Errorf("Template directory path does not exist: %s", envPath)
 				}
 			}
 		} else {

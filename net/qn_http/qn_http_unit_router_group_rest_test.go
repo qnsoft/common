@@ -14,7 +14,7 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/frame/gmvc"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -22,7 +22,7 @@ type GroupCtlRest struct {
 	gmvc.Controller
 }
 
-func (c *GroupCtlRest) Init(r *ghttp.Request) {
+func (c *GroupCtlRest) Init(r *qn_http.Request) {
 	c.Controller.Init(r)
 	c.Response.Write("1")
 }
@@ -61,39 +61,39 @@ func (c *GroupCtlRest) Head() {
 
 type GroupObjRest struct{}
 
-func (o *GroupObjRest) Init(r *ghttp.Request) {
+func (o *GroupObjRest) Init(r *qn_http.Request) {
 	r.Response.Write("1")
 }
 
-func (o *GroupObjRest) Shut(r *ghttp.Request) {
+func (o *GroupObjRest) Shut(r *qn_http.Request) {
 	r.Response.Write("2")
 }
 
-func (o *GroupObjRest) Get(r *ghttp.Request) {
+func (o *GroupObjRest) Get(r *qn_http.Request) {
 	r.Response.Write("Object Get")
 }
 
-func (o *GroupObjRest) Put(r *ghttp.Request) {
+func (o *GroupObjRest) Put(r *qn_http.Request) {
 	r.Response.Write("Object Put")
 }
 
-func (o *GroupObjRest) Post(r *ghttp.Request) {
+func (o *GroupObjRest) Post(r *qn_http.Request) {
 	r.Response.Write("Object Post")
 }
 
-func (o *GroupObjRest) Delete(r *ghttp.Request) {
+func (o *GroupObjRest) Delete(r *qn_http.Request) {
 	r.Response.Write("Object Delete")
 }
 
-func (o *GroupObjRest) Patch(r *ghttp.Request) {
+func (o *GroupObjRest) Patch(r *qn_http.Request) {
 	r.Response.Write("Object Patch")
 }
 
-func (o *GroupObjRest) Options(r *ghttp.Request) {
+func (o *GroupObjRest) Options(r *qn_http.Request) {
 	r.Response.Write("Object Options")
 }
 
-func (o *GroupObjRest) Head(r *ghttp.Request) {
+func (o *GroupObjRest) Head(r *qn_http.Request) {
 	r.Response.Header().Set("head-ok", "1")
 }
 
@@ -114,7 +114,7 @@ func Test_Router_GroupRest(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/api/ctl"), "1Controller Get2")

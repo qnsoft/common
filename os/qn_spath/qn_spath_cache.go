@@ -91,7 +91,7 @@ func (sp *SPath) addMonitorByPath(path string) {
 		return
 	}
 	_, _ = gfsnotify.Add(path, func(event *gfsnotify.Event) {
-		//glog.Debug(event.String())
+		//qn_log.Debug(event.String())
 		switch {
 		case event.IsRemove():
 			sp.cache.Remove(sp.nameFromPath(event.Path, path))

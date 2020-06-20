@@ -12,7 +12,7 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
 )
@@ -20,7 +20,7 @@ import (
 func Test_Ctx(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
-		l := glog.NewWithWriter(w)
+		l := qn_log.NewWithWriter(w)
 		l.SetCtxKeys("Trace-Id", "Span-Id", "Test")
 		ctx := context.WithValue(context.Background(), "Trace-Id", "1234567890")
 		ctx = context.WithValue(ctx, "Span-Id", "abcdefg")
@@ -37,7 +37,7 @@ func Test_Ctx(t *testing.T) {
 func Test_Ctx_Config(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
-		l := glog.NewWithWriter(w)
+		l := qn_log.NewWithWriter(w)
 		m := map[string]interface{}{
 			"CtxKeys": g.SliceStr{"Trace-Id", "Span-Id", "Test"},
 		}

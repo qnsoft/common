@@ -12,29 +12,29 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 type Object struct{}
 
-func (o *Object) Init(r *ghttp.Request) {
+func (o *Object) Init(r *qn_http.Request) {
 	r.Response.Write("1")
 }
 
-func (o *Object) Shut(r *ghttp.Request) {
+func (o *Object) Shut(r *qn_http.Request) {
 	r.Response.Write("2")
 }
 
-func (o *Object) Index(r *ghttp.Request) {
+func (o *Object) Index(r *qn_http.Request) {
 	r.Response.Write("Object Index")
 }
 
-func (o *Object) Show(r *ghttp.Request) {
+func (o *Object) Show(r *qn_http.Request) {
 	r.Response.Write("Object Show")
 }
 
-func (o *Object) Info(r *ghttp.Request) {
+func (o *Object) Info(r *qn_http.Request) {
 	r.Response.Write("Object Info")
 }
 
@@ -50,7 +50,7 @@ func Test_Router_Object1(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "1Object Index2")
@@ -80,7 +80,7 @@ func Test_Router_Object2(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -106,7 +106,7 @@ func Test_Router_ObjectMethod(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")

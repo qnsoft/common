@@ -12,19 +12,19 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Params_Page(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.GET("/list", func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.GET("/list", func(r *qn_http.Request) {
 			page := r.GetPage(5, 2)
 			r.Response.Write(page.GetContent(4))
 		})
-		group.GET("/list/{page}.html", func(r *ghttp.Request) {
+		group.GET("/list/{page}.html", func(r *qn_http.Request) {
 			page := r.GetPage(5, 2)
 			r.Response.Write(page.GetContent(4))
 		})
@@ -36,7 +36,7 @@ func Test_Params_Page(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/list"), `<span class="GPageSpan">首页</span><span class="GPageSpan">上一页</span><span class="GPageSpan">1</span><a class="GPageLink" href="/list?page=2" title="2">2</a><a class="GPageLink" href="/list?page=3" title="3">3</a><a class="GPageLink" href="/list?page=2" title="">下一页</a><a class="GPageLink" href="/list?page=3" title="">尾页</a>`)

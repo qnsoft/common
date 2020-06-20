@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -26,7 +26,7 @@ func Test_Params_Basic(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	// GET
-	s.BindHandler("/get", func(r *ghttp.Request) {
+	s.BindHandler("/get", func(r *qn_http.Request) {
 		if r.GetQuery("array") != nil {
 			r.Response.Write(r.GetQuery("array"))
 		}
@@ -59,7 +59,7 @@ func Test_Params_Basic(t *testing.T) {
 		}
 	})
 	// PUT
-	s.BindHandler("/put", func(r *ghttp.Request) {
+	s.BindHandler("/put", func(r *qn_http.Request) {
 		if r.Get("array") != nil {
 			r.Response.Write(r.Get("array"))
 		}
@@ -92,7 +92,7 @@ func Test_Params_Basic(t *testing.T) {
 		}
 	})
 	// POST
-	s.BindHandler("/post", func(r *ghttp.Request) {
+	s.BindHandler("/post", func(r *qn_http.Request) {
 		if r.GetPost("array") != nil {
 			r.Response.Write(r.GetPost("array"))
 		}
@@ -125,7 +125,7 @@ func Test_Params_Basic(t *testing.T) {
 		}
 	})
 	// DELETE
-	s.BindHandler("/delete", func(r *ghttp.Request) {
+	s.BindHandler("/delete", func(r *qn_http.Request) {
 		if r.Get("array") != nil {
 			r.Response.Write(r.Get("array"))
 		}
@@ -158,7 +158,7 @@ func Test_Params_Basic(t *testing.T) {
 		}
 	})
 	// PATCH
-	s.BindHandler("/patch", func(r *ghttp.Request) {
+	s.BindHandler("/patch", func(r *qn_http.Request) {
 		if r.Get("array") != nil {
 			r.Response.Write(r.Get("array"))
 		}
@@ -191,7 +191,7 @@ func Test_Params_Basic(t *testing.T) {
 		}
 	})
 	// Form
-	s.BindHandler("/form", func(r *ghttp.Request) {
+	s.BindHandler("/form", func(r *qn_http.Request) {
 		if r.Get("array") != nil {
 			r.Response.Write(r.GetForm("array"))
 		}
@@ -223,7 +223,7 @@ func Test_Params_Basic(t *testing.T) {
 			r.Response.Write(r.GetFormMapStrStr()["a"])
 		}
 	})
-	s.BindHandler("/map", func(r *ghttp.Request) {
+	s.BindHandler("/map", func(r *qn_http.Request) {
 		if m := r.GetQueryMap(); len(m) > 0 {
 			r.Response.Write(m["name"])
 			return
@@ -233,10 +233,10 @@ func Test_Params_Basic(t *testing.T) {
 			return
 		}
 	})
-	s.BindHandler("/raw", func(r *ghttp.Request) {
+	s.BindHandler("/raw", func(r *qn_http.Request) {
 		r.Response.Write(r.GetRaw())
 	})
-	s.BindHandler("/json", func(r *ghttp.Request) {
+	s.BindHandler("/json", func(r *qn_http.Request) {
 		j, err := r.GetJson()
 		if err != nil {
 			r.Response.Write(err)
@@ -244,7 +244,7 @@ func Test_Params_Basic(t *testing.T) {
 		}
 		r.Response.Write(j.Get("name"))
 	})
-	s.BindHandler("/struct", func(r *ghttp.Request) {
+	s.BindHandler("/struct", func(r *qn_http.Request) {
 		if m := r.GetQueryMap(); len(m) > 0 {
 			user := new(User)
 			r.GetQueryStruct(user)
@@ -258,12 +258,12 @@ func Test_Params_Basic(t *testing.T) {
 			return
 		}
 	})
-	s.BindHandler("/struct-with-nil", func(r *ghttp.Request) {
+	s.BindHandler("/struct-with-nil", func(r *qn_http.Request) {
 		user := (*User)(nil)
 		err := r.GetStruct(&user)
 		r.Response.Write(err)
 	})
-	s.BindHandler("/struct-with-base", func(r *ghttp.Request) {
+	s.BindHandler("/struct-with-base", func(r *qn_http.Request) {
 		type Base struct {
 			Pass1 string `params:"password1"`
 			Pass2 string `params:"password2"`
@@ -294,7 +294,7 @@ func Test_Params_Basic(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		// GET
 		t.Assert(client.GetContent("/get", "array[]=1&array[]=2"), `["1","2"]`)
@@ -407,10 +407,10 @@ func Test_Params_Basic(t *testing.T) {
 func Test_Params_SupportChars(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/form-value", func(r *ghttp.Request) {
+	s.BindHandler("/form-value", func(r *qn_http.Request) {
 		r.Response.Write(r.GetQuery("test-value"))
 	})
-	s.BindHandler("/form-array", func(r *ghttp.Request) {
+	s.BindHandler("/form-array", func(r *qn_http.Request) {
 		r.Response.Write(r.GetQuery("test-array"))
 	})
 	s.SetPort(p)
@@ -421,7 +421,7 @@ func Test_Params_SupportChars(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
 		prefix := fmt.Sprintf("http://127.0.0.1:%d", p)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(prefix)
 
 		t.Assert(client.PostContent("/form-value", "test-value=100"), "100")
@@ -432,19 +432,19 @@ func Test_Params_SupportChars(t *testing.T) {
 func Test_Params_Priority(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/query", func(r *ghttp.Request) {
+	s.BindHandler("/query", func(r *qn_http.Request) {
 		r.Response.Write(r.GetQuery("a"))
 	})
-	s.BindHandler("/post", func(r *ghttp.Request) {
+	s.BindHandler("/post", func(r *qn_http.Request) {
 		r.Response.Write(r.GetPost("a"))
 	})
-	s.BindHandler("/form", func(r *ghttp.Request) {
+	s.BindHandler("/form", func(r *qn_http.Request) {
 		r.Response.Write(r.GetForm("a"))
 	})
-	s.BindHandler("/request", func(r *ghttp.Request) {
+	s.BindHandler("/request", func(r *qn_http.Request) {
 		r.Response.Write(r.Get("a"))
 	})
-	s.BindHandler("/request-map", func(r *ghttp.Request) {
+	s.BindHandler("/request-map", func(r *qn_http.Request) {
 		r.Response.Write(r.GetMap(g.Map{
 			"a": 1,
 			"b": 2,
@@ -458,7 +458,7 @@ func Test_Params_Priority(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
 		prefix := fmt.Sprintf("http://127.0.0.1:%d", p)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(prefix)
 
 		t.Assert(client.GetContent("/query?a=1", "a=100"), "1")
@@ -473,7 +473,7 @@ func Test_Params_Priority(t *testing.T) {
 func Test_Params_GetRequestMap(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/map", func(r *ghttp.Request) {
+	s.BindHandler("/map", func(r *qn_http.Request) {
 		r.Response.Write(r.GetRequestMap())
 	})
 	s.SetPort(p)
@@ -484,7 +484,7 @@ func Test_Params_GetRequestMap(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
 		prefix := fmt.Sprintf("http://127.0.0.1:%d", p)
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(prefix)
 
 		t.Assert(

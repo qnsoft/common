@@ -12,20 +12,20 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 type NamesObject struct{}
 
-func (o *NamesObject) ShowName(r *ghttp.Request) {
+func (o *NamesObject) ShowName(r *qn_http.Request) {
 	r.Response.Write("Object Show Name")
 }
 
 func Test_NameToUri_FullName(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.SetNameToUriType(ghttp.URI_TYPE_FULLNAME)
+	s.SetNameToUriType(qn_http.URI_TYPE_FULLNAME)
 	s.BindObject("/{.struct}/{.method}", new(NamesObject))
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
@@ -34,7 +34,7 @@ func Test_NameToUri_FullName(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetBrowserMode(true)
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -46,7 +46,7 @@ func Test_NameToUri_FullName(t *testing.T) {
 func Test_NameToUri_AllLower(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.SetNameToUriType(ghttp.URI_TYPE_ALLLOWER)
+	s.SetNameToUriType(qn_http.URI_TYPE_ALLLOWER)
 	s.BindObject("/{.struct}/{.method}", new(NamesObject))
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
@@ -55,7 +55,7 @@ func Test_NameToUri_AllLower(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetBrowserMode(true)
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -67,7 +67,7 @@ func Test_NameToUri_AllLower(t *testing.T) {
 func Test_NameToUri_Camel(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.SetNameToUriType(ghttp.URI_TYPE_CAMEL)
+	s.SetNameToUriType(qn_http.URI_TYPE_CAMEL)
 	s.BindObject("/{.struct}/{.method}", new(NamesObject))
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
@@ -76,7 +76,7 @@ func Test_NameToUri_Camel(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetBrowserMode(true)
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -88,7 +88,7 @@ func Test_NameToUri_Camel(t *testing.T) {
 func Test_NameToUri_Default(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.SetNameToUriType(ghttp.URI_TYPE_DEFAULT)
+	s.SetNameToUriType(qn_http.URI_TYPE_DEFAULT)
 	s.BindObject("/{.struct}/{.method}", new(NamesObject))
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
@@ -97,7 +97,7 @@ func Test_NameToUri_Default(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetBrowserMode(true)
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/"), "Not Found")

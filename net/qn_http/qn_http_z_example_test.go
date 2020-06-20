@@ -8,12 +8,12 @@ package qn_http_test
 
 import (
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 )
 
 func ExampleGetServer() {
 	s := g.Server()
-	s.BindHandler("/", func(r *ghttp.Request) {
+	s.BindHandler("/", func(r *qn_http.Request) {
 		r.Response.Write("hello world")
 	})
 	s.SetPort(8999)

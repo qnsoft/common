@@ -17,7 +17,7 @@ import (
 	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -31,7 +31,7 @@ func Test_ConfigFromMap(t *testing.T) {
 			"errorLogEnabled": true,
 			"cookieMaxAge":    "1y",
 		}
-		config, err := ghttp.ConfigFromMap(m)
+		config, err := qn_http.ConfigFromMap(m)
 		t.Assert(err, nil)
 		d1, _ := time.ParseDuration(qn_conv.String(m["readTimeout"]))
 		d2, _ := time.ParseDuration(qn_conv.String(m["cookieMaxAge"]))
@@ -66,8 +66,8 @@ func Test_SetConfigWithMap(t *testing.T) {
 func Test_ClientMaxBodySize(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.POST("/", func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.POST("/", func(r *qn_http.Request) {
 			r.Response.Write(r.GetBodyString())
 		})
 	})
@@ -101,8 +101,8 @@ func Test_ClientMaxBodySize(t *testing.T) {
 func Test_ClientMaxBodySize_File(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.POST("/", func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.POST("/", func(r *qn_http.Request) {
 			r.GetUploadFile("file")
 			r.Response.Write("ok")
 		})

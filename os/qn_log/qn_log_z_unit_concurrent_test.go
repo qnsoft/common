@@ -10,8 +10,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
@@ -20,7 +20,7 @@ import (
 func Test_Concurrent(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		c := 1000
-		l := glog.New()
+		l := qn_log.New()
 		s := "@1234567890#"
 		f := "test.log"
 		p := qn_file.TempDir(qn_time.TimestampNanoStr())

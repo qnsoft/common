@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/net/gudp"
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/test/qn_test"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
@@ -25,7 +25,7 @@ func Test_Basic(t *testing.T) {
 			data, err := conn.Recv(-1)
 			if len(data) > 0 {
 				if err := conn.Send(append([]byte("> "), data...)); err != nil {
-					glog.Error(err)
+					qn_log.Error(err)
 				}
 			}
 			if err != nil {
@@ -83,7 +83,7 @@ func Test_Buffer(t *testing.T) {
 			data, err := conn.Recv(1)
 			if len(data) > 0 {
 				if err := conn.Send(data); err != nil {
-					glog.Error(err)
+					qn_log.Error(err)
 				}
 			}
 			if err != nil {

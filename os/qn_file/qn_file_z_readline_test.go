@@ -9,7 +9,7 @@ package qn_file_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/test/qn_test"
@@ -17,7 +17,7 @@ import (
 
 func Test_NotFound(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		teatFile := qn_file.Dir(gdebug.CallerFilePath()) + qn_file.Separator + "testdata/readline/error.log"
+		teatFile := qn_file.Dir(qn_debug.CallerFilePath()) + qn_file.Separator + "testdata/readline/error.log"
 		callback := func(line string) {
 		}
 		err := qn_file.ReadLines(teatFile, callback)
@@ -34,7 +34,7 @@ func Test_ReadLines(t *testing.T) {
 			getList = append(getList, line)
 		}
 
-		teatFile := qn_file.Dir(gdebug.CallerFilePath()) + qn_file.Separator + "testdata/readline/file.log"
+		teatFile := qn_file.Dir(qn_debug.CallerFilePath()) + qn_file.Separator + "testdata/readline/file.log"
 		err := qn_file.ReadLines(teatFile, callback)
 
 		t.AssertEQ(getList, expectList)
@@ -51,7 +51,7 @@ func Test_ReadByteLines(t *testing.T) {
 			getList = append(getList, line)
 		}
 
-		teatFile := qn_file.Dir(gdebug.CallerFilePath()) + qn_file.Separator + "testdata/readline/file.log"
+		teatFile := qn_file.Dir(qn_debug.CallerFilePath()) + qn_file.Separator + "testdata/readline/file.log"
 		err := qn_file.ReadByteLines(teatFile, callback)
 
 		t.AssertEQ(getList, expectList)

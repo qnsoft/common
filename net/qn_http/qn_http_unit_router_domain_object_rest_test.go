@@ -12,45 +12,45 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 type DomainObjectRest struct{}
 
-func (o *DomainObjectRest) Init(r *ghttp.Request) {
+func (o *DomainObjectRest) Init(r *qn_http.Request) {
 	r.Response.Write("1")
 }
 
-func (o *DomainObjectRest) Shut(r *ghttp.Request) {
+func (o *DomainObjectRest) Shut(r *qn_http.Request) {
 	r.Response.Write("2")
 }
 
-func (o *DomainObjectRest) Get(r *ghttp.Request) {
+func (o *DomainObjectRest) Get(r *qn_http.Request) {
 	r.Response.Write("Object Get")
 }
 
-func (o *DomainObjectRest) Put(r *ghttp.Request) {
+func (o *DomainObjectRest) Put(r *qn_http.Request) {
 	r.Response.Write("Object Put")
 }
 
-func (o *DomainObjectRest) Post(r *ghttp.Request) {
+func (o *DomainObjectRest) Post(r *qn_http.Request) {
 	r.Response.Write("Object Post")
 }
 
-func (o *DomainObjectRest) Delete(r *ghttp.Request) {
+func (o *DomainObjectRest) Delete(r *qn_http.Request) {
 	r.Response.Write("Object Delete")
 }
 
-func (o *DomainObjectRest) Patch(r *ghttp.Request) {
+func (o *DomainObjectRest) Patch(r *qn_http.Request) {
 	r.Response.Write("Object Patch")
 }
 
-func (o *DomainObjectRest) Options(r *ghttp.Request) {
+func (o *DomainObjectRest) Options(r *qn_http.Request) {
 	r.Response.Write("Object Options")
 }
 
-func (o *DomainObjectRest) Head(r *ghttp.Request) {
+func (o *DomainObjectRest) Head(r *qn_http.Request) {
 	r.Response.Header().Set("head-ok", "1")
 }
 
@@ -66,7 +66,7 @@ func Test_Router_DomainObjectRest(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -84,7 +84,7 @@ func Test_Router_DomainObjectRest(t *testing.T) {
 		t.Assert(client.GetContent("/none-exist"), "Not Found")
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://localhost:%d", p))
 
 		t.Assert(client.GetContent("/"), "1Object Get2")
@@ -102,7 +102,7 @@ func Test_Router_DomainObjectRest(t *testing.T) {
 		t.Assert(client.GetContent("/none-exist"), "Not Found")
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://local:%d", p))
 
 		t.Assert(client.GetContent("/"), "1Object Get2")

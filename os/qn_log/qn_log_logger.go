@@ -23,7 +23,7 @@ import (
 	"github.com/qnsoft/common/os/qn_timer"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/text/qn_regex"
@@ -42,7 +42,7 @@ const (
 	gDEFAULT_FILE_FLAGS  = os.O_CREATE | os.O_WRONLY | os.O_APPEND
 	gDEFAULT_FILE_PERM   = os.FileMode(0666)
 	gDEFAULT_FILE_EXPIRE = time.Minute
-	gPATH_FILTER_KEY     = "/os/glog/glog"
+	gPATH_FILTER_KEY     = "/os/qn_log/qn_log"
 )
 
 const (
@@ -128,11 +128,11 @@ func (l *Logger) print(std io.Writer, lead string, values ...interface{}) {
 		// Caller path.
 		callerPath := ""
 		if l.config.Flags&F_FILE_LONG > 0 {
-			_, path, line := gdebug.CallerWithFilter(gPATH_FILTER_KEY, l.config.StSkip)
+			_, path, line := qn_debug.CallerWithFilter(gPATH_FILTER_KEY, l.config.StSkip)
 			callerPath = fmt.Sprintf(`%s:%d: `, path, line)
 		}
 		if l.config.Flags&F_FILE_SHORT > 0 {
-			_, path, line := gdebug.CallerWithFilter(gPATH_FILTER_KEY, l.config.StSkip)
+			_, path, line := qn_debug.CallerWithFilter(gPATH_FILTER_KEY, l.config.StSkip)
 			callerPath = fmt.Sprintf(`%s:%d: `, qn_file.Basename(path), line)
 		}
 		if len(callerPath) > 0 {
@@ -221,7 +221,7 @@ func (l *Logger) printToWriter(now time.Time, std io.Writer, buffer *bytes.Buffe
 func (l *Logger) printToFile(now time.Time, buffer *bytes.Buffer) {
 	var (
 		loqn_filePath = l.getFilePath(now)
-		memoryLockKey = "glog.file.lock:" + loqn_filePath
+		memoryLockKey = "qn_log.file.lock:" + loqn_filePath
 	)
 	gmlock.Lock(memoryLockKey)
 	defer gmlock.Unlock(memoryLockKey)
@@ -300,5 +300,5 @@ func (l *Logger) GetStack(skip ...int) string {
 	if l.config.StFilter != "" {
 		filters = append(filters, l.config.StFilter)
 	}
-	return gdebug.StackWithFilters(filters, stackSkip)
+	return qn_debug.StackWithFilters(filters, stackSkip)
 }

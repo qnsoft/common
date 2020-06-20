@@ -13,7 +13,7 @@ import (
 const (
 	// qn_error_PRINT_KEY is used to specify the key controlling error printing to stdout.
 	// This error is designed not to be returned by functions.
-	qn_error_PRINT_KEY = "gf.gcfg.errorprint"
+	qn_error_PRINT_KEY = "gf.qn_cfg.errorprint"
 )
 
 // errorPrint checks whether printing error to stdout.

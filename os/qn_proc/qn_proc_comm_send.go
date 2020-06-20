@@ -8,9 +8,10 @@ package qn_proc
 
 import (
 	"errors"
+	"io"
+
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/net/gtcp"
-	"io"
 )
 
 // Send sends data to specified process of given pid.
@@ -42,7 +43,7 @@ func Send(pid int, data []byte, group ...string) error {
 		},
 	})
 	if len(result) > 0 {
-		response := new(MsgResponse)
+		response := new(Msqn_response)
 		err = json.Unmarshal(result, response)
 		if err == nil {
 			if response.Code != 1 {

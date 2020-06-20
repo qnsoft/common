@@ -9,7 +9,7 @@ package qn_view_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/os/qn_file"
 
 	"github.com/qnsoft/common/frame/g"
@@ -23,7 +23,7 @@ func Test_I18n(t *testing.T) {
 		expect2 := `john says "こんにちは世界!"`
 		expect3 := `john says "{#hello}{#world}!"`
 
-		g.I18n().SetPath(gdebug.TestDataPath("i18n"))
+		g.I18n().SetPath(qn_debug.TestDataPath("i18n"))
 
 		g.I18n().SetLanguage("zh-CN")
 		result1, err := g.View().ParseContent(content, g.Map{
@@ -52,7 +52,7 @@ func Test_I18n(t *testing.T) {
 		expect2 := `john says "こんにちは世界!"`
 		expect3 := `john says "{#hello}{#world}!"`
 
-		g.I18n().SetPath(gdebug.CallerDirectory() + qn_file.Separator + "testdata" + qn_file.Separator + "i18n")
+		g.I18n().SetPath(qn_debug.CallerDirectory() + qn_file.Separator + "testdata" + qn_file.Separator + "i18n")
 
 		result1, err := g.View().ParseContent(content, g.Map{
 			"name":         "john",

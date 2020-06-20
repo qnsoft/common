@@ -13,33 +13,33 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_BindMiddleware_Basic1(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindMiddleware("/test", func(r *ghttp.Request) {
+	s.BindMiddleware("/test", func(r *qn_http.Request) {
 		r.Response.Write("1")
 		r.Middleware.Next()
 		r.Response.Write("2")
-	}, func(r *ghttp.Request) {
+	}, func(r *qn_http.Request) {
 		r.Response.Write("3")
 		r.Middleware.Next()
 		r.Response.Write("4")
 	})
-	s.BindMiddleware("/test/:name", func(r *ghttp.Request) {
+	s.BindMiddleware("/test/:name", func(r *qn_http.Request) {
 		r.Response.Write("5")
 		r.Middleware.Next()
 		r.Response.Write("6")
-	}, func(r *ghttp.Request) {
+	}, func(r *qn_http.Request) {
 		r.Response.Write("7")
 		r.Middleware.Next()
 		r.Response.Write("8")
@@ -51,7 +51,7 @@ func Test_BindMiddleware_Basic1(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -63,10 +63,10 @@ func Test_BindMiddleware_Basic1(t *testing.T) {
 func Test_BindMiddleware_Basic2(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindMiddleware("/*", func(r *ghttp.Request) {
+	s.BindMiddleware("/*", func(r *qn_http.Request) {
 		r.Response.Write("1")
 		r.Middleware.Next()
 		r.Response.Write("2")
@@ -78,7 +78,7 @@ func Test_BindMiddleware_Basic2(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "12")
@@ -90,23 +90,23 @@ func Test_BindMiddleware_Basic2(t *testing.T) {
 func Test_BindMiddleware_Basic3(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindMiddleware("PUT:/test", func(r *ghttp.Request) {
+	s.BindMiddleware("PUT:/test", func(r *qn_http.Request) {
 		r.Response.Write("1")
 		r.Middleware.Next()
 		r.Response.Write("2")
-	}, func(r *ghttp.Request) {
+	}, func(r *qn_http.Request) {
 		r.Response.Write("3")
 		r.Middleware.Next()
 		r.Response.Write("4")
 	})
-	s.BindMiddleware("POST:/test/:name", func(r *ghttp.Request) {
+	s.BindMiddleware("POST:/test/:name", func(r *qn_http.Request) {
 		r.Response.Write("5")
 		r.Middleware.Next()
 		r.Response.Write("6")
-	}, func(r *ghttp.Request) {
+	}, func(r *qn_http.Request) {
 		r.Response.Write("7")
 		r.Middleware.Next()
 		r.Response.Write("8")
@@ -118,7 +118,7 @@ func Test_BindMiddleware_Basic3(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -134,16 +134,16 @@ func Test_BindMiddleware_Basic3(t *testing.T) {
 func Test_BindMiddleware_Basic4(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.Middleware(func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.Middleware(func(r *qn_http.Request) {
 			r.Response.Write("1")
 			r.Middleware.Next()
 		})
-		group.Middleware(func(r *ghttp.Request) {
+		group.Middleware(func(r *qn_http.Request) {
 			r.Middleware.Next()
 			r.Response.Write("2")
 		})
-		group.ALL("/test", func(r *ghttp.Request) {
+		group.ALL("/test", func(r *qn_http.Request) {
 			r.Response.Write("test")
 		})
 	})
@@ -154,7 +154,7 @@ func Test_BindMiddleware_Basic4(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -166,24 +166,24 @@ func Test_BindMiddleware_Basic4(t *testing.T) {
 func Test_Middleware_With_Static(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.Middleware(func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.Middleware(func(r *qn_http.Request) {
 			r.Response.Write("1")
 			r.Middleware.Next()
 			r.Response.Write("2")
 		})
-		group.ALL("/user/list", func(r *ghttp.Request) {
+		group.ALL("/user/list", func(r *qn_http.Request) {
 			r.Response.Write("list")
 		})
 	})
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
-	s.SetServerRoot(gdebug.TestDataPath("static1"))
+	s.SetServerRoot(qn_debug.TestDataPath("static1"))
 	s.Start()
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "index")
@@ -196,12 +196,12 @@ func Test_Middleware_With_Static(t *testing.T) {
 func Test_Middleware_Status(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.Middleware(func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.Middleware(func(r *qn_http.Request) {
 			r.Middleware.Next()
 			r.Response.WriteOver(r.Response.Status)
 		})
-		group.ALL("/user/list", func(r *ghttp.Request) {
+		group.ALL("/user/list", func(r *qn_http.Request) {
 			r.Response.Write("list")
 		})
 	})
@@ -211,7 +211,7 @@ func Test_Middleware_Status(t *testing.T) {
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -228,34 +228,34 @@ func Test_Middleware_Hook_With_Static(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	a := qn_array.New(true)
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.Hook("/*", ghttp.HOOK_BEFORE_SERVE, func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.Hook("/*", qn_http.HOOK_BEFORE_SERVE, func(r *qn_http.Request) {
 			a.Append(1)
 			fmt.Println("HOOK_BEFORE_SERVE")
 			r.Response.Write("a")
 		})
-		group.Hook("/*", ghttp.HOOK_AFTER_SERVE, func(r *ghttp.Request) {
+		group.Hook("/*", qn_http.HOOK_AFTER_SERVE, func(r *qn_http.Request) {
 			a.Append(1)
 			fmt.Println("HOOK_AFTER_SERVE")
 			r.Response.Write("b")
 		})
-		group.Middleware(func(r *ghttp.Request) {
+		group.Middleware(func(r *qn_http.Request) {
 			r.Response.Write("1")
 			r.Middleware.Next()
 			r.Response.Write("2")
 		})
-		group.ALL("/user/list", func(r *ghttp.Request) {
+		group.ALL("/user/list", func(r *qn_http.Request) {
 			r.Response.Write("list")
 		})
 	})
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
-	s.SetServerRoot(gdebug.TestDataPath("static1"))
+	s.SetServerRoot(qn_debug.TestDataPath("static1"))
 	s.Start()
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		// The length assert sometimes fails, so I added time.Sleep here for debug purpose.
@@ -281,10 +281,10 @@ func Test_Middleware_Hook_With_Static(t *testing.T) {
 func Test_BindMiddleware_Status(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindMiddleware("/test/*any", func(r *ghttp.Request) {
+	s.BindMiddleware("/test/*any", func(r *qn_http.Request) {
 		r.Middleware.Next()
 	})
 	s.SetPort(p)
@@ -294,7 +294,7 @@ func Test_BindMiddleware_Status(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -307,15 +307,15 @@ func Test_BindMiddleware_Status(t *testing.T) {
 func Test_BindMiddlewareDefault_Basic1(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("1")
 		r.Middleware.Next()
 		r.Response.Write("2")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("3")
 		r.Middleware.Next()
 		r.Response.Write("4")
@@ -327,7 +327,7 @@ func Test_BindMiddlewareDefault_Basic1(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "1342")
@@ -338,15 +338,15 @@ func Test_BindMiddlewareDefault_Basic1(t *testing.T) {
 func Test_BindMiddlewareDefault_Basic2(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("PUT:/test/test", func(r *ghttp.Request) {
+	s.BindHandler("PUT:/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("1")
 		r.Middleware.Next()
 		r.Response.Write("2")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("3")
 		r.Middleware.Next()
 		r.Response.Write("4")
@@ -358,7 +358,7 @@ func Test_BindMiddlewareDefault_Basic2(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "1342")
@@ -371,14 +371,14 @@ func Test_BindMiddlewareDefault_Basic2(t *testing.T) {
 func Test_BindMiddlewareDefault_Basic3(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("1")
 		r.Middleware.Next()
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Middleware.Next()
 		r.Response.Write("2")
 	})
@@ -389,7 +389,7 @@ func Test_BindMiddlewareDefault_Basic3(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "12")
@@ -400,14 +400,14 @@ func Test_BindMiddlewareDefault_Basic3(t *testing.T) {
 func Test_BindMiddlewareDefault_Basic4(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Middleware.Next()
 		r.Response.Write("1")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("2")
 		r.Middleware.Next()
 	})
@@ -418,7 +418,7 @@ func Test_BindMiddlewareDefault_Basic4(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "21")
@@ -429,14 +429,14 @@ func Test_BindMiddlewareDefault_Basic4(t *testing.T) {
 func Test_BindMiddlewareDefault_Basic5(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("1")
 		r.Middleware.Next()
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("2")
 		r.Middleware.Next()
 	})
@@ -447,7 +447,7 @@ func Test_BindMiddlewareDefault_Basic5(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "12")
@@ -458,10 +458,10 @@ func Test_BindMiddlewareDefault_Basic5(t *testing.T) {
 func Test_BindMiddlewareDefault_Status(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Middleware.Next()
 	})
 	s.SetPort(p)
@@ -471,7 +471,7 @@ func Test_BindMiddlewareDefault_Status(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -481,23 +481,23 @@ func Test_BindMiddlewareDefault_Status(t *testing.T) {
 
 type ObjectMiddleware struct{}
 
-func (o *ObjectMiddleware) Init(r *ghttp.Request) {
+func (o *ObjectMiddleware) Init(r *qn_http.Request) {
 	r.Response.Write("100")
 }
 
-func (o *ObjectMiddleware) Shut(r *ghttp.Request) {
+func (o *ObjectMiddleware) Shut(r *qn_http.Request) {
 	r.Response.Write("200")
 }
 
-func (o *ObjectMiddleware) Index(r *ghttp.Request) {
+func (o *ObjectMiddleware) Index(r *qn_http.Request) {
 	r.Response.Write("Object Index")
 }
 
-func (o *ObjectMiddleware) Show(r *ghttp.Request) {
+func (o *ObjectMiddleware) Show(r *qn_http.Request) {
 	r.Response.Write("Object Show")
 }
 
-func (o *ObjectMiddleware) Info(r *ghttp.Request) {
+func (o *ObjectMiddleware) Info(r *qn_http.Request) {
 	r.Response.Write("Object Info")
 }
 
@@ -505,12 +505,12 @@ func Test_BindMiddlewareDefault_Basic6(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	s.BindObject("/", new(ObjectMiddleware))
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("1")
 		r.Middleware.Next()
 		r.Response.Write("2")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("3")
 		r.Middleware.Next()
 		r.Response.Write("4")
@@ -522,7 +522,7 @@ func Test_BindMiddlewareDefault_Basic6(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "13100Object Index20042")
@@ -537,27 +537,27 @@ func Test_BindMiddlewareDefault_Basic6(t *testing.T) {
 func Test_Hook_Middleware_Basic1(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
-	s.BindHookHandler("/*", ghttp.HOOK_BEFORE_SERVE, func(r *ghttp.Request) {
+	s.BindHookHandler("/*", qn_http.HOOK_BEFORE_SERVE, func(r *qn_http.Request) {
 		r.Response.Write("a")
 	})
-	s.BindHookHandler("/*", ghttp.HOOK_AFTER_SERVE, func(r *ghttp.Request) {
+	s.BindHookHandler("/*", qn_http.HOOK_AFTER_SERVE, func(r *qn_http.Request) {
 		r.Response.Write("b")
 	})
-	s.BindHookHandler("/*", ghttp.HOOK_BEFORE_SERVE, func(r *ghttp.Request) {
+	s.BindHookHandler("/*", qn_http.HOOK_BEFORE_SERVE, func(r *qn_http.Request) {
 		r.Response.Write("c")
 	})
-	s.BindHookHandler("/*", ghttp.HOOK_AFTER_SERVE, func(r *ghttp.Request) {
+	s.BindHookHandler("/*", qn_http.HOOK_AFTER_SERVE, func(r *qn_http.Request) {
 		r.Response.Write("d")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("1")
 		r.Middleware.Next()
 		r.Response.Write("2")
 	})
-	s.BindMiddlewareDefault(func(r *ghttp.Request) {
+	s.BindMiddlewareDefault(func(r *qn_http.Request) {
 		r.Response.Write("3")
 		r.Middleware.Next()
 		r.Response.Write("4")
@@ -569,7 +569,7 @@ func Test_Hook_Middleware_Basic1(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "ac1342bd")
@@ -577,7 +577,7 @@ func Test_Hook_Middleware_Basic1(t *testing.T) {
 	})
 }
 
-func MiddlewareAuth(r *ghttp.Request) {
+func MiddlewareAuth(r *qn_http.Request) {
 	token := r.Get("token")
 	if token == "123456" {
 		r.Middleware.Next()
@@ -586,7 +586,7 @@ func MiddlewareAuth(r *ghttp.Request) {
 	}
 }
 
-func MiddlewareCORS(r *ghttp.Request) {
+func MiddlewareCORS(r *qn_http.Request) {
 	r.Response.CORSDefault()
 	r.Middleware.Next()
 }
@@ -595,9 +595,9 @@ func Test_Middleware_CORSAndAuth(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	s.Use(MiddlewareCORS)
-	s.Group("/api.v2", func(group *ghttp.RouterGroup) {
+	s.Group("/api.v2", func(group *qn_http.RouterGroup) {
 		group.Middleware(MiddlewareAuth)
-		group.POST("/user/list", func(r *ghttp.Request) {
+		group.POST("/user/list", func(r *qn_http.Request) {
 			r.Response.Write("list")
 		})
 	})
@@ -607,7 +607,7 @@ func Test_Middleware_CORSAndAuth(t *testing.T) {
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		// Common Checks.
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -627,19 +627,19 @@ func Test_Middleware_CORSAndAuth(t *testing.T) {
 	})
 }
 
-func MiddlewareScope1(r *ghttp.Request) {
+func MiddlewareScope1(r *qn_http.Request) {
 	r.Response.Write("a")
 	r.Middleware.Next()
 	r.Response.Write("b")
 }
 
-func MiddlewareScope2(r *ghttp.Request) {
+func MiddlewareScope2(r *qn_http.Request) {
 	r.Response.Write("c")
 	r.Middleware.Next()
 	r.Response.Write("d")
 }
 
-func MiddlewareScope3(r *ghttp.Request) {
+func MiddlewareScope3(r *qn_http.Request) {
 	r.Response.Write("e")
 	r.Middleware.Next()
 	r.Response.Write("f")
@@ -648,20 +648,20 @@ func MiddlewareScope3(r *ghttp.Request) {
 func Test_Middleware_Scope(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/", func(group *ghttp.RouterGroup) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
 		group.Middleware(MiddlewareScope1)
-		group.ALL("/scope1", func(r *ghttp.Request) {
+		group.ALL("/scope1", func(r *qn_http.Request) {
 			r.Response.Write("1")
 		})
-		group.Group("/", func(group *ghttp.RouterGroup) {
+		group.Group("/", func(group *qn_http.RouterGroup) {
 			group.Middleware(MiddlewareScope2)
-			group.ALL("/scope2", func(r *ghttp.Request) {
+			group.ALL("/scope2", func(r *qn_http.Request) {
 				r.Response.Write("2")
 			})
 		})
-		group.Group("/", func(group *ghttp.RouterGroup) {
+		group.Group("/", func(group *qn_http.RouterGroup) {
 			group.Middleware(MiddlewareScope3)
-			group.ALL("/scope3", func(r *ghttp.Request) {
+			group.ALL("/scope3", func(r *qn_http.Request) {
 				r.Response.Write("3")
 			})
 		})
@@ -672,7 +672,7 @@ func Test_Middleware_Scope(t *testing.T) {
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -686,17 +686,17 @@ func Test_Middleware_Panic(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	i := 0
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.Group("/", func(group *ghttp.RouterGroup) {
-			group.Middleware(func(r *ghttp.Request) {
+	s.Group("/", func(group *qn_http.RouterGroup) {
+		group.Group("/", func(group *qn_http.RouterGroup) {
+			group.Middleware(func(r *qn_http.Request) {
 				i++
 				panic("error")
 				r.Middleware.Next()
-			}, func(r *ghttp.Request) {
+			}, func(r *qn_http.Request) {
 				i++
 				r.Middleware.Next()
 			})
-			group.ALL("/", func(r *ghttp.Request) {
+			group.ALL("/", func(r *qn_http.Request) {
 				r.Response.Write(i)
 			})
 		})
@@ -707,7 +707,7 @@ func Test_Middleware_Panic(t *testing.T) {
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "error")

@@ -13,16 +13,16 @@ import (
 	"fmt"
 
 	"github.com/gogf/gf/text/gstr"
-	"github.com/qnsoft/common/os/gres"
+	"github.com/qnsoft/common/os/qn_res"
 
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/encoding/qn_json"
 	"github.com/qnsoft/common/internal/cmdenv"
 	"github.com/qnsoft/common/os/gfsnotify"
-	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gspath"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_log"
 )
 
 const (
@@ -55,12 +55,12 @@ func New(file ...string) *Config {
 		jsons: gmap.NewStrAnyMap(true),
 	}
 	// Customized dir path from env/cmd.
-	if envPath := cmdenv.Get("gf.gcfg.path").String(); envPath != "" {
+	if envPath := cmdenv.Get("gf.qn_cfg.path").String(); envPath != "" {
 		if qn_file.Exists(envPath) {
 			_ = c.SetPath(envPath)
 		} else {
 			if errorPrint() {
-				glog.Errorf("Configuration directory path does not exist: %s", envPath)
+				qn_log.Errorf("Configuration directory path does not exist: %s", envPath)
 			}
 		}
 	} else {
@@ -88,7 +88,7 @@ func (c *Config) filePath(file ...string) (path string) {
 	if path == "" {
 		buffer := bytes.NewBuffer(nil)
 		if c.paths.Len() > 0 {
-			buffer.WriteString(fmt.Sprintf("[gcfg] cannot find config file \"%s\" in following paths:", name))
+			buffer.WriteString(fmt.Sprintf("[qn_cfg] cannot find config file \"%s\" in following paths:", name))
 			c.paths.RLockFunc(func(array []string) {
 				index := 1
 				for _, v := range array {
@@ -100,10 +100,10 @@ func (c *Config) filePath(file ...string) (path string) {
 				}
 			})
 		} else {
-			buffer.WriteString(fmt.Sprintf("[gcfg] cannot find config file \"%s\" with no path set/add", name))
+			buffer.WriteString(fmt.Sprintf("[qn_cfg] cannot find config file \"%s\" with no path set/add", name))
 		}
 		if errorPrint() {
-			glog.Error(buffer.String())
+			qn_log.Error(buffer.String())
 		}
 	}
 	return path
@@ -115,7 +115,7 @@ func (c *Config) filePath(file ...string) (path string) {
 func (c *Config) SetPath(path string) error {
 	isDir := false
 	realPath := ""
-	if file := gres.Get(path); file != nil {
+	if file := qn_res.Get(path); file != nil {
 		realPath = path
 		isDir = file.FileInfo().IsDir()
 	} else {
@@ -140,26 +140,26 @@ func (c *Config) SetPath(path string) error {
 	if realPath == "" {
 		buffer := bytes.NewBuffer(nil)
 		if c.paths.Len() > 0 {
-			buffer.WriteString(fmt.Sprintf("[gcfg] SetPath failed: cannot find directory \"%s\" in following paths:", path))
+			buffer.WriteString(fmt.Sprintf("[qn_cfg] SetPath failed: cannot find directory \"%s\" in following paths:", path))
 			c.paths.RLockFunc(func(array []string) {
 				for k, v := range array {
 					buffer.WriteString(fmt.Sprintf("\n%d. %s", k+1, v))
 				}
 			})
 		} else {
-			buffer.WriteString(fmt.Sprintf(`[gcfg] SetPath failed: path "%s" does not exist`, path))
+			buffer.WriteString(fmt.Sprintf(`[qn_cfg] SetPath failed: path "%s" does not exist`, path))
 		}
 		err := errors.New(buffer.String())
 		if errorPrint() {
-			glog.Error(err)
+			qn_log.Error(err)
 		}
 		return err
 	}
 	// Should be a directory.
 	if !isDir {
-		err := fmt.Errorf(`[gcfg] SetPath failed: path "%s" should be directory type`, path)
+		err := fmt.Errorf(`[qn_cfg] SetPath failed: path "%s" should be directory type`, path)
 		if errorPrint() {
-			glog.Error(err)
+			qn_log.Error(err)
 		}
 		return err
 	}
@@ -192,7 +192,7 @@ func (c *Config) AddPath(path string) error {
 	)
 	// It firstly checks the resource manager,
 	// and then checks the filesystem for the path.
-	if file := gres.Get(path); file != nil {
+	if file := qn_res.Get(path); file != nil {
 		realPath = path
 		isDir = file.FileInfo().IsDir()
 	} else {
@@ -216,25 +216,25 @@ func (c *Config) AddPath(path string) error {
 	if realPath == "" {
 		buffer := bytes.NewBuffer(nil)
 		if c.paths.Len() > 0 {
-			buffer.WriteString(fmt.Sprintf("[gcfg] AddPath failed: cannot find directory \"%s\" in following paths:", path))
+			buffer.WriteString(fmt.Sprintf("[qn_cfg] AddPath failed: cannot find directory \"%s\" in following paths:", path))
 			c.paths.RLockFunc(func(array []string) {
 				for k, v := range array {
 					buffer.WriteString(fmt.Sprintf("\n%d. %s", k+1, v))
 				}
 			})
 		} else {
-			buffer.WriteString(fmt.Sprintf(`[gcfg] AddPath failed: path "%s" does not exist`, path))
+			buffer.WriteString(fmt.Sprintf(`[qn_cfg] AddPath failed: path "%s" does not exist`, path))
 		}
 		err := errors.New(buffer.String())
 		if errorPrint() {
-			glog.Error(err)
+			qn_log.Error(err)
 		}
 		return err
 	}
 	if !isDir {
-		err := fmt.Errorf(`[gcfg] AddPath failed: path "%s" should be directory type`, path)
+		err := fmt.Errorf(`[qn_cfg] AddPath failed: path "%s" should be directory type`, path)
 		if errorPrint() {
-			glog.Error(err)
+			qn_log.Error(err)
 		}
 		return err
 	}
@@ -243,7 +243,7 @@ func (c *Config) AddPath(path string) error {
 		return nil
 	}
 	c.paths.Append(realPath)
-	//glog.Debug("[gcfg] AddPath:", realPath)
+	//qn_log.Debug("[qn_cfg] AddPath:", realPath)
 	return nil
 }
 
@@ -257,9 +257,9 @@ func (c *Config) FilePath(file ...string) (path string) {
 		name = file[0]
 	}
 	// Searching resource manager.
-	if !gres.IsEmpty() {
+	if !qn_res.IsEmpty() {
 		for _, v := range resourceTryFiles {
-			if file := gres.Get(v + name); file != nil {
+			if file := qn_res.Get(v + name); file != nil {
 				path = file.Name()
 				return
 			}
@@ -267,7 +267,7 @@ func (c *Config) FilePath(file ...string) (path string) {
 		c.paths.RLockFunc(func(array []string) {
 			for _, prefix := range array {
 				for _, v := range resourceTryFiles {
-					if file := gres.Get(prefix + v + name); file != nil {
+					if file := qn_res.Get(prefix + v + name); file != nil {
 						path = file.Name()
 						return
 					}
@@ -335,7 +335,7 @@ func (c *Config) getJson(file ...string) *qn_json.Json {
 			if filePath == "" {
 				return nil
 			}
-			if file := gres.Get(filePath); file != nil {
+			if file := qn_res.Get(filePath); file != nil {
 				content = string(file.Content())
 			} else {
 				content = qn_file.GetContents(filePath)
@@ -345,21 +345,21 @@ func (c *Config) getJson(file ...string) *qn_json.Json {
 			j.SetViolenceCheck(c.vc)
 			// Add monitor for this configuration file,
 			// any changes of this file will refresh its cache in Config object.
-			if filePath != "" && !gres.Contains(filePath) {
+			if filePath != "" && !qn_res.Contains(filePath) {
 				_, err = gfsnotify.Add(filePath, func(event *gfsnotify.Event) {
 					c.jsons.Remove(name)
 				})
 				if err != nil && errorPrint() {
-					glog.Error(err)
+					qn_log.Error(err)
 				}
 			}
 			return j
 		} else {
 			if errorPrint() {
 				if filePath != "" {
-					glog.Criticalf(`[gcfg] Load config file "%s" failed: %s`, filePath, err.Error())
+					qn_log.Criticalf(`[qn_cfg] Load config file "%s" failed: %s`, filePath, err.Error())
 				} else {
-					glog.Criticalf(`[gcfg] Load configuration failed: %s`, err.Error())
+					qn_log.Criticalf(`[qn_cfg] Load configuration failed: %s`, err.Error())
 				}
 			}
 		}

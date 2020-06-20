@@ -12,45 +12,45 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 type ObjectRest struct{}
 
-func (o *ObjectRest) Init(r *ghttp.Request) {
+func (o *ObjectRest) Init(r *qn_http.Request) {
 	r.Response.Write("1")
 }
 
-func (o *ObjectRest) Shut(r *ghttp.Request) {
+func (o *ObjectRest) Shut(r *qn_http.Request) {
 	r.Response.Write("2")
 }
 
-func (o *ObjectRest) Get(r *ghttp.Request) {
+func (o *ObjectRest) Get(r *qn_http.Request) {
 	r.Response.Write("Object Get")
 }
 
-func (o *ObjectRest) Put(r *ghttp.Request) {
+func (o *ObjectRest) Put(r *qn_http.Request) {
 	r.Response.Write("Object Put")
 }
 
-func (o *ObjectRest) Post(r *ghttp.Request) {
+func (o *ObjectRest) Post(r *qn_http.Request) {
 	r.Response.Write("Object Post")
 }
 
-func (o *ObjectRest) Delete(r *ghttp.Request) {
+func (o *ObjectRest) Delete(r *qn_http.Request) {
 	r.Response.Write("Object Delete")
 }
 
-func (o *ObjectRest) Patch(r *ghttp.Request) {
+func (o *ObjectRest) Patch(r *qn_http.Request) {
 	r.Response.Write("Object Patch")
 }
 
-func (o *ObjectRest) Options(r *ghttp.Request) {
+func (o *ObjectRest) Options(r *qn_http.Request) {
 	r.Response.Write("Object Options")
 }
 
-func (o *ObjectRest) Head(r *ghttp.Request) {
+func (o *ObjectRest) Head(r *qn_http.Request) {
 	r.Response.Header().Set("head-ok", "1")
 }
 
@@ -66,7 +66,7 @@ func Test_Router_ObjectRest(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "1Object Get2")

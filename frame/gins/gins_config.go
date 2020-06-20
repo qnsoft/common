@@ -4,14 +4,14 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-package gins
+package qn_ins
 
 import (
-	"github.com/qnsoft/common/os/gcfg"
+	"github.com/qnsoft/common/os/qn_cfg"
 )
 
 // Config returns an instance of View with default settings.
 // The parameter <name> is the name for the instance.
-func Config(name ...string) *gcfg.Config {
-	return gcfg.Instance(name...)
+func Config(name ...string) *qn_cfg.Config {
+	return qn_cfg.Instance(name...)
 }

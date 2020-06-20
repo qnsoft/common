@@ -13,7 +13,7 @@ import (
 	"sync"
 
 	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
@@ -73,7 +73,7 @@ func NewServerTLS(address string, tlsConfig *tls.Config, handler func(*Conn), na
 func NewServerKeyCrt(address, crtFile, keyFile string, handler func(*Conn), name ...string) *Server {
 	s := NewServer(address, handler, name...)
 	if err := s.SetTLSKeyCrt(crtFile, keyFile); err != nil {
-		glog.Error(err)
+		qn_log.Error(err)
 	}
 	return s
 }
@@ -117,7 +117,7 @@ func (s *Server) Close() error {
 func (s *Server) Run() (err error) {
 	if s.handler == nil {
 		err = errors.New("start running failed: socket handler not defined")
-		glog.Error(err)
+		qn_log.Error(err)
 		return
 	}
 	if s.tlsConfig != nil {
@@ -126,21 +126,21 @@ func (s *Server) Run() (err error) {
 		s.listen, err = tls.Listen("tcp", s.address, s.tlsConfig)
 		s.mu.Unlock()
 		if err != nil {
-			glog.Error(err)
+			qn_log.Error(err)
 			return
 		}
 	} else {
 		// Normal Server
 		addr, err := net.ResolveTCPAddr("tcp", s.address)
 		if err != nil {
-			glog.Error(err)
+			qn_log.Error(err)
 			return err
 		}
 		s.mu.Lock()
 		s.listen, err = net.ListenTCP("tcp", addr)
 		s.mu.Unlock()
 		if err != nil {
-			glog.Error(err)
+			qn_log.Error(err)
 			return err
 		}
 	}

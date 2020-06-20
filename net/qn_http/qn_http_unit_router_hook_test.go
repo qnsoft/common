@@ -12,20 +12,20 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Router_Hook_Basic(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHookHandlerByMap("/*", map[string]ghttp.HandlerFunc{
-		ghttp.HOOK_BEFORE_SERVE:  func(r *ghttp.Request) { r.Response.Write("1") },
-		ghttp.HOOK_AFTER_SERVE:   func(r *ghttp.Request) { r.Response.Write("2") },
-		ghttp.HOOK_BEFORE_OUTPUT: func(r *ghttp.Request) { r.Response.Write("3") },
-		ghttp.HOOK_AFTER_OUTPUT:  func(r *ghttp.Request) { r.Response.Write("4") },
+	s.BindHookHandlerByMap("/*", map[string]qn_http.HandlerFunc{
+		qn_http.HOOK_BEFORE_SERVE:  func(r *qn_http.Request) { r.Response.Write("1") },
+		qn_http.HOOK_AFTER_SERVE:   func(r *qn_http.Request) { r.Response.Write("2") },
+		qn_http.HOOK_BEFORE_OUTPUT: func(r *qn_http.Request) { r.Response.Write("3") },
+		qn_http.HOOK_AFTER_OUTPUT:  func(r *qn_http.Request) { r.Response.Write("4") },
 	})
-	s.BindHandler("/test/test", func(r *ghttp.Request) {
+	s.BindHandler("/test/test", func(r *qn_http.Request) {
 		r.Response.Write("test")
 	})
 	s.SetPort(p)
@@ -35,7 +35,7 @@ func Test_Router_Hook_Basic(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "123")
@@ -48,25 +48,25 @@ func Test_Router_Hook_Fuzzy_Router(t *testing.T) {
 	s := g.Server(p)
 	i := 1000
 	pattern1 := "/:name/info"
-	s.BindHookHandlerByMap(pattern1, map[string]ghttp.HandlerFunc{
-		ghttp.HOOK_BEFORE_SERVE: func(r *ghttp.Request) {
+	s.BindHookHandlerByMap(pattern1, map[string]qn_http.HandlerFunc{
+		qn_http.HOOK_BEFORE_SERVE: func(r *qn_http.Request) {
 			r.SetParam("uid", i)
 			i++
 		},
 	})
-	s.BindHandler(pattern1, func(r *ghttp.Request) {
+	s.BindHandler(pattern1, func(r *qn_http.Request) {
 		r.Response.Write(r.Get("uid"))
 	})
 
 	pattern2 := "/{object}/list/{page}.java"
-	s.BindHookHandlerByMap(pattern2, map[string]ghttp.HandlerFunc{
-		ghttp.HOOK_BEFORE_OUTPUT: func(r *ghttp.Request) {
+	s.BindHookHandlerByMap(pattern2, map[string]qn_http.HandlerFunc{
+		qn_http.HOOK_BEFORE_OUTPUT: func(r *qn_http.Request) {
 			r.Response.SetBuffer([]byte(
 				fmt.Sprint(r.Get("object"), "&", r.Get("page"), "&", i),
 			))
 		},
 	})
-	s.BindHandler(pattern2, func(r *ghttp.Request) {
+	s.BindHandler(pattern2, func(r *qn_http.Request) {
 		r.Response.Write(r.Router.Uri)
 	})
 	s.SetPort(p)
@@ -76,7 +76,7 @@ func Test_Router_Hook_Fuzzy_Router(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/john"), "Not Found")
@@ -90,22 +90,22 @@ func Test_Router_Hook_Fuzzy_Router(t *testing.T) {
 func Test_Router_Hook_Priority(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/priority/show", func(r *ghttp.Request) {
+	s.BindHandler("/priority/show", func(r *qn_http.Request) {
 		r.Response.Write("show")
 	})
 
-	s.BindHookHandlerByMap("/priority/:name", map[string]ghttp.HandlerFunc{
-		ghttp.HOOK_BEFORE_SERVE: func(r *ghttp.Request) {
+	s.BindHookHandlerByMap("/priority/:name", map[string]qn_http.HandlerFunc{
+		qn_http.HOOK_BEFORE_SERVE: func(r *qn_http.Request) {
 			r.Response.Write("1")
 		},
 	})
-	s.BindHookHandlerByMap("/priority/*any", map[string]ghttp.HandlerFunc{
-		ghttp.HOOK_BEFORE_SERVE: func(r *ghttp.Request) {
+	s.BindHookHandlerByMap("/priority/*any", map[string]qn_http.HandlerFunc{
+		qn_http.HOOK_BEFORE_SERVE: func(r *qn_http.Request) {
 			r.Response.Write("2")
 		},
 	})
-	s.BindHookHandlerByMap("/priority/show", map[string]ghttp.HandlerFunc{
-		ghttp.HOOK_BEFORE_SERVE: func(r *ghttp.Request) {
+	s.BindHookHandlerByMap("/priority/show", map[string]qn_http.HandlerFunc{
+		qn_http.HOOK_BEFORE_SERVE: func(r *qn_http.Request) {
 			r.Response.Write("3")
 		},
 	})
@@ -116,7 +116,7 @@ func Test_Router_Hook_Priority(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")
@@ -129,17 +129,17 @@ func Test_Router_Hook_Priority(t *testing.T) {
 func Test_Router_Hook_Multi(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.BindHandler("/multi-hook", func(r *ghttp.Request) {
+	s.BindHandler("/multi-hook", func(r *qn_http.Request) {
 		r.Response.Write("show")
 	})
 
-	s.BindHookHandlerByMap("/multi-hook", map[string]ghttp.HandlerFunc{
-		ghttp.HOOK_BEFORE_SERVE: func(r *ghttp.Request) {
+	s.BindHookHandlerByMap("/multi-hook", map[string]qn_http.HandlerFunc{
+		qn_http.HOOK_BEFORE_SERVE: func(r *qn_http.Request) {
 			r.Response.Write("1")
 		},
 	})
-	s.BindHookHandlerByMap("/multi-hook", map[string]ghttp.HandlerFunc{
-		ghttp.HOOK_BEFORE_SERVE: func(r *ghttp.Request) {
+	s.BindHookHandlerByMap("/multi-hook", map[string]qn_http.HandlerFunc{
+		qn_http.HOOK_BEFORE_SERVE: func(r *qn_http.Request) {
 			r.Response.Write("2")
 		},
 	})
@@ -150,7 +150,7 @@ func Test_Router_Hook_Multi(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/"), "Not Found")

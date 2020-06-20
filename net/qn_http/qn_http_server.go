@@ -17,7 +17,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/internal/intlog"
 
 	"github.com/qnsoft/common/os/gsession"
@@ -30,9 +30,9 @@ import (
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/gcache"
 	"github.com/qnsoft/common/os/genv"
-	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gproc"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/text/qn_regex"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
@@ -42,7 +42,7 @@ type (
 	Server struct {
 		name             string                           // Unique name for instance management.
 		config           ServerConfig                     // Configuration.
-		plugins          []Plugin                         // Plugin array.
+		pluqn_ins        []Plugin                         // Plugin array.
 		servers          []*gracefulServer                // Underlying http.Server array.
 		serverCount      *gtype.Int                       // Underlying http.Server count.
 		closeChan        chan struct{}                    // Used for underlying server closing event notification.
@@ -200,7 +200,7 @@ func serverProcessInit() {
 			p.Kill()
 			p.Wait()
 		} else {
-			glog.Error(e)
+			qn_log.Error(e)
 		}
 	}
 
@@ -232,7 +232,7 @@ func GetServer(name ...interface{}) *Server {
 	}
 	s := &Server{
 		name:             serverName,
-		plugins:          make([]Plugin, 0),
+		pluqn_ins:        make([]Plugin, 0),
 		servers:          make([]*gracefulServer, 0),
 		closeChan:        make(chan struct{}, 10000),
 		serverCount:      gtype.NewInt(),
@@ -261,18 +261,18 @@ func (s *Server) Start() error {
 
 	// Server can only be run once.
 	if s.Status() == SERVER_STATUS_RUNNING {
-		return errors.New("[ghttp] server is already running")
+		return errors.New("[qn_http] server is already running")
 	}
 
 	// If there's no route registered  and no static service enabled,
 	// it then returns an error of invalid usage of server.
 	if len(s.routesMap) == 0 && !s.config.FileServerEnabled {
-		return errors.New(`[ghttp] there's no route set or static feature enabled, did you forget import the router?`)
+		return errors.New(`[qn_http] there's no route set or static feature enabled, did you forget import the router?`)
 	}
 	// Logging path setting check.
 	if s.config.LogPath != "" {
 		if err := s.config.Logger.SetPath(s.config.LogPath); err != nil {
-			return errors.New(fmt.Sprintf("[ghttp] set log path '%s' error: %v", s.config.LogPath, err))
+			return errors.New(fmt.Sprintf("[qn_http] set log path '%s' error: %v", s.config.LogPath, err))
 		}
 	}
 	// Default session storage.
@@ -282,7 +282,7 @@ func (s *Server) Start() error {
 			path = qn_file.Join(s.config.SessionPath, s.name)
 			if !qn_file.Exists(path) {
 				if err := qn_file.Mkdir(path); err != nil {
-					return errors.New(fmt.Sprintf("[ghttp] mkdir failed for '%s': %v", path, err))
+					return errors.New(fmt.Sprintf("[qn_http] mkdir failed for '%s': %v", path, err))
 				}
 			}
 		}
@@ -304,8 +304,8 @@ func (s *Server) Start() error {
 		s.config.Handler = s
 	}
 
-	// Install external plugins.
-	for _, p := range s.plugins {
+	// Install external pluqn_ins.
+	for _, p := range s.pluqn_ins {
 		if err := p.Install(s); err != nil {
 			s.Logger().Fatal(err)
 		}
@@ -331,7 +331,7 @@ func (s *Server) Start() error {
 	if gproc.IsChild() {
 		qn_timer.SetTimeout(2*time.Second, func() {
 			if err := gproc.Send(gproc.PPid(), []byte("exit"), gADMIN_GPROC_COMM_GROUP); err != nil {
-				//glog.Error("[ghttp] server error in process communication:", err)
+				//qn_log.Error("[qn_http] server error in process communication:", err)
 			}
 		})
 	}
@@ -401,7 +401,7 @@ func (s *Server) GetRouterArray() []RouterItem {
 					if item.Middleware != "" {
 						item.Middleware += ","
 					}
-					item.Middleware += gdebug.FuncName(v)
+					item.Middleware += qn_debug.FuncName(v)
 				}
 			}
 			// If the domain does not exist in the dump map, it create the map.
@@ -448,32 +448,32 @@ func (s *Server) Run() {
 	}
 	// Blocking using channel.
 	<-s.closeChan
-	// Remove plugins.
-	if len(s.plugins) > 0 {
-		for _, p := range s.plugins {
+	// Remove pluqn_ins.
+	if len(s.pluqn_ins) > 0 {
+		for _, p := range s.pluqn_ins {
 			intlog.Printf(`remove plugin: %s`, p.Name())
 			p.Remove()
 		}
 	}
-	s.Logger().Printf("[ghttp] %d: all servers shutdown", gproc.Pid())
+	s.Logger().Printf("[qn_http] %d: all servers shutdown", gproc.Pid())
 }
 
 // Wait blocks to wait for all servers done.
 // It's commonly used in multiple servers situation.
 func Wait() {
 	<-allDoneChan
-	// Remove plugins.
+	// Remove pluqn_ins.
 	serverMapping.Iterator(func(k string, v interface{}) bool {
 		s := v.(*Server)
-		if len(s.plugins) > 0 {
-			for _, p := range s.plugins {
+		if len(s.pluqn_ins) > 0 {
+			for _, p := range s.pluqn_ins {
 				intlog.Printf(`remove plugin: %s`, p.Name())
 				p.Remove()
 			}
 		}
 		return true
 	})
-	glog.Printf("[ghttp] %d: all servers shutdown", gproc.Pid())
+	qn_log.Printf("[qn_http] %d: all servers shutdown", gproc.Pid())
 }
 
 // startServer starts the underlying server listening.

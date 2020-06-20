@@ -24,12 +24,12 @@ import (
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 	qn_util "github.com/qnsoft/common/util/qn_util"
 
-	"github.com/qnsoft/common/os/gres"
+	"github.com/qnsoft/common/os/qn_res"
 
 	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gspath"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_log"
 )
 
 const (
@@ -60,7 +60,7 @@ func (view *View) Parse(file string, params ...Params) (result string, err error
 	// It caches the file, folder and its content to enhance performance.
 	r := view.fileCacheMap.GetOrSetFuncLock(file, func() interface{} {
 		var path, folder, content string
-		var resource *gres.File
+		var resource *qn_res.File
 		// Searching the absolute file path for <file>.
 		path, folder, resource, err = view.searchFile(file)
 		if err != nil {
@@ -227,19 +227,19 @@ func (view *View) getTemplate(filePath, folderPath, pattern string) (tpl interfa
 			).Funcs(view.funcMap)
 		}
 		// Firstly checking the resource manager.
-		if !gres.IsEmpty() {
-			if files := gres.ScanDirFile(folderPath, pattern, true); len(files) > 0 {
+		if !qn_res.IsEmpty() {
+			if files := qn_res.ScanDirFile(folderPath, pattern, true); len(files) > 0 {
 				var err error
 				for _, v := range files {
 					if view.config.AutoEncode {
 						_, err = tpl.(*htmltpl.Template).New(v.FileInfo().Name()).Parse(string(v.Content()))
 						if err != nil {
-							glog.Error(err)
+							qn_log.Error(err)
 						}
 					} else {
 						_, err = tpl.(*texttpl.Template).New(v.FileInfo().Name()).Parse(string(v.Content()))
 						if err != nil {
-							glog.Error(err)
+							qn_log.Error(err)
 						}
 					}
 				}
@@ -273,12 +273,12 @@ func (view *View) getTemplate(filePath, folderPath, pattern string) (tpl interfa
 // searchFile returns the found absolute path for <file> and its template folder path.
 // Note that, the returned <folder> is the template folder path, but not the folder of
 // the returned template file <path>.
-func (view *View) searchFile(file string) (path string, folder string, resource *gres.File, err error) {
+func (view *View) searchFile(file string) (path string, folder string, resource *qn_res.File, err error) {
 	// Firstly checking the resource manager.
-	if !gres.IsEmpty() {
+	if !qn_res.IsEmpty() {
 		// Try folders.
 		for _, folderPath := range resourceTryFolders {
-			if resource = gres.Get(folderPath + file); resource != nil {
+			if resource = qn_res.Get(folderPath + file); resource != nil {
 				path = resource.Name()
 				folder = folderPath
 				return
@@ -288,12 +288,12 @@ func (view *View) searchFile(file string) (path string, folder string, resource 
 		view.paths.RLockFunc(func(array []string) {
 			for _, v := range array {
 				v = strings.TrimRight(v, "/"+qn_file.Separator)
-				if resource = gres.Get(v + "/" + file); resource != nil {
+				if resource = qn_res.Get(v + "/" + file); resource != nil {
 					path = resource.Name()
 					folder = v
 					break
 				}
-				if resource = gres.Get(v + "/template/" + file); resource != nil {
+				if resource = qn_res.Get(v + "/template/" + file); resource != nil {
 					path = resource.Name()
 					folder = v + "/template"
 					break
@@ -341,7 +341,7 @@ func (view *View) searchFile(file string) (path string, folder string, resource 
 			buffer.WriteString(fmt.Sprintf("[gview] cannot find template file \"%s\" with no path set/add", file))
 		}
 		if errorPrint() {
-			glog.Error(buffer.String())
+			qn_log.Error(buffer.String())
 		}
 		err = errors.New(fmt.Sprintf(`template file "%s" not found`, file))
 	}

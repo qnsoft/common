@@ -12,18 +12,18 @@ import (
 	"os"
 	"testing"
 
-	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/os/qn_time"
 
 	"github.com/qnsoft/common/encoding/qn_json"
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/os/gcfg"
+	"github.com/qnsoft/common/os/qn_cfg"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func init() {
-	os.Setenv("GF_GCFG_ERRORPRINT", "false")
+	os.Setenv("GF_qn_cfg_ERRORPRINT", "false")
 }
 
 func Test_Basic1(t *testing.T) {
@@ -38,12 +38,12 @@ array = [1,2,3]
     cache = "127.0.0.1:6379,1"
 `
 	qn_test.C(t, func(t *qn_test.T) {
-		path := gcfg.DEFAULT_CONFIG_FILE
+		path := qn_cfg.DEFAULT_CONFIG_FILE
 		err := qn_file.PutContents(path, config)
 		t.Assert(err, nil)
 		defer qn_file.Remove(path)
 
-		c := gcfg.New()
+		c := qn_cfg.New()
 		t.Assert(c.Get("v1"), 1)
 		t.AssertEQ(c.GetInt("v1"), 1)
 		t.AssertEQ(c.GetInt8("v1"), int8(1))
@@ -90,14 +90,14 @@ array = [1,2,3]
 func Test_Basic2(t *testing.T) {
 	config := `log-path = "logs"`
 	qn_test.C(t, func(t *qn_test.T) {
-		path := gcfg.DEFAULT_CONFIG_FILE
+		path := qn_cfg.DEFAULT_CONFIG_FILE
 		err := qn_file.PutContents(path, config)
 		t.Assert(err, nil)
 		defer func() {
 			_ = qn_file.Remove(path)
 		}()
 
-		c := gcfg.New()
+		c := qn_cfg.New()
 		t.Assert(c.Get("log-path"), "logs")
 	})
 }
@@ -113,11 +113,11 @@ array = [1,2,3]
     disk  = "127.0.0.1:6379,0"
     cache = "127.0.0.1:6379,1"
 `
-	gcfg.SetContent(content)
-	defer gcfg.ClearContent()
+	qn_cfg.SetContent(content)
+	defer qn_cfg.ClearContent()
 
 	qn_test.C(t, func(t *qn_test.T) {
-		c := gcfg.New()
+		c := qn_cfg.New()
 		t.Assert(c.Get("v1"), 1)
 		t.AssertEQ(c.GetInt("v1"), 1)
 		t.AssertEQ(c.GetInt8("v1"), int8(1))
@@ -185,7 +185,7 @@ func Test_SetFileName(t *testing.T) {
 			_ = qn_file.Remove(path)
 		}()
 
-		c := gcfg.New()
+		c := qn_cfg.New()
 		c.SetFileName(path)
 		t.Assert(c.Get("v1"), 1)
 		t.AssertEQ(c.GetInt("v1"), 1)
@@ -249,14 +249,14 @@ func Test_Instance(t *testing.T) {
 }
 `
 	qn_test.C(t, func(t *qn_test.T) {
-		path := gcfg.DEFAULT_CONFIG_FILE
+		path := qn_cfg.DEFAULT_CONFIG_FILE
 		err := qn_file.PutContents(path, config)
 		t.Assert(err, nil)
 		defer func() {
 			t.Assert(qn_file.Remove(path), nil)
 		}()
 
-		c := gcfg.Instance()
+		c := qn_cfg.Instance()
 		t.Assert(c.Get("v1"), 1)
 		t.AssertEQ(c.GetInt("v1"), 1)
 		t.AssertEQ(c.GetInt8("v1"), int8(1))
@@ -302,8 +302,8 @@ func Test_Instance(t *testing.T) {
 
 func TestCfg_New(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		os.Setenv("GF_GCFG_PATH", "config")
-		c := gcfg.New("config.yml")
+		os.Setenv("GF_qn_cfg_PATH", "config")
+		c := qn_cfg.New("config.yml")
 		t.Assert(c.Get("name"), nil)
 		t.Assert(c.GetFileName(), "config.yml")
 
@@ -311,21 +311,21 @@ func TestCfg_New(t *testing.T) {
 		_ = qn_file.Mkdir(configPath)
 		defer qn_file.Remove(configPath)
 
-		c = gcfg.New("config.yml")
+		c = qn_cfg.New("config.yml")
 		t.Assert(c.Get("name"), nil)
 
-		_ = os.Unsetenv("GF_GCFG_PATH")
-		c = gcfg.New("config.yml")
+		_ = os.Unsetenv("GF_qn_cfg_PATH")
+		c = qn_cfg.New("config.yml")
 		t.Assert(c.Get("name"), nil)
 	})
 }
 
 func TestCfg_SetPath(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		c := gcfg.New("config.yml")
+		c := qn_cfg.New("config.yml")
 		err := c.SetPath("tmp")
 		t.AssertNE(err, nil)
-		err = c.SetPath("gcfg.go")
+		err = c.SetPath("qn_cfg.go")
 		t.AssertNE(err, nil)
 		t.Assert(c.Get("name"), nil)
 	})
@@ -333,7 +333,7 @@ func TestCfg_SetPath(t *testing.T) {
 
 func TestCfg_SetViolenceCheck(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		c := gcfg.New("config.yml")
+		c := qn_cfg.New("config.yml")
 		c.SetViolenceCheck(true)
 		t.Assert(c.Get("name"), nil)
 	})
@@ -341,10 +341,10 @@ func TestCfg_SetViolenceCheck(t *testing.T) {
 
 func TestCfg_AddPath(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		c := gcfg.New("config.yml")
+		c := qn_cfg.New("config.yml")
 		err := c.AddPath("tmp")
 		t.AssertNE(err, nil)
-		err = c.AddPath("gcfg.go")
+		err = c.AddPath("qn_cfg.go")
 		t.AssertNE(err, nil)
 		t.Assert(c.Get("name"), nil)
 	})
@@ -352,7 +352,7 @@ func TestCfg_AddPath(t *testing.T) {
 
 func TestCfg_FilePath(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		c := gcfg.New("config.yml")
+		c := qn_cfg.New("config.yml")
 		path := c.FilePath("tmp")
 		t.Assert(path, "")
 		path = c.FilePath("tmp")
@@ -377,7 +377,7 @@ func TestCfg_Get(t *testing.T) {
 			"wrong config",
 		)
 		t.Assert(err, nil)
-		c := gcfg.New("config.yml")
+		c := qn_cfg.New("config.yml")
 		t.Assert(c.Get("name"), nil)
 		t.Assert(c.GetVar("name").Val(), nil)
 		t.Assert(c.Contains("name"), false)
@@ -437,26 +437,26 @@ func TestCfg_Get(t *testing.T) {
 
 func TestCfg_Instance(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gcfg.Instance("gf") != nil, true)
+		t.Assert(qn_cfg.Instance("gf") != nil, true)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
 		pwd := qn_file.Pwd()
-		qn_file.Chdir(qn_file.Join(gdebug.TestDataPath()))
+		qn_file.Chdir(qn_file.Join(qn_debug.TestDataPath()))
 		defer qn_file.Chdir(pwd)
-		t.Assert(gcfg.Instance("c1") != nil, true)
-		t.Assert(gcfg.Instance("c1").Get("my-config"), "1")
-		t.Assert(gcfg.Instance("folder1/c1").Get("my-config"), "2")
+		t.Assert(qn_cfg.Instance("c1") != nil, true)
+		t.Assert(qn_cfg.Instance("c1").Get("my-config"), "1")
+		t.Assert(qn_cfg.Instance("folder1/c1").Get("my-config"), "2")
 	})
 }
 
 func TestCfg_Config(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		gcfg.SetContent("gf", "config.yml")
-		t.Assert(gcfg.GetContent("config.yml"), "gf")
-		gcfg.SetContent("gf1", "config.yml")
-		t.Assert(gcfg.GetContent("config.yml"), "gf1")
-		gcfg.RemoveContent("config.yml")
-		gcfg.ClearContent()
-		t.Assert(gcfg.GetContent("name"), "")
+		qn_cfg.SetContent("gf", "config.yml")
+		t.Assert(qn_cfg.GetContent("config.yml"), "gf")
+		qn_cfg.SetContent("gf1", "config.yml")
+		t.Assert(qn_cfg.GetContent("config.yml"), "gf1")
+		qn_cfg.RemoveContent("config.yml")
+		qn_cfg.ClearContent()
+		t.Assert(qn_cfg.GetContent("name"), "")
 	})
 }

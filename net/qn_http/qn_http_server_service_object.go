@@ -21,7 +21,7 @@ import (
 // The optional parameter <method> is used to specify the method to be registered, which
 // supports multiple method names, multiple methods are separated by char ',', case sensitive.
 //
-// Note that the route method should be defined as ghttp.HandlerFunc.
+// Note that the route method should be defined as qn_http.HandlerFunc.
 func (s *Server) BindObject(pattern string, object interface{}, method ...string) {
 	bindMethod := ""
 	if len(method) > 0 {
@@ -35,13 +35,13 @@ func (s *Server) BindObject(pattern string, object interface{}, method ...string
 // The optional parameter <method> is used to specify the method to be registered, which
 // does not supports multiple method names but only one, case sensitive.
 //
-// Note that the route method should be defined as ghttp.HandlerFunc.
+// Note that the route method should be defined as qn_http.HandlerFunc.
 func (s *Server) BindObjectMethod(pattern string, object interface{}, method string) {
 	s.doBindObjectMethod(pattern, object, method, nil, "")
 }
 
 // BindObjectRest registers object in REST API style to server with specified pattern.
-// Note that the route method should be defined as ghttp.HandlerFunc.
+// Note that the route method should be defined as qn_http.HandlerFunc.
 func (s *Server) BindObjectRest(pattern string, object interface{}) {
 	s.doBindObjectRest(pattern, object, nil, "")
 }
@@ -97,12 +97,12 @@ func (s *Server) doBindObject(
 		if !ok {
 			if len(methodMap) > 0 {
 				s.Logger().Errorf(
-					`invalid route method: %s.%s.%s defined as "%s", but "func(*ghttp.Request)" is required for object registry`,
+					`invalid route method: %s.%s.%s defined as "%s", but "func(*qn_http.Request)" is required for object registry`,
 					pkgPath, objName, methodName, v.Method(i).Type().String(),
 				)
 			} else {
 				s.Logger().Debugf(
-					`ignore route method: %s.%s.%s defined as "%s", no match "func(*ghttp.Request)" for object registry`,
+					`ignore route method: %s.%s.%s defined as "%s", no match "func(*qn_http.Request)" for object registry`,
 					pkgPath, objName, methodName, v.Method(i).Type().String(),
 				)
 			}
@@ -176,7 +176,7 @@ func (s *Server) doBindObjectMethod(
 	itemFunc, ok := methodValue.Interface().(func(*Request))
 	if !ok {
 		s.Logger().Errorf(
-			`invalid route method: %s.%s.%s defined as "%s", but "func(*ghttp.Request)" is required for object registry`,
+			`invalid route method: %s.%s.%s defined as "%s", but "func(*qn_http.Request)" is required for object registry`,
 			pkgPath, objName, methodName, methodValue.Type().String(),
 		)
 		return
@@ -225,7 +225,7 @@ func (s *Server) doBindObjectRest(
 		itemFunc, ok := v.Method(i).Interface().(func(*Request))
 		if !ok {
 			s.Logger().Errorf(
-				`invalid route method: %s.%s.%s defined as "%s", but "func(*ghttp.Request)" is required for object registry`,
+				`invalid route method: %s.%s.%s defined as "%s", but "func(*qn_http.Request)" is required for object registry`,
 				pkgPath, objName, methodName, v.Method(i).Type().String(),
 			)
 			continue

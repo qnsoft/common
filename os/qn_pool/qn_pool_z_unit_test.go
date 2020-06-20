@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/os/gfpool"
-	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -131,7 +131,7 @@ func stop(testFile string) {
 	if qn_file.Exists(testFile) {
 		err := qn_file.Remove(testFile)
 		if err != nil {
-			glog.Error(err)
+			qn_log.Error(err)
 		}
 	}
 }

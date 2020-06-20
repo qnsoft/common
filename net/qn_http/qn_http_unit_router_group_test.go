@@ -13,30 +13,30 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/frame/gmvc"
-	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 // 执行对象
 type GroupObject struct{}
 
-func (o *GroupObject) Init(r *ghttp.Request) {
+func (o *GroupObject) Init(r *qn_http.Request) {
 	r.Response.Write("1")
 }
 
-func (o *GroupObject) Shut(r *ghttp.Request) {
+func (o *GroupObject) Shut(r *qn_http.Request) {
 	r.Response.Write("2")
 }
 
-func (o *GroupObject) Index(r *ghttp.Request) {
+func (o *GroupObject) Index(r *qn_http.Request) {
 	r.Response.Write("Object Index")
 }
 
-func (o *GroupObject) Show(r *ghttp.Request) {
+func (o *GroupObject) Show(r *qn_http.Request) {
 	r.Response.Write("Object Show")
 }
 
-func (o *GroupObject) Delete(r *ghttp.Request) {
+func (o *GroupObject) Delete(r *qn_http.Request) {
 	r.Response.Write("Object Delete")
 }
 
@@ -45,7 +45,7 @@ type GroupController struct {
 	gmvc.Controller
 }
 
-func (c *GroupController) Init(r *ghttp.Request) {
+func (c *GroupController) Init(r *qn_http.Request) {
 	c.Controller.Init(r)
 	c.Response.Write("1")
 }
@@ -66,7 +66,7 @@ func (c *GroupController) Post() {
 	c.Response.Write("Controller Post")
 }
 
-func Handler(r *ghttp.Request) {
+func Handler(r *qn_http.Request) {
 	r.Response.Write("Handler")
 }
 
@@ -91,7 +91,7 @@ func Test_Router_GroupBasic1(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/api/handler"), "Handler")
@@ -139,7 +139,7 @@ func Test_Router_GroupBasic2(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/api/handler"), "Handler")
@@ -175,7 +175,7 @@ func Test_Router_GroupBuildInVar(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.Assert(client.GetContent("/api/group-controller/index"), "1Controller Index2")
@@ -206,7 +206,7 @@ func Test_Router_Group_Mthods(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		client := ghttp.NewClient()
+		client := qn_http.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/ctl/show"), "1Controller Show2")
 		t.Assert(client.GetContent("/ctl/post"), "1Controller Post2")
@@ -220,13 +220,13 @@ func Test_Router_Group_MultiServer(t *testing.T) {
 	p2, _ := ports.PopRand()
 	s1 := g.Server(p1)
 	s2 := g.Server(p2)
-	s1.Group("/", func(group *ghttp.RouterGroup) {
-		group.POST("/post", func(r *ghttp.Request) {
+	s1.Group("/", func(group *qn_http.RouterGroup) {
+		group.POST("/post", func(r *qn_http.Request) {
 			r.Response.Write("post1")
 		})
 	})
-	s2.Group("/", func(group *ghttp.RouterGroup) {
-		group.POST("/post", func(r *ghttp.Request) {
+	s2.Group("/", func(group *qn_http.RouterGroup) {
+		group.POST("/post", func(r *qn_http.Request) {
 			r.Response.Write("post2")
 		})
 	})
@@ -241,9 +241,9 @@ func Test_Router_Group_MultiServer(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		c1 := ghttp.NewClient()
+		c1 := qn_http.NewClient()
 		c1.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p1))
-		c2 := ghttp.NewClient()
+		c2 := qn_http.NewClient()
 		c2.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p2))
 		t.Assert(c1.PostContent("/post"), "post1")
 		t.Assert(c2.PostContent("/post"), "post2")

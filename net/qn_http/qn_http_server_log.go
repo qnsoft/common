@@ -10,11 +10,11 @@ import (
 	"fmt"
 
 	"github.com/qnsoft/common/errors/qn_error"
-	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_log"
 )
 
 // Logger returns the logger of the server.
-func (s *Server) Logger() *glog.Logger {
+func (s *Server) Logger() *qn_log.Logger {
 	return s.config.Logger
 }
 

@@ -8,12 +8,13 @@ package qn_http
 
 import (
 	"bytes"
-	"github.com/qnsoft/common/os/glog"
+
+	"github.com/qnsoft/common/os/qn_log"
 )
 
 // errorLogger is the error logging logger for underlying net/http.Server.
 type errorLogger struct {
-	logger *glog.Logger
+	logger *qn_log.Logger
 }
 
 // Write implements the io.Writer interface.
