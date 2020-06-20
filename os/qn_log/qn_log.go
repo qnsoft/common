@@ -9,7 +9,7 @@ package qn_log
 
 import (
 	"github.com/qnsoft/common/internal/cmdenv"
-	"github.com/qnsoft/common/os/grpool"
+	"github.com/qnsoft/common/os/qn_pool"
 )
 
 var (
@@ -18,7 +18,7 @@ var (
 
 	// Goroutine pool for async logging output.
 	// It uses only one asynchronize worker to ensure log sequence.
-	asyncPool = grpool.New(1)
+	asyncPool = qn_pool.New(1)
 
 	// defaultDebug enables debug level or not in default,
 	// which can be configured using command option or system environment.

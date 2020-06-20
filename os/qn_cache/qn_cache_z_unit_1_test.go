@@ -14,8 +14,8 @@ import (
 
 	"github.com/qnsoft/common/container/qn_set"
 	"github.com/qnsoft/common/frame/qn"
-	"github.com/qnsoft/common/os/grpool"
 	"github.com/qnsoft/common/os/qn_cache"
+	"github.com/qnsoft/common/os/qn_pool"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -217,7 +217,7 @@ func TestCache_Clear(t *testing.T) {
 func TestCache_SetConcurrency(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		cache := qn_cache.New()
-		pool := grpool.New(4)
+		pool := qn_pool.New(4)
 		go func() {
 			for {
 				pool.Add(func() {
