@@ -14,12 +14,12 @@ import (
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_AnyAnyMap_Var(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.AnyAnyMap
 		m.Set(1, 1)
 
@@ -49,7 +49,7 @@ func Test_AnyAnyMap_Var(t *testing.T) {
 }
 
 func Test_AnyAnyMap_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewAnyAnyMap()
 		m.Set(1, 1)
 
@@ -82,7 +82,7 @@ func Test_AnyAnyMap_Basic(t *testing.T) {
 }
 
 func Test_AnyAnyMap_Set_Fun(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewAnyAnyMap()
 
 		m.GetOrSetFunc(1, getAny)
@@ -100,7 +100,7 @@ func Test_AnyAnyMap_Set_Fun(t *testing.T) {
 }
 
 func Test_AnyAnyMap_Batch(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewAnyAnyMap()
 
 		m.Sets(map[interface{}]interface{}{1: 1, 2: "2", 3: 3})
@@ -111,7 +111,7 @@ func Test_AnyAnyMap_Batch(t *testing.T) {
 }
 
 func Test_AnyAnyMap_Iterator(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[interface{}]interface{}{1: 1, 2: "2"}
 		m := gmap.NewAnyAnyMapFrom(expect)
 		m.Iterator(func(k interface{}, v interface{}) bool {
@@ -135,7 +135,7 @@ func Test_AnyAnyMap_Iterator(t *testing.T) {
 }
 
 func Test_AnyAnyMap_Lock(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[interface{}]interface{}{1: 1, 2: "2"}
 		m := gmap.NewAnyAnyMapFrom(expect)
 		m.LockFunc(func(m map[interface{}]interface{}) {
@@ -148,7 +148,7 @@ func Test_AnyAnyMap_Lock(t *testing.T) {
 }
 
 func Test_AnyAnyMap_Clone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//clone 方法是深克隆
 		m := gmap.NewAnyAnyMapFrom(map[interface{}]interface{}{1: 1, 2: "2"})
 
@@ -164,7 +164,7 @@ func Test_AnyAnyMap_Clone(t *testing.T) {
 }
 
 func Test_AnyAnyMap_Merge(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := gmap.NewAnyAnyMap()
 		m2 := gmap.NewAnyAnyMap()
 		m1.Set(1, 1)
@@ -175,7 +175,7 @@ func Test_AnyAnyMap_Merge(t *testing.T) {
 }
 
 func Test_AnyAnyMap_Map(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewAnyAnyMap()
 		m.Set(1, 0)
 		m.Set(2, 2)
@@ -192,7 +192,7 @@ func Test_AnyAnyMap_Map(t *testing.T) {
 }
 
 func Test_AnyAnyMap_MapCopy(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewAnyAnyMap()
 		m.Set(1, 0)
 		m.Set(2, 2)
@@ -209,7 +209,7 @@ func Test_AnyAnyMap_MapCopy(t *testing.T) {
 }
 
 func Test_AnyAnyMap_FilterEmpty(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewAnyAnyMap()
 		m.Set(1, 0)
 		m.Set(2, 2)
@@ -219,7 +219,7 @@ func Test_AnyAnyMap_FilterEmpty(t *testing.T) {
 		t.Assert(m.Get(1), nil)
 		t.Assert(m.Get(2), 2)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewAnyAnyMap()
 		m.Set(1, 0)
 		m.Set("time1", time.Time{})
@@ -235,24 +235,24 @@ func Test_AnyAnyMap_FilterEmpty(t *testing.T) {
 
 func Test_AnyAnyMap_Json(t *testing.T) {
 	// Marshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
 		m1 := gmap.NewAnyAnyMapFrom(data)
 		b1, err1 := json.Marshal(m1)
-		b2, err2 := json.Marshal(gconv.Map(data))
+		b2, err2 := json.Marshal(qn_conv.Map(data))
 		t.Assert(err1, err2)
 		t.Assert(b1, b2)
 	})
 	// Unmarshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		b, err := json.Marshal(gconv.Map(data))
+		b, err := json.Marshal(qn_conv.Map(data))
 		t.Assert(err, nil)
 
 		m := gmap.New()
@@ -261,12 +261,12 @@ func Test_AnyAnyMap_Json(t *testing.T) {
 		t.Assert(m.Get("k1"), data["k1"])
 		t.Assert(m.Get("k2"), data["k2"])
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		b, err := json.Marshal(gconv.Map(data))
+		b, err := json.Marshal(qn_conv.Map(data))
 		t.Assert(err, nil)
 
 		var m gmap.Map
@@ -278,7 +278,7 @@ func Test_AnyAnyMap_Json(t *testing.T) {
 }
 
 func Test_AnyAnyMap_Pop(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewAnyAnyMapFrom(g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
@@ -300,7 +300,7 @@ func Test_AnyAnyMap_Pop(t *testing.T) {
 }
 
 func Test_AnyAnyMap_Pops(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewAnyAnyMapFrom(g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
@@ -336,9 +336,9 @@ func TestAnyAnyMap_UnmarshalValue(t *testing.T) {
 		Map  *gmap.Map
 	}
 	// JSON
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"map":  []byte(`{"k1":"v1","k2":"v2"}`),
 		}, &v)
@@ -349,9 +349,9 @@ func TestAnyAnyMap_UnmarshalValue(t *testing.T) {
 		t.Assert(v.Map.Get("k2"), "v2")
 	})
 	// Map
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"map": g.Map{
 				"k1": "v1",

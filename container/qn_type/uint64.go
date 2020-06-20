@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"sync/atomic"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Uint64 is a struct for concurrent-safe operation for type uint64.
@@ -61,17 +61,17 @@ func (v *Uint64) String() string {
 
 // MarshalJSON implements the interface MarshalJSON for json.Marshal.
 func (v *Uint64) MarshalJSON() ([]byte, error) {
-	return gconv.UnsafeStrToBytes(strconv.FormatUint(v.Val(), 10)), nil
+	return qn_conv.UnsafeStrToBytes(strconv.FormatUint(v.Val(), 10)), nil
 }
 
 // UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
 func (v *Uint64) UnmarshalJSON(b []byte) error {
-	v.Set(gconv.Uint64(gconv.UnsafeBytesToStr(b)))
+	v.Set(qn_conv.Uint64(qn_conv.UnsafeBytesToStr(b)))
 	return nil
 }
 
 // UnmarshalValue is an interface implement which sets any type of value for <v>.
 func (v *Uint64) UnmarshalValue(value interface{}) error {
-	v.Set(gconv.Uint64(value))
+	v.Set(qn_conv.Uint64(value))
 	return nil
 }

@@ -7,17 +7,18 @@
 package qn_mutex_test
 
 import (
-	"github.com/qnsoft/common/os/glog"
 	"testing"
 	"time"
 
+	"github.com/qnsoft/common/os/glog"
+
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/gmutex"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Mutex_RUnlock(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		mu := gmutex.New()
 		for index := 0; index < 1000; index++ {
 			go func() {
@@ -41,7 +42,7 @@ func Test_Mutex_RUnlock(t *testing.T) {
 	})
 
 	//RLock before Lock
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		mu := gmutex.New()
 		mu.RLock()
 		go func() {
@@ -60,7 +61,7 @@ func Test_Mutex_RUnlock(t *testing.T) {
 }
 
 func Test_Mutex_IsLocked(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		mu := gmutex.New()
 		go func() {
 			mu.LockFunc(func() {
@@ -90,7 +91,7 @@ func Test_Mutex_IsLocked(t *testing.T) {
 }
 
 func Test_Mutex_Unlock(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		mu := gmutex.New()
 		array := qn_array.New(true)
 		go func() {
@@ -128,7 +129,7 @@ func Test_Mutex_Unlock(t *testing.T) {
 }
 
 func Test_Mutex_LockFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		mu := gmutex.New()
 		array := qn_array.New(true)
 		go func() {
@@ -153,7 +154,7 @@ func Test_Mutex_LockFunc(t *testing.T) {
 }
 
 func Test_Mutex_TryLockFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		mu := gmutex.New()
 		array := qn_array.New(true)
 		go func() {
@@ -184,7 +185,7 @@ func Test_Mutex_TryLockFunc(t *testing.T) {
 }
 
 func Test_Mutex_RLockFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		mu := gmutex.New()
 		array := qn_array.New(true)
 		go func() {
@@ -208,7 +209,7 @@ func Test_Mutex_RLockFunc(t *testing.T) {
 		t.Assert(array.Len(), 2)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		mu := gmutex.New()
 		array := qn_array.New(true)
 		go func() {
@@ -239,7 +240,7 @@ func Test_Mutex_RLockFunc(t *testing.T) {
 }
 
 func Test_Mutex_TryRLockFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			mu    = gmutex.New()
 			array = qn_array.New(true)

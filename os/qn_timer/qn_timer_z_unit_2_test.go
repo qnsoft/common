@@ -12,13 +12,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/os/gtimer"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_timer"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func TestEntry_Start_Stop_Close(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		entry := timer.Add(200*time.Millisecond, func() {
@@ -36,12 +36,12 @@ func TestEntry_Start_Stop_Close(t *testing.T) {
 		time.Sleep(250 * time.Millisecond)
 		t.Assert(array.Len(), 2)
 
-		t.Assert(entry.Status(), gtimer.STATUS_CLOSED)
+		t.Assert(entry.Status(), qn_timer.STATUS_CLOSED)
 	})
 }
 
 func TestEntry_Singleton(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		entry := timer.Add(200*time.Millisecond, func() {
@@ -60,7 +60,7 @@ func TestEntry_Singleton(t *testing.T) {
 }
 
 func TestEntry_SetTimes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		entry := timer.Add(200*time.Millisecond, func() {
@@ -73,7 +73,7 @@ func TestEntry_SetTimes(t *testing.T) {
 }
 
 func TestEntry_Run(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		entry := timer.Add(1000*time.Millisecond, func() {

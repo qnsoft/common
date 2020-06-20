@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/qnsoft/common/errors/gerror"
+	"github.com/qnsoft/common/errors/qn_error"
 	"github.com/qnsoft/common/internal/json"
 )
 
@@ -156,7 +156,7 @@ func doStructs(params interface{}, pointer interface{}, deep bool, mapping ...ma
 	defer func() {
 		// Catch the panic, especially the reflect operation panics.
 		if e := recover(); e != nil {
-			err = gerror.NewfSkip(1, "%v", e)
+			err = qn_error.NewfSkip(1, "%v", e)
 		}
 	}()
 	pointerRv, ok := pointer.(reflect.Value)

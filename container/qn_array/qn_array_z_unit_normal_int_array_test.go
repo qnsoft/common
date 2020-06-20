@@ -14,14 +14,14 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_IntArray_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := []int{0, 1, 2, 3}
 		expect2 := []int{}
 		array := qn_array.NewIntArrayFrom(expect)
@@ -68,7 +68,7 @@ func Test_IntArray_Basic(t *testing.T) {
 }
 
 func TestIntArray_Sort(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect1 := []int{0, 1, 2, 3}
 		expect2 := []int{3, 2, 1, 0}
 		array := qn_array.NewIntArray()
@@ -86,7 +86,7 @@ func TestIntArray_Sort(t *testing.T) {
 }
 
 func TestIntArray_Unique(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := []int{1, 1, 2, 3}
 		array := qn_array.NewIntArrayFrom(expect)
 		t.Assert(array.Unique().Slice(), []int{1, 2, 3})
@@ -94,7 +94,7 @@ func TestIntArray_Unique(t *testing.T) {
 }
 
 func TestIntArray_PushAndPop(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := []int{0, 1, 2, 3}
 		array := qn_array.NewIntArrayFrom(expect)
 		t.Assert(array.Slice(), expect)
@@ -126,7 +126,7 @@ func TestIntArray_PushAndPop(t *testing.T) {
 }
 
 func TestIntArray_PopLeftsAndPopRights(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.NewIntArray()
 
 		v, ok := array.PopLeft()
@@ -148,7 +148,7 @@ func TestIntArray_PopLeftsAndPopRights(t *testing.T) {
 		t.Assert(array.PopRands(10), nil)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		value1 := []int{0, 1, 2, 3, 4, 5, 6}
 		value2 := []int{0, 1, 2, 3, 4, 5, 6}
 		array1 := qn_array.NewIntArrayFrom(value1)
@@ -165,7 +165,7 @@ func TestIntArray_PopLeftsAndPopRights(t *testing.T) {
 }
 
 func TestIntArray_Range(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		value1 := []int{0, 1, 2, 3, 4, 5, 6}
 		array1 := qn_array.NewIntArrayFrom(value1)
 		array2 := qn_array.NewIntArrayFrom(value1, true)
@@ -179,9 +179,9 @@ func TestIntArray_Range(t *testing.T) {
 }
 
 func TestIntArray_Merge(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		func1 := func(v1, v2 interface{}) int {
-			if gconv.Int(v1) < gconv.Int(v2) {
+			if qn_conv.Int(v1) < qn_conv.Int(v2) {
 				return 0
 			}
 			return 1
@@ -214,7 +214,7 @@ func TestIntArray_Merge(t *testing.T) {
 }
 
 func TestIntArray_Fill(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{0}
 		a2 := []int{0}
 		array1 := qn_array.NewIntArrayFrom(a1)
@@ -231,7 +231,7 @@ func TestIntArray_Fill(t *testing.T) {
 }
 
 func TestIntArray_PopLeft(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.NewIntArrayFrom(g.SliceInt{1, 2, 3})
 		v, ok := array.PopLeft()
 		t.Assert(v, 1)
@@ -249,7 +249,7 @@ func TestIntArray_PopLeft(t *testing.T) {
 }
 
 func TestIntArray_PopRight(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.NewIntArrayFrom(g.SliceInt{1, 2, 3})
 
 		v, ok := array.PopRight()
@@ -270,7 +270,7 @@ func TestIntArray_PopRight(t *testing.T) {
 }
 
 func TestIntArray_PopLefts(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.NewIntArrayFrom(g.SliceInt{1, 2, 3})
 		t.Assert(array.PopLefts(2), g.Slice{1, 2})
 		t.Assert(array.Len(), 1)
@@ -280,7 +280,7 @@ func TestIntArray_PopLefts(t *testing.T) {
 }
 
 func TestIntArray_PopRights(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.NewIntArrayFrom(g.SliceInt{1, 2, 3})
 		t.Assert(array.PopRights(2), g.Slice{2, 3})
 		t.Assert(array.Len(), 1)
@@ -290,7 +290,7 @@ func TestIntArray_PopRights(t *testing.T) {
 }
 
 func TestIntArray_Chunk(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 4, 5}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		chunks := array1.Chunk(2)
@@ -300,7 +300,7 @@ func TestIntArray_Chunk(t *testing.T) {
 		t.Assert(chunks[2], []int{5})
 		t.Assert(array1.Chunk(0), nil)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 4, 5}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		chunks := array1.Chunk(3)
@@ -309,7 +309,7 @@ func TestIntArray_Chunk(t *testing.T) {
 		t.Assert(chunks[1], []int{4, 5})
 		t.Assert(array1.Chunk(0), nil)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 4, 5, 6}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		chunks := array1.Chunk(2)
@@ -319,7 +319,7 @@ func TestIntArray_Chunk(t *testing.T) {
 		t.Assert(chunks[2], []int{5, 6})
 		t.Assert(array1.Chunk(0), nil)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 4, 5, 6}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		chunks := array1.Chunk(3)
@@ -331,7 +331,7 @@ func TestIntArray_Chunk(t *testing.T) {
 }
 
 func TestIntArray_Pad(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{0}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		t.Assert(array1.Pad(3, 1).Slice(), []int{0, 1, 1})
@@ -341,7 +341,7 @@ func TestIntArray_Pad(t *testing.T) {
 }
 
 func TestIntArray_SubSlice(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{0, 1, 2, 3, 4, 5, 6}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		array2 := qn_array.NewIntArrayFrom(a1, true)
@@ -365,7 +365,7 @@ func TestIntArray_SubSlice(t *testing.T) {
 }
 
 func TestIntArray_Rand(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{0, 1, 2, 3, 4, 5, 6}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		t.Assert(len(array1.Rands(2)), 2)
@@ -379,7 +379,7 @@ func TestIntArray_Rand(t *testing.T) {
 }
 
 func TestIntArray_PopRands(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{100, 200, 300, 400, 500, 600}
 		array := qn_array.NewIntArrayFrom(a1)
 		ns1 := array.PopRands(2)
@@ -393,7 +393,7 @@ func TestIntArray_PopRands(t *testing.T) {
 }
 
 func TestIntArray_Shuffle(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{0, 1, 2, 3, 4, 5, 6}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		t.Assert(array1.Shuffle().Len(), 7)
@@ -401,7 +401,7 @@ func TestIntArray_Shuffle(t *testing.T) {
 }
 
 func TestIntArray_Reverse(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{0, 1, 2, 3, 4, 5, 6}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		t.Assert(array1.Reverse().Slice(), []int{6, 5, 4, 3, 2, 1, 0})
@@ -409,7 +409,7 @@ func TestIntArray_Reverse(t *testing.T) {
 }
 
 func TestIntArray_Join(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{0, 1, 2, 3, 4, 5, 6}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		t.Assert(array1.Join("."), "0.1.2.3.4.5.6")
@@ -417,7 +417,7 @@ func TestIntArray_Join(t *testing.T) {
 }
 
 func TestIntArray_String(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{0, 1, 2, 3, 4, 5, 6}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		t.Assert(array1.String(), "[0,1,2,3,4,5,6]")
@@ -425,7 +425,7 @@ func TestIntArray_String(t *testing.T) {
 }
 
 func TestIntArray_SetArray(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 5}
 		a2 := []int{6, 7}
 		array1 := qn_array.NewIntArrayFrom(a1)
@@ -436,7 +436,7 @@ func TestIntArray_SetArray(t *testing.T) {
 }
 
 func TestIntArray_Replace(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 5}
 		a2 := []int{6, 7}
 		a3 := []int{9, 10, 11, 12, 13}
@@ -450,7 +450,7 @@ func TestIntArray_Replace(t *testing.T) {
 }
 
 func TestIntArray_Clear(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 5}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		array1.Clear()
@@ -459,7 +459,7 @@ func TestIntArray_Clear(t *testing.T) {
 }
 
 func TestIntArray_Clone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 5}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		array2 := array1.Clone()
@@ -468,7 +468,7 @@ func TestIntArray_Clone(t *testing.T) {
 }
 
 func TestArray_Get(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 5}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		v, ok := array1.Get(2)
@@ -479,7 +479,7 @@ func TestArray_Get(t *testing.T) {
 }
 
 func TestIntArray_Sum(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 5}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		t.Assert(array1.Sum(), 11)
@@ -487,7 +487,7 @@ func TestIntArray_Sum(t *testing.T) {
 }
 
 func TestIntArray_CountValues(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 5, 3}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		m1 := array1.CountValues()
@@ -498,7 +498,7 @@ func TestIntArray_CountValues(t *testing.T) {
 }
 
 func TestNewIntArrayFromCopy(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 5, 3}
 		array1 := qn_array.NewIntArrayFromCopy(a1)
 		t.Assert(array1.Len(), 5)
@@ -507,7 +507,7 @@ func TestNewIntArrayFromCopy(t *testing.T) {
 }
 
 func TestIntArray_Remove(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []int{1, 2, 3, 5, 4}
 		array1 := qn_array.NewIntArrayFrom(a1)
 		v, ok := array1.Remove(1)
@@ -528,7 +528,7 @@ func TestIntArray_Remove(t *testing.T) {
 }
 
 func TestIntArray_LockFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := []int{1, 2, 3, 4}
 		a1 := qn_array.NewIntArrayFrom(s1, true)
 
@@ -538,15 +538,15 @@ func TestIntArray_LockFunc(t *testing.T) {
 		go a1.LockFunc(func(n1 []int) { //读写锁
 			time.Sleep(2 * time.Second) //暂停2秒
 			n1[2] = 6
-			ch2 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch2 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 		})
 
 		//go2
 		go func() {
 			time.Sleep(100 * time.Millisecond) //故意暂停0.01秒,等go1执行锁后，再开始执行.
-			ch1 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch1 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 			a1.Len()
-			ch1 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch1 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 		}()
 
 		t1 := <-ch1
@@ -560,7 +560,7 @@ func TestIntArray_LockFunc(t *testing.T) {
 }
 
 func TestIntArray_SortFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := []int{1, 4, 3, 2}
 		a1 := qn_array.NewIntArrayFrom(s1)
 		func1 := func(v1, v2 int) bool {
@@ -573,7 +573,7 @@ func TestIntArray_SortFunc(t *testing.T) {
 }
 
 func TestIntArray_RLockFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := []int{1, 2, 3, 4}
 		a1 := qn_array.NewIntArrayFrom(s1, true)
 
@@ -583,15 +583,15 @@ func TestIntArray_RLockFunc(t *testing.T) {
 		go a1.RLockFunc(func(n1 []int) { //读锁
 			time.Sleep(2 * time.Second) //暂停1秒
 			n1[2] = 6
-			ch2 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch2 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 		})
 
 		//go2
 		go func() {
 			time.Sleep(100 * time.Millisecond) //故意暂停0.01秒,等go1执行锁后，再开始执行.
-			ch1 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch1 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 			a1.Len()
-			ch1 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch1 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 		}()
 
 		t1 := <-ch1
@@ -606,7 +606,7 @@ func TestIntArray_RLockFunc(t *testing.T) {
 
 func TestIntArray_Json(t *testing.T) {
 	// array pointer
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := []int{1, 4, 3, 2}
 		a1 := qn_array.NewIntArrayFrom(s1)
 		b1, err1 := json.Marshal(a1)
@@ -624,7 +624,7 @@ func TestIntArray_Json(t *testing.T) {
 		t.Assert(a3.Slice(), s1)
 	})
 	// array value
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := []int{1, 4, 3, 2}
 		a1 := *qn_array.NewIntArrayFrom(s1)
 		b1, err1 := json.Marshal(a1)
@@ -642,7 +642,7 @@ func TestIntArray_Json(t *testing.T) {
 		t.Assert(a3.Slice(), s1)
 	})
 	// array pointer
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Name   string
 			Scores *qn_array.IntArray
@@ -661,7 +661,7 @@ func TestIntArray_Json(t *testing.T) {
 		t.Assert(user.Scores, data["Scores"])
 	})
 	// array value
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Name   string
 			Scores qn_array.IntArray
@@ -684,25 +684,25 @@ func TestIntArray_Json(t *testing.T) {
 func TestIntArray_Iterator(t *testing.T) {
 	slice := g.SliceInt{10, 20, 30, 40}
 	array := qn_array.NewIntArrayFrom(slice)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array.Iterator(func(k int, v int) bool {
 			t.Assert(v, slice[k])
 			return true
 		})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array.IteratorAsc(func(k int, v int) bool {
 			t.Assert(v, slice[k])
 			return true
 		})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array.IteratorDesc(func(k int, v int) bool {
 			t.Assert(v, slice[k])
 			return true
 		})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		index := 0
 		array.Iterator(func(k int, v int) bool {
 			index++
@@ -710,7 +710,7 @@ func TestIntArray_Iterator(t *testing.T) {
 		})
 		t.Assert(index, 1)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		index := 0
 		array.IteratorAsc(func(k int, v int) bool {
 			index++
@@ -718,7 +718,7 @@ func TestIntArray_Iterator(t *testing.T) {
 		})
 		t.Assert(index, 1)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		index := 0
 		array.IteratorDesc(func(k int, v int) bool {
 			index++
@@ -731,7 +731,7 @@ func TestIntArray_Iterator(t *testing.T) {
 func TestIntArray_RemoveValue(t *testing.T) {
 	slice := g.SliceInt{10, 20, 30, 40}
 	array := qn_array.NewIntArrayFrom(slice)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(array.RemoveValue(99), false)
 		t.Assert(array.RemoveValue(20), true)
 		t.Assert(array.RemoveValue(10), true)
@@ -747,9 +747,9 @@ func TestIntArray_UnmarshalValue(t *testing.T) {
 		Array *qn_array.IntArray
 	}
 	// JSON
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(g.Map{
+		err := qn_conv.Struct(g.Map{
 			"name":  "john",
 			"array": []byte(`[1,2,3]`),
 		}, &v)
@@ -758,9 +758,9 @@ func TestIntArray_UnmarshalValue(t *testing.T) {
 		t.Assert(v.Array.Slice(), g.Slice{1, 2, 3})
 	})
 	// Map
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(g.Map{
+		err := qn_conv.Struct(g.Map{
 			"name":  "john",
 			"array": g.Slice{1, 2, 3},
 		}, &v)
@@ -771,18 +771,18 @@ func TestIntArray_UnmarshalValue(t *testing.T) {
 }
 
 func TestIntArray_FilterEmpty(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.NewIntArrayFrom(g.SliceInt{0, 1, 2, 3, 4, 0})
 		t.Assert(array.FilterEmpty(), g.SliceInt{1, 2, 3, 4})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.NewIntArrayFrom(g.SliceInt{1, 2, 3, 4})
 		t.Assert(array.FilterEmpty(), g.SliceInt{1, 2, 3, 4})
 	})
 }
 
 func TestIntArray_Walk(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.NewIntArrayFrom(g.SliceInt{1, 2})
 		t.Assert(array.Walk(func(value int) int {
 			return 10 + value

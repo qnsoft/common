@@ -13,10 +13,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/gogf/gf/util/grand"
 	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/util/qn_rand"
 )
 
 // UploadFile wraps the multipart uploading file with more and convenient features.
@@ -36,11 +36,11 @@ func (f *UploadFile) Save(dirPath string, randomlyRename ...bool) (filename stri
 	if f == nil {
 		return "", errors.New("file is empty, maybe you retrieve it from invalid field name or form enctype")
 	}
-	if !gfile.Exists(dirPath) {
-		if err = gfile.Mkdir(dirPath); err != nil {
+	if !qn_file.Exists(dirPath) {
+		if err = qn_file.Mkdir(dirPath); err != nil {
 			return
 		}
-	} else if !gfile.IsDir(dirPath) {
+	} else if !qn_file.IsDir(dirPath) {
 		return "", errors.New(`parameter "dirPath" should be a directory path`)
 	}
 
@@ -50,13 +50,13 @@ func (f *UploadFile) Save(dirPath string, randomlyRename ...bool) (filename stri
 	}
 	defer file.Close()
 
-	name := gfile.Basename(f.Filename)
+	name := qn_file.Basename(f.Filename)
 	if len(randomlyRename) > 0 && randomlyRename[0] {
-		name = strings.ToLower(strconv.FormatInt(gtime.TimestampNano(), 36) + grand.S(6))
-		name = name + gfile.Ext(f.Filename)
+		name = strings.ToLower(strconv.FormatInt(qn_time.TimestampNano(), 36) + qn_rand.S(6))
+		name = name + qn_file.Ext(f.Filename)
 	}
-	filePath := gfile.Join(dirPath, name)
-	newFile, err := gfile.Create(filePath)
+	filePath := qn_file.Join(dirPath, name)
+	newFile, err := qn_file.Create(filePath)
 	if err != nil {
 		return "", err
 	}
@@ -65,7 +65,7 @@ func (f *UploadFile) Save(dirPath string, randomlyRename ...bool) (filename stri
 	if _, err := io.Copy(newFile, file); err != nil {
 		return "", err
 	}
-	return gfile.Basename(filePath), nil
+	return qn_file.Basename(filePath), nil
 }
 
 // Save saves all uploading files to specified directory path and returns the saved file names.

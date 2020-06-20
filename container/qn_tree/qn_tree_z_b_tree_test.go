@@ -12,13 +12,13 @@ import (
 
 	"github.com/qnsoft/common/container/gtree"
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gutil"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_util"
 )
 
 func Test_BTree_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewBTree(3, gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewBTree(3, qn_util.ComparatorString)
 		m.Set("key1", "val1")
 
 		t.Assert(m.Height(), 1)
@@ -46,15 +46,15 @@ func Test_BTree_Basic(t *testing.T) {
 		t.Assert(m.Size(), 0)
 		t.Assert(m.IsEmpty(), true)
 
-		m2 := gtree.NewBTreeFrom(3, gutil.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
+		m2 := gtree.NewBTreeFrom(3, qn_util.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
 		t.Assert(m2.Map(), map[interface{}]interface{}{1: 1, "key1": "val1"})
 	})
 }
 
 func Test_BTree_Set_Fun(t *testing.T) {
 	//GetOrSetFunc lock or unlock
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewBTree(3, gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewBTree(3, qn_util.ComparatorString)
 		t.Assert(m.GetOrSetFunc("fun", getValue), 3)
 		t.Assert(m.GetOrSetFunc("fun", getValue), 3)
 		t.Assert(m.GetOrSetFuncLock("funlock", getValue), 3)
@@ -63,8 +63,8 @@ func Test_BTree_Set_Fun(t *testing.T) {
 		t.Assert(m.Get("fun"), 3)
 	})
 	//SetIfNotExistFunc lock or unlock
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewBTree(3, gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewBTree(3, qn_util.ComparatorString)
 		t.Assert(m.SetIfNotExistFunc("fun", getValue), true)
 		t.Assert(m.SetIfNotExistFunc("fun", getValue), false)
 		t.Assert(m.SetIfNotExistFuncLock("funlock", getValue), true)
@@ -76,16 +76,16 @@ func Test_BTree_Set_Fun(t *testing.T) {
 }
 
 func Test_BTree_Get_Set_Var(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewBTree(3, gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewBTree(3, qn_util.ComparatorString)
 		t.AssertEQ(m.SetIfNotExist("key1", "val1"), true)
 		t.AssertEQ(m.SetIfNotExist("key1", "val1"), false)
 		t.AssertEQ(m.GetVarOrSet("key1", "val1"), qn_var.New("val1", true))
 		t.AssertEQ(m.GetVar("key1"), qn_var.New("val1", true))
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewBTree(3, gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewBTree(3, qn_util.ComparatorString)
 		t.AssertEQ(m.GetVarOrSetFunc("fun", getValue), qn_var.New(3, true))
 		t.AssertEQ(m.GetVarOrSetFunc("fun", getValue), qn_var.New(3, true))
 		t.AssertEQ(m.GetVarOrSetFuncLock("funlock", getValue), qn_var.New(3, true))
@@ -94,8 +94,8 @@ func Test_BTree_Get_Set_Var(t *testing.T) {
 }
 
 func Test_BTree_Batch(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewBTree(3, gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewBTree(3, qn_util.ComparatorString)
 		m.Sets(map[interface{}]interface{}{1: 1, "key1": "val1", "key2": "val2", "key3": "val3"})
 		t.Assert(m.Map(), map[interface{}]interface{}{1: 1, "key1": "val1", "key2": "val2", "key3": "val3"})
 		m.Removes([]interface{}{"key1", 1})
@@ -110,9 +110,9 @@ func Test_BTree_Iterator(t *testing.T) {
 
 	expect := map[interface{}]interface{}{"key4": "val4", 1: 1, "key1": "val1", "key2": "val2", "key3": "val3"}
 
-	m := gtree.NewBTreeFrom(3, gutil.ComparatorString, expect)
+	m := gtree.NewBTreeFrom(3, qn_util.ComparatorString, expect)
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m.Iterator(func(k interface{}, v interface{}) bool {
 			t.Assert(k, keys[index])
 			index++
@@ -130,7 +130,7 @@ func Test_BTree_Iterator(t *testing.T) {
 
 	m.Print()
 	// 断言返回值对遍历控制
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := 0
 		j := 0
 		m.Iterator(func(k interface{}, v interface{}) bool {
@@ -145,7 +145,7 @@ func Test_BTree_Iterator(t *testing.T) {
 		t.Assert(j, 1)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := 0
 		j := 0
 		m.IteratorDesc(func(k interface{}, v interface{}) bool {
@@ -166,9 +166,9 @@ func Test_BTree_IteratorFrom(t *testing.T) {
 	for i := 1; i <= 10; i++ {
 		m[i] = i * 10
 	}
-	tree := gtree.NewBTreeFrom(3, gutil.ComparatorInt, m)
+	tree := gtree.NewBTreeFrom(3, qn_util.ComparatorInt, m)
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		n := 5
 		tree.IteratorFrom(5, true, func(key, value interface{}) bool {
 			t.Assert(n, key)
@@ -196,9 +196,9 @@ func Test_BTree_IteratorFrom(t *testing.T) {
 }
 
 func Test_BTree_Clone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//clone 方法是深克隆
-		m := gtree.NewBTreeFrom(3, gutil.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
+		m := gtree.NewBTreeFrom(3, qn_util.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
 		m_clone := m.Clone()
 		m.Remove(1)
 		//修改原 map,clone 后的 map 不影响
@@ -213,26 +213,26 @@ func Test_BTree_Clone(t *testing.T) {
 func Test_BTree_LRNode(t *testing.T) {
 	expect := map[interface{}]interface{}{"key4": "val4", "key1": "val1", "key2": "val2", "key3": "val3"}
 	//safe
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewBTreeFrom(3, gutil.ComparatorString, expect)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewBTreeFrom(3, qn_util.ComparatorString, expect)
 		t.Assert(m.Left().Key, "key1")
 		t.Assert(m.Right().Key, "key4")
 	})
 	//unsafe
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewBTreeFrom(3, gutil.ComparatorString, expect, true)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewBTreeFrom(3, qn_util.ComparatorString, expect, true)
 		t.Assert(m.Left().Key, "key1")
 		t.Assert(m.Right().Key, "key4")
 	})
 }
 
 func Test_BTree_Remove(t *testing.T) {
-	m := gtree.NewBTree(3, gutil.ComparatorInt)
+	m := gtree.NewBTree(3, qn_util.ComparatorInt)
 	for i := 1; i <= 100; i++ {
 		m.Set(i, fmt.Sprintf("val%d", i))
 	}
 	expect := m.Map()
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		for k, v := range expect {
 			m1 := m.Clone()
 			t.Assert(m1.Remove(k), v)

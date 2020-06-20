@@ -12,11 +12,11 @@ import (
 
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/internal/rwmutex"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func TestRwmutexIsSafe(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		lock := rwmutex.New()
 		t.Assert(lock.IsSafe(), false)
 
@@ -38,7 +38,7 @@ func TestRwmutexIsSafe(t *testing.T) {
 }
 
 func TestSafeRwmutex(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		safeLock := rwmutex.New(true)
 		array := qn_array.New(true)
 
@@ -69,7 +69,7 @@ func TestSafeRwmutex(t *testing.T) {
 }
 
 func TestSafeReaderRwmutex(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		safeLock := rwmutex.New(true)
 		array := qn_array.New(true)
 
@@ -108,7 +108,7 @@ func TestSafeReaderRwmutex(t *testing.T) {
 }
 
 func TestUnsafeRwmutex(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		unsafeLock := rwmutex.New()
 		array := qn_array.New(true)
 

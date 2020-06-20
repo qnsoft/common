@@ -10,12 +10,12 @@ import (
 	"errors"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/internal/intlog"
+	"github.com/qnsoft/common/os/qn_time"
 
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/qn_var"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Session struct for storing single session data,
@@ -254,121 +254,121 @@ func (s *Session) GetVar(key string, def ...interface{}) qn_var.Var {
 }
 
 func (s *Session) GetString(key string, def ...interface{}) string {
-	return gconv.String(s.Get(key, def...))
+	return qn_conv.String(s.Get(key, def...))
 }
 
 func (s *Session) GetBool(key string, def ...interface{}) bool {
-	return gconv.Bool(s.Get(key, def...))
+	return qn_conv.Bool(s.Get(key, def...))
 }
 
 func (s *Session) GetInt(key string, def ...interface{}) int {
-	return gconv.Int(s.Get(key, def...))
+	return qn_conv.Int(s.Get(key, def...))
 }
 
 func (s *Session) GetInt8(key string, def ...interface{}) int8 {
-	return gconv.Int8(s.Get(key, def...))
+	return qn_conv.Int8(s.Get(key, def...))
 }
 
 func (s *Session) GetInt16(key string, def ...interface{}) int16 {
-	return gconv.Int16(s.Get(key, def...))
+	return qn_conv.Int16(s.Get(key, def...))
 }
 
 func (s *Session) GetInt32(key string, def ...interface{}) int32 {
-	return gconv.Int32(s.Get(key, def...))
+	return qn_conv.Int32(s.Get(key, def...))
 }
 
 func (s *Session) GetInt64(key string, def ...interface{}) int64 {
-	return gconv.Int64(s.Get(key, def...))
+	return qn_conv.Int64(s.Get(key, def...))
 }
 
 func (s *Session) GetUint(key string, def ...interface{}) uint {
-	return gconv.Uint(s.Get(key, def...))
+	return qn_conv.Uint(s.Get(key, def...))
 }
 
 func (s *Session) GetUint8(key string, def ...interface{}) uint8 {
-	return gconv.Uint8(s.Get(key, def...))
+	return qn_conv.Uint8(s.Get(key, def...))
 }
 
 func (s *Session) GetUint16(key string, def ...interface{}) uint16 {
-	return gconv.Uint16(s.Get(key, def...))
+	return qn_conv.Uint16(s.Get(key, def...))
 }
 
 func (s *Session) GetUint32(key string, def ...interface{}) uint32 {
-	return gconv.Uint32(s.Get(key, def...))
+	return qn_conv.Uint32(s.Get(key, def...))
 }
 
 func (s *Session) GetUint64(key string, def ...interface{}) uint64 {
-	return gconv.Uint64(s.Get(key, def...))
+	return qn_conv.Uint64(s.Get(key, def...))
 }
 
 func (s *Session) GetFloat32(key string, def ...interface{}) float32 {
-	return gconv.Float32(s.Get(key, def...))
+	return qn_conv.Float32(s.Get(key, def...))
 }
 
 func (s *Session) GetFloat64(key string, def ...interface{}) float64 {
-	return gconv.Float64(s.Get(key, def...))
+	return qn_conv.Float64(s.Get(key, def...))
 }
 
 func (s *Session) GetBytes(key string, def ...interface{}) []byte {
-	return gconv.Bytes(s.Get(key, def...))
+	return qn_conv.Bytes(s.Get(key, def...))
 }
 
 func (s *Session) GetInts(key string, def ...interface{}) []int {
-	return gconv.Ints(s.Get(key, def...))
+	return qn_conv.Ints(s.Get(key, def...))
 }
 
 func (s *Session) GetFloats(key string, def ...interface{}) []float64 {
-	return gconv.Floats(s.Get(key, def...))
+	return qn_conv.Floats(s.Get(key, def...))
 }
 
 func (s *Session) GetStrings(key string, def ...interface{}) []string {
-	return gconv.Strings(s.Get(key, def...))
+	return qn_conv.Strings(s.Get(key, def...))
 }
 
 func (s *Session) GetInterfaces(key string, def ...interface{}) []interface{} {
-	return gconv.Interfaces(s.Get(key, def...))
+	return qn_conv.Interfaces(s.Get(key, def...))
 }
 
 func (s *Session) GetTime(key string, format ...string) time.Time {
-	return gconv.Time(s.Get(key), format...)
+	return qn_conv.Time(s.Get(key), format...)
 }
 
-func (s *Session) GetGTime(key string, format ...string) *gtime.Time {
-	return gconv.GTime(s.Get(key), format...)
+func (s *Session) Getqn_time(key string, format ...string) *qn_time.Time {
+	return qn_conv.qn_time(s.Get(key), format...)
 }
 
 func (s *Session) GetDuration(key string, def ...interface{}) time.Duration {
-	return gconv.Duration(s.Get(key, def...))
+	return qn_conv.Duration(s.Get(key, def...))
 }
 
 func (s *Session) GetMap(key string, tags ...string) map[string]interface{} {
-	return gconv.Map(s.Get(key), tags...)
+	return qn_conv.Map(s.Get(key), tags...)
 }
 
 func (s *Session) GetMapDeep(key string, tags ...string) map[string]interface{} {
-	return gconv.MapDeep(s.Get(key), tags...)
+	return qn_conv.MapDeep(s.Get(key), tags...)
 }
 
 func (s *Session) GetMaps(key string, tags ...string) []map[string]interface{} {
-	return gconv.Maps(s.Get(key), tags...)
+	return qn_conv.Maps(s.Get(key), tags...)
 }
 
 func (s *Session) GetMapsDeep(key string, tags ...string) []map[string]interface{} {
-	return gconv.MapsDeep(s.Get(key), tags...)
+	return qn_conv.MapsDeep(s.Get(key), tags...)
 }
 
 func (s *Session) GetStruct(key string, pointer interface{}, mapping ...map[string]string) error {
-	return gconv.Struct(s.Get(key), pointer, mapping...)
+	return qn_conv.Struct(s.Get(key), pointer, mapping...)
 }
 
 func (s *Session) GetStructDeep(key string, pointer interface{}, mapping ...map[string]string) error {
-	return gconv.StructDeep(s.Get(key), pointer, mapping...)
+	return qn_conv.StructDeep(s.Get(key), pointer, mapping...)
 }
 
 func (s *Session) GetStructs(key string, pointer interface{}, mapping ...map[string]string) error {
-	return gconv.Structs(s.Get(key), pointer, mapping...)
+	return qn_conv.Structs(s.Get(key), pointer, mapping...)
 }
 
 func (s *Session) GetStructsDeep(key string, pointer interface{}, mapping ...map[string]string) error {
-	return gconv.StructsDeep(s.Get(key), pointer, mapping...)
+	return qn_conv.StructsDeep(s.Get(key), pointer, mapping...)
 }

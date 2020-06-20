@@ -12,11 +12,11 @@ import (
 
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/gcron"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func TestCron_Add_Close(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		_, err1 := cron.Add("* * * * * *", func() {
@@ -52,7 +52,7 @@ func TestCron_Add_Close(t *testing.T) {
 }
 
 func TestCron_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		cron.Add("* * * * * *", func() {}, "add")
 		//fmt.Println("start", time.Now())
@@ -72,7 +72,7 @@ func TestCron_Basic(t *testing.T) {
 }
 
 func TestCron_Remove(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		cron.Add("* * * * * *", func() {
@@ -91,7 +91,7 @@ func TestCron_Remove(t *testing.T) {
 
 func TestCron_AddSingleton(t *testing.T) {
 	// un used, can be removed
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		cron.Add("* * * * * *", func() {}, "add")
 		cron.DelayAdd(time.Second, "* * * * * *", func() {}, "delay_add")
@@ -108,7 +108,7 @@ func TestCron_AddSingleton(t *testing.T) {
 		t.Assert(entry2, nil)
 	})
 	// keep this
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		cron.AddSingleton("* * * * * *", func() {
@@ -123,7 +123,7 @@ func TestCron_AddSingleton(t *testing.T) {
 }
 
 func TestCron_AddOnce1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		cron.AddOnce("* * * * * *", func() {
@@ -140,7 +140,7 @@ func TestCron_AddOnce1(t *testing.T) {
 }
 
 func TestCron_AddOnce2(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		cron.AddOnce("@every 2s", func() {
@@ -154,7 +154,7 @@ func TestCron_AddOnce2(t *testing.T) {
 }
 
 func TestCron_AddTimes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		cron.AddTimes("* * * * * *", 2, func() {
@@ -167,7 +167,7 @@ func TestCron_AddTimes(t *testing.T) {
 }
 
 func TestCron_DelayAdd(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		cron.DelayAdd(500*time.Millisecond, "* * * * * *", func() {
@@ -184,7 +184,7 @@ func TestCron_DelayAdd(t *testing.T) {
 }
 
 func TestCron_DelayAddSingleton(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		cron.DelayAddSingleton(500*time.Millisecond, "* * * * * *", func() {
@@ -199,7 +199,7 @@ func TestCron_DelayAddSingleton(t *testing.T) {
 }
 
 func TestCron_DelayAddOnce(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		cron.DelayAddOnce(500*time.Millisecond, "* * * * * *", func() {
@@ -216,7 +216,7 @@ func TestCron_DelayAddOnce(t *testing.T) {
 }
 
 func TestCron_DelayAddTimes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		cron.DelayAddTimes(500*time.Millisecond, "* * * * * *", 2, func() {

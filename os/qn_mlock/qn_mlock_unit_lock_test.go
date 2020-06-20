@@ -12,11 +12,11 @@ import (
 
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/gmlock"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Locker_Lock(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLock"
 		array := qn_array.New(true)
 		go func() {
@@ -40,7 +40,7 @@ func Test_Locker_Lock(t *testing.T) {
 		gmlock.Remove(key)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLock"
 		array := qn_array.New(true)
 		lock := gmlock.New()
@@ -68,7 +68,7 @@ func Test_Locker_Lock(t *testing.T) {
 }
 
 func Test_Locker_TryLock(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testTryLock"
 		array := qn_array.New(true)
 		go func() {
@@ -103,7 +103,7 @@ func Test_Locker_TryLock(t *testing.T) {
 
 func Test_Locker_LockFunc(t *testing.T) {
 	//no expire
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLockFunc"
 		array := qn_array.New(true)
 		go func() {
@@ -128,7 +128,7 @@ func Test_Locker_LockFunc(t *testing.T) {
 }
 func Test_Locker_TryLockFunc(t *testing.T) {
 	//no expire
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testTryLockFunc"
 		array := qn_array.New(true)
 		go func() {

@@ -7,14 +7,15 @@
 package qn_var_test
 
 import (
+	"testing"
+
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
-	"testing"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Struct(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type StTest struct {
 			Test int
 		}
@@ -30,7 +31,7 @@ func Test_Struct(t *testing.T) {
 
 		t.Assert(testObj.Test, Kv["Test"])
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type StTest struct {
 			Test int8
 		}

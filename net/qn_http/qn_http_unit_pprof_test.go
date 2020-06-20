@@ -15,7 +15,7 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
-	. "github.com/qnsoft/common/test/gtest"
+	. "github.com/qnsoft/common/test/qn_test"
 )
 
 func TestServer_EnablePProf(t *testing.T) {

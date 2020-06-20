@@ -13,10 +13,10 @@ import (
 	"strings"
 
 	"github.com/qnsoft/common/os/gres"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 // staticPathItem is the item struct for static path configuration.
@@ -52,14 +52,14 @@ func (s *Server) SetFileServerEnabled(enabled bool) {
 func (s *Server) SetServerRoot(root string) {
 	realPath := root
 	if !gres.Contains(realPath) {
-		if p, err := gfile.Search(root); err != nil {
+		if p, err := qn_file.Search(root); err != nil {
 			s.Logger().Fatal(fmt.Sprintf(`[ghttp] SetServerRoot failed: %v`, err))
 		} else {
 			realPath = p
 		}
 	}
 	s.Logger().Debug("[ghttp] SetServerRoot path:", realPath)
-	s.config.SearchPaths = []string{strings.TrimRight(realPath, gfile.Separator)}
+	s.config.SearchPaths = []string{strings.TrimRight(realPath, qn_file.Separator)}
 	s.config.FileServerEnabled = true
 }
 
@@ -67,7 +67,7 @@ func (s *Server) SetServerRoot(root string) {
 func (s *Server) AddSearchPath(path string) {
 	realPath := path
 	if !gres.Contains(realPath) {
-		if p, err := gfile.Search(path); err != nil {
+		if p, err := qn_file.Search(path); err != nil {
 			s.Logger().Fatal(fmt.Sprintf(`[ghttp] AddSearchPath failed: %v`, err))
 		} else {
 			realPath = p
@@ -81,7 +81,7 @@ func (s *Server) AddSearchPath(path string) {
 func (s *Server) AddStaticPath(prefix string, path string) {
 	realPath := path
 	if !gres.Contains(realPath) {
-		if p, err := gfile.Search(path); err != nil {
+		if p, err := qn_file.Search(path); err != nil {
 			s.Logger().Fatal(fmt.Sprintf(`[ghttp] AddStaticPath failed: %v`, err))
 		} else {
 			realPath = p
@@ -95,8 +95,8 @@ func (s *Server) AddStaticPath(prefix string, path string) {
 		s.config.StaticPaths = append(s.config.StaticPaths, addItem)
 		// Sort the array by length of prefix from short to long.
 		array := qn_array.NewSortedArray(func(v1, v2 interface{}) int {
-			s1 := gconv.String(v1)
-			s2 := gconv.String(v2)
+			s1 := qn_conv.String(v1)
+			s2 := qn_conv.String(v2)
 			r := len(s2) - len(s1)
 			if r == 0 {
 				r = strings.Compare(s1, s2)
@@ -110,7 +110,7 @@ func (s *Server) AddStaticPath(prefix string, path string) {
 		paths := make([]staticPathItem, 0)
 		for _, v := range array.Slice() {
 			for _, item := range s.config.StaticPaths {
-				if strings.EqualFold(gconv.String(v), item.prefix) {
+				if strings.EqualFold(qn_conv.String(v), item.prefix) {
 					paths = append(paths, item)
 					break
 				}

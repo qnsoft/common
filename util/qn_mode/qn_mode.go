@@ -9,7 +9,7 @@
 // It uses string to mark the mode instead of integer, which is convenient for configuration.
 package qn_mode
 
-import "github.com/qnsoft/common/os/gfile"
+import "github.com/qnsoft/common/os/qn_file"
 
 const (
 	NOT_SET = "not-set"
@@ -52,7 +52,7 @@ func SetProduct() {
 func Mode() string {
 	// If current mode is not set, do this auto check.
 	if currentMode == NOT_SET {
-		if gfile.MainPkgPath() != "" {
+		if qn_file.MainPkgPath() != "" {
 			return DEVELOP
 		} else {
 			return PRODUCT

@@ -7,15 +7,16 @@
 package qn_view_test
 
 import (
+	"testing"
+
 	"github.com/qnsoft/common/debug/gdebug"
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/os/gview"
-	"github.com/qnsoft/common/test/gtest"
-	"testing"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Config(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		config := gview.Config{
 			Paths: []string{gdebug.TestDataPath("config")},
 			Data: g.Map{
@@ -41,7 +42,7 @@ func Test_Config(t *testing.T) {
 }
 
 func Test_ConfigWithMap(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		view := gview.New()
 		err := view.SetConfigWithMap(g.Map{
 			"Paths":       []string{gdebug.TestDataPath("config")},

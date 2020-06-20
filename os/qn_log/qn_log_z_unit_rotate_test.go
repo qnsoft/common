@@ -11,17 +11,17 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/glog"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_Rotate_Size(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := glog.New()
-		p := gfile.TempDir(gtime.TimestampNanoStr())
+		p := qn_file.TempDir(qn_time.TimestampNanoStr())
 		err := l.SetConfigWithMap(g.Map{
 			"Path":                 p,
 			"File":                 "access.log",
@@ -33,7 +33,7 @@ func Test_Rotate_Size(t *testing.T) {
 			"RotateCheckInterval":  time.Second, // For unit testing only.
 		})
 		t.Assert(err, nil)
-		defer gfile.Remove(p)
+		defer qn_file.Remove(p)
 
 		s := "1234567890abcdefg"
 		for i := 0; i < 10; i++ {
@@ -42,24 +42,24 @@ func Test_Rotate_Size(t *testing.T) {
 
 		time.Sleep(time.Second * 3)
 
-		files, err := gfile.ScanDirFile(p, "*.gz")
+		files, err := qn_file.ScanDirFile(p, "*.gz")
 		t.Assert(err, nil)
 		t.Assert(len(files), 2)
 
-		content := gfile.GetContents(gfile.Join(p, "access.log"))
+		content := qn_file.GetContents(qn_file.Join(p, "access.log"))
 		t.Assert(gstr.Count(content, s), 1)
 
 		time.Sleep(time.Second * 5)
-		files, err = gfile.ScanDirFile(p, "*.gz")
+		files, err = qn_file.ScanDirFile(p, "*.gz")
 		t.Assert(err, nil)
 		t.Assert(len(files), 0)
 	})
 }
 
 func Test_Rotate_Expire(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := glog.New()
-		p := gfile.TempDir(gtime.TimestampNanoStr())
+		p := qn_file.TempDir(qn_time.TimestampNanoStr())
 		err := l.SetConfigWithMap(g.Map{
 			"Path":                 p,
 			"File":                 "access.log",
@@ -71,29 +71,29 @@ func Test_Rotate_Expire(t *testing.T) {
 			"RotateCheckInterval":  time.Second, // For unit testing only.
 		})
 		t.Assert(err, nil)
-		defer gfile.Remove(p)
+		defer qn_file.Remove(p)
 
 		s := "1234567890abcdefg"
 		for i := 0; i < 10; i++ {
 			l.Print(s)
 		}
 
-		files, err := gfile.ScanDirFile(p, "*.gz")
+		files, err := qn_file.ScanDirFile(p, "*.gz")
 		t.Assert(err, nil)
 		t.Assert(len(files), 0)
 
-		t.Assert(gstr.Count(gfile.GetContents(gfile.Join(p, "access.log")), s), 10)
+		t.Assert(gstr.Count(qn_file.GetContents(qn_file.Join(p, "access.log")), s), 10)
 
 		time.Sleep(time.Second * 3)
 
-		files, err = gfile.ScanDirFile(p, "*.gz")
+		files, err = qn_file.ScanDirFile(p, "*.gz")
 		t.Assert(err, nil)
 		t.Assert(len(files), 1)
 
-		t.Assert(gstr.Count(gfile.GetContents(gfile.Join(p, "access.log")), s), 0)
+		t.Assert(gstr.Count(qn_file.GetContents(qn_file.Join(p, "access.log")), s), 0)
 
 		time.Sleep(time.Second * 5)
-		files, err = gfile.ScanDirFile(p, "*.gz")
+		files, err = qn_file.ScanDirFile(p, "*.gz")
 		t.Assert(err, nil)
 		t.Assert(len(files), 0)
 	})

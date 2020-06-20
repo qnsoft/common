@@ -8,13 +8,14 @@ package qn_log
 
 import (
 	"bytes"
-	"github.com/qnsoft/common/test/gtest"
 	"strings"
 	"testing"
+
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_SetConfigWithMap(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		m := map[string]interface{}{
 			"path":     "/var/log",
@@ -31,7 +32,7 @@ func Test_SetConfigWithMap(t *testing.T) {
 }
 
 func Test_SetConfigWithMap_LevelStr(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		buffer := bytes.NewBuffer(nil)
 		l := New()
 		m := map[string]interface{}{
@@ -48,7 +49,7 @@ func Test_SetConfigWithMap_LevelStr(t *testing.T) {
 		t.Assert(strings.Contains(buffer.String(), "WARN"), true)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		buffer := bytes.NewBuffer(nil)
 		l := New()
 		m := map[string]interface{}{

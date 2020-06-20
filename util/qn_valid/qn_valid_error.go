@@ -9,7 +9,7 @@ package qn_valid
 import (
 	"strings"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 // Error is the validation error for validation result.
@@ -29,7 +29,7 @@ func newError(rules []string, errors map[string]map[string]string) *Error {
 	for field, m := range errors {
 		for k, v := range m {
 			v = strings.Replace(v, ":attribute", field, -1)
-			m[k], _ = gregex.ReplaceString(`\s{2,}`, ` `, v)
+			m[k], _ = qn_regex.ReplaceString(`\s{2,}`, ` `, v)
 		}
 		errors[field] = m
 	}
@@ -42,7 +42,7 @@ func newError(rules []string, errors map[string]map[string]string) *Error {
 // newErrorStr creates and returns a validation error by string.
 func newErrorStr(key, err string) *Error {
 	return newError(nil, map[string]map[string]string{
-		"__gvalid__": {
+		"__qn_valid__": {
 			key: err,
 		},
 	})

@@ -11,22 +11,22 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/gogf/gf/os/gtimer"
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/os/glog"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/os/qn_timer"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Timed task entry.
 type Entry struct {
-	cron     *Cron         // Cron object belonged to.
-	entry    *gtimer.Entry // Associated gtimer.Entry.
-	schedule *cronSchedule // Timed schedule object.
-	jobName  string        // Callback function name(address info).
-	times    *gtype.Int    // Running times limit.
-	Name     string        // Entry name.
-	Job      func()        `json:"-"` // Callback function.
-	Time     time.Time     // Registered time.
+	cron     *Cron           // Cron object belonged to.
+	entry    *qn_timer.Entry // Associated qn_timer.Entry.
+	schedule *cronSchedule   // Timed schedule object.
+	jobName  string          // Callback function name(address info).
+	times    *gtype.Int      // Running times limit.
+	Name     string          // Entry name.
+	Job      func()          `json:"-"` // Callback function.
+	Time     time.Time       // Registered time.
 }
 
 // addEntry creates and returns a new Entry object.
@@ -38,7 +38,7 @@ func (c *Cron) addEntry(pattern string, job func(), singleton bool, name ...stri
 	if err != nil {
 		return nil, err
 	}
-	// No limit for <times>, for gtimer checking scheduling every second.
+	// No limit for <times>, for qn_timer checking scheduling every second.
 	entry := &Entry{
 		cron:     c,
 		schedule: schedule,
@@ -50,14 +50,14 @@ func (c *Cron) addEntry(pattern string, job func(), singleton bool, name ...stri
 	if len(name) > 0 {
 		entry.Name = name[0]
 	} else {
-		entry.Name = "gcron-" + gconv.String(c.idGen.Add(1))
+		entry.Name = "gcron-" + qn_conv.String(c.idGen.Add(1))
 	}
 	// When you add a scheduled task, you cannot allow it to run.
-	// It cannot start running when added to gtimer.
+	// It cannot start running when added to qn_timer.
 	// It should start running after the entry is added to the entries map,
 	// to avoid the task from running during adding where the entries
 	// does not have the entry information, which might cause panic.
-	entry.entry = gtimer.AddEntry(time.Second, entry.check, singleton, -1, gtimer.STATUS_STOPPED)
+	entry.entry = qn_timer.AddEntry(time.Second, entry.check, singleton, -1, qn_timer.STATUS_STOPPED)
 	c.entries.Set(entry.Name, entry)
 	entry.entry.Start()
 	return entry, nil
@@ -105,8 +105,8 @@ func (entry *Entry) Close() {
 }
 
 // Timed task check execution.
-// The running times limits feature is implemented by gcron.Entry and cannot be implemented by gtimer.Entry.
-// gcron.Entry relies on gtimer to implement a scheduled task check for gcron.Entry per second.
+// The running times limits feature is implemented by gcron.Entry and cannot be implemented by qn_timer.Entry.
+// gcron.Entry relies on qn_timer to implement a scheduled task check for gcron.Entry per second.
 func (entry *Entry) check() {
 	if entry.schedule.meet(time.Now()) {
 		path := entry.cron.GetLogPath()

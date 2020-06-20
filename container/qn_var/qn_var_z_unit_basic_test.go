@@ -13,26 +13,26 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/test/gtest"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/test/qn_test"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Set(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v qn_var.VarImp
 		v.Set(123.456)
 		t.Assert(v.Val(), 123.456)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v qn_var.VarImp
 		v.Set(123.456)
 		t.Assert(v.Val(), 123.456)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := qn_var.Create(123.456)
 		t.Assert(v.Val(), 123.456)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		objOne := qn_var.New("old", true)
 		objOneOld, _ := objOne.Set("new").(string)
 		t.Assert(objOneOld, "old")
@@ -44,7 +44,7 @@ func Test_Set(t *testing.T) {
 }
 
 func Test_Val(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		objOne := qn_var.New(1, true)
 		objOneOld, _ := objOne.Val().(int)
 		t.Assert(objOneOld, 1)
@@ -55,7 +55,7 @@ func Test_Val(t *testing.T) {
 	})
 }
 func Test_Interface(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		objOne := qn_var.New(1, true)
 		objOneOld, _ := objOne.Interface().(int)
 		t.Assert(objOneOld, 1)
@@ -66,7 +66,7 @@ func Test_Interface(t *testing.T) {
 	})
 }
 func Test_IsNil(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		objOne := qn_var.New(nil, true)
 		t.Assert(objOne.IsNil(), true)
 
@@ -77,7 +77,7 @@ func Test_IsNil(t *testing.T) {
 }
 
 func Test_Bytes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		x := int32(1)
 		bytesBuffer := bytes.NewBuffer([]byte{})
 		binary.Write(bytesBuffer, binary.BigEndian, x)
@@ -94,7 +94,7 @@ func Test_Bytes(t *testing.T) {
 }
 
 func Test_String(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var str string = "hello"
 		objOne := qn_var.New(str, true)
 		t.Assert(objOne.String(), str)
@@ -102,7 +102,7 @@ func Test_String(t *testing.T) {
 	})
 }
 func Test_Bool(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var ok bool = true
 		objOne := qn_var.New(ok, true)
 		t.Assert(objOne.Bool(), ok)
@@ -115,7 +115,7 @@ func Test_Bool(t *testing.T) {
 }
 
 func Test_Int(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num int = 1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Int(), num)
@@ -124,7 +124,7 @@ func Test_Int(t *testing.T) {
 }
 
 func Test_Int8(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num int8 = 1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Int8(), num)
@@ -133,7 +133,7 @@ func Test_Int8(t *testing.T) {
 }
 
 func Test_Int16(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num int16 = 1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Int16(), num)
@@ -142,7 +142,7 @@ func Test_Int16(t *testing.T) {
 }
 
 func Test_Int32(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num int32 = 1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Int32(), num)
@@ -151,7 +151,7 @@ func Test_Int32(t *testing.T) {
 }
 
 func Test_Int64(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num int64 = 1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Int64(), num)
@@ -160,7 +160,7 @@ func Test_Int64(t *testing.T) {
 }
 
 func Test_Uint(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num uint = 1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Uint(), num)
@@ -169,7 +169,7 @@ func Test_Uint(t *testing.T) {
 }
 
 func Test_Uint8(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num uint8 = 1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Uint8(), num)
@@ -178,7 +178,7 @@ func Test_Uint8(t *testing.T) {
 }
 
 func Test_Uint16(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num uint16 = 1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Uint16(), num)
@@ -187,7 +187,7 @@ func Test_Uint16(t *testing.T) {
 }
 
 func Test_Uint32(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num uint32 = 1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Uint32(), num)
@@ -196,7 +196,7 @@ func Test_Uint32(t *testing.T) {
 }
 
 func Test_Uint64(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num uint64 = 1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Uint64(), num)
@@ -204,7 +204,7 @@ func Test_Uint64(t *testing.T) {
 	})
 }
 func Test_Float32(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num float32 = 1.1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Float32(), num)
@@ -213,7 +213,7 @@ func Test_Float32(t *testing.T) {
 }
 
 func Test_Float64(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var num float64 = 1.1
 		objOne := qn_var.New(num, true)
 		t.Assert(objOne.Float64(), num)
@@ -222,21 +222,21 @@ func Test_Float64(t *testing.T) {
 }
 
 func Test_Ints(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var arr = []int{1, 2, 3, 4, 5}
 		objOne := qn_var.New(arr, true)
 		t.Assert(objOne.Ints()[0], arr[0])
 	})
 }
 func Test_Floats(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var arr = []float64{1, 2, 3, 4, 5}
 		objOne := qn_var.New(arr, true)
 		t.Assert(objOne.Floats()[0], arr[0])
 	})
 }
 func Test_Strings(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var arr = []string{"hello", "world"}
 		objOne := qn_var.New(arr, true)
 		t.Assert(objOne.Strings()[0], arr[0])
@@ -244,7 +244,7 @@ func Test_Strings(t *testing.T) {
 }
 
 func Test_Interfaces(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var arr = []int{1, 2, 3, 4, 5}
 		objOne := qn_var.New(arr, true)
 		t.Assert(objOne.Interfaces(), arr)
@@ -252,7 +252,7 @@ func Test_Interfaces(t *testing.T) {
 }
 
 func Test_Slice(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var arr = []int{1, 2, 3, 4, 5}
 		objOne := qn_var.New(arr, true)
 		t.Assert(objOne.Slice(), arr)
@@ -260,7 +260,7 @@ func Test_Slice(t *testing.T) {
 }
 
 func Test_Array(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var arr = []int{1, 2, 3, 4, 5}
 		objOne := qn_var.New(arr, false)
 		t.Assert(objOne.Array(), arr)
@@ -268,7 +268,7 @@ func Test_Array(t *testing.T) {
 }
 
 func Test_Vars(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var arr = []int{1, 2, 3, 4, 5}
 		objOne := qn_var.New(arr, false)
 		t.Assert(len(objOne.Vars()), 5)
@@ -278,23 +278,23 @@ func Test_Vars(t *testing.T) {
 }
 
 func Test_Time(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var timeUnix int64 = 1556242660
 		objOne := qn_var.New(timeUnix, true)
 		t.Assert(objOne.Time().Unix(), timeUnix)
 	})
 }
 
-func Test_GTime(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+func Test_qn_time(t *testing.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var timeUnix int64 = 1556242660
 		objOne := qn_var.New(timeUnix, true)
-		t.Assert(objOne.GTime().Unix(), timeUnix)
+		t.Assert(objOne.qn_time().Unix(), timeUnix)
 	})
 }
 
 func Test_Duration(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var timeUnix int64 = 1556242660
 		objOne := qn_var.New(timeUnix, true)
 		t.Assert(objOne.Duration(), time.Duration(timeUnix))
@@ -306,9 +306,9 @@ func Test_UnmarshalValue(t *testing.T) {
 		Name string
 		Var  qn_var.Var
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"var":  "v",
 		}, &v)

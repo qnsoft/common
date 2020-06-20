@@ -8,13 +8,14 @@ package qn_res
 
 import (
 	"archive/zip"
-	"github.com/qnsoft/common/internal/fileinfo"
-	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gfile"
 	"io"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/qnsoft/common/internal/fileinfo"
+	"github.com/qnsoft/common/internal/intlog"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 // ZipPathWriter compresses <paths> to <writer> using zip compressing algorithm.
@@ -43,12 +44,12 @@ func doZipPathWriter(path string, exclude string, zipWriter *zip.Writer, prefix 
 		err   error
 		files []string
 	)
-	path, err = gfile.Search(path)
+	path, err = qn_file.Search(path)
 	if err != nil {
 		return err
 	}
-	if gfile.IsDir(path) {
-		files, err = gfile.ScanDir(path, "*", true)
+	if qn_file.IsDir(path) {
+		files, err = qn_file.ScanDir(path, "*", true)
 		if err != nil {
 			return err
 		}
@@ -60,11 +61,11 @@ func doZipPathWriter(path string, exclude string, zipWriter *zip.Writer, prefix 
 		headerPrefix = prefix[0]
 	}
 	headerPrefix = strings.TrimRight(headerPrefix, "\\/")
-	if len(headerPrefix) > 0 && gfile.IsDir(path) {
+	if len(headerPrefix) > 0 && qn_file.IsDir(path) {
 		headerPrefix += "/"
 	}
 	if headerPrefix == "" {
-		headerPrefix = gfile.Basename(path)
+		headerPrefix = qn_file.Basename(path)
 	}
 	headerPrefix = strings.Replace(headerPrefix, "//", "/", -1)
 	for _, file := range files {
@@ -72,7 +73,7 @@ func doZipPathWriter(path string, exclude string, zipWriter *zip.Writer, prefix 
 			intlog.Printf(`exclude file path: %s`, file)
 			continue
 		}
-		err := zipFile(file, headerPrefix+gfile.Dir(file[len(path):]), zipWriter)
+		err := zipFile(file, headerPrefix+qn_file.Dir(file[len(path):]), zipWriter)
 		if err != nil {
 			return err
 		}
@@ -82,7 +83,7 @@ func doZipPathWriter(path string, exclude string, zipWriter *zip.Writer, prefix 
 		var name string
 		path = headerPrefix
 		for {
-			name = gfile.Basename(path)
+			name = qn_file.Basename(path)
 			err := zipFileVirtual(
 				fileinfo.New(name, 0, os.ModeDir|os.ModePerm, time.Now()), path, zipWriter,
 			)
@@ -92,7 +93,7 @@ func doZipPathWriter(path string, exclude string, zipWriter *zip.Writer, prefix 
 			if path == "/" || !strings.Contains(path, "/") {
 				break
 			}
-			path = gfile.Dir(path)
+			path = qn_file.Dir(path)
 		}
 	}
 	return nil

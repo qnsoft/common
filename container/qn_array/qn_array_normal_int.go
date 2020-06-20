@@ -16,8 +16,8 @@ import (
 	"github.com/qnsoft/common/internal/json"
 
 	"github.com/qnsoft/common/internal/rwmutex"
-	"github.com/qnsoft/common/util/gconv"
-	"github.com/qnsoft/common/util/grand"
+	"github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/util/qn_rand"
 )
 
 // IntArray is a golang int array with rich features.
@@ -280,7 +280,7 @@ func (a *IntArray) PopRight() (value int, found bool) {
 func (a *IntArray) PopRand() (value int, found bool) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	return a.doRemoveWithoutLock(grand.Intn(len(a.array)))
+	return a.doRemoveWithoutLock(qn_rand.Intn(len(a.array)))
 }
 
 // PopRands randomly pops and returns <size> items out of array.
@@ -297,7 +297,7 @@ func (a *IntArray) PopRands(size int) []int {
 	}
 	array := make([]int, size)
 	for i := 0; i < size; i++ {
-		array[i], _ = a.doRemoveWithoutLock(grand.Intn(len(a.array)))
+		array[i], _ = a.doRemoveWithoutLock(qn_rand.Intn(len(a.array)))
 	}
 	return array
 }
@@ -542,7 +542,7 @@ func (a *IntArray) RLockFunc(f func(array []int)) *IntArray {
 // The difference between Merge and Append is Append supports only specified slice type,
 // but Merge supports more parameter types.
 func (a *IntArray) Merge(array interface{}) *IntArray {
-	return a.Append(gconv.Ints(array)...)
+	return a.Append(qn_conv.Ints(array)...)
 }
 
 // Fill fills an array with num entries of the value <value>,
@@ -620,7 +620,7 @@ func (a *IntArray) Rand() (value int, found bool) {
 	if len(a.array) == 0 {
 		return 0, false
 	}
-	return a.array[grand.Intn(len(a.array))], true
+	return a.array[qn_rand.Intn(len(a.array))], true
 }
 
 // Rands randomly returns <size> items from array(no deleting).
@@ -632,7 +632,7 @@ func (a *IntArray) Rands(size int) []int {
 	}
 	array := make([]int, size)
 	for i := 0; i < size; i++ {
-		array[i] = a.array[grand.Intn(len(a.array))]
+		array[i] = a.array[qn_rand.Intn(len(a.array))]
 	}
 	return array
 }
@@ -641,7 +641,7 @@ func (a *IntArray) Rands(size int) []int {
 func (a *IntArray) Shuffle() *IntArray {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	for i, v := range grand.Perm(len(a.array)) {
+	for i, v := range qn_rand.Perm(len(a.array)) {
 		a.array[i], a.array[v] = a.array[v], a.array[i]
 	}
 	return a
@@ -666,7 +666,7 @@ func (a *IntArray) Join(glue string) string {
 	}
 	buffer := bytes.NewBuffer(nil)
 	for k, v := range a.array {
-		buffer.WriteString(gconv.String(v))
+		buffer.WriteString(qn_conv.String(v))
 		if k != len(a.array)-1 {
 			buffer.WriteString(glue)
 		}
@@ -746,9 +746,9 @@ func (a *IntArray) UnmarshalValue(value interface{}) error {
 	defer a.mu.Unlock()
 	switch value.(type) {
 	case string, []byte:
-		return json.Unmarshal(gconv.Bytes(value), &a.array)
+		return json.Unmarshal(qn_conv.Bytes(value), &a.array)
 	default:
-		a.array = gconv.SliceInt(value)
+		a.array = qn_conv.SliceInt(value)
 	}
 	return nil
 }

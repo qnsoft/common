@@ -9,12 +9,13 @@
 package qn_type_test
 
 import (
-	"github.com/qnsoft/common/container/gtype"
 	"strconv"
 	"sync/atomic"
 	"testing"
 
-	"github.com/qnsoft/common/encoding/gbinary"
+	"github.com/qnsoft/common/container/gtype"
+
+	"github.com/qnsoft/common/encoding/qn_binary"
 )
 
 var (
@@ -177,7 +178,7 @@ func BenchmarkString_Val(b *testing.B) {
 
 func BenchmarkBytes_Set(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		vbytes.Set(gbinary.EncodeInt(i))
+		vbytes.Set(qn_binary.EncodeInt(i))
 	}
 }
 

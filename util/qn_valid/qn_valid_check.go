@@ -11,12 +11,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/qnsoft/common/encoding/gjson"
-	"github.com/qnsoft/common/net/gipv4"
-	"github.com/qnsoft/common/net/gipv6"
-	"github.com/qnsoft/common/text/gregex"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/encoding/qn_json"
+	"github.com/qnsoft/common/net/qn_ipv4"
+	"github.com/qnsoft/common/net/qn_ipv6"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/text/qn_regex"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 const (
@@ -124,13 +124,13 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 	}
 	// It converts value to string and then does the validation.
 	var (
-		val       = strings.TrimSpace(gconv.String(value))
+		val       = strings.TrimSpace(qn_conv.String(value))
 		data      = make(map[string]string)
 		errorMsgs = make(map[string]string)
 	)
 	if len(params) > 0 {
-		for k, v := range gconv.Map(params[0]) {
-			data[k] = gconv.String(v)
+		for k, v := range qn_conv.Map(params[0]) {
+			data[k] = qn_conv.String(v)
 		}
 	}
 	// Custom error messages handling.
@@ -142,8 +142,8 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 	case string:
 		msgArray = strings.Split(v, "|")
 	default:
-		for k, v := range gconv.Map(messages) {
-			customMsgMap[k] = gconv.String(v)
+		for k, v := range qn_conv.Map(messages) {
+			customMsgMap[k] = qn_conv.String(v)
 		}
 	}
 	// Handle the char '|' in the rule,
@@ -218,29 +218,29 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 		case "regex":
 			// It here should check the rule as there might be special char '|' in it.
 			for i := index + 1; i < len(ruleItems); i++ {
-				if !gregex.IsMatchString(gSINGLE_RULE_PATTERN, ruleItems[i]) {
+				if !qn_regex.IsMatchString(gSINGLE_RULE_PATTERN, ruleItems[i]) {
 					ruleVal += "|" + ruleItems[i]
 					index++
 				}
 			}
-			match = gregex.IsMatchString(ruleVal, val)
+			match = qn_regex.IsMatchString(ruleVal, val)
 
 		// Date rules.
 		case "date":
 			// Standard date string, which must contain char '-' or '.'.
-			if _, err := gtime.StrToTime(val); err == nil {
+			if _, err := qn_time.StrToTime(val); err == nil {
 				match = true
 				break
 			}
 			// Date that not contains char '-' or '.'.
-			if _, err := gtime.StrToTime(val, "Ymd"); err == nil {
+			if _, err := qn_time.StrToTime(val, "Ymd"); err == nil {
 				match = true
 				break
 			}
 
 		// Date rule with specified format.
 		case "date-format":
-			if _, err := gtime.StrToTimeFormat(val, ruleVal); err == nil {
+			if _, err := qn_time.StrToTimeFormat(val, ruleVal); err == nil {
 				match = true
 			} else {
 				var msg string
@@ -319,7 +319,7 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 		// 6. 2018:
 		//    16x, 19x
 		case "phone":
-			match = gregex.IsMatchString(`^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^16[\d]{9}$|^17[0,3,5,6,7,8]{1}\d{8}$|^18[\d]{9}$|^19[\d]{9}$`, val)
+			match = qn_regex.IsMatchString(`^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^16[\d]{9}$|^17[0,3,5,6,7,8]{1}\d{8}$|^18[\d]{9}$|^19[\d]{9}$`, val)
 
 		// Telephone number:
 		// "XXXX-XXXXXXX"
@@ -329,15 +329,15 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 		// "XXXXXXX"
 		// "XXXXXXXX"
 		case "telephone":
-			match = gregex.IsMatchString(`^((\d{3,4})|\d{3,4}-)?\d{7,8}$`, val)
+			match = qn_regex.IsMatchString(`^((\d{3,4})|\d{3,4}-)?\d{7,8}$`, val)
 
 		// QQ number: from 10000.
 		case "qq":
-			match = gregex.IsMatchString(`^[1-9][0-9]{4,}$`, val)
+			match = qn_regex.IsMatchString(`^[1-9][0-9]{4,}$`, val)
 
 		// Postcode number.
 		case "postcode":
-			match = gregex.IsMatchString(`^\d{6}$`, val)
+			match = qn_regex.IsMatchString(`^\d{6}$`, val)
 
 		// China resident id number.
 		//
@@ -369,30 +369,30 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 		// Universal passport format rule:
 		// Starting with letter, containing only numbers or underscores, length between 6 and 18.
 		case "passport":
-			match = gregex.IsMatchString(`^[a-zA-Z]{1}\w{5,17}$`, val)
+			match = qn_regex.IsMatchString(`^[a-zA-Z]{1}\w{5,17}$`, val)
 
 		// Universal password format rule1:
 		// Containing any visible chars, length between 6 and 18.
 		case "password":
-			match = gregex.IsMatchString(`^[\w\S]{6,18}$`, val)
+			match = qn_regex.IsMatchString(`^[\w\S]{6,18}$`, val)
 
 		// Universal password format rule2:
 		// Must meet password rule1, must contain lower and upper letters and numbers.
 		case "password2":
-			if gregex.IsMatchString(`^[\w\S]{6,18}$`, val) && gregex.IsMatchString(`[a-z]+`, val) && gregex.IsMatchString(`[A-Z]+`, val) && gregex.IsMatchString(`\d+`, val) {
+			if qn_regex.IsMatchString(`^[\w\S]{6,18}$`, val) && qn_regex.IsMatchString(`[a-z]+`, val) && qn_regex.IsMatchString(`[A-Z]+`, val) && qn_regex.IsMatchString(`\d+`, val) {
 				match = true
 			}
 
 		// Universal password format rule3:
 		// Must meet password rule1, must contain lower and upper letters, numbers and special chars.
 		case "password3":
-			if gregex.IsMatchString(`^[\w\S]{6,18}$`, val) && gregex.IsMatchString(`[a-z]+`, val) && gregex.IsMatchString(`[A-Z]+`, val) && gregex.IsMatchString(`\d+`, val) && gregex.IsMatchString(`[^a-zA-Z0-9]+`, val) {
+			if qn_regex.IsMatchString(`^[\w\S]{6,18}$`, val) && qn_regex.IsMatchString(`[a-z]+`, val) && qn_regex.IsMatchString(`[A-Z]+`, val) && qn_regex.IsMatchString(`\d+`, val) && qn_regex.IsMatchString(`[^a-zA-Z0-9]+`, val) {
 				match = true
 			}
 
 		// Json.
 		case "json":
-			if _, err := gjson.Decode([]byte(val)); err == nil {
+			if _, err := qn_json.Decode([]byte(val)); err == nil {
 				match = true
 			}
 
@@ -417,31 +417,31 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 
 		// Email.
 		case "email":
-			match = gregex.IsMatchString(`^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9_\-]+(\.[a-zA-Z0-9_\-]+)+$`, val)
+			match = qn_regex.IsMatchString(`^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9_\-]+(\.[a-zA-Z0-9_\-]+)+$`, val)
 
 		// URL
 		case "url":
-			match = gregex.IsMatchString(`(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]`, val)
+			match = qn_regex.IsMatchString(`(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]`, val)
 
 		// Domain
 		case "domain":
-			match = gregex.IsMatchString(`^([0-9a-zA-Z][0-9a-zA-Z\-]{0,62}\.)+([a-zA-Z]{0,62})$`, val)
+			match = qn_regex.IsMatchString(`^([0-9a-zA-Z][0-9a-zA-Z\-]{0,62}\.)+([a-zA-Z]{0,62})$`, val)
 
 		// IP(IPv4/IPv6).
 		case "ip":
-			match = gipv4.Validate(val) || gipv6.Validate(val)
+			match = qn_ipv4.Validate(val) || qn_ipv6.Validate(val)
 
 		// IPv4.
 		case "ipv4":
-			match = gipv4.Validate(val)
+			match = qn_ipv4.Validate(val)
 
 		// IPv6.
 		case "ipv6":
-			match = gipv6.Validate(val)
+			match = qn_ipv6.Validate(val)
 
 		// MAC.
 		case "mac":
-			match = gregex.IsMatchString(`^([0-9A-Fa-f]{2}[\-:]){5}[0-9A-Fa-f]{2}$`, val)
+			match = qn_regex.IsMatchString(`^([0-9A-Fa-f]{2}[\-:]){5}[0-9A-Fa-f]{2}$`, val)
 
 		default:
 			errorMsgs[ruleKey] = "Invalid rule name: " + ruleKey

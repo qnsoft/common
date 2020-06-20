@@ -12,8 +12,8 @@ import (
 
 	"github.com/qnsoft/common/internal/cmdenv"
 	"github.com/qnsoft/common/os/gcache"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gfsnotify"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 const (
@@ -43,7 +43,7 @@ func GetBinContents(path string, duration ...time.Duration) []byte {
 		expire = duration[0]
 	}
 	r := gcache.GetOrSetFuncLock(key, func() interface{} {
-		b := gfile.GetBytes(path)
+		b := qn_file.GetBytes(path)
 		if b != nil {
 			// Adding this <path> to gfsnotify,
 			// it will clear its cache if there's any changes of the file.

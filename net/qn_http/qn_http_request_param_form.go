@@ -8,7 +8,7 @@ package qn_http
 
 import (
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // SetForm sets custom form value with key-value pair.
@@ -162,7 +162,7 @@ func (r *Request) GetFormMapStrStr(kvMap ...map[string]interface{}) map[string]s
 	if len(postMap) > 0 {
 		m := make(map[string]string, len(postMap))
 		for k, v := range postMap {
-			m[k] = gconv.String(v)
+			m[k] = qn_conv.String(v)
 		}
 		return m
 	}
@@ -189,7 +189,7 @@ func (r *Request) GetFormMapStrVar(kvMap ...map[string]interface{}) map[string]q
 // The optional parameter <mapping> is used to specify the key to attribute mapping.
 func (r *Request) GetFormStruct(pointer interface{}, mapping ...map[string]string) error {
 	r.parseForm()
-	return gconv.StructDeep(r.formMap, pointer, mapping...)
+	return qn_conv.StructDeep(r.formMap, pointer, mapping...)
 }
 
 // GetFormToStruct is alias of GetFormStruct. See GetFormStruct.

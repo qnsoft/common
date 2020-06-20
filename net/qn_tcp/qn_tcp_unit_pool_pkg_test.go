@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/net/gtcp"
-	"github.com/qnsoft/common/test/gtest"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/test/qn_test"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Pool_Package_Basic(t *testing.T) {
@@ -32,21 +32,21 @@ func Test_Pool_Package_Basic(t *testing.T) {
 	defer s.Close()
 	time.Sleep(100 * time.Millisecond)
 	// SendPkg
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()
 		for i := 0; i < 100; i++ {
-			err := conn.SendPkg([]byte(gconv.String(i)))
+			err := conn.SendPkg([]byte(qn_conv.String(i)))
 			t.Assert(err, nil)
 		}
 		for i := 0; i < 100; i++ {
-			err := conn.SendPkgWithTimeout([]byte(gconv.String(i)), time.Second)
+			err := conn.SendPkgWithTimeout([]byte(qn_conv.String(i)), time.Second)
 			t.Assert(err, nil)
 		}
 	})
 	// SendPkg with big data - failure.
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()
@@ -55,25 +55,25 @@ func Test_Pool_Package_Basic(t *testing.T) {
 		t.AssertNE(err, nil)
 	})
 	// SendRecvPkg
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()
 		for i := 100; i < 200; i++ {
-			data := []byte(gconv.String(i))
+			data := []byte(qn_conv.String(i))
 			result, err := conn.SendRecvPkg(data)
 			t.Assert(err, nil)
 			t.Assert(result, data)
 		}
 		for i := 100; i < 200; i++ {
-			data := []byte(gconv.String(i))
+			data := []byte(qn_conv.String(i))
 			result, err := conn.SendRecvPkgWithTimeout(data, time.Second)
 			t.Assert(err, nil)
 			t.Assert(result, data)
 		}
 	})
 	// SendRecvPkg with big data - failure.
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()
@@ -83,7 +83,7 @@ func Test_Pool_Package_Basic(t *testing.T) {
 		t.Assert(result, nil)
 	})
 	// SendRecvPkg with big data - success.
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()
@@ -106,13 +106,13 @@ func Test_Pool_Package_Timeout(t *testing.T) {
 				break
 			}
 			time.Sleep(time.Second)
-			gtest.Assert(conn.SendPkg(data), nil)
+			qn_test.Assert(conn.SendPkg(data), nil)
 		}
 	})
 	go s.Run()
 	defer s.Close()
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()
@@ -121,7 +121,7 @@ func Test_Pool_Package_Timeout(t *testing.T) {
 		t.AssertNE(err, nil)
 		t.Assert(result, nil)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()
@@ -142,14 +142,14 @@ func Test_Pool_Package_Option(t *testing.T) {
 			if err != nil {
 				break
 			}
-			gtest.Assert(conn.SendPkg(data, option), nil)
+			qn_test.Assert(conn.SendPkg(data, option), nil)
 		}
 	})
 	go s.Run()
 	defer s.Close()
 	time.Sleep(100 * time.Millisecond)
 	// SendRecvPkg with big data - failure.
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()
@@ -159,7 +159,7 @@ func Test_Pool_Package_Option(t *testing.T) {
 		t.Assert(result, nil)
 	})
 	// SendRecvPkg with big data - success.
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()

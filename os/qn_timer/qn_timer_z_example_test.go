@@ -10,13 +10,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gogf/gf/os/gtimer"
+	"github.com/qnsoft/common/os/qn_timer"
 )
 
 func Example_add() {
 	now := time.Now()
 	interval := 1400 * time.Millisecond
-	gtimer.Add(interval, func() {
+	qn_timer.Add(interval, func() {
 		fmt.Println(time.Now(), time.Duration(time.Now().UnixNano()-now.UnixNano()))
 		now = time.Now()
 	})

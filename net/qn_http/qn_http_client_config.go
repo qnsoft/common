@@ -9,11 +9,12 @@ package qn_http
 import (
 	"context"
 	"crypto/tls"
-	"github.com/qnsoft/common/text/gstr"
 	"net/http"
 	"time"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/gstr"
+
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 // Client is the HTTP client for HTTP request management.
@@ -94,7 +95,7 @@ func (c *Client) SetContentType(contentType string) *Client {
 // SetHeaderRaw sets custom HTTP header using raw string.
 func (c *Client) SetHeaderRaw(headers string) *Client {
 	for _, line := range gstr.SplitAndTrim(headers, "\n") {
-		array, _ := gregex.MatchString(`^([\w\-]+):\s*(.+)`, line)
+		array, _ := qn_regex.MatchString(`^([\w\-]+):\s*(.+)`, line)
 		if len(array) >= 3 {
 			c.header[array[1]] = array[2]
 		}

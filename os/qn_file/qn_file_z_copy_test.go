@@ -9,13 +9,13 @@ package qn_file_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Copy(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			paths  = "/testfile_copyfile1.txt"
 			topath = "/testfile_copyfile2.txt"
@@ -24,16 +24,16 @@ func Test_Copy(t *testing.T) {
 		createTestFile(paths, "")
 		defer delTestFiles(paths)
 
-		t.Assert(gfile.Copy(testpath()+paths, testpath()+topath), nil)
+		t.Assert(qn_file.Copy(testpath()+paths, testpath()+topath), nil)
 		defer delTestFiles(topath)
 
-		t.Assert(gfile.IsFile(testpath()+topath), true)
-		t.AssertNE(gfile.Copy("", ""), nil)
+		t.Assert(qn_file.IsFile(testpath()+topath), true)
+		t.AssertNE(qn_file.Copy("", ""), nil)
 	})
 }
 
 func Test_CopyFile(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			paths  = "/testfile_copyfile1.txt"
 			topath = "/testfile_copyfile2.txt"
@@ -42,31 +42,31 @@ func Test_CopyFile(t *testing.T) {
 		createTestFile(paths, "")
 		defer delTestFiles(paths)
 
-		t.Assert(gfile.CopyFile(testpath()+paths, testpath()+topath), nil)
+		t.Assert(qn_file.CopyFile(testpath()+paths, testpath()+topath), nil)
 		defer delTestFiles(topath)
 
-		t.Assert(gfile.IsFile(testpath()+topath), true)
-		t.AssertNE(gfile.CopyFile("", ""), nil)
+		t.Assert(qn_file.IsFile(testpath()+topath), true)
+		t.AssertNE(qn_file.CopyFile("", ""), nil)
 	})
 	// Content replacement.
-	gtest.C(t, func(t *gtest.T) {
-		src := gfile.TempDir(gtime.TimestampNanoStr())
-		dst := gfile.TempDir(gtime.TimestampNanoStr())
+	qn_test.C(t, func(t *qn_test.T) {
+		src := qn_file.TempDir(qn_time.TimestampNanoStr())
+		dst := qn_file.TempDir(qn_time.TimestampNanoStr())
 		srcContent := "1"
 		dstContent := "1"
-		t.Assert(gfile.PutContents(src, srcContent), nil)
-		t.Assert(gfile.PutContents(dst, dstContent), nil)
-		t.Assert(gfile.GetContents(src), srcContent)
-		t.Assert(gfile.GetContents(dst), dstContent)
+		t.Assert(qn_file.PutContents(src, srcContent), nil)
+		t.Assert(qn_file.PutContents(dst, dstContent), nil)
+		t.Assert(qn_file.GetContents(src), srcContent)
+		t.Assert(qn_file.GetContents(dst), dstContent)
 
-		t.Assert(gfile.CopyFile(src, dst), nil)
-		t.Assert(gfile.GetContents(src), srcContent)
-		t.Assert(gfile.GetContents(dst), srcContent)
+		t.Assert(qn_file.CopyFile(src, dst), nil)
+		t.Assert(qn_file.GetContents(src), srcContent)
+		t.Assert(qn_file.GetContents(dst), srcContent)
 	})
 }
 
 func Test_CopyDir(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			dirPath1 = "/test-copy-dir1"
 			dirPath2 = "/test-copy-dir2"
@@ -86,47 +86,47 @@ func Test_CopyDir(t *testing.T) {
 			tofolder = testpath() + dirPath2
 		)
 
-		if gfile.IsDir(tofolder) {
-			t.Assert(gfile.Remove(tofolder), nil)
-			t.Assert(gfile.Remove(""), nil)
+		if qn_file.IsDir(tofolder) {
+			t.Assert(qn_file.Remove(tofolder), nil)
+			t.Assert(qn_file.Remove(""), nil)
 		}
 
-		t.Assert(gfile.CopyDir(yfolder, tofolder), nil)
+		t.Assert(qn_file.CopyDir(yfolder, tofolder), nil)
 		defer delTestFiles(tofolder)
 
-		t.Assert(gfile.IsDir(yfolder), true)
+		t.Assert(qn_file.IsDir(yfolder), true)
 
 		for _, v := range haveList {
-			t.Assert(gfile.IsFile(yfolder+"/"+v), true)
+			t.Assert(qn_file.IsFile(yfolder+"/"+v), true)
 		}
 
-		t.Assert(gfile.IsDir(tofolder), true)
+		t.Assert(qn_file.IsDir(tofolder), true)
 
 		for _, v := range haveList {
-			t.Assert(gfile.IsFile(tofolder+"/"+v), true)
+			t.Assert(qn_file.IsFile(tofolder+"/"+v), true)
 		}
 
-		t.Assert(gfile.Remove(tofolder), nil)
-		t.Assert(gfile.Remove(""), nil)
+		t.Assert(qn_file.Remove(tofolder), nil)
+		t.Assert(qn_file.Remove(""), nil)
 	})
 	// Content replacement.
-	gtest.C(t, func(t *gtest.T) {
-		src := gfile.TempDir(gtime.TimestampNanoStr(), gtime.TimestampNanoStr())
-		dst := gfile.TempDir(gtime.TimestampNanoStr(), gtime.TimestampNanoStr())
+	qn_test.C(t, func(t *qn_test.T) {
+		src := qn_file.TempDir(qn_time.TimestampNanoStr(), qn_time.TimestampNanoStr())
+		dst := qn_file.TempDir(qn_time.TimestampNanoStr(), qn_time.TimestampNanoStr())
 		defer func() {
-			gfile.Remove(src)
-			gfile.Remove(dst)
+			qn_file.Remove(src)
+			qn_file.Remove(dst)
 		}()
 		srcContent := "1"
 		dstContent := "1"
-		t.Assert(gfile.PutContents(src, srcContent), nil)
-		t.Assert(gfile.PutContents(dst, dstContent), nil)
-		t.Assert(gfile.GetContents(src), srcContent)
-		t.Assert(gfile.GetContents(dst), dstContent)
+		t.Assert(qn_file.PutContents(src, srcContent), nil)
+		t.Assert(qn_file.PutContents(dst, dstContent), nil)
+		t.Assert(qn_file.GetContents(src), srcContent)
+		t.Assert(qn_file.GetContents(dst), dstContent)
 
-		err := gfile.CopyDir(gfile.Dir(src), gfile.Dir(dst))
+		err := qn_file.CopyDir(qn_file.Dir(src), qn_file.Dir(dst))
 		t.Assert(err, nil)
-		t.Assert(gfile.GetContents(src), srcContent)
-		t.Assert(gfile.GetContents(dst), srcContent)
+		t.Assert(qn_file.GetContents(src), srcContent)
+		t.Assert(qn_file.GetContents(dst), srcContent)
 	})
 }

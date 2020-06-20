@@ -9,15 +9,15 @@ package qn_conv_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/util/gconv"
-	"github.com/qnsoft/common/util/gutil"
+	"github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/util/qn_util"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Map_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := map[string]string{
 			"k": "v",
 		}
@@ -27,32 +27,32 @@ func Test_Map_Basic(t *testing.T) {
 		m3 := map[float64]float32{
 			1.22: 3.1,
 		}
-		t.Assert(gconv.Map(m1), g.Map{
+		t.Assert(qn_conv.Map(m1), g.Map{
 			"k": "v",
 		})
-		t.Assert(gconv.Map(m2), g.Map{
+		t.Assert(qn_conv.Map(m2), g.Map{
 			"3": "v",
 		})
-		t.Assert(gconv.Map(m3), g.Map{
+		t.Assert(qn_conv.Map(m3), g.Map{
 			"1.22": "3.1",
 		})
 	})
 }
 
 func Test_Map_Slice(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		slice1 := g.Slice{"1", "2", "3", "4"}
 		slice2 := g.Slice{"1", "2", "3"}
 		slice3 := g.Slice{}
-		t.Assert(gconv.Map(slice1), g.Map{
+		t.Assert(qn_conv.Map(slice1), g.Map{
 			"1": "2",
 			"3": "4",
 		})
-		t.Assert(gconv.Map(slice2), g.Map{
+		t.Assert(qn_conv.Map(slice2), g.Map{
 			"1": "2",
 			"3": nil,
 		})
-		t.Assert(gconv.Map(slice3), g.Map{})
+		t.Assert(qn_conv.Map(slice3), g.Map{})
 	})
 }
 
@@ -61,8 +61,8 @@ func Test_Maps_Basic(t *testing.T) {
 		g.Map{"id": 100, "name": "john"},
 		g.Map{"id": 200, "name": "smith"},
 	}
-	gtest.C(t, func(t *gtest.T) {
-		list := gconv.Maps(params)
+	qn_test.C(t, func(t *qn_test.T) {
+		list := qn_conv.Maps(params)
 		t.Assert(len(list), 2)
 		t.Assert(list[0]["id"], 100)
 		t.Assert(list[1]["id"], 200)
@@ -71,23 +71,23 @@ func Test_Maps_Basic(t *testing.T) {
 
 func Test_Maps_JsonStr(t *testing.T) {
 	jsonStr := `[{"id":100, "name":"john"},{"id":200, "name":"smith"}]`
-	gtest.C(t, func(t *gtest.T) {
-		list := gconv.Maps(jsonStr)
+	qn_test.C(t, func(t *qn_test.T) {
+		list := qn_conv.Maps(jsonStr)
 		t.Assert(len(list), 2)
 		t.Assert(list[0]["id"], 100)
 		t.Assert(list[1]["id"], 200)
 	})
 }
 
-func Test_Map_StructWithGConvTag(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+func Test_Map_StructWithqn_convTag(t *testing.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Uid      int
 			Name     string
-			SiteUrl  string `gconv:"-"`
-			NickName string `gconv:"nickname, omitempty"`
-			Pass1    string `gconv:"password1"`
-			Pass2    string `gconv:"password2"`
+			SiteUrl  string `qn_conv:"-"`
+			NickName string `qn_conv:"nickname, omitempty"`
+			Pass1    string `qn_conv:"password1"`
+			Pass2    string `qn_conv:"password2"`
 		}
 		user1 := User{
 			Uid:     100,
@@ -97,8 +97,8 @@ func Test_Map_StructWithGConvTag(t *testing.T) {
 			Pass2:   "456",
 		}
 		user2 := &user1
-		map1 := gconv.Map(user1)
-		map2 := gconv.Map(user2)
+		map1 := qn_conv.Map(user1)
+		map2 := qn_conv.Map(user2)
 		t.Assert(map1["Uid"], 100)
 		t.Assert(map1["Name"], "john")
 		t.Assert(map1["SiteUrl"], nil)
@@ -118,7 +118,7 @@ func Test_Map_StructWithGConvTag(t *testing.T) {
 }
 
 func Test_Map_StructWithJsonTag(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Uid      int
 			Name     string
@@ -135,8 +135,8 @@ func Test_Map_StructWithJsonTag(t *testing.T) {
 			Pass2:   "456",
 		}
 		user2 := &user1
-		map1 := gconv.Map(user1)
-		map2 := gconv.Map(user2)
+		map1 := qn_conv.Map(user1)
+		map2 := qn_conv.Map(user2)
 		t.Assert(map1["Uid"], 100)
 		t.Assert(map1["Name"], "john")
 		t.Assert(map1["SiteUrl"], nil)
@@ -156,7 +156,7 @@ func Test_Map_StructWithJsonTag(t *testing.T) {
 }
 
 func Test_Map_StructWithCTag(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Uid      int
 			Name     string
@@ -173,8 +173,8 @@ func Test_Map_StructWithCTag(t *testing.T) {
 			Pass2:   "456",
 		}
 		user2 := &user1
-		map1 := gconv.Map(user1)
-		map2 := gconv.Map(user2)
+		map1 := qn_conv.Map(user1)
+		map2 := qn_conv.Map(user2)
 		t.Assert(map1["Uid"], 100)
 		t.Assert(map1["Name"], "john")
 		t.Assert(map1["SiteUrl"], nil)
@@ -198,9 +198,9 @@ func Test_Map_PrivateAttribute(t *testing.T) {
 		Id   int
 		name string
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := &User{1, "john"}
-		t.Assert(gconv.Map(user), g.Map{"Id": 1})
+		t.Assert(qn_conv.Map(user), g.Map{"Id": 1})
 	})
 }
 
@@ -219,22 +219,22 @@ func Test_MapDeep1(t *testing.T) {
 		Password string `c:"password"`
 		Nickname string `c:"nickname"`
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
 		user.Id = 100
 		user.Nickname = "john"
 		user.CreateTime = "2019"
-		m := gconv.Map(user)
+		m := qn_conv.Map(user)
 		t.Assert(m["id"], "")
 		t.Assert(m["nickname"], user.Nickname)
 		t.Assert(m["create_time"], "")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
 		user.Id = 100
 		user.Nickname = "john"
 		user.CreateTime = "2019"
-		m := gconv.MapDeep(user)
+		m := qn_conv.MapDeep(user)
 		t.Assert(m["id"], user.Id)
 		t.Assert(m["nickname"], user.Nickname)
 		t.Assert(m["create_time"], user.CreateTime)
@@ -262,23 +262,23 @@ func Test_MapDeep2(t *testing.T) {
 		F string
 	}
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		b := new(B)
 		c := new(C)
 		d := new(D)
-		mb := gconv.MapDeep(b)
-		mc := gconv.MapDeep(c)
-		md := gconv.MapDeep(d)
-		t.Assert(gutil.MapContains(mb, "F"), true)
-		t.Assert(gutil.MapContains(mb, "G"), true)
-		t.Assert(gutil.MapContains(mb, "H"), true)
-		t.Assert(gutil.MapContains(mc, "A"), true)
-		t.Assert(gutil.MapContains(mc, "F"), true)
-		t.Assert(gutil.MapContains(mc, "G"), false)
-		t.Assert(gutil.MapContains(md, "F"), true)
-		t.Assert(gutil.MapContains(md, "I"), true)
-		t.Assert(gutil.MapContains(md, "H"), false)
-		t.Assert(gutil.MapContains(md, "G"), false)
+		mb := qn_conv.MapDeep(b)
+		mc := qn_conv.MapDeep(c)
+		md := qn_conv.MapDeep(d)
+		t.Assert(qn_util.MapContains(mb, "F"), true)
+		t.Assert(qn_util.MapContains(mb, "G"), true)
+		t.Assert(qn_util.MapContains(mb, "H"), true)
+		t.Assert(qn_util.MapContains(mc, "A"), true)
+		t.Assert(qn_util.MapContains(mc, "F"), true)
+		t.Assert(qn_util.MapContains(mc, "G"), false)
+		t.Assert(qn_util.MapContains(md, "F"), true)
+		t.Assert(qn_util.MapContains(md, "I"), true)
+		t.Assert(qn_util.MapContains(md, "H"), false)
+		t.Assert(qn_util.MapContains(md, "G"), false)
 	})
 }
 
@@ -297,22 +297,22 @@ func Test_MapDeepWithAttributeTag(t *testing.T) {
 		Password string `c:"password"`
 		Nickname string `c:"nickname"`
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
 		user.Id = 100
 		user.Nickname = "john"
 		user.CreateTime = "2019"
-		m := gconv.Map(user)
+		m := qn_conv.Map(user)
 		t.Assert(m["id"], "")
 		t.Assert(m["nickname"], user.Nickname)
 		t.Assert(m["create_time"], "")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
 		user.Id = 100
 		user.Nickname = "john"
 		user.CreateTime = "2019"
-		m := gconv.MapDeep(user)
+		m := qn_conv.MapDeep(user)
 		t.Assert(m["base"].(map[string]interface{})["ids"].(map[string]interface{})["id"], user.Id)
 		t.Assert(m["nickname"], user.Nickname)
 		t.Assert(m["base"].(map[string]interface{})["create_time"], user.CreateTime)

@@ -11,7 +11,7 @@ import (
 	"encoding/base64"
 	"sync/atomic"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Bytes is a struct for concurrent-safe operation for type []byte.
@@ -60,7 +60,7 @@ func (v *Bytes) MarshalJSON() ([]byte, error) {
 	val := v.Val()
 	dst := make([]byte, base64.StdEncoding.EncodedLen(len(val)))
 	base64.StdEncoding.Encode(dst, val)
-	return gconv.UnsafeStrToBytes(`"` + gconv.UnsafeBytesToStr(dst) + `"`), nil
+	return qn_conv.UnsafeStrToBytes(`"` + qn_conv.UnsafeBytesToStr(dst) + `"`), nil
 }
 
 // UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
@@ -76,6 +76,6 @@ func (v *Bytes) UnmarshalJSON(b []byte) error {
 
 // UnmarshalValue is an interface implement which sets any type of value for <v>.
 func (v *Bytes) UnmarshalValue(value interface{}) error {
-	v.Set(gconv.Bytes(value))
+	v.Set(qn_conv.Bytes(value))
 	return nil
 }

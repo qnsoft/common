@@ -10,22 +10,22 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/glog"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_Concurrent(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := 1000
 		l := glog.New()
 		s := "@1234567890#"
 		f := "test.log"
-		p := gfile.TempDir(gtime.TimestampNanoStr())
+		p := qn_file.TempDir(qn_time.TimestampNanoStr())
 		t.Assert(l.SetPath(p), nil)
-		defer gfile.Remove(p)
+		defer qn_file.Remove(p)
 		wg := sync.WaitGroup{}
 		ch := make(chan struct{})
 		for i := 0; i < c; i++ {
@@ -38,7 +38,7 @@ func Test_Concurrent(t *testing.T) {
 		}
 		close(ch)
 		wg.Wait()
-		content := gfile.GetContents(gfile.Join(p, f))
+		content := qn_file.GetContents(qn_file.Join(p, f))
 		t.Assert(gstr.Count(content, s), c)
 	})
 }

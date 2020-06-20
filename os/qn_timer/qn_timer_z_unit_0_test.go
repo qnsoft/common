@@ -12,15 +12,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/os/gtimer"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_timer"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func TestSetTimeout(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.New(true)
-		gtimer.SetTimeout(200*time.Millisecond, func() {
+		qn_timer.SetTimeout(200*time.Millisecond, func() {
 			array.Append(1)
 		})
 		time.Sleep(1000 * time.Millisecond)
@@ -29,9 +29,9 @@ func TestSetTimeout(t *testing.T) {
 }
 
 func TestSetInterval(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.New(true)
-		gtimer.SetInterval(200*time.Millisecond, func() {
+		qn_timer.SetInterval(200*time.Millisecond, func() {
 			array.Append(1)
 		})
 		time.Sleep(1100 * time.Millisecond)
@@ -40,20 +40,20 @@ func TestSetInterval(t *testing.T) {
 }
 
 func TestAddEntry(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.New(true)
-		gtimer.AddEntry(200*time.Millisecond, func() {
+		qn_timer.AddEntry(200*time.Millisecond, func() {
 			array.Append(1)
-		}, false, 2, gtimer.STATUS_READY)
+		}, false, 2, qn_timer.STATUS_READY)
 		time.Sleep(1100 * time.Millisecond)
 		t.Assert(array.Len(), 2)
 	})
 }
 
 func TestAddSingleton(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.New(true)
-		gtimer.AddSingleton(200*time.Millisecond, func() {
+		qn_timer.AddSingleton(200*time.Millisecond, func() {
 			array.Append(1)
 			time.Sleep(10000 * time.Millisecond)
 		})
@@ -63,9 +63,9 @@ func TestAddSingleton(t *testing.T) {
 }
 
 func TestAddTimes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.New(true)
-		gtimer.AddTimes(200*time.Millisecond, 2, func() {
+		qn_timer.AddTimes(200*time.Millisecond, 2, func() {
 			array.Append(1)
 		})
 		time.Sleep(1000 * time.Millisecond)
@@ -74,9 +74,9 @@ func TestAddTimes(t *testing.T) {
 }
 
 func TestDelayAdd(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.New(true)
-		gtimer.DelayAdd(200*time.Millisecond, 200*time.Millisecond, func() {
+		qn_timer.DelayAdd(200*time.Millisecond, 200*time.Millisecond, func() {
 			array.Append(1)
 		})
 		time.Sleep(300 * time.Millisecond)
@@ -87,11 +87,11 @@ func TestDelayAdd(t *testing.T) {
 }
 
 func TestDelayAddEntry(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.New(true)
-		gtimer.DelayAddEntry(200*time.Millisecond, 200*time.Millisecond, func() {
+		qn_timer.DelayAddEntry(200*time.Millisecond, 200*time.Millisecond, func() {
 			array.Append(1)
-		}, false, 2, gtimer.STATUS_READY)
+		}, false, 2, qn_timer.STATUS_READY)
 		time.Sleep(300 * time.Millisecond)
 		t.Assert(array.Len(), 0)
 		time.Sleep(1000 * time.Millisecond)
@@ -100,9 +100,9 @@ func TestDelayAddEntry(t *testing.T) {
 }
 
 func TestDelayAddSingleton(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.New(true)
-		gtimer.DelayAddSingleton(200*time.Millisecond, 200*time.Millisecond, func() {
+		qn_timer.DelayAddSingleton(200*time.Millisecond, 200*time.Millisecond, func() {
 			array.Append(1)
 			time.Sleep(10000 * time.Millisecond)
 		})
@@ -114,9 +114,9 @@ func TestDelayAddSingleton(t *testing.T) {
 }
 
 func TestDelayAddOnce(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.New(true)
-		gtimer.DelayAddOnce(200*time.Millisecond, 200*time.Millisecond, func() {
+		qn_timer.DelayAddOnce(200*time.Millisecond, 200*time.Millisecond, func() {
 			array.Append(1)
 		})
 		time.Sleep(300 * time.Millisecond)
@@ -127,9 +127,9 @@ func TestDelayAddOnce(t *testing.T) {
 }
 
 func TestDelayAddTimes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array := qn_array.New(true)
-		gtimer.DelayAddTimes(200*time.Millisecond, 200*time.Millisecond, 2, func() {
+		qn_timer.DelayAddTimes(200*time.Millisecond, 200*time.Millisecond, 2, func() {
 			array.Append(1)
 		})
 		time.Sleep(300 * time.Millisecond)

@@ -14,9 +14,9 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gfile"
-	gconv "github.com/qnsoft/common/util/qn_conv"
-	gutil "github.com/qnsoft/common/util/qn_util"
+	"github.com/qnsoft/common/os/qn_file"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 )
 
 // Config is the configuration object for logger.
@@ -84,25 +84,25 @@ func (l *Logger) SetConfigWithMap(m map[string]interface{}) error {
 	}
 	// The m now is a shallow copy of m.
 	// A little tricky, isn't it?
-	m = gutil.MapCopy(m)
+	m = qn_util.MapCopy(m)
 	// Change string configuration to int value for level.
-	levelKey, levelValue := gutil.MapPossibleItemByKey(m, "Level")
+	levelKey, levelValue := qn_util.MapPossibleItemByKey(m, "Level")
 	if levelValue != nil {
-		if level, ok := levelStringMap[strings.ToUpper(gconv.String(levelValue))]; ok {
+		if level, ok := levelStringMap[strings.ToUpper(qn_conv.String(levelValue))]; ok {
 			m[levelKey] = level
 		} else {
 			return errors.New(fmt.Sprintf(`invalid level string: %v`, levelValue))
 		}
 	}
 	// Change string configuration to int value for file rotation size.
-	rotateSizeKey, rotateSizeValue := gutil.MapPossibleItemByKey(m, "RotateSize")
+	rotateSizeKey, rotateSizeValue := qn_util.MapPossibleItemByKey(m, "RotateSize")
 	if rotateSizeValue != nil {
-		m[rotateSizeKey] = gfile.StrToSize(gconv.String(rotateSizeValue))
+		m[rotateSizeKey] = qn_file.StrToSize(qn_conv.String(rotateSizeValue))
 		if m[rotateSizeKey] == -1 {
 			return errors.New(fmt.Sprintf(`invalid rotate size: %v`, rotateSizeValue))
 		}
 	}
-	err := gconv.Struct(m, &l.config)
+	err := qn_conv.Struct(m, &l.config)
 	if err != nil {
 		return err
 	}
@@ -189,13 +189,13 @@ func (l *Logger) SetPath(path string) error {
 	if path == "" {
 		return errors.New("logging path is empty")
 	}
-	if !gfile.Exists(path) {
-		if err := gfile.Mkdir(path); err != nil {
+	if !qn_file.Exists(path) {
+		if err := qn_file.Mkdir(path); err != nil {
 			//fmt.Fprintln(os.Stderr, fmt.Sprintf(`[glog] mkdir "%s" failed: %s`, path, err.Error()))
 			return err
 		}
 	}
-	l.config.Path = strings.TrimRight(path, gfile.Separator)
+	l.config.Path = strings.TrimRight(path, qn_file.Separator)
 	return nil
 }
 

@@ -22,13 +22,13 @@ var (
 )
 
 func init() {
-	go asyncProducingRandomBufferBytesLoop()
+	go asyncProducinqn_randomBufferBytesLoop()
 }
 
-// asyncProducingRandomBufferBytes is a named goroutine, which uses a asynchronous goroutine
+// asyncProducinqn_randomBufferBytes is a named goroutine, which uses a asynchronous goroutine
 // to produce the random bytes, and a buffer chan to store the random bytes.
 // So it has high performance to generate random numbers.
-func asyncProducingRandomBufferBytesLoop() {
+func asyncProducinqn_randomBufferBytesLoop() {
 	var step int
 	for {
 		buffer := make([]byte, 1024)

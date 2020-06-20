@@ -14,7 +14,7 @@ import (
 
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/os/glog"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 const (
@@ -40,7 +40,7 @@ var serverMapping = gmap.NewStrAnyMap(true)
 func GetServer(name ...interface{}) *Server {
 	serverName := gDEFAULT_SERVER
 	if len(name) > 0 && name[0] != "" {
-		serverName = gconv.String(name[0])
+		serverName = qn_conv.String(name[0])
 	}
 	return serverMapping.GetOrSetFuncLock(serverName, func() interface{} {
 		return NewServer("", nil)

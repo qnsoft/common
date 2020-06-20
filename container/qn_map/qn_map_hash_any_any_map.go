@@ -8,7 +8,7 @@ package qn_map
 
 import (
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/internal/empty"
 
@@ -91,7 +91,7 @@ func (m *AnyAnyMap) MapStrAny() map[string]interface{} {
 	defer m.mu.RUnlock()
 	data := make(map[string]interface{}, len(m.data))
 	for k, v := range m.data {
-		data[gconv.String(k)] = v
+		data[qn_conv.String(k)] = v
 	}
 	return data
 }
@@ -458,7 +458,7 @@ func (m *AnyAnyMap) Merge(other *AnyAnyMap) {
 
 // MarshalJSON implements the interface MarshalJSON for json.Marshal.
 func (m *AnyAnyMap) MarshalJSON() ([]byte, error) {
-	return json.Marshal(gconv.Map(m.Map()))
+	return json.Marshal(qn_conv.Map(m.Map()))
 }
 
 // UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
@@ -485,7 +485,7 @@ func (m *AnyAnyMap) UnmarshalValue(value interface{}) (err error) {
 	if m.data == nil {
 		m.data = make(map[interface{}]interface{})
 	}
-	for k, v := range gconv.Map(value) {
+	for k, v := range qn_conv.Map(value) {
 		m.data[k] = v
 	}
 	return

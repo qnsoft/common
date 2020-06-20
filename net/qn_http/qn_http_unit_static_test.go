@@ -10,26 +10,27 @@ package qn_http_test
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/debug/gdebug"
 	"testing"
 	"time"
+
+	"github.com/qnsoft/common/debug/gdebug"
 
 	"github.com/qnsoft/common/text/gstr"
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Static_ServerRoot(t *testing.T) {
 	// SetServerRoot with absolute path
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, gfile.TempDir(), p)
-		defer gfile.Remove(path)
-		gfile.PutContents(path+"/index.htm", "index")
+		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		defer qn_file.Remove(path)
+		qn_file.PutContents(path+"/index.htm", "index")
 		s.SetServerRoot(path)
 		s.SetPort(p)
 		s.Start()
@@ -43,12 +44,12 @@ func Test_Static_ServerRoot(t *testing.T) {
 	})
 
 	// SetServerRoot with relative path
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		path := fmt.Sprintf(`static/test/%d`, p)
-		defer gfile.Remove(path)
-		gfile.PutContents(path+"/index.htm", "index")
+		defer qn_file.Remove(path)
+		qn_file.PutContents(path+"/index.htm", "index")
 		s.SetServerRoot(path)
 		s.SetPort(p)
 		s.Start()
@@ -63,7 +64,7 @@ func Test_Static_ServerRoot(t *testing.T) {
 }
 
 func Test_Static_ServerRoot_Security(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.SetServerRoot(gdebug.TestDataPath("static1"))
@@ -84,12 +85,12 @@ func Test_Static_ServerRoot_Security(t *testing.T) {
 }
 
 func Test_Static_Folder_Forbidden(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, gfile.TempDir(), p)
-		defer gfile.Remove(path)
-		gfile.PutContents(path+"/test.html", "test")
+		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		defer qn_file.Remove(path)
+		qn_file.PutContents(path+"/test.html", "test")
 		s.SetServerRoot(path)
 		s.SetPort(p)
 		s.Start()
@@ -105,12 +106,12 @@ func Test_Static_Folder_Forbidden(t *testing.T) {
 }
 
 func Test_Static_IndexFolder(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, gfile.TempDir(), p)
-		defer gfile.Remove(path)
-		gfile.PutContents(path+"/test.html", "test")
+		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		defer qn_file.Remove(path)
+		qn_file.PutContents(path+"/test.html", "test")
 		s.SetIndexFolder(true)
 		s.SetServerRoot(path)
 		s.SetPort(p)
@@ -128,13 +129,13 @@ func Test_Static_IndexFolder(t *testing.T) {
 }
 
 func Test_Static_IndexFiles1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, gfile.TempDir(), p)
-		defer gfile.Remove(path)
-		gfile.PutContents(path+"/index.html", "index")
-		gfile.PutContents(path+"/test.html", "test")
+		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		defer qn_file.Remove(path)
+		qn_file.PutContents(path+"/index.html", "index")
+		qn_file.PutContents(path+"/test.html", "test")
 		s.SetServerRoot(path)
 		s.SetPort(p)
 		s.Start()
@@ -150,12 +151,12 @@ func Test_Static_IndexFiles1(t *testing.T) {
 }
 
 func Test_Static_IndexFiles2(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, gfile.TempDir(), p)
-		defer gfile.Remove(path)
-		gfile.PutContents(path+"/test.html", "test")
+		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		defer qn_file.Remove(path)
+		qn_file.PutContents(path+"/test.html", "test")
 		s.SetIndexFiles([]string{"index.html", "test.html"})
 		s.SetServerRoot(path)
 		s.SetPort(p)
@@ -172,14 +173,14 @@ func Test_Static_IndexFiles2(t *testing.T) {
 }
 
 func Test_Static_AddSearchPath1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d`, gfile.TempDir(), p)
-		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d`, gfile.TempDir(), p, p)
-		defer gfile.Remove(path1)
-		defer gfile.Remove(path2)
-		gfile.PutContents(path2+"/test.html", "test")
+		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d`, qn_file.TempDir(), p, p)
+		defer qn_file.Remove(path1)
+		defer qn_file.Remove(path2)
+		qn_file.PutContents(path2+"/test.html", "test")
 		s.SetServerRoot(path1)
 		s.AddSearchPath(path2)
 		s.SetPort(p)
@@ -195,15 +196,15 @@ func Test_Static_AddSearchPath1(t *testing.T) {
 }
 
 func Test_Static_AddSearchPath2(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d`, gfile.TempDir(), p)
-		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d`, gfile.TempDir(), p, p)
-		defer gfile.Remove(path1)
-		defer gfile.Remove(path2)
-		gfile.PutContents(path1+"/test.html", "test1")
-		gfile.PutContents(path2+"/test.html", "test2")
+		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d`, qn_file.TempDir(), p, p)
+		defer qn_file.Remove(path1)
+		defer qn_file.Remove(path2)
+		qn_file.PutContents(path1+"/test.html", "test1")
+		qn_file.PutContents(path2+"/test.html", "test2")
 		s.SetServerRoot(path1)
 		s.AddSearchPath(path2)
 		s.SetPort(p)
@@ -219,15 +220,15 @@ func Test_Static_AddSearchPath2(t *testing.T) {
 }
 
 func Test_Static_AddStaticPath(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d`, gfile.TempDir(), p)
-		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d`, gfile.TempDir(), p, p)
-		defer gfile.Remove(path1)
-		defer gfile.Remove(path2)
-		gfile.PutContents(path1+"/test.html", "test1")
-		gfile.PutContents(path2+"/test.html", "test2")
+		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d`, qn_file.TempDir(), p, p)
+		defer qn_file.Remove(path1)
+		defer qn_file.Remove(path2)
+		qn_file.PutContents(path1+"/test.html", "test1")
+		qn_file.PutContents(path2+"/test.html", "test2")
 		s.SetServerRoot(path1)
 		s.AddStaticPath("/my-test", path2)
 		s.SetPort(p)
@@ -244,15 +245,15 @@ func Test_Static_AddStaticPath(t *testing.T) {
 }
 
 func Test_Static_AddStaticPath_Priority(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d/test`, gfile.TempDir(), p)
-		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d/test`, gfile.TempDir(), p, p)
-		defer gfile.Remove(path1)
-		defer gfile.Remove(path2)
-		gfile.PutContents(path1+"/test.html", "test1")
-		gfile.PutContents(path2+"/test.html", "test2")
+		path1 := fmt.Sprintf(`%s/ghttp/static/test/%d/test`, qn_file.TempDir(), p)
+		path2 := fmt.Sprintf(`%s/ghttp/static/test/%d/%d/test`, qn_file.TempDir(), p, p)
+		defer qn_file.Remove(path1)
+		defer qn_file.Remove(path2)
+		qn_file.PutContents(path1+"/test.html", "test1")
+		qn_file.PutContents(path2+"/test.html", "test2")
 		s.SetServerRoot(path1)
 		s.AddStaticPath("/test", path2)
 		s.SetPort(p)
@@ -269,13 +270,13 @@ func Test_Static_AddStaticPath_Priority(t *testing.T) {
 }
 
 func Test_Static_Rewrite(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
-		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, gfile.TempDir(), p)
-		defer gfile.Remove(path)
-		gfile.PutContents(path+"/test1.html", "test1")
-		gfile.PutContents(path+"/test2.html", "test2")
+		path := fmt.Sprintf(`%s/ghttp/static/test/%d`, qn_file.TempDir(), p)
+		defer qn_file.Remove(path)
+		qn_file.PutContents(path+"/test1.html", "test1")
+		qn_file.PutContents(path+"/test2.html", "test2")
 		s.SetServerRoot(path)
 		s.SetRewrite("/test.html", "/test1.html")
 		s.SetRewriteMap(g.MapStrStr{

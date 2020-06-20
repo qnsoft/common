@@ -12,14 +12,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/gogf/gf/text/gstr"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_To(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
 		To(w).Error(1, 2, 3)
 		To(w).Errorf("%d %d %d", 1, 2, 3)
@@ -29,69 +29,69 @@ func Test_To(t *testing.T) {
 }
 
 func Test_Path(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Stdout(false).Error(1, 2, 3)
 		Path(path).File(file).Stdout(false).Errorf("%d %d %d", 1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
 		t.Assert(gstr.Count(content, "1 2 3"), 2)
 	})
 }
 
 func Test_Cat(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cat := "category"
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Cat(cat).Stdout(false).Error(1, 2, 3)
 		Path(path).File(file).Cat(cat).Stdout(false).Errorf("%d %d %d", 1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, cat, file))
+		content := qn_file.GetContents(qn_file.Join(path, cat, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
 		t.Assert(gstr.Count(content, "1 2 3"), 2)
 	})
 }
 
 func Test_Level(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Level(LEVEL_PROD).Stdout(false).Debug(1, 2, 3)
 		Path(path).File(file).Level(LEVEL_PROD).Stdout(false).Debug("%d %d %d", 1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 0)
 		t.Assert(gstr.Count(content, "1 2 3"), 0)
 	})
 }
 
 func Test_Skip(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Skip(10).Stdout(false).Error(1, 2, 3)
 		Path(path).File(file).Stdout(false).Errorf("%d %d %d", 1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
 		t.Assert(gstr.Count(content, "1 2 3"), 2)
 		t.Assert(gstr.Count(content, "Stack"), 1)
@@ -99,17 +99,17 @@ func Test_Skip(t *testing.T) {
 }
 
 func Test_Stack(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Stack(false).Stdout(false).Error(1, 2, 3)
 		Path(path).File(file).Stdout(false).Errorf("%d %d %d", 1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
 		t.Assert(gstr.Count(content, "1 2 3"), 2)
 		t.Assert(gstr.Count(content, "Stack"), 1)
@@ -117,30 +117,30 @@ func Test_Stack(t *testing.T) {
 }
 
 func Test_StackWithFilter(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).StackWithFilter("none").Stdout(false).Error(1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 1)
 		t.Assert(gstr.Count(content, "1 2 3"), 1)
 		t.Assert(gstr.Count(content, "Stack"), 1)
 	})
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).StackWithFilter("gogf").Stdout(false).Error(1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 1)
 		t.Assert(gstr.Count(content, "1 2 3"), 1)
 		t.Assert(gstr.Count(content, "Stack"), 0)
@@ -148,96 +148,96 @@ func Test_StackWithFilter(t *testing.T) {
 }
 
 func Test_Header(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Header(true).Stdout(false).Error(1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 1)
 		t.Assert(gstr.Count(content, "1 2 3"), 1)
 	})
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Header(false).Stdout(false).Error(1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 0)
 		t.Assert(gstr.Count(content, "1 2 3"), 1)
 	})
 }
 
 func Test_Line(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Line(true).Stdout(false).Debug(1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
 		t.Assert(gstr.Count(content, "1 2 3"), 1)
 		t.Assert(gstr.Count(content, ".go"), 1)
-		t.Assert(gstr.Contains(content, gfile.Separator), true)
+		t.Assert(gstr.Contains(content, qn_file.Separator), true)
 	})
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Line(false).Stdout(false).Debug(1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
 		t.Assert(gstr.Count(content, "1 2 3"), 1)
 		t.Assert(gstr.Count(content, ".go"), 1)
-		t.Assert(gstr.Contains(content, gfile.Separator), false)
+		t.Assert(gstr.Contains(content, qn_file.Separator), false)
 	})
 }
 
 func Test_Async(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Async().Stdout(false).Debug(1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(content, "")
 		time.Sleep(200 * time.Millisecond)
 
-		content = gfile.GetContents(gfile.Join(path, file))
+		content = qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
 		t.Assert(gstr.Count(content, "1 2 3"), 1)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		file := fmt.Sprintf(`%d.log`, gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		file := fmt.Sprintf(`%d.log`, qn_time.TimestampNano())
 
-		err := gfile.Mkdir(path)
+		err := qn_file.Mkdir(path)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		Path(path).File(file).Async(false).Stdout(false).Debug(1, 2, 3)
-		content := gfile.GetContents(gfile.Join(path, file))
+		content := qn_file.GetContents(qn_file.Join(path, file))
 		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
 		t.Assert(gstr.Count(content, "1 2 3"), 1)
 	})

@@ -11,13 +11,13 @@ import (
 	"net"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/gqueue"
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/net/gtcp"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 var (
@@ -63,7 +63,7 @@ func receiveTcpListening() {
 			continue
 		}
 		// Save the port to the pid file.
-		if err := gfile.PutContents(getCommFilePath(Pid()), gconv.String(i)); err != nil {
+		if err := qn_file.PutContents(getCommFilePath(Pid()), qn_conv.String(i)); err != nil {
 			panic(err)
 		}
 		break

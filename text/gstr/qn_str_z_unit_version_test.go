@@ -11,12 +11,12 @@ package qn_str_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_CompareVersion(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.AssertEQ(gstr.CompareVersion("1", "v0.99"), 1)
 		t.AssertEQ(gstr.CompareVersion("v1.0", "v0.99"), 1)
 		t.AssertEQ(gstr.CompareVersion("v1.0.1", "v1.1.0"), -1)
@@ -27,7 +27,7 @@ func Test_CompareVersion(t *testing.T) {
 }
 
 func Test_CompareVersionGo(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.AssertEQ(gstr.CompareVersionGo("v1.0.1", "v1.1.0"), -1)
 		t.AssertEQ(gstr.CompareVersionGo("1.0.1", "v1.1.0"), -1)
 		t.AssertEQ(gstr.CompareVersionGo("1.0.0", "v0.1.0"), 1)

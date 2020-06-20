@@ -12,14 +12,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/os/qn_time"
 
-	"github.com/qnsoft/common/encoding/gjson"
+	"github.com/qnsoft/common/encoding/qn_json"
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/os/gcfg"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func init() {
@@ -37,11 +37,11 @@ array = [1,2,3]
     disk  = "127.0.0.1:6379,0"
     cache = "127.0.0.1:6379,1"
 `
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := gcfg.DEFAULT_CONFIG_FILE
-		err := gfile.PutContents(path, config)
+		err := qn_file.PutContents(path, config)
 		t.Assert(err, nil)
-		defer gfile.Remove(path)
+		defer qn_file.Remove(path)
 
 		c := gcfg.New()
 		t.Assert(c.Get("v1"), 1)
@@ -82,19 +82,19 @@ array = [1,2,3]
 			"disk":  "127.0.0.1:6379,0",
 			"cache": "127.0.0.1:6379,1",
 		})
-		t.AssertEQ(c.FilePath(), gfile.Pwd()+gfile.Separator+path)
+		t.AssertEQ(c.FilePath(), qn_file.Pwd()+qn_file.Separator+path)
 
 	})
 }
 
 func Test_Basic2(t *testing.T) {
 	config := `log-path = "logs"`
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := gcfg.DEFAULT_CONFIG_FILE
-		err := gfile.PutContents(path, config)
+		err := qn_file.PutContents(path, config)
 		t.Assert(err, nil)
 		defer func() {
-			_ = gfile.Remove(path)
+			_ = qn_file.Remove(path)
 		}()
 
 		c := gcfg.New()
@@ -116,7 +116,7 @@ array = [1,2,3]
 	gcfg.SetContent(content)
 	defer gcfg.ClearContent()
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := gcfg.New()
 		t.Assert(c.Get("v1"), 1)
 		t.AssertEQ(c.GetInt("v1"), 1)
@@ -177,12 +177,12 @@ func Test_SetFileName(t *testing.T) {
 	"v4": "1.234"
 }
 `
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := "config.json"
-		err := gfile.PutContents(path, config)
+		err := qn_file.PutContents(path, config)
 		t.Assert(err, nil)
 		defer func() {
-			_ = gfile.Remove(path)
+			_ = qn_file.Remove(path)
 		}()
 
 		c := gcfg.New()
@@ -225,7 +225,7 @@ func Test_SetFileName(t *testing.T) {
 			"disk":  "127.0.0.1:6379,0",
 			"cache": "127.0.0.1:6379,1",
 		})
-		t.AssertEQ(c.FilePath(), gfile.Pwd()+gfile.Separator+path)
+		t.AssertEQ(c.FilePath(), qn_file.Pwd()+qn_file.Separator+path)
 
 	})
 }
@@ -248,12 +248,12 @@ func Test_Instance(t *testing.T) {
 	"v4": "1.234"
 }
 `
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := gcfg.DEFAULT_CONFIG_FILE
-		err := gfile.PutContents(path, config)
+		err := qn_file.PutContents(path, config)
 		t.Assert(err, nil)
 		defer func() {
-			t.Assert(gfile.Remove(path), nil)
+			t.Assert(qn_file.Remove(path), nil)
 		}()
 
 		c := gcfg.Instance()
@@ -295,21 +295,21 @@ func Test_Instance(t *testing.T) {
 			"disk":  "127.0.0.1:6379,0",
 			"cache": "127.0.0.1:6379,1",
 		})
-		t.AssertEQ(c.FilePath(), gfile.Pwd()+gfile.Separator+path)
+		t.AssertEQ(c.FilePath(), qn_file.Pwd()+qn_file.Separator+path)
 
 	})
 }
 
 func TestCfg_New(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		os.Setenv("GF_GCFG_PATH", "config")
 		c := gcfg.New("config.yml")
 		t.Assert(c.Get("name"), nil)
 		t.Assert(c.GetFileName(), "config.yml")
 
-		configPath := gfile.Pwd() + gfile.Separator + "config"
-		_ = gfile.Mkdir(configPath)
-		defer gfile.Remove(configPath)
+		configPath := qn_file.Pwd() + qn_file.Separator + "config"
+		_ = qn_file.Mkdir(configPath)
+		defer qn_file.Remove(configPath)
 
 		c = gcfg.New("config.yml")
 		t.Assert(c.Get("name"), nil)
@@ -321,7 +321,7 @@ func TestCfg_New(t *testing.T) {
 }
 
 func TestCfg_SetPath(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := gcfg.New("config.yml")
 		err := c.SetPath("tmp")
 		t.AssertNE(err, nil)
@@ -332,7 +332,7 @@ func TestCfg_SetPath(t *testing.T) {
 }
 
 func TestCfg_SetViolenceCheck(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := gcfg.New("config.yml")
 		c.SetViolenceCheck(true)
 		t.Assert(c.Get("name"), nil)
@@ -340,7 +340,7 @@ func TestCfg_SetViolenceCheck(t *testing.T) {
 }
 
 func TestCfg_AddPath(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := gcfg.New("config.yml")
 		err := c.AddPath("tmp")
 		t.AssertNE(err, nil)
@@ -351,7 +351,7 @@ func TestCfg_AddPath(t *testing.T) {
 }
 
 func TestCfg_FilePath(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := gcfg.New("config.yml")
 		path := c.FilePath("tmp")
 		t.Assert(path, "")
@@ -361,19 +361,19 @@ func TestCfg_FilePath(t *testing.T) {
 }
 
 func TestCfg_Get(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var err error
-		configPath := gfile.TempDir(gtime.TimestampNanoStr())
-		err = gfile.Mkdir(configPath)
+		configPath := qn_file.TempDir(qn_time.TimestampNanoStr())
+		err = qn_file.Mkdir(configPath)
 		t.Assert(err, nil)
-		defer gfile.Remove(configPath)
+		defer qn_file.Remove(configPath)
 
-		defer gfile.Chdir(gfile.Pwd())
-		err = gfile.Chdir(configPath)
+		defer qn_file.Chdir(qn_file.Pwd())
+		err = qn_file.Chdir(configPath)
 		t.Assert(err, nil)
 
-		err = gfile.PutContents(
-			gfile.Join(configPath, "config.yml"),
+		err = qn_file.PutContents(
+			qn_file.Join(configPath, "config.yml"),
 			"wrong config",
 		)
 		t.Assert(err, nil)
@@ -402,7 +402,7 @@ func TestCfg_Get(t *testing.T) {
 		t.Assert(c.GetUint32("name"), 0)
 		t.Assert(c.GetUint64("name"), 0)
 		t.Assert(c.GetTime("name").Format("2006-01-02"), "0001-01-01")
-		t.Assert(c.GetGTime("name"), nil)
+		t.Assert(c.Getqn_time("name"), nil)
 		t.Assert(c.GetDuration("name").String(), "0s")
 		name := struct {
 			Name string
@@ -411,7 +411,7 @@ func TestCfg_Get(t *testing.T) {
 
 		c.Clear()
 
-		arr, _ := gjson.Encode(
+		arr, _ := qn_json.Encode(
 			g.Map{
 				"name":   "gf",
 				"time":   "2019-06-12",
@@ -419,13 +419,13 @@ func TestCfg_Get(t *testing.T) {
 				"floats": g.Slice{1, 2, 3},
 			},
 		)
-		err = gfile.PutBytes(
-			gfile.Join(configPath, "config.yml"),
+		err = qn_file.PutBytes(
+			qn_file.Join(configPath, "config.yml"),
 			arr,
 		)
 		t.Assert(err, nil)
 		t.Assert(c.GetTime("time").Format("2006-01-02"), "2019-06-12")
-		t.Assert(c.GetGTime("time").Format("Y-m-d"), "2019-06-12")
+		t.Assert(c.Getqn_time("time").Format("Y-m-d"), "2019-06-12")
 		t.Assert(c.GetDuration("time").String(), "0s")
 
 		err = c.GetStruct("person", &name)
@@ -436,13 +436,13 @@ func TestCfg_Get(t *testing.T) {
 }
 
 func TestCfg_Instance(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gcfg.Instance("gf") != nil, true)
 	})
-	gtest.C(t, func(t *gtest.T) {
-		pwd := gfile.Pwd()
-		gfile.Chdir(gfile.Join(gdebug.TestDataPath()))
-		defer gfile.Chdir(pwd)
+	qn_test.C(t, func(t *qn_test.T) {
+		pwd := qn_file.Pwd()
+		qn_file.Chdir(qn_file.Join(gdebug.TestDataPath()))
+		defer qn_file.Chdir(pwd)
 		t.Assert(gcfg.Instance("c1") != nil, true)
 		t.Assert(gcfg.Instance("c1").Get("my-config"), "1")
 		t.Assert(gcfg.Instance("folder1/c1").Get("my-config"), "2")
@@ -450,7 +450,7 @@ func TestCfg_Instance(t *testing.T) {
 }
 
 func TestCfg_Config(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		gcfg.SetContent("gf", "config.yml")
 		t.Assert(gcfg.GetContent("config.yml"), "gf")
 		gcfg.SetContent("gf1", "config.yml")

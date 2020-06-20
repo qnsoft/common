@@ -13,15 +13,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/gogf/gf/text/gstr"
-	"github.com/qnsoft/common/encoding/ghtml"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/encoding/qn_html"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/text/gstr"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gview"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func init() {
@@ -29,9 +29,9 @@ func init() {
 }
 
 func Test_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		str := `hello {{.name}},version:{{.version}};hello {{GetName}},version:{{GetVersion}};{{.other}}`
-		pwd := gfile.Pwd()
+		pwd := qn_file.Pwd()
 		view := gview.New()
 		view.SetDelimiters("{{", "}}")
 		view.AddPath(pwd)
@@ -58,7 +58,7 @@ func Test_Basic(t *testing.T) {
 }
 
 func Test_Func(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		str := `{{eq 1 1}};{{eq 1 2}};{{eq "A" "B"}}`
 		result, err := gview.ParseContent(str, nil)
 		t.Assert(err != nil, false)
@@ -179,13 +179,13 @@ func Test_Func(t *testing.T) {
 }
 
 func Test_FuncNl2Br(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		str := `{{"Go\nFrame" | nl2br}}`
 		result, err := gview.ParseContent(str, nil)
 		t.Assert(err, nil)
 		t.Assert(result, `Go<br>Frame`)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := ""
 		for i := 0; i < 3000; i++ {
 			s += "Go\nFrame\n中文"
@@ -200,24 +200,24 @@ func Test_FuncNl2Br(t *testing.T) {
 }
 
 func Test_FuncInclude(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		header := `<h1>HEADER</h1>`
 		main := `<h1>hello gf</h1>`
 		footer := `<h1>FOOTER</h1>`
 		layout := `{{include "header.html" .}}
 {{include "main.html" .}}
 {{include "footer.html" .}}`
-		templatePath := gfile.Pwd() + gfile.Separator + "template"
-		gfile.Mkdir(templatePath)
-		defer gfile.Remove(templatePath)
-		//headerFile, _ := gfile.Create(templatePath + gfile.Separator + "header.html")
-		err := ioutil.WriteFile(templatePath+gfile.Separator+"header.html", []byte(header), 0644)
+		templatePath := qn_file.Pwd() + qn_file.Separator + "template"
+		qn_file.Mkdir(templatePath)
+		defer qn_file.Remove(templatePath)
+		//headerFile, _ := qn_file.Create(templatePath + qn_file.Separator + "header.html")
+		err := ioutil.WriteFile(templatePath+qn_file.Separator+"header.html", []byte(header), 0644)
 		if err != nil {
 			t.Error(err)
 		}
-		ioutil.WriteFile(templatePath+gfile.Separator+"main.html", []byte(main), 0644)
-		ioutil.WriteFile(templatePath+gfile.Separator+"footer.html", []byte(footer), 0644)
-		ioutil.WriteFile(templatePath+gfile.Separator+"layout.html", []byte(layout), 0644)
+		ioutil.WriteFile(templatePath+qn_file.Separator+"main.html", []byte(main), 0644)
+		ioutil.WriteFile(templatePath+qn_file.Separator+"footer.html", []byte(footer), 0644)
+		ioutil.WriteFile(templatePath+qn_file.Separator+"layout.html", []byte(layout), 0644)
 		view := gview.New(templatePath)
 		result, err := view.Parse("notfound.html")
 		t.Assert(err != nil, true)
@@ -227,9 +227,9 @@ func Test_FuncInclude(t *testing.T) {
 		t.Assert(result, `<h1>HEADER</h1>
 <h1>hello gf</h1>
 <h1>FOOTER</h1>`)
-		notfoundPath := templatePath + gfile.Separator + "template" + gfile.Separator + "notfound.html"
-		gfile.Mkdir(templatePath + gfile.Separator + "template")
-		gfile.Create(notfoundPath)
+		notfoundPath := templatePath + qn_file.Separator + "template" + qn_file.Separator + "notfound.html"
+		qn_file.Mkdir(templatePath + qn_file.Separator + "template")
+		qn_file.Create(notfoundPath)
 		ioutil.WriteFile(notfoundPath, []byte("notfound"), 0644)
 		result, err = view.Parse("notfound.html")
 		t.Assert(err != nil, true)
@@ -238,7 +238,7 @@ func Test_FuncInclude(t *testing.T) {
 }
 
 func Test_SetPath(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		view := gview.Instance("addpath")
 		err := view.AddPath("tmp")
 		t.AssertNE(err, nil)
@@ -254,7 +254,7 @@ func Test_SetPath(t *testing.T) {
 		err = view.SetPath("gview.go")
 		t.AssertNE(err, nil)
 
-		view = gview.New(gfile.Pwd())
+		view = gview.New(qn_file.Pwd())
 		err = view.SetPath("tmp")
 		t.AssertNE(err, nil)
 
@@ -262,13 +262,13 @@ func Test_SetPath(t *testing.T) {
 		t.AssertNE(err, nil)
 
 		os.Setenv("GF_GVIEW_PATH", "template")
-		gfile.Mkdir(gfile.Pwd() + gfile.Separator + "template")
+		qn_file.Mkdir(qn_file.Pwd() + qn_file.Separator + "template")
 		view = gview.New()
 	})
 }
 
 func Test_ParseContent(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		str := `{{.name}}`
 		view := gview.New()
 		result, err := view.ParseContent(str, g.Map{"name": func() {}})
@@ -278,17 +278,17 @@ func Test_ParseContent(t *testing.T) {
 }
 
 func Test_HotReload(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		dirPath := gfile.Join(
-			gfile.TempDir(),
+	qn_test.C(t, func(t *qn_test.T) {
+		dirPath := qn_file.Join(
+			qn_file.TempDir(),
 			"testdata",
-			"template-"+gconv.String(gtime.TimestampNano()),
+			"template-"+qn_conv.String(qn_time.TimestampNano()),
 		)
-		defer gfile.Remove(dirPath)
-		filePath := gfile.Join(dirPath, "test.html")
+		defer qn_file.Remove(dirPath)
+		filePath := qn_file.Join(dirPath, "test.html")
 
 		// Initialize data.
-		err := gfile.PutContents(filePath, "test:{{.var}}")
+		err := qn_file.PutContents(filePath, "test:{{.var}}")
 		t.Assert(err, nil)
 
 		view := gview.New(dirPath)
@@ -301,7 +301,7 @@ func Test_HotReload(t *testing.T) {
 		t.Assert(result, `test:1`)
 
 		// Update data.
-		err = gfile.PutContents(filePath, "test2:{{.var}}")
+		err = qn_file.PutContents(filePath, "test2:{{.var}}")
 		t.Assert(err, nil)
 
 		time.Sleep(100 * time.Millisecond)
@@ -314,7 +314,7 @@ func Test_HotReload(t *testing.T) {
 }
 
 func Test_XSS(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := gview.New()
 		s := "<br>"
 		r, err := v.ParseContent("{{.v}}", g.Map{
@@ -323,7 +323,7 @@ func Test_XSS(t *testing.T) {
 		t.Assert(err, nil)
 		t.Assert(r, s)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := gview.New()
 		v.SetAutoEncode(true)
 		s := "<br>"
@@ -331,10 +331,10 @@ func Test_XSS(t *testing.T) {
 			"v": s,
 		})
 		t.Assert(err, nil)
-		t.Assert(r, ghtml.Entities(s))
+		t.Assert(r, qn_html.Entities(s))
 	})
 	// Tag "if".
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := gview.New()
 		v.SetAutoEncode(true)
 		s := "<br>"
@@ -342,6 +342,6 @@ func Test_XSS(t *testing.T) {
 			"v": s,
 		})
 		t.Assert(err, nil)
-		t.Assert(r, ghtml.Entities(s))
+		t.Assert(r, qn_html.Entities(s))
 	})
 }

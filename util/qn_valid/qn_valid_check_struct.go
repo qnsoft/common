@@ -10,12 +10,12 @@ import (
 	"strings"
 
 	"github.com/qnsoft/common/internal/structs"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 var (
-	structTagPriority    = []string{"gvalid", "valid", "v"} // structTagPriority specifies the validation tag priority array.
-	aliasNameTagPriority = []string{"param", "params", "p"} // aliasNameTagPriority specifies the alias tag priority array.
+	structTagPriority    = []string{"qn_valid", "valid", "v"} // structTagPriority specifies the validation tag priority array.
+	aliasNameTagPriority = []string{"param", "params", "p"}   // aliasNameTagPriority specifies the alias tag priority array.
 )
 
 // CheckStruct validates strcut and returns the error result.
@@ -153,7 +153,7 @@ func CheckStruct(object interface{}, rules interface{}, messages ...CustomMsg) *
 			_, item := e.FirstItem()
 			// If value is nil or empty string and has no required* rules,
 			// clear the error message.
-			if value == nil || gconv.String(value) == "" {
+			if value == nil || qn_conv.String(value) == "" {
 				required := false
 				// rule => error
 				for k := range item {

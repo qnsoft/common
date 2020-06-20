@@ -12,11 +12,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/internal/intlog"
+	"github.com/qnsoft/common/os/qn_time"
 
 	"github.com/qnsoft/common/container/gtree"
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 type Resource struct {
@@ -61,11 +61,11 @@ func (r *Resource) Add(content string, prefix ...string) error {
 // The unnecessary parameter <prefix> indicates the prefix
 // for each file storing into current resource object.
 func (r *Resource) Load(path string, prefix ...string) error {
-	realPath, err := gfile.Search(path)
+	realPath, err := qn_file.Search(path)
 	if err != nil {
 		return err
 	}
-	return r.Add(gfile.GetContents(realPath), prefix...)
+	return r.Add(qn_file.GetContents(realPath), prefix...)
 }
 
 // Get returns the file with given path.
@@ -212,7 +212,7 @@ func (r *Resource) doScanDir(path string, pattern string, recursive bool, onlyFi
 			}
 		}
 		for _, p := range patterns {
-			if match, err := filepath.Match(p, gfile.Basename(name)); err == nil && match {
+			if match, err := filepath.Match(p, qn_file.Basename(name)); err == nil && match {
 				files = append(files, value.(*File))
 				return true
 			}
@@ -227,7 +227,7 @@ func (r *Resource) Dump() {
 	var info os.FileInfo
 	r.tree.Iterator(func(key, value interface{}) bool {
 		info = value.(*File).FileInfo()
-		fmt.Printf("%v %7s %s\n", gtime.New(info.ModTime()).ISO8601(), gfile.FormatSize(info.Size()), key)
+		fmt.Printf("%v %7s %s\n", qn_time.New(info.ModTime()).ISO8601(), qn_file.FormatSize(info.Size()), key)
 		return true
 	})
 	fmt.Printf("TOTAL FILES: %d\n", r.tree.Size())

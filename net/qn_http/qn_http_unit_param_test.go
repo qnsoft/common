@@ -13,7 +13,7 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Params_Basic(t *testing.T) {
@@ -293,7 +293,7 @@ func Test_Params_Basic(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		// GET
@@ -419,7 +419,7 @@ func Test_Params_SupportChars(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		prefix := fmt.Sprintf("http://127.0.0.1:%d", p)
 		client := ghttp.NewClient()
 		client.SetPrefix(prefix)
@@ -456,7 +456,7 @@ func Test_Params_Priority(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		prefix := fmt.Sprintf("http://127.0.0.1:%d", p)
 		client := ghttp.NewClient()
 		client.SetPrefix(prefix)
@@ -482,7 +482,7 @@ func Test_Params_GetRequestMap(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		prefix := fmt.Sprintf("http://127.0.0.1:%d", p)
 		client := ghttp.NewClient()
 		client.SetPrefix(prefix)

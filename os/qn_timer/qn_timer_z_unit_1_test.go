@@ -12,17 +12,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/os/gtimer"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_timer"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
-func New() *gtimer.Timer {
-	return gtimer.New(10, 10*time.Millisecond)
+func New() *qn_timer.Timer {
+	return qn_timer.New(10, 10*time.Millisecond)
 }
 
 func TestTimer_Add_Close(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		//fmt.Println("start", time.Now())
@@ -51,7 +51,7 @@ func TestTimer_Add_Close(t *testing.T) {
 }
 
 func TestTimer_Start_Stop_Close(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.Add(200*time.Millisecond, func() {
@@ -74,7 +74,7 @@ func TestTimer_Start_Stop_Close(t *testing.T) {
 }
 
 func TestTimer_AddSingleton(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.AddSingleton(200*time.Millisecond, func() {
@@ -90,7 +90,7 @@ func TestTimer_AddSingleton(t *testing.T) {
 }
 
 func TestTimer_AddOnce(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.AddOnce(200*time.Millisecond, func() {
@@ -112,7 +112,7 @@ func TestTimer_AddOnce(t *testing.T) {
 }
 
 func TestTimer_AddTimes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.AddTimes(200*time.Millisecond, 2, func() {
@@ -124,7 +124,7 @@ func TestTimer_AddTimes(t *testing.T) {
 }
 
 func TestTimer_DelayAdd(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.DelayAdd(200*time.Millisecond, 200*time.Millisecond, func() {
@@ -138,12 +138,12 @@ func TestTimer_DelayAdd(t *testing.T) {
 }
 
 func TestTimer_DelayAddEntry(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.DelayAddEntry(200*time.Millisecond, 200*time.Millisecond, func() {
 			array.Append(1)
-		}, false, 100, gtimer.STATUS_READY)
+		}, false, 100, qn_timer.STATUS_READY)
 		time.Sleep(250 * time.Millisecond)
 		t.Assert(array.Len(), 0)
 		time.Sleep(250 * time.Millisecond)
@@ -152,7 +152,7 @@ func TestTimer_DelayAddEntry(t *testing.T) {
 }
 
 func TestTimer_DelayAddSingleton(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.DelayAddSingleton(200*time.Millisecond, 200*time.Millisecond, func() {
@@ -168,7 +168,7 @@ func TestTimer_DelayAddSingleton(t *testing.T) {
 }
 
 func TestTimer_DelayAddOnce(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.DelayAddOnce(200*time.Millisecond, 200*time.Millisecond, func() {
@@ -186,7 +186,7 @@ func TestTimer_DelayAddOnce(t *testing.T) {
 }
 
 func TestTimer_DelayAddTimes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.DelayAddTimes(200*time.Millisecond, 500*time.Millisecond, 2, func() {
@@ -207,8 +207,8 @@ func TestTimer_DelayAddTimes(t *testing.T) {
 }
 
 func TestTimer_AddLessThanInterval(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		timer := gtimer.New(10, 100*time.Millisecond)
+	qn_test.C(t, func(t *qn_test.T) {
+		timer := qn_timer.New(10, 100*time.Millisecond)
 		array := qn_array.New(true)
 		timer.Add(20*time.Millisecond, func() {
 			array.Append(1)
@@ -225,7 +225,7 @@ func TestTimer_AddLessThanInterval(t *testing.T) {
 }
 
 func TestTimer_AddLeveledEntry1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		//glog.Println("start")
@@ -242,12 +242,12 @@ func TestTimer_AddLeveledEntry1(t *testing.T) {
 }
 
 func TestTimer_Exit(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		timer := New()
 		array := qn_array.New(true)
 		timer.Add(200*time.Millisecond, func() {
 			array.Append(1)
-			gtimer.Exit()
+			qn_timer.Exit()
 		})
 		time.Sleep(1000 * time.Millisecond)
 		t.Assert(array.Len(), 1)

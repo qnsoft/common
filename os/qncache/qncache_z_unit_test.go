@@ -15,19 +15,19 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/os/gfcache"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func TestGetContents(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 
 		var f *os.File
 		var err error
 		fileName := "test"
 		strTest := "123"
 
-		if !gfile.Exists(fileName) {
+		if !qn_file.Exists(fileName) {
 			f, err = ioutil.TempFile("", fileName)
 			if err != nil {
 				t.Error("create file fail")
@@ -37,14 +37,14 @@ func TestGetContents(t *testing.T) {
 		defer f.Close()
 		defer os.Remove(f.Name())
 
-		if gfile.Exists(f.Name()) {
+		if qn_file.Exists(f.Name()) {
 
-			f, err = gfile.OpenFile(f.Name(), os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+			f, err = qn_file.OpenFile(f.Name(), os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 			if err != nil {
 				t.Error("file open fail", err)
 			}
 
-			err = gfile.PutContents(f.Name(), strTest)
+			err = qn_file.PutContents(f.Name(), strTest)
 			if err != nil {
 				t.Error("write error", err)
 			}
@@ -54,14 +54,14 @@ func TestGetContents(t *testing.T) {
 		}
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 
 		var f *os.File
 		var err error
 		fileName := "test2"
 		strTest := "123"
 
-		if !gfile.Exists(fileName) {
+		if !qn_file.Exists(fileName) {
 			f, err = ioutil.TempFile("", fileName)
 			if err != nil {
 				t.Error("create file fail")
@@ -71,15 +71,15 @@ func TestGetContents(t *testing.T) {
 		defer f.Close()
 		defer os.Remove(f.Name())
 
-		if gfile.Exists(f.Name()) {
+		if qn_file.Exists(f.Name()) {
 			cache := gfcache.GetContents(f.Name())
 
-			f, err = gfile.OpenFile(f.Name(), os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+			f, err = qn_file.OpenFile(f.Name(), os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 			if err != nil {
 				t.Error("file open fail", err)
 			}
 
-			err = gfile.PutContents(f.Name(), strTest)
+			err = qn_file.PutContents(f.Name(), strTest)
 			if err != nil {
 				t.Error("write error", err)
 			}

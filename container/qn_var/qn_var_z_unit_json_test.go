@@ -7,16 +7,17 @@
 package qn_var_test
 
 import (
-	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/test/gtest"
 	"math"
 	"testing"
+
+	"github.com/qnsoft/common/container/qn_var"
+	"github.com/qnsoft/common/internal/json"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Json(t *testing.T) {
 	// Marshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := "i love gf"
 		v := qn_var.New(s)
 		b1, err1 := json.Marshal(v)
@@ -25,7 +26,7 @@ func Test_Json(t *testing.T) {
 		t.Assert(b1, b2)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := int64(math.MaxInt64)
 		v := qn_var.New(s)
 		b1, err1 := json.Marshal(v)
@@ -35,7 +36,7 @@ func Test_Json(t *testing.T) {
 	})
 
 	// Unmarshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := "i love gf"
 		v := qn_var.New(nil)
 		b, err := json.Marshal(s)
@@ -46,7 +47,7 @@ func Test_Json(t *testing.T) {
 		t.Assert(v.String(), s)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v qn_var.VarImp
 		s := "i love gf"
 		b, err := json.Marshal(s)

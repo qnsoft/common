@@ -13,8 +13,8 @@ import (
 
 	"github.com/qnsoft/common/net/gudp"
 	"github.com/qnsoft/common/os/glog"
-	"github.com/qnsoft/common/test/gtest"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/test/qn_test"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Basic(t *testing.T) {
@@ -37,36 +37,36 @@ func Test_Basic(t *testing.T) {
 	defer s.Close()
 	time.Sleep(100 * time.Millisecond)
 	// gudp.Conn.Send
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		for i := 0; i < 100; i++ {
 			conn, err := gudp.NewConn(fmt.Sprintf("127.0.0.1:%d", p))
 			t.Assert(err, nil)
-			t.Assert(conn.Send([]byte(gconv.String(i))), nil)
+			t.Assert(conn.Send([]byte(qn_conv.String(i))), nil)
 			conn.Close()
 		}
 	})
 	// gudp.Conn.SendRecv
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		for i := 0; i < 100; i++ {
 			conn, err := gudp.NewConn(fmt.Sprintf("127.0.0.1:%d", p))
 			t.Assert(err, nil)
-			result, err := conn.SendRecv([]byte(gconv.String(i)), -1)
+			result, err := conn.SendRecv([]byte(qn_conv.String(i)), -1)
 			t.Assert(err, nil)
 			t.Assert(string(result), fmt.Sprintf(`> %d`, i))
 			conn.Close()
 		}
 	})
 	// gudp.Send
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		for i := 0; i < 100; i++ {
-			err := gudp.Send(fmt.Sprintf("127.0.0.1:%d", p), []byte(gconv.String(i)))
+			err := gudp.Send(fmt.Sprintf("127.0.0.1:%d", p), []byte(qn_conv.String(i)))
 			t.Assert(err, nil)
 		}
 	})
 	// gudp.SendRecv
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		for i := 0; i < 100; i++ {
-			result, err := gudp.SendRecv(fmt.Sprintf("127.0.0.1:%d", p), []byte(gconv.String(i)), -1)
+			result, err := gudp.SendRecv(fmt.Sprintf("127.0.0.1:%d", p), []byte(qn_conv.String(i)), -1)
 			t.Assert(err, nil)
 			t.Assert(string(result), fmt.Sprintf(`> %d`, i))
 		}
@@ -94,12 +94,12 @@ func Test_Buffer(t *testing.T) {
 	go s.Run()
 	defer s.Close()
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		result, err := gudp.SendRecv(fmt.Sprintf("127.0.0.1:%d", p), []byte("123"), -1)
 		t.Assert(err, nil)
 		t.Assert(string(result), "1")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		result, err := gudp.SendRecv(fmt.Sprintf("127.0.0.1:%d", p), []byte("456"), -1)
 		t.Assert(err, nil)
 		t.Assert(string(result), "4")

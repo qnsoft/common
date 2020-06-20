@@ -8,11 +8,12 @@ package qn_http
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/internal/json"
 	"strings"
 
+	"github.com/qnsoft/common/internal/json"
+
 	"github.com/qnsoft/common/container/glist"
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 // handlerCacheItem is an item just for internal router searching cache.
@@ -138,7 +139,7 @@ func (s *Server) searchHandlers(method, path, domain string) (parsedItems []*han
 				}
 				if item.router.Method == gDEFAULT_METHOD || item.router.Method == method {
 					// Note the rule having no fuzzy rules: len(match) == 1
-					if match, err := gregex.MatchString(item.router.RegRule, path); err == nil && len(match) > 0 {
+					if match, err := qn_regex.MatchString(item.router.RegRule, path); err == nil && len(match) > 0 {
 						parsedItem := &handlerParsedItem{item, nil}
 						// If the rule contains fuzzy names,
 						// it needs paring the URL to retrieve the values for the names.

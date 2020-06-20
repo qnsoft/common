@@ -13,11 +13,11 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Id   int
 			Name string `params:"name"`
@@ -32,7 +32,7 @@ func Test_Basic(t *testing.T) {
 		t.Assert(structs.TagMapName(&user, []string{"my-tag2", "params"}, true), g.Map{"name": "Name", "pass2": "Pass"})
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type Base struct {
 			Pass1 string `params:"password1"`
 			Pass2 string `params:"password2"`
@@ -50,7 +50,7 @@ func Test_Basic(t *testing.T) {
 		})
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type Base struct {
 			Pass1 string `params:"password1"`
 			Pass2 string `params:"password2"`

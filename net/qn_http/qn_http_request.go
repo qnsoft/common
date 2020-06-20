@@ -16,11 +16,11 @@ import (
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/gres"
 	"github.com/qnsoft/common/os/gsession"
-	"github.com/qnsoft/common/os/gtime"
 	"github.com/qnsoft/common/os/gview"
+	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/util/guid"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 // Request is the context object for a request.
@@ -70,7 +70,7 @@ func newRequest(s *Server, r *http.Request, w http.ResponseWriter) *Request {
 		Server:    s,
 		Request:   r,
 		Response:  newResponse(s, w),
-		EnterTime: gtime.TimestampMilli(),
+		EnterTime: qn_time.TimestampMilli(),
 	}
 	request.Cookie = GetCookie(request)
 	request.Session = s.sessionManager.New(request.GetSessionId())
@@ -130,7 +130,7 @@ func (r *Request) IsExited() bool {
 // GetHost returns current request host name, which might be a domain or an IP without port.
 func (r *Request) GetHost() string {
 	if len(r.parsedHost) == 0 {
-		array, _ := gregex.MatchString(`(.+):(\d+)`, r.Host)
+		array, _ := qn_regex.MatchString(`(.+):(\d+)`, r.Host)
 		if len(array) > 1 {
 			r.parsedHost = array[1]
 		} else {
@@ -174,7 +174,7 @@ func (r *Request) GetClientIp() string {
 			r.clientIp = r.Header.Get("X-Real-IP")
 		}
 		if r.clientIp == "" || strings.EqualFold("unknown", realIps) {
-			array, _ := gregex.MatchString(`(.+):(\d+)`, r.RemoteAddr)
+			array, _ := qn_regex.MatchString(`(.+):(\d+)`, r.RemoteAddr)
 			if len(array) > 1 {
 				r.clientIp = array[1]
 			} else {

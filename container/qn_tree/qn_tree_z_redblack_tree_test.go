@@ -12,8 +12,8 @@ import (
 
 	"github.com/qnsoft/common/container/gtree"
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gutil"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_util"
 )
 
 func getValue() interface{} {
@@ -21,8 +21,8 @@ func getValue() interface{} {
 }
 
 func Test_RedBlackTree_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTree(gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTree(qn_util.ComparatorString)
 		m.Set("key1", "val1")
 		t.Assert(m.Keys(), []interface{}{"key1"})
 
@@ -49,22 +49,22 @@ func Test_RedBlackTree_Basic(t *testing.T) {
 		m.Flip()
 		t.Assert(m.Map(), map[interface{}]interface{}{"val3": "key3", "val1": "key1"})
 
-		m.Flip(gutil.ComparatorString)
+		m.Flip(qn_util.ComparatorString)
 		t.Assert(m.Map(), map[interface{}]interface{}{"key3": "val3", "key1": "val1"})
 
 		m.Clear()
 		t.Assert(m.Size(), 0)
 		t.Assert(m.IsEmpty(), true)
 
-		m2 := gtree.NewRedBlackTreeFrom(gutil.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
+		m2 := gtree.NewRedBlackTreeFrom(qn_util.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
 		t.Assert(m2.Map(), map[interface{}]interface{}{1: 1, "key1": "val1"})
 	})
 }
 
 func Test_RedBlackTree_Set_Fun(t *testing.T) {
 	//GetOrSetFunc lock or unlock
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTree(gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTree(qn_util.ComparatorString)
 		t.Assert(m.GetOrSetFunc("fun", getValue), 3)
 		t.Assert(m.GetOrSetFunc("fun", getValue), 3)
 		t.Assert(m.GetOrSetFuncLock("funlock", getValue), 3)
@@ -73,8 +73,8 @@ func Test_RedBlackTree_Set_Fun(t *testing.T) {
 		t.Assert(m.Get("fun"), 3)
 	})
 	//SetIfNotExistFunc lock or unlock
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTree(gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTree(qn_util.ComparatorString)
 		t.Assert(m.SetIfNotExistFunc("fun", getValue), true)
 		t.Assert(m.SetIfNotExistFunc("fun", getValue), false)
 		t.Assert(m.SetIfNotExistFuncLock("funlock", getValue), true)
@@ -86,16 +86,16 @@ func Test_RedBlackTree_Set_Fun(t *testing.T) {
 }
 
 func Test_RedBlackTree_Get_Set_Var(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTree(gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTree(qn_util.ComparatorString)
 		t.AssertEQ(m.SetIfNotExist("key1", "val1"), true)
 		t.AssertEQ(m.SetIfNotExist("key1", "val1"), false)
 		t.AssertEQ(m.GetVarOrSet("key1", "val1"), qn_var.New("val1", true))
 		t.AssertEQ(m.GetVar("key1"), qn_var.New("val1", true))
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTree(gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTree(qn_util.ComparatorString)
 		t.AssertEQ(m.GetVarOrSetFunc("fun", getValue), qn_var.New(3, true))
 		t.AssertEQ(m.GetVarOrSetFunc("fun", getValue), qn_var.New(3, true))
 		t.AssertEQ(m.GetVarOrSetFuncLock("funlock", getValue), qn_var.New(3, true))
@@ -104,8 +104,8 @@ func Test_RedBlackTree_Get_Set_Var(t *testing.T) {
 }
 
 func Test_RedBlackTree_Batch(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTree(gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTree(qn_util.ComparatorString)
 		m.Sets(map[interface{}]interface{}{1: 1, "key1": "val1", "key2": "val2", "key3": "val3"})
 		t.Assert(m.Map(), map[interface{}]interface{}{1: 1, "key1": "val1", "key2": "val2", "key3": "val3"})
 		m.Removes([]interface{}{"key1", 1})
@@ -119,9 +119,9 @@ func Test_RedBlackTree_Iterator(t *testing.T) {
 	index := 0
 
 	expect := map[interface{}]interface{}{"key4": "val4", 1: 1, "key1": "val1", "key2": "val2", "key3": "val3"}
-	m := gtree.NewRedBlackTreeFrom(gutil.ComparatorString, expect)
+	m := gtree.NewRedBlackTreeFrom(qn_util.ComparatorString, expect)
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 
 		m.Iterator(func(k interface{}, v interface{}) bool {
 			t.Assert(k, keys[index])
@@ -139,7 +139,7 @@ func Test_RedBlackTree_Iterator(t *testing.T) {
 	})
 	m.Print()
 	// 断言返回值对遍历控制
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := 0
 		j := 0
 		m.Iterator(func(k interface{}, v interface{}) bool {
@@ -154,7 +154,7 @@ func Test_RedBlackTree_Iterator(t *testing.T) {
 		t.Assert(j, 1)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := 0
 		j := 0
 		m.IteratorDesc(func(k interface{}, v interface{}) bool {
@@ -175,9 +175,9 @@ func Test_RedBlackTree_IteratorFrom(t *testing.T) {
 	for i := 1; i <= 10; i++ {
 		m[i] = i * 10
 	}
-	tree := gtree.NewRedBlackTreeFrom(gutil.ComparatorInt, m)
+	tree := gtree.NewRedBlackTreeFrom(qn_util.ComparatorInt, m)
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		n := 5
 		tree.IteratorFrom(5, true, func(key, value interface{}) bool {
 			t.Assert(n, key)
@@ -205,9 +205,9 @@ func Test_RedBlackTree_IteratorFrom(t *testing.T) {
 }
 
 func Test_RedBlackTree_Clone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//clone 方法是深克隆
-		m := gtree.NewRedBlackTreeFrom(gutil.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
+		m := gtree.NewRedBlackTreeFrom(qn_util.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
 		m_clone := m.Clone()
 		m.Remove(1)
 		//修改原 map,clone 后的 map 不影响
@@ -222,14 +222,14 @@ func Test_RedBlackTree_Clone(t *testing.T) {
 func Test_RedBlackTree_LRNode(t *testing.T) {
 	expect := map[interface{}]interface{}{"key4": "val4", "key1": "val1", "key2": "val2", "key3": "val3"}
 	//safe
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTreeFrom(gutil.ComparatorString, expect)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTreeFrom(qn_util.ComparatorString, expect)
 		t.Assert(m.Left().Key, "key1")
 		t.Assert(m.Right().Key, "key4")
 	})
 	//unsafe
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTreeFrom(gutil.ComparatorString, expect, true)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTreeFrom(qn_util.ComparatorString, expect, true)
 		t.Assert(m.Left().Key, "key1")
 		t.Assert(m.Right().Key, "key4")
 	})
@@ -247,8 +247,8 @@ func Test_RedBlackTree_CeilingFloor(t *testing.T) {
 		8:  "val8",
 		4:  "val4"}
 	//found and eq
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTreeFrom(gutil.ComparatorInt, expect)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTreeFrom(qn_util.ComparatorInt, expect)
 		c, cf := m.Ceiling(8)
 		t.Assert(cf, true)
 		t.Assert(c.Value, "val8")
@@ -257,8 +257,8 @@ func Test_RedBlackTree_CeilingFloor(t *testing.T) {
 		t.Assert(f.Value, "val20")
 	})
 	//found and neq
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTreeFrom(gutil.ComparatorInt, expect)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTreeFrom(qn_util.ComparatorInt, expect)
 		c, cf := m.Ceiling(9)
 		t.Assert(cf, true)
 		t.Assert(c.Value, "val10")
@@ -267,8 +267,8 @@ func Test_RedBlackTree_CeilingFloor(t *testing.T) {
 		t.Assert(f.Value, "val4")
 	})
 	//nofound
-	gtest.C(t, func(t *gtest.T) {
-		m := gtree.NewRedBlackTreeFrom(gutil.ComparatorInt, expect)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gtree.NewRedBlackTreeFrom(qn_util.ComparatorInt, expect)
 		c, cf := m.Ceiling(21)
 		t.Assert(cf, false)
 		t.Assert(c, nil)
@@ -279,12 +279,12 @@ func Test_RedBlackTree_CeilingFloor(t *testing.T) {
 }
 
 func Test_RedBlackTree_Remove(t *testing.T) {
-	m := gtree.NewRedBlackTree(gutil.ComparatorInt)
+	m := gtree.NewRedBlackTree(qn_util.ComparatorInt)
 	for i := 1; i <= 100; i++ {
 		m.Set(i, fmt.Sprintf("val%d", i))
 	}
 	expect := m.Map()
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		for k, v := range expect {
 			m1 := m.Clone()
 			t.Assert(m1.Remove(k), v)

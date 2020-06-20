@@ -12,7 +12,7 @@ import (
 	"net/url"
 
 	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // CORSOptions is the options for CORS feature.
@@ -86,7 +86,7 @@ func (r *Response) CORS(options CORSOptions) {
 		r.Header().Set("Access-Control-Expose-Headers", options.ExposeHeaders)
 	}
 	if options.MaxAge != 0 {
-		r.Header().Set("Access-Control-Max-Age", gconv.String(options.MaxAge))
+		r.Header().Set("Access-Control-Max-Age", qn_conv.String(options.MaxAge))
 	}
 	if options.AllowMethods != "" {
 		r.Header().Set("Access-Control-Allow-Methods", options.AllowMethods)

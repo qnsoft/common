@@ -10,7 +10,7 @@ import (
 	"fmt"
 
 	"github.com/qnsoft/common/database/gredis"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 const (
@@ -33,7 +33,7 @@ func Redis(name ...string) *gredis.Redis {
 		// Or else, it parses the default configuration file and returns a new redis instance.
 		if m := config.GetMap("redis"); m != nil {
 			if v, ok := m[group]; ok {
-				redisConfig, err := gredis.ConfigFromStr(gconv.String(v))
+				redisConfig, err := gredis.ConfigFromStr(qn_conv.String(v))
 				if err != nil {
 					panic(err)
 				}

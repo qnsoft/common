@@ -8,7 +8,7 @@ package qn_http
 
 import (
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // SetQuery sets custom query value with key-value pair.
@@ -163,7 +163,7 @@ func (r *Request) GetQueryMapStrStr(kvMap ...map[string]interface{}) map[string]
 	if len(queryMap) > 0 {
 		m := make(map[string]string, len(queryMap))
 		for k, v := range queryMap {
-			m[k] = gconv.String(v)
+			m[k] = qn_conv.String(v)
 		}
 		return m
 	}
@@ -192,7 +192,7 @@ func (r *Request) GetQueryMapStrVar(kvMap ...map[string]interface{}) map[string]
 // attribute mapping.
 func (r *Request) GetQueryStruct(pointer interface{}, mapping ...map[string]string) error {
 	r.parseQuery()
-	return gconv.StructDeep(r.GetQueryMap(), pointer, mapping...)
+	return qn_conv.StructDeep(r.GetQueryMap(), pointer, mapping...)
 }
 
 // GetQueryToStruct is alias of GetQueryStruct. See GetQueryStruct.

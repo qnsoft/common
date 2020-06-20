@@ -11,12 +11,12 @@ import (
 
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_String(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := gtype.NewString("abc")
 		iClone := i.Clone()
 		t.AssertEQ(iClone.Set("123"), "abc")
@@ -29,7 +29,7 @@ func Test_String(t *testing.T) {
 }
 
 func Test_String_JSON(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := "i love gf"
 		i1 := gtype.NewString(s)
 		b1, err1 := json.Marshal(i1)
@@ -50,9 +50,9 @@ func Test_String_UnmarshalValue(t *testing.T) {
 		Name string
 		Var  *gtype.String
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"var":  "123",
 		}, &v)

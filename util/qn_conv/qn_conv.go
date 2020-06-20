@@ -18,9 +18,9 @@ import (
 
 	"github.com/qnsoft/common/internal/intstore"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/qnsoft/common/os/qn_time"
 
-	"github.com/qnsoft/common/encoding/gbinary"
+	"github.com/qnsoft/common/encoding/qn_binary"
 )
 
 var (
@@ -34,9 +34,9 @@ var (
 	}
 
 	// Priority tags for Map*/Struct* functions.
-	// Note, the "gconv", "param", "params" tags are used by old version of package.
+	// Note, the "qn_conv", "param", "params" tags are used by old version of package.
 	// It is strongly recommended using short tag "c" or "p" instead in the future.
-	structTagPriority = []string{"gconv", "param", "params", "c", "p", "json"}
+	structTagPriority = []string{"qn_conv", "param", "params", "c", "p", "json"}
 )
 
 // Convert converts the variable <i> to the type <t>, the type <t> is specified by string.
@@ -208,31 +208,31 @@ func Convert(i interface{}, t string, params ...interface{}) interface{} {
 		}
 		return &v
 
-	case "GTime", "gtime.Time":
+	case "qn_time", "qn_time.Time":
 		if len(params) > 0 {
-			if v := GTime(i, String(params[0])); v != nil {
+			if v := qn_time(i, String(params[0])); v != nil {
 				return *v
 			} else {
-				return *gtime.New()
+				return *qn_time.New()
 			}
 		}
-		if v := GTime(i); v != nil {
+		if v := qn_time(i); v != nil {
 			return *v
 		} else {
-			return *gtime.New()
+			return *qn_time.New()
 		}
-	case "*gtime.Time":
+	case "*qn_time.Time":
 		if len(params) > 0 {
-			if v := GTime(i, String(params[0])); v != nil {
+			if v := qn_time(i, String(params[0])); v != nil {
 				return v
 			} else {
-				return gtime.New()
+				return qn_time.New()
 			}
 		}
-		if v := GTime(i); v != nil {
+		if v := qn_time(i); v != nil {
 			return v
 		} else {
-			return gtime.New()
+			return qn_time.New()
 		}
 
 	case "Duration", "time.Duration":
@@ -290,7 +290,7 @@ func Bytes(i interface{}) []byte {
 	case []byte:
 		return value
 	default:
-		return gbinary.Encode(i)
+		return qn_binary.Encode(i)
 	}
 }
 
@@ -357,12 +357,12 @@ func String(i interface{}) string {
 			return ""
 		}
 		return value.String()
-	case gtime.Time:
+	case qn_time.Time:
 		if value.IsZero() {
 			return ""
 		}
 		return value.String()
-	case *gtime.Time:
+	case *qn_time.Time:
 		if value == nil {
 			return ""
 		}
@@ -531,7 +531,7 @@ func Int64(i interface{}) int64 {
 		}
 		return 0
 	case []byte:
-		return gbinary.DecodeToInt64(value)
+		return qn_binary.DecodeToInt64(value)
 	default:
 		s := String(value)
 		isMinus := false
@@ -653,7 +653,7 @@ func Uint64(i interface{}) uint64 {
 		}
 		return 0
 	case []byte:
-		return gbinary.DecodeToUint64(value)
+		return qn_binary.DecodeToUint64(value)
 	default:
 		s := String(value)
 		// Hexadecimal
@@ -688,7 +688,7 @@ func Float32(i interface{}) float32 {
 	case float64:
 		return float32(value)
 	case []byte:
-		return gbinary.DecodeToFloat32(value)
+		return qn_binary.DecodeToFloat32(value)
 	default:
 		v, _ := strconv.ParseFloat(String(i), 64)
 		return float32(v)
@@ -706,7 +706,7 @@ func Float64(i interface{}) float64 {
 	case float64:
 		return value
 	case []byte:
-		return gbinary.DecodeToFloat64(value)
+		return qn_binary.DecodeToFloat64(value)
 	default:
 		v, _ := strconv.ParseFloat(String(i), 64)
 		return v

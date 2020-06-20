@@ -12,12 +12,12 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/qnsoft/common/encoding/gbase64"
-	"github.com/qnsoft/common/encoding/gcompress"
+	"github.com/qnsoft/common/encoding/qn_base64"
+	"github.com/qnsoft/common/encoding/qn_compress"
 	"github.com/qnsoft/common/text/gstr"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 const (
@@ -50,7 +50,7 @@ func Pack(srcPaths string, keyPrefix ...string) ([]byte, error) {
 		return nil, err
 	}
 	// Gzip the data bytes to reduce the size.
-	return gcompress.Gzip(buffer.Bytes(), 9)
+	return qn_compress.Gzip(buffer.Bytes(), 9)
 }
 
 // PackToFile packs the path specified by <srcPaths> to target file <dstPath>.
@@ -63,7 +63,7 @@ func PackToFile(srcPaths, dstPath string, keyPrefix ...string) error {
 	if err != nil {
 		return err
 	}
-	return gfile.PutBytes(dstPath, data)
+	return qn_file.PutBytes(dstPath, data)
 }
 
 // PackToGoFile packs the path specified by <srcPaths> to target go file <goFilePath>
@@ -78,19 +78,19 @@ func PackToGoFile(srcPath, goFilePath, pkgName string, keyPrefix ...string) erro
 	if err != nil {
 		return err
 	}
-	return gfile.PutContents(
+	return qn_file.PutContents(
 		goFilePath,
-		fmt.Sprintf(gstr.TrimLeft(gPACKAGE_TEMPLATE), pkgName, gbase64.EncodeToString(data)),
+		fmt.Sprintf(gstr.TrimLeft(gPACKAGE_TEMPLATE), pkgName, qn_base64.EncodeToString(data)),
 	)
 }
 
 // Unpack unpacks the content specified by <path> to []*File.
 func Unpack(path string) ([]*File, error) {
-	realPath, err := gfile.Search(path)
+	realPath, err := qn_file.Search(path)
 	if err != nil {
 		return nil, err
 	}
-	return UnpackContent(gfile.GetContents(realPath))
+	return UnpackContent(qn_file.GetContents(realPath))
 }
 
 // UnpackContent unpacks the content to []*File.
@@ -100,22 +100,22 @@ func UnpackContent(content string) ([]*File, error) {
 	if isHexStr(content) {
 		// It here keeps compatible with old version packing string using hex string.
 		// TODO remove this support in the future.
-		data, err = gcompress.UnGzip(hexStrToBytes(content))
+		data, err = qn_compress.UnGzip(hexStrToBytes(content))
 		if err != nil {
 			return nil, err
 		}
 	} else if isBase64(content) {
 		// New version packing string using base64.
-		b, err := gbase64.DecodeString(content)
+		b, err := qn_base64.DecodeString(content)
 		if err != nil {
 			return nil, err
 		}
-		data, err = gcompress.UnGzip(b)
+		data, err = qn_compress.UnGzip(b)
 		if err != nil {
 			return nil, err
 		}
 	} else {
-		data, err = gcompress.UnGzip(gconv.UnsafeStrToBytes(content))
+		data, err = qn_compress.UnGzip(qn_conv.UnsafeStrToBytes(content))
 		if err != nil {
 			return nil, err
 		}
@@ -165,7 +165,7 @@ func isHexStr(s string) bool {
 
 // hexStrToBytes converts hex string content to []byte.
 func hexStrToBytes(s string) []byte {
-	src := gconv.UnsafeStrToBytes(s)
+	src := qn_conv.UnsafeStrToBytes(s)
 	dst := make([]byte, hex.DecodedLen(len(src)))
 	hex.Decode(dst, src)
 	return dst

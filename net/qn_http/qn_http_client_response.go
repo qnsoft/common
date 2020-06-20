@@ -10,7 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // ClientResponse is the struct for client request response.
@@ -58,7 +58,7 @@ func (r *ClientResponse) ReadAll() []byte {
 
 // ReadAllString retrieves and returns the response content as string.
 func (r *ClientResponse) ReadAllString() string {
-	return gconv.UnsafeBytesToStr(r.ReadAll())
+	return qn_conv.UnsafeBytesToStr(r.ReadAll())
 }
 
 // Close closes the response when it will never be used.

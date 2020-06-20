@@ -12,13 +12,13 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/os/gtimer"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/os/qn_timer"
 
 	"github.com/qnsoft/common/container/glist"
 	"github.com/qnsoft/common/container/gset"
 	"github.com/qnsoft/common/container/gtype"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Internal cache object.
@@ -146,7 +146,7 @@ func (c *memCache) getInternalExpire(duration time.Duration) int64 {
 	if duration == 0 {
 		return gDEFAULT_MAX_EXPIRE
 	} else {
-		return gtime.TimestampMilli() + duration.Nanoseconds()/1000000
+		return qn_time.TimestampMilli() + duration.Nanoseconds()/1000000
 	}
 }
 
@@ -287,7 +287,7 @@ func (c *memCache) Remove(keys ...interface{}) (value interface{}) {
 			delete(c.data, key)
 			c.eventList.PushBack(&memCacheEvent{
 				k: key,
-				e: gtime.TimestampMilli() - 1000,
+				e: qn_time.TimestampMilli() - 1000,
 			})
 		}
 	}
@@ -328,7 +328,7 @@ func (c *memCache) Keys() []interface{} {
 
 // KeyStrings returns all keys in the cache as string slice.
 func (c *memCache) KeyStrings() []string {
-	return gconv.Strings(c.Keys())
+	return qn_conv.Strings(c.Keys())
 }
 
 // Values returns all values in the cache as slice.
@@ -366,7 +366,7 @@ func (c *memCache) Close() {
 // 2. Clean up the expired key-value pair data.
 func (c *memCache) syncEventAndClearExpired() {
 	if c.closed.Val() {
-		gtimer.Exit()
+		qn_timer.Exit()
 		return
 	}
 	var (
@@ -419,7 +419,7 @@ func (c *memCache) syncEventAndClearExpired() {
 	// ========================
 	var (
 		expireSet *gset.Set
-		ek        = c.makeExpireKey(gtime.TimestampMilli())
+		ek        = c.makeExpireKey(qn_time.TimestampMilli())
 		eks       = []int64{ek - 1000, ek - 2000, ek - 3000, ek - 4000, ek - 5000}
 	)
 	for _, expireTime := range eks {

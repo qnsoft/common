@@ -11,9 +11,9 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 // BindObject registers object to server routes with given pattern.
@@ -80,7 +80,7 @@ func (s *Server) doBindObject(
 		shutFunc = v.MethodByName("Shut").Interface().(func(*Request))
 	}
 	pkgPath := t.Elem().PkgPath()
-	pkgName := gfile.Basename(pkgPath)
+	pkgName := qn_file.Basename(pkgPath)
 	for i := 0; i < v.NumMethod(); i++ {
 		methodName := t.Method(i).Name
 		if methodMap != nil && !methodMap[methodName] {
@@ -125,7 +125,7 @@ func (s *Server) doBindObject(
 		//
 		// Note that if there's built-in variables in pattern, this route will not be added
 		// automatically.
-		if strings.EqualFold(methodName, "Index") && !gregex.IsMatchString(`\{\.\w+\}`, pattern) {
+		if strings.EqualFold(methodName, "Index") && !qn_regex.IsMatchString(`\{\.\w+\}`, pattern) {
 			p := gstr.PosRI(key, "/index")
 			k := key[0:p] + key[p+6:]
 			if len(k) == 0 || k[0] == '@' {
@@ -168,7 +168,7 @@ func (s *Server) doBindObjectMethod(
 		shutFunc = v.MethodByName("Shut").Interface().(func(*Request))
 	}
 	pkgPath := t.Elem().PkgPath()
-	pkgName := gfile.Basename(pkgPath)
+	pkgName := qn_file.Basename(pkgPath)
 	objName := gstr.Replace(t.String(), fmt.Sprintf(`%s.`, pkgName), "")
 	if objName[0] == '*' {
 		objName = fmt.Sprintf(`(%s)`, objName)
@@ -217,7 +217,7 @@ func (s *Server) doBindObjectRest(
 		if _, ok := methodsMap[strings.ToUpper(methodName)]; !ok {
 			continue
 		}
-		pkgName := gfile.Basename(pkgPath)
+		pkgName := qn_file.Basename(pkgPath)
 		objName := gstr.Replace(t.String(), fmt.Sprintf(`%s.`, pkgName), "")
 		if objName[0] == '*' {
 			objName = fmt.Sprintf(`(%s)`, objName)

@@ -10,8 +10,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/qnsoft/common/encoding/gjson"
+	"github.com/qnsoft/common/encoding/qn_json"
+	"github.com/qnsoft/common/os/qn_time"
 
 	"github.com/qnsoft/common/container/qn_var"
 )
@@ -205,28 +205,28 @@ func (c *Config) GetDuration(pattern string, def ...interface{}) time.Duration {
 	return 0
 }
 
-func (c *Config) GetGTime(pattern string, format ...string) *gtime.Time {
+func (c *Config) Getqn_time(pattern string, format ...string) *qn_time.Time {
 	if j := c.getJson(); j != nil {
-		return j.GetGTime(pattern, format...)
+		return j.Getqn_time(pattern, format...)
 	}
 	return nil
 }
 
-func (c *Config) GetJson(pattern string, def ...interface{}) *gjson.Json {
+func (c *Config) GetJson(pattern string, def ...interface{}) *qn_json.Json {
 	if j := c.getJson(); j != nil {
 		return j.GetJson(pattern, def...)
 	}
 	return nil
 }
 
-func (c *Config) GetJsons(pattern string, def ...interface{}) []*gjson.Json {
+func (c *Config) GetJsons(pattern string, def ...interface{}) []*qn_json.Json {
 	if j := c.getJson(); j != nil {
 		return j.GetJsons(pattern, def...)
 	}
 	return nil
 }
 
-func (c *Config) GetJsonMap(pattern string, def ...interface{}) map[string]*gjson.Json {
+func (c *Config) GetJsonMap(pattern string, def ...interface{}) map[string]*qn_json.Json {
 	if j := c.getJson(); j != nil {
 		return j.GetJsonMap(pattern, def...)
 	}

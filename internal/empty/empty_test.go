@@ -11,8 +11,8 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/internal/empty"
-	"github.com/qnsoft/common/test/gtest"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/test/qn_test"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 type TestPerson interface {
@@ -26,7 +26,7 @@ func (woman TestWoman) Say() string {
 }
 
 func TestIsEmpty(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		tmpT1 := "0"
 		tmpT2 := func() {}
 		tmpT2 = nil
@@ -41,18 +41,18 @@ func TestIsEmpty(t *testing.T) {
 		tmpF5 := &tmpF4
 		// true
 		t.Assert(empty.IsEmpty(nil), true)
-		t.Assert(empty.IsEmpty(gconv.Int(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Int8(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Int16(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Int32(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Int64(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Uint64(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Uint(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Uint16(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Uint32(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Uint64(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Float32(tmpT1)), true)
-		t.Assert(empty.IsEmpty(gconv.Float64(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Int(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Int8(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Int16(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Int32(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Int64(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Uint64(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Uint(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Uint16(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Uint32(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Uint64(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Float32(tmpT1)), true)
+		t.Assert(empty.IsEmpty(qn_conv.Float64(tmpT1)), true)
 		t.Assert(empty.IsEmpty(false), true)
 		t.Assert(empty.IsEmpty([]byte("")), true)
 		t.Assert(empty.IsEmpty(""), true)
@@ -65,18 +65,18 @@ func TestIsEmpty(t *testing.T) {
 		t.Assert(empty.IsEmpty(tmpT4), true)
 		t.Assert(empty.IsEmpty(tmpT5), true)
 		// false
-		t.Assert(empty.IsEmpty(gconv.Int(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Int8(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Int16(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Int32(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Int64(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Uint(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Uint8(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Uint16(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Uint32(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Uint64(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Float32(tmpF1)), false)
-		t.Assert(empty.IsEmpty(gconv.Float64(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Int(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Int8(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Int16(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Int32(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Int64(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Uint(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Uint8(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Uint16(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Uint32(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Uint64(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Float32(tmpF1)), false)
+		t.Assert(empty.IsEmpty(qn_conv.Float64(tmpF1)), false)
 		t.Assert(empty.IsEmpty(true), false)
 		t.Assert(empty.IsEmpty(tmpT1), false)
 		t.Assert(empty.IsEmpty([]byte("1")), false)

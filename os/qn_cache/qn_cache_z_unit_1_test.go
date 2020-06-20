@@ -16,11 +16,11 @@ import (
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/os/gcache"
 	"github.com/qnsoft/common/os/grpool"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func TestCache_GCache_Set(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		gcache.Set(1, 11, 0)
 		defer gcache.Removes(g.Slice{1, 2, 3})
 		t.Assert(gcache.Get(1), 11)
@@ -29,7 +29,7 @@ func TestCache_GCache_Set(t *testing.T) {
 }
 
 func TestCache_Set(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := gcache.New()
 		defer c.Close()
 		c.Set(1, 11, 0)
@@ -39,7 +39,7 @@ func TestCache_Set(t *testing.T) {
 }
 
 func TestCache_GetVar(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := gcache.New()
 		defer c.Close()
 		c.Set(1, 11, 0)
@@ -53,7 +53,7 @@ func TestCache_GetVar(t *testing.T) {
 }
 
 func TestCache_Set_Expire(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New()
 		cache.Set(2, 22, 100*time.Millisecond)
 		t.Assert(cache.Get(2), 22)
@@ -64,7 +64,7 @@ func TestCache_Set_Expire(t *testing.T) {
 		cache.Close()
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New()
 		cache.Set(1, 11, 100*time.Millisecond)
 		t.Assert(cache.Get(1), 11)
@@ -74,7 +74,7 @@ func TestCache_Set_Expire(t *testing.T) {
 }
 
 func TestCache_Keys_Values(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New()
 		for i := 0; i < 10; i++ {
 			cache.Set(i, i*10, 0)
@@ -87,7 +87,7 @@ func TestCache_Keys_Values(t *testing.T) {
 }
 
 func TestCache_LRU(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New(2)
 		for i := 0; i < 10; i++ {
 			cache.Set(i, i, 0)
@@ -103,7 +103,7 @@ func TestCache_LRU(t *testing.T) {
 }
 
 func TestCache_LRU_expire(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New(2)
 		cache.Set(1, nil, 1000)
 		t.Assert(cache.Size(), 1)
@@ -112,7 +112,7 @@ func TestCache_LRU_expire(t *testing.T) {
 }
 
 func TestCache_SetIfNotExist(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New()
 		cache.SetIfNotExist(1, 11, 0)
 		t.Assert(cache.Get(1), 11)
@@ -130,7 +130,7 @@ func TestCache_SetIfNotExist(t *testing.T) {
 }
 
 func TestCache_Sets(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New()
 		cache.Sets(g.MapAnyAny{1: 11, 2: 22}, 0)
 		t.Assert(cache.Get(1), 11)
@@ -142,7 +142,7 @@ func TestCache_Sets(t *testing.T) {
 }
 
 func TestCache_GetOrSet(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New()
 		cache.GetOrSet(1, 11, 0)
 		t.Assert(cache.Get(1), 11)
@@ -158,7 +158,7 @@ func TestCache_GetOrSet(t *testing.T) {
 }
 
 func TestCache_GetOrSetFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New()
 		cache.GetOrSetFunc(1, func() interface{} {
 			return 11
@@ -182,7 +182,7 @@ func TestCache_GetOrSetFunc(t *testing.T) {
 }
 
 func TestCache_GetOrSetFuncLock(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New()
 		cache.GetOrSetFuncLock(1, func() interface{} {
 			return 11
@@ -206,7 +206,7 @@ func TestCache_GetOrSetFuncLock(t *testing.T) {
 }
 
 func TestCache_Clear(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New()
 		cache.Sets(g.MapAnyAny{1: 11, 2: 22}, 0)
 		cache.Clear()
@@ -215,7 +215,7 @@ func TestCache_Clear(t *testing.T) {
 }
 
 func TestCache_SetConcurrency(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cache := gcache.New()
 		pool := grpool.New(4)
 		go func() {
@@ -245,7 +245,7 @@ func TestCache_SetConcurrency(t *testing.T) {
 }
 
 func TestCache_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		{
 			cache := gcache.New()
 			cache.Sets(g.MapAnyAny{1: 11, 2: 22}, 0)

@@ -15,9 +15,9 @@ import (
 	"github.com/qnsoft/common/internal/empty"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gconv"
-	"github.com/qnsoft/common/util/grand"
-	gutil "github.com/qnsoft/common/util/qn_util"
+	"github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/util/qn_rand"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 
 	"github.com/qnsoft/common/internal/rwmutex"
 )
@@ -241,7 +241,7 @@ func (a *SortedArray) PopRight() (value interface{}, found bool) {
 func (a *SortedArray) PopRand() (value interface{}, found bool) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	return a.doRemoveWithoutLock(grand.Intn(len(a.array)))
+	return a.doRemoveWithoutLock(qn_rand.Intn(len(a.array)))
 }
 
 // PopRands randomly pops and returns <size> items out of array.
@@ -256,7 +256,7 @@ func (a *SortedArray) PopRands(size int) []interface{} {
 	}
 	array := make([]interface{}, size)
 	for i := 0; i < size; i++ {
-		array[i], _ = a.doRemoveWithoutLock(grand.Intn(len(a.array)))
+		array[i], _ = a.doRemoveWithoutLock(qn_rand.Intn(len(a.array)))
 	}
 	return array
 }
@@ -381,7 +381,7 @@ func (a *SortedArray) Sum() (sum int) {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
 	for _, v := range a.array {
-		sum += gconv.Int(v)
+		sum += qn_conv.Int(v)
 	}
 	return
 }
@@ -540,7 +540,7 @@ func (a *SortedArray) RLockFunc(f func(array []interface{})) *SortedArray {
 // The difference between Merge and Append is Append supports only specified slice type,
 // but Merge supports more parameter types.
 func (a *SortedArray) Merge(array interface{}) *SortedArray {
-	return a.Add(gconv.Interfaces(array)...)
+	return a.Add(qn_conv.Interfaces(array)...)
 }
 
 // Chunk splits an array into multiple arrays,
@@ -573,7 +573,7 @@ func (a *SortedArray) Rand() (value interface{}, found bool) {
 	if len(a.array) == 0 {
 		return nil, false
 	}
-	return a.array[grand.Intn(len(a.array))], true
+	return a.array[qn_rand.Intn(len(a.array))], true
 }
 
 // Rands randomly returns <size> items from array(no deleting).
@@ -585,7 +585,7 @@ func (a *SortedArray) Rands(size int) []interface{} {
 	}
 	array := make([]interface{}, size)
 	for i := 0; i < size; i++ {
-		array[i] = a.array[grand.Intn(len(a.array))]
+		array[i] = a.array[qn_rand.Intn(len(a.array))]
 	}
 	return array
 }
@@ -599,7 +599,7 @@ func (a *SortedArray) Join(glue string) string {
 	}
 	buffer := bytes.NewBuffer(nil)
 	for k, v := range a.array {
-		buffer.WriteString(gconv.String(v))
+		buffer.WriteString(qn_conv.String(v))
 		if k != len(a.array)-1 {
 			buffer.WriteString(glue)
 		}
@@ -655,7 +655,7 @@ func (a *SortedArray) String() string {
 	buffer.WriteByte('[')
 	s := ""
 	for k, v := range a.array {
-		s = gconv.String(v)
+		s = qn_conv.String(v)
 		if gstr.IsNumeric(s) {
 			buffer.WriteString(s)
 		} else {
@@ -682,7 +682,7 @@ func (a SortedArray) MarshalJSON() ([]byte, error) {
 func (a *SortedArray) UnmarshalJSON(b []byte) error {
 	if a.comparator == nil {
 		a.array = make([]interface{}, 0)
-		a.comparator = gutil.ComparatorString
+		a.comparator = qn_util.ComparatorString
 	}
 	a.mu.Lock()
 	defer a.mu.Unlock()
@@ -701,15 +701,15 @@ func (a *SortedArray) UnmarshalJSON(b []byte) error {
 // Note that the comparator is set as string comparator in default.
 func (a *SortedArray) UnmarshalValue(value interface{}) (err error) {
 	if a.comparator == nil {
-		a.comparator = gutil.ComparatorString
+		a.comparator = qn_util.ComparatorString
 	}
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	switch value.(type) {
 	case string, []byte:
-		err = json.Unmarshal(gconv.Bytes(value), &a.array)
+		err = json.Unmarshal(qn_conv.Bytes(value), &a.array)
 	default:
-		a.array = gconv.SliceAny(value)
+		a.array = qn_conv.SliceAny(value)
 	}
 	if a.comparator != nil && a.array != nil {
 		sort.Slice(a.array, func(i, j int) bool {

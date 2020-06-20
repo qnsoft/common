@@ -8,7 +8,7 @@ package qn_http
 
 import (
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // GetPost retrieves and returns parameter <key> from form and body.
@@ -172,7 +172,7 @@ func (r *Request) GetPostMapStrStr(kvMap ...map[string]interface{}) map[string]s
 	if len(postMap) > 0 {
 		m := make(map[string]string, len(postMap))
 		for k, v := range postMap {
-			m[k] = gconv.String(v)
+			m[k] = qn_conv.String(v)
 		}
 		return m
 	}
@@ -204,7 +204,7 @@ func (r *Request) GetPostMapStrVar(kvMap ...map[string]interface{}) map[string]q
 //
 // Deprecated.
 func (r *Request) GetPostStruct(pointer interface{}, mapping ...map[string]string) error {
-	return gconv.StructDeep(r.GetPostMap(), pointer, mapping...)
+	return qn_conv.StructDeep(r.GetPostMap(), pointer, mapping...)
 }
 
 // GetPostToStruct is alias of GetQueryStruct. See GetPostStruct.

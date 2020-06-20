@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 var (
@@ -50,15 +50,15 @@ func MainPkgPath() string {
 			if goRootForFilter != "" && len(file) >= len(goRootForFilter) && file[0:len(goRootForFilter)] == goRootForFilter {
 				continue
 			}
-			if gregex.IsMatchString(`/github.com/[^/]+/gf/`, file) &&
-				!gregex.IsMatchString(`/github.com/[^/]+/gf/\.example/`, file) {
+			if qn_regex.IsMatchString(`/github.com/[^/]+/gf/`, file) &&
+				!qn_regex.IsMatchString(`/github.com/[^/]+/gf/\.example/`, file) {
 				continue
 			}
 			if Ext(file) != ".go" {
 				continue
 			}
 			lastFile = file
-			if gregex.IsMatchString(`package\s+main`, GetContents(file)) {
+			if qn_regex.IsMatchString(`package\s+main`, GetContents(file)) {
 				mainPkgPath.Set(Dir(file))
 				return Dir(file)
 			}
@@ -70,7 +70,7 @@ func MainPkgPath() string {
 		for path = Dir(lastFile); len(path) > 1 && Exists(path) && path[len(path)-1] != os.PathSeparator; {
 			files, _ := ScanDir(path, "*.go")
 			for _, v := range files {
-				if gregex.IsMatchString(`package\s+main`, GetContents(v)) {
+				if qn_regex.IsMatchString(`package\s+main`, GetContents(v)) {
 					mainPkgPath.Set(path)
 					return path
 				}

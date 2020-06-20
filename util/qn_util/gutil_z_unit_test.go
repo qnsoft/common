@@ -9,49 +9,49 @@ package qn_util_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gutil"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_util"
 )
 
 func Test_Dump(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		gutil.Dump(map[int]int{
+	qn_test.C(t, func(t *qn_test.T) {
+		qn_util.Dump(map[int]int{
 			100: 100,
 		})
 	})
 }
 
 func Test_TryCatch(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		gutil.TryCatch(func() {
-			panic("gutil TryCatch test")
+	qn_test.C(t, func(t *qn_test.T) {
+		qn_util.TryCatch(func() {
+			panic("qn_util TryCatch test")
 		})
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		gutil.TryCatch(func() {
-			panic("gutil TryCatch test")
+	qn_test.C(t, func(t *qn_test.T) {
+		qn_util.TryCatch(func() {
+			panic("qn_util TryCatch test")
 
 		}, func(err interface{}) {
-			t.Assert(err, "gutil TryCatch test")
+			t.Assert(err, "qn_util TryCatch test")
 		})
 	})
 }
 
 func Test_IsEmpty(t *testing.T) {
 
-	gtest.C(t, func(t *gtest.T) {
-		t.Assert(gutil.IsEmpty(1), false)
+	qn_test.C(t, func(t *qn_test.T) {
+		t.Assert(qn_util.IsEmpty(1), false)
 	})
 }
 
 func Test_Throw(t *testing.T) {
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		defer func() {
-			t.Assert(recover(), "gutil Throw test")
+			t.Assert(recover(), "qn_util Throw test")
 		}()
 
-		gutil.Throw("gutil Throw test")
+		qn_util.Throw("qn_util Throw test")
 	})
 }

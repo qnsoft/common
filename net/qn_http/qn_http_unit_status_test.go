@@ -15,11 +15,11 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_StatusHandler(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.BindStatusHandlerByMap(map[int]ghttp.HandlerFunc{

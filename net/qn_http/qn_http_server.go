@@ -21,7 +21,7 @@ import (
 	"github.com/qnsoft/common/internal/intlog"
 
 	"github.com/qnsoft/common/os/gsession"
-	"github.com/qnsoft/common/os/gtimer"
+	"github.com/qnsoft/common/os/qn_timer"
 
 	"github.com/gorilla/websocket"
 	"github.com/olekukonko/tablewriter"
@@ -30,11 +30,11 @@ import (
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/gcache"
 	"github.com/qnsoft/common/os/genv"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gproc"
-	"github.com/qnsoft/common/text/gregex"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/text/qn_regex"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 type (
@@ -216,7 +216,7 @@ func serverProcessInit() {
 	// It's an ugly calling for better initializing the main package path
 	// in source development environment. It is useful only be used in main goroutine.
 	// It fails retrieving the main package path in asynchronized goroutines.
-	gfile.MainPkgPath()
+	qn_file.MainPkgPath()
 }
 
 // GetServer creates and returns a server instance using given name and default configurations.
@@ -225,7 +225,7 @@ func serverProcessInit() {
 func GetServer(name ...interface{}) *Server {
 	serverName := gDEFAULT_SERVER
 	if len(name) > 0 && name[0] != "" {
-		serverName = gconv.String(name[0])
+		serverName = qn_conv.String(name[0])
 	}
 	if s := serverMapping.Get(serverName); s != nil {
 		return s.(*Server)
@@ -279,9 +279,9 @@ func (s *Server) Start() error {
 	if s.config.SessionStorage == nil {
 		path := ""
 		if s.config.SessionPath != "" {
-			path = gfile.Join(s.config.SessionPath, s.name)
-			if !gfile.Exists(path) {
-				if err := gfile.Mkdir(path); err != nil {
+			path = qn_file.Join(s.config.SessionPath, s.name)
+			if !qn_file.Exists(path) {
+				if err := qn_file.Mkdir(path); err != nil {
 					return errors.New(fmt.Sprintf("[ghttp] mkdir failed for '%s': %v", path, err))
 				}
 			}
@@ -329,7 +329,7 @@ func (s *Server) Start() error {
 
 	// If this is a child process, it then notifies its parent exit.
 	if gproc.IsChild() {
-		gtimer.SetTimeout(2*time.Second, func() {
+		qn_timer.SetTimeout(2*time.Second, func() {
 			if err := gproc.Send(gproc.PPid(), []byte("exit"), gADMIN_GPROC_COMM_GROUP); err != nil {
 				//glog.Error("[ghttp] server error in process communication:", err)
 			}
@@ -377,7 +377,7 @@ func (s *Server) GetRouterArray() []RouterItem {
 		address += "tls" + s.config.HTTPSAddr
 	}
 	for k, registeredItems := range s.routesMap {
-		array, _ := gregex.MatchString(`(.*?)%([A-Z]+):(.+)@(.+)`, k)
+		array, _ := qn_regex.MatchString(`(.*?)%([A-Z]+):(.+)@(.+)`, k)
 		for index, registeredItem := range registeredItems {
 			item := RouterItem{
 				Server:     s.name,
@@ -508,7 +508,7 @@ func (s *Server) startServer(fdMap listenerFdMap) {
 				// The windows OS does not support socket file descriptor passing
 				// from parent process.
 				if runtime.GOOS != "windows" {
-					fd = gconv.Int(array[1])
+					fd = qn_conv.Int(array[1])
 				}
 			}
 			if fd > 0 {
@@ -541,7 +541,7 @@ func (s *Server) startServer(fdMap listenerFdMap) {
 			// The windows OS does not support socket file descriptor passing
 			// from parent process.
 			if runtime.GOOS != "windows" {
-				fd = gconv.Int(array[1])
+				fd = qn_conv.Int(array[1])
 			}
 		}
 		if fd > 0 {
@@ -599,7 +599,7 @@ func (s *Server) getListenerFdMap() map[string]string {
 		"http":  "",
 	}
 	for _, v := range s.servers {
-		str := v.address + "#" + gconv.String(v.Fd()) + ","
+		str := v.address + "#" + qn_conv.String(v.Fd()) + ","
 		if v.isHttps {
 			if len(m["https"]) > 0 {
 				m["https"] += ","
@@ -619,7 +619,7 @@ func (s *Server) getListenerFdMap() map[string]string {
 // This is used in old version of server for custom error handler.
 // Deprecated.
 func IsExitError(err interface{}) bool {
-	errStr := gconv.String(err)
+	errStr := qn_conv.String(err)
 	if strings.EqualFold(errStr, gEXCEPTION_EXIT) ||
 		strings.EqualFold(errStr, gEXCEPTION_EXIT_ALL) ||
 		strings.EqualFold(errStr, gEXCEPTION_EXIT_HOOK) {

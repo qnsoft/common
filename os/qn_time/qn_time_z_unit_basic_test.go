@@ -10,59 +10,59 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_SetTimeZone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		gtime.SetTimeZone("Asia/Shanghai")
+	qn_test.C(t, func(t *qn_test.T) {
+		qn_time.SetTimeZone("Asia/Shanghai")
 		t.Assert(time.Local.String(), "Asia/Shanghai")
 	})
 }
 
 func Test_Nanosecond(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		nanos := gtime.TimestampNano()
+	qn_test.C(t, func(t *qn_test.T) {
+		nanos := qn_time.TimestampNano()
 		timeTemp := time.Unix(0, nanos)
 		t.Assert(nanos, timeTemp.UnixNano())
 	})
 }
 
 func Test_Microsecond(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		micros := gtime.TimestampMicro()
+	qn_test.C(t, func(t *qn_test.T) {
+		micros := qn_time.TimestampMicro()
 		timeTemp := time.Unix(0, micros*1e3)
 		t.Assert(micros, timeTemp.UnixNano()/1e3)
 	})
 }
 
 func Test_Millisecond(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		millis := gtime.TimestampMilli()
+	qn_test.C(t, func(t *qn_test.T) {
+		millis := qn_time.TimestampMilli()
 		timeTemp := time.Unix(0, millis*1e6)
 		t.Assert(millis, timeTemp.UnixNano()/1e6)
 	})
 }
 
 func Test_Second(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		s := gtime.Timestamp()
+	qn_test.C(t, func(t *qn_test.T) {
+		s := qn_time.Timestamp()
 		timeTemp := time.Unix(s, 0)
 		t.Assert(s, timeTemp.Unix())
 	})
 }
 
 func Test_Date(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		t.Assert(gtime.Date(), time.Now().Format("2006-01-02"))
+	qn_test.C(t, func(t *qn_test.T) {
+		t.Assert(qn_time.Date(), time.Now().Format("2006-01-02"))
 	})
 }
 
 func Test_Datetime(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		datetime := gtime.Datetime()
-		timeTemp, err := gtime.StrToTime(datetime, "Y-m-d H:i:s")
+	qn_test.C(t, func(t *qn_test.T) {
+		datetime := qn_time.Datetime()
+		timeTemp, err := qn_time.StrToTime(datetime, "Y-m-d H:i:s")
 		if err != nil {
 			t.Error("test fail")
 		}
@@ -71,23 +71,23 @@ func Test_Datetime(t *testing.T) {
 }
 
 func Test_ISO8601(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		iso8601 := gtime.ISO8601()
-		t.Assert(iso8601, gtime.Now().Format("c"))
+	qn_test.C(t, func(t *qn_test.T) {
+		iso8601 := qn_time.ISO8601()
+		t.Assert(iso8601, qn_time.Now().Format("c"))
 	})
 }
 
 func Test_RFC822(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		rfc822 := gtime.RFC822()
-		t.Assert(rfc822, gtime.Now().Format("r"))
+	qn_test.C(t, func(t *qn_test.T) {
+		rfc822 := qn_time.RFC822()
+		t.Assert(rfc822, qn_time.Now().Format("r"))
 	})
 }
 
 func Test_StrToTime(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//正常日期列表
-		//正则的原因，日期"06.01.02"，"2006.01"，"2006..01"无法覆盖gtime.go的百分百
+		//正则的原因，日期"06.01.02"，"2006.01"，"2006..01"无法覆盖qn_time.go的百分百
 		var testDatetimes = []string{
 			"2006-01-02 15:04:05",
 			"2006/01/02 15:04:05",
@@ -104,7 +104,7 @@ func Test_StrToTime(t *testing.T) {
 		}
 
 		for _, item := range testDatetimes {
-			timeTemp, err := gtime.StrToTime(item)
+			timeTemp, err := qn_time.StrToTime(item)
 			if err != nil {
 				t.Error("test fail")
 			}
@@ -119,7 +119,7 @@ func Test_StrToTime(t *testing.T) {
 		}
 
 		for _, item := range testDates {
-			timeTemp, err := gtime.StrToTime(item)
+			timeTemp, err := qn_time.StrToTime(item)
 			if err != nil {
 				t.Error("test fail")
 			}
@@ -144,7 +144,7 @@ func Test_StrToTime(t *testing.T) {
 		}
 
 		for index, item := range testDateFormats {
-			timeTemp, err := gtime.StrToTime(testDateFormatsResult[index], item)
+			timeTemp, err := qn_time.StrToTime(testDateFormatsResult[index], item)
 			if err != nil {
 				t.Error("test fail")
 			}
@@ -159,14 +159,14 @@ func Test_StrToTime(t *testing.T) {
 		}
 
 		for _, item := range testDatesFail {
-			_, err := gtime.StrToTime(item)
+			_, err := qn_time.StrToTime(item)
 			if err == nil {
 				t.Error("test fail")
 			}
 		}
 
 		//test err
-		_, err := gtime.StrToTime("2006-01-02 15:04:05", "aabbccdd")
+		_, err := qn_time.StrToTime("2006-01-02 15:04:05", "aabbccdd")
 		if err == nil {
 			t.Error("test fail")
 		}
@@ -174,13 +174,13 @@ func Test_StrToTime(t *testing.T) {
 }
 
 func Test_ConvertZone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//现行时间
 		nowUTC := time.Now().UTC()
 		testZone := "America/Los_Angeles"
 
 		//转换为洛杉矶时间
-		t1, err := gtime.ConvertZone(nowUTC.Format("2006-01-02 15:04:05"), testZone, "")
+		t1, err := qn_time.ConvertZone(nowUTC.Format("2006-01-02 15:04:05"), testZone, "")
 		if err != nil {
 			t.Error("test fail")
 		}
@@ -196,24 +196,24 @@ func Test_ConvertZone(t *testing.T) {
 	})
 
 	//test err
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//现行时间
 		nowUTC := time.Now().UTC()
 		//t.Log(nowUTC.Unix())
 		testZone := "errZone"
 
 		//错误时间输入
-		_, err := gtime.ConvertZone(nowUTC.Format("06..02 15:04:05"), testZone, "")
+		_, err := qn_time.ConvertZone(nowUTC.Format("06..02 15:04:05"), testZone, "")
 		if err == nil {
 			t.Error("test fail")
 		}
 		//错误时区输入
-		_, err = gtime.ConvertZone(nowUTC.Format("2006-01-02 15:04:05"), testZone, "")
+		_, err = qn_time.ConvertZone(nowUTC.Format("2006-01-02 15:04:05"), testZone, "")
 		if err == nil {
 			t.Error("test fail")
 		}
 		//错误时区输入
-		_, err = gtime.ConvertZone(nowUTC.Format("2006-01-02 15:04:05"), testZone, testZone)
+		_, err = qn_time.ConvertZone(nowUTC.Format("2006-01-02 15:04:05"), testZone, testZone)
 		if err == nil {
 			t.Error("test fail")
 		}
@@ -221,24 +221,24 @@ func Test_ConvertZone(t *testing.T) {
 }
 
 func Test_StrToTimeFormat(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 
 	})
 }
 
 func Test_ParseTimeFromContent(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		timeTemp := gtime.ParseTimeFromContent("我是中文2006-01-02 15:04:05我也是中文", "Y-m-d H:i:s")
+	qn_test.C(t, func(t *qn_test.T) {
+		timeTemp := qn_time.ParseTimeFromContent("我是中文2006-01-02 15:04:05我也是中文", "Y-m-d H:i:s")
 		t.Assert(timeTemp.Time.Format("2006-01-02 15:04:05"), "2006-01-02 15:04:05")
 
-		timeTemp1 := gtime.ParseTimeFromContent("我是中文2006-01-02 15:04:05我也是中文")
+		timeTemp1 := qn_time.ParseTimeFromContent("我是中文2006-01-02 15:04:05我也是中文")
 		t.Assert(timeTemp1.Time.Format("2006-01-02 15:04:05"), "2006-01-02 15:04:05")
 
-		timeTemp2 := gtime.ParseTimeFromContent("我是中文02.jan.2006 15:04:05我也是中文")
+		timeTemp2 := qn_time.ParseTimeFromContent("我是中文02.jan.2006 15:04:05我也是中文")
 		t.Assert(timeTemp2.Time.Format("2006-01-02 15:04:05"), "2006-01-02 15:04:05")
 
 		//test err
-		timeTempErr := gtime.ParseTimeFromContent("我是中文", "Y-m-d H:i:s")
+		timeTempErr := qn_time.ParseTimeFromContent("我是中文", "Y-m-d H:i:s")
 		if timeTempErr != nil {
 			t.Error("test fail")
 		}
@@ -246,8 +246,8 @@ func Test_ParseTimeFromContent(t *testing.T) {
 }
 
 func Test_FuncCost(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		gtime.FuncCost(func() {
+	qn_test.C(t, func(t *qn_test.T) {
+		qn_time.FuncCost(func() {
 
 		})
 	})

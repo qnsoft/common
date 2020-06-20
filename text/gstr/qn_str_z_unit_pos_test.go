@@ -11,19 +11,19 @@ package qn_str_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_Pos(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFGabcdefg"
 		t.Assert(gstr.Pos(s1, "ab"), 0)
 		t.Assert(gstr.Pos(s1, "ab", 2), 7)
 		t.Assert(gstr.Pos(s1, "abd", 0), -1)
 		t.Assert(gstr.Pos(s1, "e", -4), 11)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "我爱China very much"
 		t.Assert(gstr.Pos(s1, "爱"), 3)
 		t.Assert(gstr.Pos(s1, "C"), 6)
@@ -32,14 +32,14 @@ func Test_Pos(t *testing.T) {
 }
 
 func Test_PosRune(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFGabcdefg"
 		t.Assert(gstr.PosRune(s1, "ab"), 0)
 		t.Assert(gstr.PosRune(s1, "ab", 2), 7)
 		t.Assert(gstr.PosRune(s1, "abd", 0), -1)
 		t.Assert(gstr.PosRune(s1, "e", -4), 11)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "我爱China very much"
 		t.Assert(gstr.PosRune(s1, "爱"), 1)
 		t.Assert(gstr.PosRune(s1, "C"), 2)
@@ -48,7 +48,7 @@ func Test_PosRune(t *testing.T) {
 }
 
 func Test_PosI(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFGabcdefg"
 		t.Assert(gstr.PosI(s1, "zz"), -1)
 		t.Assert(gstr.PosI(s1, "ab"), 0)
@@ -56,7 +56,7 @@ func Test_PosI(t *testing.T) {
 		t.Assert(gstr.PosI(s1, "abd", 0), -1)
 		t.Assert(gstr.PosI(s1, "E", -4), 11)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "我爱China very much"
 		t.Assert(gstr.PosI(s1, "爱"), 3)
 		t.Assert(gstr.PosI(s1, "c"), 6)
@@ -65,7 +65,7 @@ func Test_PosI(t *testing.T) {
 }
 
 func Test_PosIRune(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFGabcdefg"
 		t.Assert(gstr.PosIRune(s1, "zz"), -1)
 		t.Assert(gstr.PosIRune(s1, "ab"), 0)
@@ -73,7 +73,7 @@ func Test_PosIRune(t *testing.T) {
 		t.Assert(gstr.PosIRune(s1, "abd", 0), -1)
 		t.Assert(gstr.PosIRune(s1, "E", -4), 11)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "我爱China very much"
 		t.Assert(gstr.PosIRune(s1, "爱"), 1)
 		t.Assert(gstr.PosIRune(s1, "c"), 2)
@@ -82,7 +82,7 @@ func Test_PosIRune(t *testing.T) {
 }
 
 func Test_PosR(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFGabcdefg"
 		s2 := "abcdEFGz1cdeab"
 		t.Assert(gstr.PosR(s1, "zz"), -1)
@@ -92,7 +92,7 @@ func Test_PosR(t *testing.T) {
 		t.Assert(gstr.PosR(s1, "abd", 0), -1)
 		t.Assert(gstr.PosR(s1, "e", -4), -1)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "我爱China very much"
 		t.Assert(gstr.PosR(s1, "爱"), 3)
 		t.Assert(gstr.PosR(s1, "C"), 6)
@@ -101,7 +101,7 @@ func Test_PosR(t *testing.T) {
 }
 
 func Test_PosRRune(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFGabcdefg"
 		s2 := "abcdEFGz1cdeab"
 		t.Assert(gstr.PosRRune(s1, "zz"), -1)
@@ -111,7 +111,7 @@ func Test_PosRRune(t *testing.T) {
 		t.Assert(gstr.PosRRune(s1, "abd", 0), -1)
 		t.Assert(gstr.PosRRune(s1, "e", -4), -1)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "我爱China very much"
 		t.Assert(gstr.PosRRune(s1, "爱"), 1)
 		t.Assert(gstr.PosRRune(s1, "C"), 2)
@@ -120,7 +120,7 @@ func Test_PosRRune(t *testing.T) {
 }
 
 func Test_PosRI(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFGabcdefg"
 		s2 := "abcdEFGz1cdeab"
 		t.Assert(gstr.PosRI(s1, "zz"), -1)
@@ -130,7 +130,7 @@ func Test_PosRI(t *testing.T) {
 		t.Assert(gstr.PosRI(s1, "abd", 0), -1)
 		t.Assert(gstr.PosRI(s1, "e", -5), 4)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "我爱China very much"
 		t.Assert(gstr.PosRI(s1, "爱"), 3)
 		t.Assert(gstr.PosRI(s1, "C"), 19)
@@ -139,7 +139,7 @@ func Test_PosRI(t *testing.T) {
 }
 
 func Test_PosRIRune(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFGabcdefg"
 		s2 := "abcdEFGz1cdeab"
 		t.Assert(gstr.PosRIRune(s1, "zz"), -1)
@@ -149,7 +149,7 @@ func Test_PosRIRune(t *testing.T) {
 		t.Assert(gstr.PosRIRune(s1, "abd", 0), -1)
 		t.Assert(gstr.PosRIRune(s1, "e", -5), 4)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "我爱China very much"
 		t.Assert(gstr.PosRIRune(s1, "爱"), 1)
 		t.Assert(gstr.PosRIRune(s1, "C"), 15)

@@ -12,7 +12,7 @@ import (
 
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/internal/rwmutex"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 type IntSet struct {
@@ -193,7 +193,7 @@ func (set *IntSet) Join(glue string) string {
 		buffer = bytes.NewBuffer(nil)
 	)
 	for k, _ := range set.data {
-		buffer.WriteString(gconv.String(k))
+		buffer.WriteString(qn_conv.String(k))
 		if i != l-1 {
 			buffer.WriteString(glue)
 		}
@@ -457,9 +457,9 @@ func (set *IntSet) UnmarshalValue(value interface{}) (err error) {
 	var array []int
 	switch value.(type) {
 	case string, []byte:
-		err = json.Unmarshal(gconv.Bytes(value), &array)
+		err = json.Unmarshal(qn_conv.Bytes(value), &array)
 	default:
-		array = gconv.SliceInt(value)
+		array = qn_conv.SliceInt(value)
 	}
 	for _, v := range array {
 		set.data[v] = struct{}{}

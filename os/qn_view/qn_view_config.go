@@ -12,12 +12,12 @@ import (
 
 	"github.com/qnsoft/common/i18n/gi18n"
 	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gres"
 	"github.com/qnsoft/common/os/gspath"
-	gconv "github.com/qnsoft/common/util/qn_conv"
-	gutil "github.com/qnsoft/common/util/qn_util"
+	"github.com/qnsoft/common/os/qn_file"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 )
 
 // Config is the configuration object for template engine.
@@ -32,13 +32,13 @@ type Config struct {
 
 const (
 	// Default template file for parsing.
-	defaultParsingFile = "index.html"
+	defaultParsinqn_file = "index.html"
 )
 
 // DefaultConfig creates and returns a configuration object with default configurations.
 func DefaultConfig() Config {
 	return Config{
-		DefaultFile: defaultParsingFile,
+		DefaultFile: defaultParsinqn_file,
 		I18nManager: gi18n.Instance(),
 		Delimiters:  make([]string, 2),
 	}
@@ -80,14 +80,14 @@ func (view *View) SetConfigWithMap(m map[string]interface{}) error {
 	// The m now is a shallow copy of m.
 	// Any changes to m does not affect the original one.
 	// A little tricky, isn't it?
-	m = gutil.MapCopy(m)
+	m = qn_util.MapCopy(m)
 	// Most common used configuration support for single view path.
-	_, v1 := gutil.MapPossibleItemByKey(m, "paths")
-	_, v2 := gutil.MapPossibleItemByKey(m, "path")
+	_, v1 := qn_util.MapPossibleItemByKey(m, "paths")
+	_, v2 := qn_util.MapPossibleItemByKey(m, "path")
 	if v1 == nil && v2 != nil {
 		m["paths"] = []interface{}{v2}
 	}
-	err := gconv.Struct(m, &view.config)
+	err := qn_conv.Struct(m, &view.config)
 	if err != nil {
 		return err
 	}
@@ -106,7 +106,7 @@ func (view *View) SetPath(path string) error {
 		isDir = file.FileInfo().IsDir()
 	} else {
 		// Absolute path.
-		realPath = gfile.RealPath(path)
+		realPath = qn_file.RealPath(path)
 		if realPath == "" {
 			// Relative path.
 			view.paths.RLockFunc(func(array []string) {
@@ -119,7 +119,7 @@ func (view *View) SetPath(path string) error {
 			})
 		}
 		if realPath != "" {
-			isDir = gfile.IsDir(realPath)
+			isDir = qn_file.IsDir(realPath)
 		}
 	}
 	// Path not exist.
@@ -160,7 +160,7 @@ func (view *View) AddPath(path string) error {
 		isDir = file.FileInfo().IsDir()
 	} else {
 		// Absolute path.
-		realPath = gfile.RealPath(path)
+		realPath = qn_file.RealPath(path)
 		if realPath == "" {
 			// Relative path.
 			view.paths.RLockFunc(func(array []string) {
@@ -173,7 +173,7 @@ func (view *View) AddPath(path string) error {
 			})
 		}
 		if realPath != "" {
-			isDir = gfile.IsDir(realPath)
+			isDir = qn_file.IsDir(realPath)
 		}
 	}
 	// Path not exist.

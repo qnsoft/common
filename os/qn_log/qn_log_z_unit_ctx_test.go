@@ -9,15 +9,16 @@ package qn_log_test
 import (
 	"bytes"
 	"context"
+	"testing"
+
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/os/glog"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
-	"testing"
 )
 
 func Test_Ctx(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
 		l := glog.NewWithWriter(w)
 		l.SetCtxKeys("Trace-Id", "Span-Id", "Test")
@@ -34,7 +35,7 @@ func Test_Ctx(t *testing.T) {
 }
 
 func Test_Ctx_Config(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
 		l := glog.NewWithWriter(w)
 		m := map[string]interface{}{

@@ -16,11 +16,11 @@ import (
 
 	"github.com/qnsoft/common/os/gcmd"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Parse(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		os.Args = []string{"gf", "--force", "remove", "-fq", "-p=www", "path", "-n", "root"}
 		p, err := gcmd.Parse(map[string]bool{
 			"n, name":   true,
@@ -55,7 +55,7 @@ func Test_Parse(t *testing.T) {
 }
 
 func Test_ParseWithArgs(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, err := gcmd.ParseWithArgs(
 			[]string{"gf", "--force", "remove", "-fq", "-p=www", "path", "-n", "root"},
 			map[string]bool{
@@ -91,7 +91,7 @@ func Test_ParseWithArgs(t *testing.T) {
 }
 
 func Test_Handler(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		p, err := gcmd.ParseWithArgs(
 			[]string{"gf", "--force", "remove", "-fq", "-p=www", "path", "-n", "root"},
 			map[string]bool{

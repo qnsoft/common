@@ -9,12 +9,12 @@ package qn_valid_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gvalid"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_valid"
 )
 
 func Test_CheckMap1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := map[string]interface{}{
 			"id":   "0",
 			"name": "john",
@@ -23,7 +23,7 @@ func Test_CheckMap1(t *testing.T) {
 			"id":   "required|between:1,100",
 			"name": "required|length:6,16",
 		}
-		if m := gvalid.CheckMap(data, rules); m == nil {
+		if m := qn_valid.CheckMap(data, rules); m == nil {
 			t.Error("CheckMap校验失败")
 		} else {
 			t.Assert(len(m.Maps()), 2)
@@ -35,7 +35,7 @@ func Test_CheckMap1(t *testing.T) {
 
 func Test_CheckMap2(t *testing.T) {
 	var params interface{}
-	if m := gvalid.CheckMap(params, nil, nil); m == nil {
+	if m := qn_valid.CheckMap(params, nil, nil); m == nil {
 		t.Error("CheckMap校验失败")
 	}
 
@@ -47,14 +47,14 @@ func Test_CheckMap2(t *testing.T) {
 		"id":   "required|between:1,100",
 		"name": "required|length:6,16",
 	}
-	msgs := gvalid.CustomMsg{
+	msgs := qn_valid.CustomMsg{
 		"id": "ID不能为空|ID范围应当为:min到:max",
 		"name": map[string]string{
 			"required": "名称不能为空",
 			"length":   "名称长度为:min到:max个字符",
 		},
 	}
-	if m := gvalid.CheckMap(kvmap, rules, msgs); m == nil {
+	if m := qn_valid.CheckMap(kvmap, rules, msgs); m == nil {
 		t.Error("CheckMap校验失败")
 	}
 
@@ -73,7 +73,7 @@ func Test_CheckMap2(t *testing.T) {
 			"length":   "名称长度为:min到:max个字符",
 		},
 	}
-	if m := gvalid.CheckMap(kvmap, rules, msgs); m != nil {
+	if m := qn_valid.CheckMap(kvmap, rules, msgs); m != nil {
 		t.Error(m)
 	}
 
@@ -92,7 +92,7 @@ func Test_CheckMap2(t *testing.T) {
 			"length":   "名称长度为:min到:max个字符",
 		},
 	}
-	if m := gvalid.CheckMap(kvmap, rules, msgs); m != nil {
+	if m := qn_valid.CheckMap(kvmap, rules, msgs); m != nil {
 		t.Error(m)
 	}
 
@@ -111,7 +111,7 @@ func Test_CheckMap2(t *testing.T) {
 			"length":   "名称长度为:min到:max个字符",
 		},
 	}
-	if m := gvalid.CheckMap(kvmap, rules2, msgs); m != nil {
+	if m := qn_valid.CheckMap(kvmap, rules2, msgs); m != nil {
 		t.Error(m)
 	}
 
@@ -130,7 +130,7 @@ func Test_CheckMap2(t *testing.T) {
 			"length":   "名称长度为:min到:max个字符",
 		},
 	}
-	if m := gvalid.CheckMap(kvmap, rules2, msgs); m != nil {
+	if m := qn_valid.CheckMap(kvmap, rules2, msgs); m != nil {
 		t.Error(m)
 	}
 
@@ -149,7 +149,7 @@ func Test_CheckMap2(t *testing.T) {
 			"length":   "名称长度为:min到:max个字符",
 		},
 	}
-	if m := gvalid.CheckMap(kvmap, rules2, msgs); m != nil {
+	if m := qn_valid.CheckMap(kvmap, rules2, msgs); m != nil {
 		t.Error(m)
 	}
 }
@@ -163,13 +163,13 @@ func Test_CheckMapWithNilAndNotRequiredField(t *testing.T) {
 		"id":   "required",
 		"name": "length:4,16",
 	}
-	if m := gvalid.CheckMap(data, rules); m != nil {
+	if m := qn_valid.CheckMap(data, rules); m != nil {
 		t.Error(m)
 	}
 }
 
 func Test_Sequence(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		params := map[string]interface{}{
 			"passport":  "",
 			"password":  "123456",
@@ -180,7 +180,7 @@ func Test_Sequence(t *testing.T) {
 			"password@required|length:6,16|same:password2#密码不能为空|密码长度应当在:min到:max之间|两次密码输入不相等",
 			"password2@required|length:6,16#",
 		}
-		err := gvalid.CheckMap(params, rules)
+		err := qn_valid.CheckMap(params, rules)
 		t.AssertNE(err, nil)
 		t.Assert(len(err.Map()), 2)
 		t.Assert(err.Map()["required"], "账号不能为空")

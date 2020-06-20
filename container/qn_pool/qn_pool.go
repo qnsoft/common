@@ -11,10 +11,10 @@ import (
 	"errors"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/gogf/gf/os/gtimer"
 	"github.com/qnsoft/common/container/glist"
 	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/os/qn_timer"
 )
 
 // Pool is an Object-Reusable Pool.
@@ -67,7 +67,7 @@ func New(ttl time.Duration, newFunc NewFunc, expireFunc ...ExpireFunc) *Pool {
 	if len(expireFunc) > 0 {
 		r.ExpireFunc = expireFunc[0]
 	}
-	gtimer.AddSingleton(time.Second, r.checkExpireItems)
+	qn_timer.AddSingleton(time.Second, r.checkExpireItems)
 	return r
 }
 
@@ -84,7 +84,7 @@ func (p *Pool) Put(value interface{}) error {
 	} else {
 		// As for Golang version < 1.13, there's no method Milliseconds for time.Duration.
 		// So we need calculate the milliseconds using its nanoseconds value.
-		item.expire = gtime.TimestampMilli() + p.TTL.Nanoseconds()/1000000
+		item.expire = qn_time.TimestampMilli() + p.TTL.Nanoseconds()/1000000
 	}
 	p.list.PushBack(item)
 	return nil
@@ -112,7 +112,7 @@ func (p *Pool) Get() (interface{}, error) {
 	for !p.closed.Val() {
 		if r := p.list.PopFront(); r != nil {
 			f := r.(*poolItem)
-			if f.expire == 0 || f.expire > gtime.TimestampMilli() {
+			if f.expire == 0 || f.expire > qn_time.TimestampMilli() {
 				return f.value, nil
 			}
 		} else {
@@ -151,7 +151,7 @@ func (p *Pool) checkExpireItems() {
 				}
 			}
 		}
-		gtimer.Exit()
+		qn_timer.Exit()
 	}
 	// All items do not expire.
 	if p.TTL == 0 {
@@ -162,7 +162,7 @@ func (p *Pool) checkExpireItems() {
 	// Retrieve the current timestamp in milliseconds, it expires the items
 	// by comparing with this timestamp. It is not accurate comparison for
 	// every items expired, but high performance.
-	var timestampMilli = gtime.TimestampMilli()
+	var timestampMilli = qn_time.TimestampMilli()
 	for {
 		if latestExpire > timestampMilli {
 			break

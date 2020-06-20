@@ -17,12 +17,12 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/encoding/gjson"
+	"github.com/qnsoft/common/encoding/qn_json"
 	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gproc"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/os/gtimer"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/os/qn_timer"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 const (
@@ -40,7 +40,7 @@ const (
 var serverActionLocker sync.Mutex
 
 // serverActionLastTime is timestamp in milliseconds of last administration operation.
-var serverActionLastTime = gtype.NewInt64(gtime.TimestampMilli())
+var serverActionLastTime = gtype.NewInt64(qn_time.TimestampMilli())
 
 // serverProcessStatus is the server status for operation of current process.
 var serverProcessStatus = gtype.NewInt()
@@ -90,11 +90,11 @@ func checkProcessStatus() error {
 // checkActionFrequency checks the operation frequency.
 // It returns error if it is too frequency.
 func checkActionFrequency() error {
-	interval := gtime.TimestampMilli() - serverActionLastTime.Val()
+	interval := qn_time.TimestampMilli() - serverActionLastTime.Val()
 	if interval < gADMIN_ACTION_INTERVAL_LIMIT {
 		return errors.New(fmt.Sprintf("too frequent action, please retry in %d ms", gADMIN_ACTION_INTERVAL_LIMIT-interval))
 	}
-	serverActionLastTime.Set(gtime.TimestampMilli())
+	serverActionLastTime.Set(qn_time.TimestampMilli())
 	return nil
 }
 
@@ -114,7 +114,7 @@ func forkReloadProcess(newExeFilePath ...string) error {
 				s := ""
 				for _, item := range strings.Split(fdv, ",") {
 					array := strings.Split(item, "#")
-					fd := uintptr(gconv.Uint(array[1]))
+					fd := uintptr(qn_conv.Uint(array[1]))
 					if fd > 0 {
 						s += fmt.Sprintf("%s#%d,", array[0], 3+len(p.ExtraFiles))
 						p.ExtraFiles = append(p.ExtraFiles, os.NewFile(fd, ""))
@@ -126,7 +126,7 @@ func forkReloadProcess(newExeFilePath ...string) error {
 			}
 		}
 	}
-	buffer, _ := gjson.Encode(sfm)
+	buffer, _ := qn_json.Encode(sfm)
 	p.Env = append(p.Env, gADMIN_ACTION_RELOAD_ENVKEY+"="+string(buffer))
 	if _, err := p.Start(); err != nil {
 		glog.Errorf("%d: fork process failed, error:%s, %s", gproc.Pid(), err.Error(), string(buffer))
@@ -167,11 +167,11 @@ func getServerFdMap() map[string]listenerFdMap {
 func bufferToServerFdMap(buffer []byte) map[string]listenerFdMap {
 	sfm := make(map[string]listenerFdMap)
 	if len(buffer) > 0 {
-		j, _ := gjson.LoadContent(buffer)
+		j, _ := qn_json.LoadContent(buffer)
 		for k, _ := range j.ToMap() {
 			m := make(map[string]string)
 			for k, v := range j.GetMap(k) {
-				m[k] = gconv.String(v)
+				m[k] = qn_conv.String(v)
 			}
 			sfm[k] = m
 		}
@@ -190,7 +190,7 @@ func restartWebServers(signal string, newExeFilePath ...string) error {
 		} else {
 			// Controlled by web page.
 			// It should ensure the response wrote to client and then close all servers gracefully.
-			gtimer.SetTimeout(time.Second, func() {
+			qn_timer.SetTimeout(time.Second, func() {
 				forceCloseWebServers()
 				forkRestartProcess(newExeFilePath...)
 			})
@@ -221,7 +221,7 @@ func shutdownWebServers(signal ...string) {
 		allDoneChan <- struct{}{}
 	} else {
 		glog.Printf("%d: server shutting down by api", gproc.Pid())
-		gtimer.SetTimeout(time.Second, func() {
+		qn_timer.SetTimeout(time.Second, func() {
 			forceCloseWebServers()
 			allDoneChan <- struct{}{}
 		})

@@ -12,12 +12,12 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_Replace(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFG乱入的中文abcdefg"
 		t.Assert(gstr.Replace(s1, "ab", "AB"), "ABcdEFG乱入的中文ABcdefg")
 		t.Assert(gstr.Replace(s1, "EF", "ef"), "abcdefG乱入的中文abcdefg")
@@ -37,7 +37,7 @@ func Test_Replace(t *testing.T) {
 }
 
 func Test_ReplaceI_1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcd乱入的中文ABCD"
 		s2 := "a"
 		t.Assert(gstr.ReplaceI(s1, "ab", "aa"), "aacd乱入的中文aaCD")
@@ -67,7 +67,7 @@ func Test_ReplaceI_1(t *testing.T) {
 }
 
 func Test_ToLower(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFG乱入的中文abcdefg"
 		e1 := "abcdefg乱入的中文abcdefg"
 		t.Assert(gstr.ToLower(s1), e1)
@@ -75,7 +75,7 @@ func Test_ToLower(t *testing.T) {
 }
 
 func Test_ToUpper(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFG乱入的中文abcdefg"
 		e1 := "ABCDEFG乱入的中文ABCDEFG"
 		t.Assert(gstr.ToUpper(s1), e1)
@@ -83,7 +83,7 @@ func Test_ToUpper(t *testing.T) {
 }
 
 func Test_UcFirst(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "abcdEFG乱入的中文abcdefg"
 		e1 := "AbcdEFG乱入的中文abcdefg"
 		t.Assert(gstr.UcFirst(""), "")
@@ -93,7 +93,7 @@ func Test_UcFirst(t *testing.T) {
 }
 
 func Test_LcFirst(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "AbcdEFG乱入的中文abcdefg"
 		e1 := "abcdEFG乱入的中文abcdefg"
 		t.Assert(gstr.LcFirst(""), "")
@@ -103,7 +103,7 @@ func Test_LcFirst(t *testing.T) {
 }
 
 func Test_UcWords(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := "我爱GF: i love go frame"
 		e1 := "我爱GF: I Love Go Frame"
 		t.Assert(gstr.UcWords(s1), e1)
@@ -111,7 +111,7 @@ func Test_UcWords(t *testing.T) {
 }
 
 func Test_IsLetterLower(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.IsLetterLower('a'), true)
 		t.Assert(gstr.IsLetterLower('A'), false)
 		t.Assert(gstr.IsLetterLower('1'), false)
@@ -119,7 +119,7 @@ func Test_IsLetterLower(t *testing.T) {
 }
 
 func Test_IsLetterUpper(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.IsLetterUpper('a'), false)
 		t.Assert(gstr.IsLetterUpper('A'), true)
 		t.Assert(gstr.IsLetterUpper('1'), false)
@@ -127,7 +127,7 @@ func Test_IsLetterUpper(t *testing.T) {
 }
 
 func Test_IsNumeric(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.IsNumeric("1a我"), false)
 		t.Assert(gstr.IsNumeric("0123"), true)
 		t.Assert(gstr.IsNumeric("我是中国人"), false)
@@ -135,7 +135,7 @@ func Test_IsNumeric(t *testing.T) {
 }
 
 func Test_SubStr(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.SubStr("我爱GoFrame", 0), "我爱GoFrame")
 		t.Assert(gstr.SubStr("我爱GoFrame", 6), "GoFrame")
 		t.Assert(gstr.SubStr("我爱GoFrame", 6, 2), "Go")
@@ -145,7 +145,7 @@ func Test_SubStr(t *testing.T) {
 }
 
 func Test_SubStrRune(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.SubStrRune("我爱GoFrame", 0), "我爱GoFrame")
 		t.Assert(gstr.SubStrRune("我爱GoFrame", 2), "GoFrame")
 		t.Assert(gstr.SubStrRune("我爱GoFrame", 2, 2), "Go")
@@ -155,7 +155,7 @@ func Test_SubStrRune(t *testing.T) {
 }
 
 func Test_StrLimit(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.StrLimit("我爱GoFrame", 6), "我爱...")
 		t.Assert(gstr.StrLimit("我爱GoFrame", 6, ""), "我爱")
 		t.Assert(gstr.StrLimit("我爱GoFrame", 6, "**"), "我爱**")
@@ -165,7 +165,7 @@ func Test_StrLimit(t *testing.T) {
 }
 
 func Test_StrLimitRune(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.StrLimitRune("我爱GoFrame", 2), "我爱...")
 		t.Assert(gstr.StrLimitRune("我爱GoFrame", 2, ""), "我爱")
 		t.Assert(gstr.StrLimitRune("我爱GoFrame", 2, "**"), "我爱**")
@@ -175,7 +175,7 @@ func Test_StrLimitRune(t *testing.T) {
 }
 
 func Test_HasPrefix(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.HasPrefix("我爱GoFrame", "我爱"), true)
 		t.Assert(gstr.HasPrefix("en我爱GoFrame", "我爱"), false)
 		t.Assert(gstr.HasPrefix("en我爱GoFrame", "en"), true)
@@ -183,7 +183,7 @@ func Test_HasPrefix(t *testing.T) {
 }
 
 func Test_HasSuffix(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.HasSuffix("我爱GoFrame", "GoFrame"), true)
 		t.Assert(gstr.HasSuffix("en我爱GoFrame", "a"), false)
 		t.Assert(gstr.HasSuffix("GoFrame很棒", "棒"), true)
@@ -191,13 +191,13 @@ func Test_HasSuffix(t *testing.T) {
 }
 
 func Test_Reverse(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Reverse("我爱123"), "321爱我")
 	})
 }
 
 func Test_NumberFormat(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.NumberFormat(1234567.8910, 2, ".", ","), "1,234,567.89")
 		t.Assert(gstr.NumberFormat(1234567.8910, 2, "#", "/"), "1/234/567#89")
 		t.Assert(gstr.NumberFormat(-1234567.8910, 2, "#", "/"), "-1/234/567#89")
@@ -205,7 +205,7 @@ func Test_NumberFormat(t *testing.T) {
 }
 
 func Test_ChunkSplit(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.ChunkSplit("1234", 1, "#"), "1#2#3#4#")
 		t.Assert(gstr.ChunkSplit("我爱123", 1, "#"), "我#爱#1#2#3#")
 		t.Assert(gstr.ChunkSplit("1234", 1, ""), "1\r\n2\r\n3\r\n4\r\n")
@@ -213,7 +213,7 @@ func Test_ChunkSplit(t *testing.T) {
 }
 
 func Test_SplitAndTrim(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := `
 
 010    
@@ -229,7 +229,7 @@ func Test_SplitAndTrim(t *testing.T) {
 }
 
 func Test_Fields(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Fields("我爱 Go Frame"), []string{
 			"我爱", "Go", "Frame",
 		})
@@ -237,7 +237,7 @@ func Test_Fields(t *testing.T) {
 }
 
 func Test_CountWords(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.CountWords("我爱 Go Go Go"), map[string]int{
 			"Go": 3,
 			"我爱": 1,
@@ -246,7 +246,7 @@ func Test_CountWords(t *testing.T) {
 }
 
 func Test_CountChars(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.CountChars("我爱 Go Go Go"), map[string]int{
 			" ": 3,
 			"G": 3,
@@ -264,7 +264,7 @@ func Test_CountChars(t *testing.T) {
 }
 
 func Test_WordWrap(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.WordWrap("12 34", 2, "<br>"), "12<br>34")
 		t.Assert(gstr.WordWrap("12 34", 2, "\n"), "12\n34")
 		t.Assert(gstr.WordWrap("我爱 GF", 2, "\n"), "我爱\nGF")
@@ -274,21 +274,21 @@ func Test_WordWrap(t *testing.T) {
 }
 
 func Test_RuneLen(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.RuneLen("1234"), 4)
 		t.Assert(gstr.RuneLen("我爱GoFrame"), 9)
 	})
 }
 
 func Test_Repeat(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Repeat("go", 3), "gogogo")
 		t.Assert(gstr.Repeat("好的", 3), "好的好的好的")
 	})
 }
 
 func Test_Str(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Str("name@example.com", "@"), "@example.com")
 		t.Assert(gstr.Str("name@example.com", ""), "")
 		t.Assert(gstr.Str("name@example.com", "z"), "")
@@ -296,50 +296,50 @@ func Test_Str(t *testing.T) {
 }
 
 func Test_Shuffle(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(len(gstr.Shuffle("123456")), 6)
 	})
 }
 
 func Test_Split(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Split("1.2", "."), []string{"1", "2"})
 		t.Assert(gstr.Split("我爱 - GoFrame", " - "), []string{"我爱", "GoFrame"})
 	})
 }
 
 func Test_Join(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Join([]string{"我爱", "GoFrame"}, " - "), "我爱 - GoFrame")
 	})
 }
 
 func Test_Explode(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Explode(" - ", "我爱 - GoFrame"), []string{"我爱", "GoFrame"})
 	})
 }
 
 func Test_Implode(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Implode(" - ", []string{"我爱", "GoFrame"}), "我爱 - GoFrame")
 	})
 }
 
 func Test_Chr(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Chr(65), "A")
 	})
 }
 
 func Test_Ord(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Ord("A"), 65)
 	})
 }
 
 func Test_HideStr(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.HideStr("15928008611", 40, "*"), "159****8611")
 		t.Assert(gstr.HideStr("john@kohg.cn", 40, "*"), "jo*n@kohg.cn")
 		t.Assert(gstr.HideStr("张三", 50, "*"), "张*")
@@ -349,7 +349,7 @@ func Test_HideStr(t *testing.T) {
 }
 
 func Test_Nl2Br(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Nl2Br("1\n2"), "1<br>2")
 		t.Assert(gstr.Nl2Br("1\r\n2"), "1<br>2")
 		t.Assert(gstr.Nl2Br("1\r\n2", true), "1<br />2")
@@ -357,19 +357,19 @@ func Test_Nl2Br(t *testing.T) {
 }
 
 func Test_AddSlashes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.AddSlashes(`1'2"3\`), `1\'2\"3\\`)
 	})
 }
 
 func Test_StripSlashes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.StripSlashes(`1\'2\"3\\`), `1'2"3\`)
 	})
 }
 
 func Test_QuoteMeta(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.QuoteMeta(`.\+*?[^]($)`), `\.\\\+\*\?\[\^\]\(\$\)`)
 		t.Assert(gstr.QuoteMeta(`.\+*中国?[^]($)`), `\.\\\+\*中国\?\[\^\]\(\$\)`)
 		t.Assert(gstr.QuoteMeta(`.''`, `'`), `.\'\'`)
@@ -378,7 +378,7 @@ func Test_QuoteMeta(t *testing.T) {
 }
 
 func Test_Count(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := "abcdaAD"
 		t.Assert(gstr.Count(s, "0"), 0)
 		t.Assert(gstr.Count(s, "a"), 2)
@@ -388,7 +388,7 @@ func Test_Count(t *testing.T) {
 }
 
 func Test_CountI(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := "abcdaAD"
 		t.Assert(gstr.CountI(s, "0"), 0)
 		t.Assert(gstr.CountI(s, "a"), 3)
@@ -398,7 +398,7 @@ func Test_CountI(t *testing.T) {
 }
 
 func Test_Compare(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Compare("a", "b"), -1)
 		t.Assert(gstr.Compare("a", "a"), 0)
 		t.Assert(gstr.Compare("b", "a"), 1)
@@ -406,7 +406,7 @@ func Test_Compare(t *testing.T) {
 }
 
 func Test_Equal(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Equal("a", "A"), true)
 		t.Assert(gstr.Equal("a", "a"), true)
 		t.Assert(gstr.Equal("b", "a"), false)
@@ -414,7 +414,7 @@ func Test_Equal(t *testing.T) {
 }
 
 func Test_Contains(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.Contains("abc", "a"), true)
 		t.Assert(gstr.Contains("abc", "A"), false)
 		t.Assert(gstr.Contains("abc", "ab"), true)
@@ -423,7 +423,7 @@ func Test_Contains(t *testing.T) {
 }
 
 func Test_ContainsI(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.ContainsI("abc", "a"), true)
 		t.Assert(gstr.ContainsI("abc", "A"), true)
 		t.Assert(gstr.ContainsI("abc", "Ab"), true)
@@ -434,7 +434,7 @@ func Test_ContainsI(t *testing.T) {
 }
 
 func Test_ContainsAny(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gstr.ContainsAny("abc", "a"), true)
 		t.Assert(gstr.ContainsAny("abc", "cd"), true)
 		t.Assert(gstr.ContainsAny("abc", "de"), false)
@@ -443,7 +443,7 @@ func Test_ContainsAny(t *testing.T) {
 }
 
 func Test_SearchArray(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a := g.SliceStr{"a", "b", "c"}
 		t.AssertEQ(gstr.SearchArray(a, "a"), 0)
 		t.AssertEQ(gstr.SearchArray(a, "b"), 1)
@@ -453,7 +453,7 @@ func Test_SearchArray(t *testing.T) {
 }
 
 func Test_InArray(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a := g.SliceStr{"a", "b", "c"}
 		t.AssertEQ(gstr.InArray(a, "a"), true)
 		t.AssertEQ(gstr.InArray(a, "b"), true)

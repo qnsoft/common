@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/util/gvalid"
+	"github.com/qnsoft/common/util/qn_valid"
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Params_Parse(t *testing.T) {
@@ -41,7 +41,7 @@ func Test_Params_Parse(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.PostContent("/parse", `{"id":1,"name":"john","map":{"id":1,"score":100}}`), `1100`)
@@ -79,7 +79,7 @@ func Test_Params_Parse_Attr_Pointer(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.PostContent("/parse1", `{"id":1,"name":"john"}`), `1john`)
@@ -113,7 +113,7 @@ func Test_Params_Parse_Attr_Pointer(t *testing.T) {
 //	defer s.Shutdown()
 //
 //	time.Sleep(100 * time.Millisecond)
-//	gtest.C(t, func(t *gtest.T) {
+//	qn_test.C(t, func(t *qn_test.T) {
 //		client := ghttp.NewClient()
 //		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 //		t.Assert(client.PostContent("/parse", `{"id":1,"name":"john","scores":[[1,2,3]]}`), `1100`)
@@ -156,7 +156,7 @@ func Test_Params_Struct(t *testing.T) {
 			if err := r.GetStruct(user); err != nil {
 				r.Response.WriteExit(err)
 			}
-			if err := gvalid.CheckStruct(user, nil); err != nil {
+			if err := qn_valid.CheckStruct(user, nil); err != nil {
 				r.Response.WriteExit(err)
 			}
 		}
@@ -176,7 +176,7 @@ func Test_Params_Struct(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/struct1", `id=1&name=john&password1=123&password2=456`), `1john123456`)
@@ -214,7 +214,7 @@ func Test_Params_Structs(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.PostContent(

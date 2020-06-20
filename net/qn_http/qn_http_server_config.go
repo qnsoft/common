@@ -14,16 +14,16 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/internal/intlog"
-	gutil "github.com/qnsoft/common/util/qn_util"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/os/gsession"
 
 	"github.com/qnsoft/common/os/gview"
 
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 const (
@@ -276,7 +276,7 @@ func Config() ServerConfig {
 // default configuration object.
 func ConfigFromMap(m map[string]interface{}) (ServerConfig, error) {
 	config := Config()
-	if err := gconv.Struct(m, &config); err != nil {
+	if err := qn_conv.Struct(m, &config); err != nil {
 		return config, err
 	}
 	return config, nil
@@ -287,20 +287,20 @@ func (s *Server) SetConfigWithMap(m map[string]interface{}) error {
 	// The m now is a shallow copy of m.
 	// Any changes to m does not affect the original one.
 	// A little tricky, isn't it?
-	m = gutil.MapCopy(m)
+	m = qn_util.MapCopy(m)
 	// Allow setting the size configuration items using string size like:
 	// 1m, 100mb, 512kb, etc.
-	if k, v := gutil.MapPossibleItemByKey(m, "MaxHeaderBytes"); k != "" {
-		m[k] = gfile.StrToSize(gconv.String(v))
+	if k, v := qn_util.MapPossibleItemByKey(m, "MaxHeaderBytes"); k != "" {
+		m[k] = qn_file.StrToSize(qn_conv.String(v))
 	}
-	if k, v := gutil.MapPossibleItemByKey(m, "ClientMaxBodySize"); k != "" {
-		m[k] = gfile.StrToSize(gconv.String(v))
+	if k, v := qn_util.MapPossibleItemByKey(m, "ClientMaxBodySize"); k != "" {
+		m[k] = qn_file.StrToSize(qn_conv.String(v))
 	}
-	if k, v := gutil.MapPossibleItemByKey(m, "FormParsingMemory"); k != "" {
-		m[k] = gfile.StrToSize(gconv.String(v))
+	if k, v := qn_util.MapPossibleItemByKey(m, "FormParsingMemory"); k != "" {
+		m[k] = qn_file.StrToSize(qn_conv.String(v))
 	}
 	// Update the current configuration object.
-	if err := gconv.Struct(m, &s.config); err != nil {
+	if err := qn_conv.Struct(m, &s.config); err != nil {
 		return err
 	}
 	return s.SetConfig(s.config)
@@ -371,21 +371,21 @@ func (s *Server) SetHTTPSPort(port ...int) {
 // EnableHTTPS enables HTTPS with given certification and key files for the server.
 // The optional parameter <tlsConfig> specifies custom TLS configuration.
 func (s *Server) EnableHTTPS(certFile, keyFile string, tlsConfig ...*tls.Config) {
-	certFileRealPath := gfile.RealPath(certFile)
+	certFileRealPath := qn_file.RealPath(certFile)
 	if certFileRealPath == "" {
-		certFileRealPath = gfile.RealPath(gfile.Pwd() + gfile.Separator + certFile)
+		certFileRealPath = qn_file.RealPath(qn_file.Pwd() + qn_file.Separator + certFile)
 		if certFileRealPath == "" {
-			certFileRealPath = gfile.RealPath(gfile.MainPkgPath() + gfile.Separator + certFile)
+			certFileRealPath = qn_file.RealPath(qn_file.MainPkgPath() + qn_file.Separator + certFile)
 		}
 	}
 	if certFileRealPath == "" {
 		s.Logger().Fatal(fmt.Sprintf(`[ghttp] EnableHTTPS failed: certFile "%s" does not exist`, certFile))
 	}
-	keyFileRealPath := gfile.RealPath(keyFile)
+	keyFileRealPath := qn_file.RealPath(keyFile)
 	if keyFileRealPath == "" {
-		keyFileRealPath = gfile.RealPath(gfile.Pwd() + gfile.Separator + keyFile)
+		keyFileRealPath = qn_file.RealPath(qn_file.Pwd() + qn_file.Separator + keyFile)
 		if keyFileRealPath == "" {
-			keyFileRealPath = gfile.RealPath(gfile.MainPkgPath() + gfile.Separator + keyFile)
+			keyFileRealPath = qn_file.RealPath(qn_file.MainPkgPath() + qn_file.Separator + keyFile)
 		}
 	}
 	if keyFileRealPath == "" {

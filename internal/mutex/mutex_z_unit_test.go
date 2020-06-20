@@ -12,11 +12,11 @@ import (
 
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/internal/mutex"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func TestMutexIsSafe(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		lock := mutex.New()
 		t.Assert(lock.IsSafe(), false)
 
@@ -38,7 +38,7 @@ func TestMutexIsSafe(t *testing.T) {
 }
 
 func TestSafeMutex(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		safeLock := mutex.New(true)
 		array := qn_array.New(true)
 
@@ -69,7 +69,7 @@ func TestSafeMutex(t *testing.T) {
 }
 
 func TestUnsafeMutex(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		unsafeLock := mutex.New()
 		array := qn_array.New(true)
 

@@ -11,14 +11,14 @@ import (
 	"math"
 	"time"
 
-	"github.com/gogf/gf/os/gtimer"
+	"github.com/qnsoft/common/os/qn_timer"
 )
 
 const (
-	STATUS_READY   = gtimer.STATUS_READY
-	STATUS_RUNNING = gtimer.STATUS_RUNNING
-	STATUS_STOPPED = gtimer.STATUS_STOPPED
-	STATUS_CLOSED  = gtimer.STATUS_CLOSED
+	STATUS_READY   = qn_timer.STATUS_READY
+	STATUS_RUNNING = qn_timer.STATUS_RUNNING
+	STATUS_STOPPED = qn_timer.STATUS_STOPPED
+	STATUS_CLOSED  = qn_timer.STATUS_CLOSED
 
 	gDEFAULT_TIMES = math.MaxInt32
 )

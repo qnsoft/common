@@ -11,11 +11,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gogf/gf/os/gtimer"
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_timer"
 )
 
 type Cron struct {
@@ -108,7 +108,7 @@ func (c *Cron) AddTimes(pattern string, times int, job func(), name ...string) (
 
 // DelayAdd adds a timed task after <delay> time.
 func (c *Cron) DelayAdd(delay time.Duration, pattern string, job func(), name ...string) {
-	gtimer.AddOnce(delay, func() {
+	qn_timer.AddOnce(delay, func() {
 		if _, err := c.Add(pattern, job, name...); err != nil {
 			panic(err)
 		}
@@ -117,7 +117,7 @@ func (c *Cron) DelayAdd(delay time.Duration, pattern string, job func(), name ..
 
 // DelayAddSingleton adds a singleton timed task after <delay> time.
 func (c *Cron) DelayAddSingleton(delay time.Duration, pattern string, job func(), name ...string) {
-	gtimer.AddOnce(delay, func() {
+	qn_timer.AddOnce(delay, func() {
 		if _, err := c.AddSingleton(pattern, job, name...); err != nil {
 			panic(err)
 		}
@@ -127,7 +127,7 @@ func (c *Cron) DelayAddSingleton(delay time.Duration, pattern string, job func()
 // DelayAddOnce adds a timed task after <delay> time.
 // This timed task can be run only once.
 func (c *Cron) DelayAddOnce(delay time.Duration, pattern string, job func(), name ...string) {
-	gtimer.AddOnce(delay, func() {
+	qn_timer.AddOnce(delay, func() {
 		if _, err := c.AddOnce(pattern, job, name...); err != nil {
 			panic(err)
 		}
@@ -137,7 +137,7 @@ func (c *Cron) DelayAddOnce(delay time.Duration, pattern string, job func(), nam
 // DelayAddTimes adds a timed task after <delay> time.
 // This timed task can be run specified times.
 func (c *Cron) DelayAddTimes(delay time.Duration, pattern string, times int, job func(), name ...string) {
-	gtimer.AddOnce(delay, func() {
+	qn_timer.AddOnce(delay, func() {
 		if _, err := c.AddTimes(pattern, times, job, name...); err != nil {
 			panic(err)
 		}

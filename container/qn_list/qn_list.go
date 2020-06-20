@@ -13,7 +13,7 @@ import (
 	"container/list"
 
 	"github.com/qnsoft/common/internal/json"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/internal/rwmutex"
 )
@@ -493,7 +493,7 @@ func (l *List) Join(glue string) string {
 	length := l.list.Len()
 	if length > 0 {
 		for i, e := 0, l.list.Front(); i < length; i, e = i+1, e.Next() {
-			buffer.WriteString(gconv.String(e.Value))
+			buffer.WriteString(qn_conv.String(e.Value))
 			if i != length-1 {
 				buffer.WriteString(glue)
 			}
@@ -537,9 +537,9 @@ func (l *List) UnmarshalValue(value interface{}) (err error) {
 	var array []interface{}
 	switch value.(type) {
 	case string, []byte:
-		err = json.Unmarshal(gconv.Bytes(value), &array)
+		err = json.Unmarshal(qn_conv.Bytes(value), &array)
 	default:
-		array = gconv.SliceAny(value)
+		array = qn_conv.SliceAny(value)
 	}
 	l.PushBacks(array)
 	return err

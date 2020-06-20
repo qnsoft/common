@@ -12,14 +12,14 @@ import (
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_StrStrMap_Var(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.StrStrMap
 		m.Set("a", "a")
 
@@ -51,7 +51,7 @@ func Test_StrStrMap_Var(t *testing.T) {
 }
 
 func Test_StrStrMap_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewStrStrMap()
 		m.Set("a", "a")
 
@@ -86,7 +86,7 @@ func Test_StrStrMap_Basic(t *testing.T) {
 }
 
 func Test_StrStrMap_Set_Fun(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewStrStrMap()
 
 		m.GetOrSetFunc("a", getStr)
@@ -102,7 +102,7 @@ func Test_StrStrMap_Set_Fun(t *testing.T) {
 }
 
 func Test_StrStrMap_Batch(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewStrStrMap()
 
 		m.Sets(map[string]string{"a": "a", "b": "b", "c": "c"})
@@ -112,7 +112,7 @@ func Test_StrStrMap_Batch(t *testing.T) {
 	})
 }
 func Test_StrStrMap_Iterator(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[string]string{"a": "a", "b": "b"}
 		m := gmap.NewStrStrMapFrom(expect)
 		m.Iterator(func(k string, v string) bool {
@@ -136,7 +136,7 @@ func Test_StrStrMap_Iterator(t *testing.T) {
 }
 
 func Test_StrStrMap_Lock(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[string]string{"a": "a", "b": "b"}
 
 		m := gmap.NewStrStrMapFrom(expect)
@@ -149,7 +149,7 @@ func Test_StrStrMap_Lock(t *testing.T) {
 	})
 }
 func Test_StrStrMap_Clone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//clone 方法是深克隆
 		m := gmap.NewStrStrMapFrom(map[string]string{"a": "a", "b": "b", "c": "c"})
 
@@ -164,7 +164,7 @@ func Test_StrStrMap_Clone(t *testing.T) {
 	})
 }
 func Test_StrStrMap_Merge(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := gmap.NewStrStrMap()
 		m2 := gmap.NewStrStrMap()
 		m1.Set("a", "a")
@@ -175,7 +175,7 @@ func Test_StrStrMap_Merge(t *testing.T) {
 }
 
 func Test_StrStrMap_Map(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewStrStrMap()
 		m.Set("1", "1")
 		m.Set("2", "2")
@@ -192,7 +192,7 @@ func Test_StrStrMap_Map(t *testing.T) {
 }
 
 func Test_StrStrMap_MapCopy(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewStrStrMap()
 		m.Set("1", "1")
 		m.Set("2", "2")
@@ -209,7 +209,7 @@ func Test_StrStrMap_MapCopy(t *testing.T) {
 }
 
 func Test_StrStrMap_FilterEmpty(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewStrStrMap()
 		m.Set("1", "")
 		m.Set("2", "2")
@@ -224,7 +224,7 @@ func Test_StrStrMap_FilterEmpty(t *testing.T) {
 
 func Test_StrStrMap_Json(t *testing.T) {
 	// Marshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapStrStr{
 			"k1": "v1",
 			"k2": "v2",
@@ -236,7 +236,7 @@ func Test_StrStrMap_Json(t *testing.T) {
 		t.Assert(b1, b2)
 	})
 	// Unmarshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapStrStr{
 			"k1": "v1",
 			"k2": "v2",
@@ -250,7 +250,7 @@ func Test_StrStrMap_Json(t *testing.T) {
 		t.Assert(m.Get("k1"), data["k1"])
 		t.Assert(m.Get("k2"), data["k2"])
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapStrStr{
 			"k1": "v1",
 			"k2": "v2",
@@ -267,7 +267,7 @@ func Test_StrStrMap_Json(t *testing.T) {
 }
 
 func Test_StrStrMap_Pop(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewStrStrMapFrom(g.MapStrStr{
 			"k1": "v1",
 			"k2": "v2",
@@ -289,7 +289,7 @@ func Test_StrStrMap_Pop(t *testing.T) {
 }
 
 func Test_StrStrMap_Pops(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewStrStrMapFrom(g.MapStrStr{
 			"k1": "v1",
 			"k2": "v2",
@@ -325,9 +325,9 @@ func TestStrStrMap_UnmarshalValue(t *testing.T) {
 		Map  *gmap.StrStrMap
 	}
 	// JSON
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"map":  []byte(`{"k1":"v1","k2":"v2"}`),
 		}, &v)
@@ -338,9 +338,9 @@ func TestStrStrMap_UnmarshalValue(t *testing.T) {
 		t.Assert(v.Map.Get("k2"), "v2")
 	})
 	// Map
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"map": g.Map{
 				"k1": "v1",

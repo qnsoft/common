@@ -6,13 +6,13 @@
 
 package qn_view
 
-import gconv "github.com/qnsoft/common/util/qn_conv"
+import qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 // i18nTranslate translate the content with i18n feature.
 func (view *View) i18nTranslate(content string, params Params) string {
 	if view.config.I18nManager != nil {
 		if v, ok := params["I18nLanguage"]; ok {
-			language := gconv.String(v)
+			language := qn_conv.String(v)
 			if language != "" {
 				return view.config.I18nManager.T(content, language)
 			}

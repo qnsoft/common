@@ -9,8 +9,8 @@ package qn_conv_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/util/gconv"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 type stringStruct1 struct {
@@ -26,40 +26,40 @@ func (s *stringStruct1) String() string {
 }
 
 func Test_String(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		t.AssertEQ(gconv.String(int(123)), "123")
-		t.AssertEQ(gconv.String(int(-123)), "-123")
-		t.AssertEQ(gconv.String(int8(123)), "123")
-		t.AssertEQ(gconv.String(int8(-123)), "-123")
-		t.AssertEQ(gconv.String(int16(123)), "123")
-		t.AssertEQ(gconv.String(int16(-123)), "-123")
-		t.AssertEQ(gconv.String(int32(123)), "123")
-		t.AssertEQ(gconv.String(int32(-123)), "-123")
-		t.AssertEQ(gconv.String(int64(123)), "123")
-		t.AssertEQ(gconv.String(int64(-123)), "-123")
-		t.AssertEQ(gconv.String(int64(1552578474888)), "1552578474888")
-		t.AssertEQ(gconv.String(int64(-1552578474888)), "-1552578474888")
+	qn_test.C(t, func(t *qn_test.T) {
+		t.AssertEQ(qn_conv.String(int(123)), "123")
+		t.AssertEQ(qn_conv.String(int(-123)), "-123")
+		t.AssertEQ(qn_conv.String(int8(123)), "123")
+		t.AssertEQ(qn_conv.String(int8(-123)), "-123")
+		t.AssertEQ(qn_conv.String(int16(123)), "123")
+		t.AssertEQ(qn_conv.String(int16(-123)), "-123")
+		t.AssertEQ(qn_conv.String(int32(123)), "123")
+		t.AssertEQ(qn_conv.String(int32(-123)), "-123")
+		t.AssertEQ(qn_conv.String(int64(123)), "123")
+		t.AssertEQ(qn_conv.String(int64(-123)), "-123")
+		t.AssertEQ(qn_conv.String(int64(1552578474888)), "1552578474888")
+		t.AssertEQ(qn_conv.String(int64(-1552578474888)), "-1552578474888")
 
-		t.AssertEQ(gconv.String(uint(123)), "123")
-		t.AssertEQ(gconv.String(uint8(123)), "123")
-		t.AssertEQ(gconv.String(uint16(123)), "123")
-		t.AssertEQ(gconv.String(uint32(123)), "123")
-		t.AssertEQ(gconv.String(uint64(155257847488898765)), "155257847488898765")
+		t.AssertEQ(qn_conv.String(uint(123)), "123")
+		t.AssertEQ(qn_conv.String(uint8(123)), "123")
+		t.AssertEQ(qn_conv.String(uint16(123)), "123")
+		t.AssertEQ(qn_conv.String(uint32(123)), "123")
+		t.AssertEQ(qn_conv.String(uint64(155257847488898765)), "155257847488898765")
 
-		t.AssertEQ(gconv.String(float32(123.456)), "123.456")
-		t.AssertEQ(gconv.String(float32(-123.456)), "-123.456")
-		t.AssertEQ(gconv.String(float64(1552578474888.456)), "1552578474888.456")
-		t.AssertEQ(gconv.String(float64(-1552578474888.456)), "-1552578474888.456")
+		t.AssertEQ(qn_conv.String(float32(123.456)), "123.456")
+		t.AssertEQ(qn_conv.String(float32(-123.456)), "-123.456")
+		t.AssertEQ(qn_conv.String(float64(1552578474888.456)), "1552578474888.456")
+		t.AssertEQ(qn_conv.String(float64(-1552578474888.456)), "-1552578474888.456")
 
-		t.AssertEQ(gconv.String(true), "true")
-		t.AssertEQ(gconv.String(false), "false")
+		t.AssertEQ(qn_conv.String(true), "true")
+		t.AssertEQ(qn_conv.String(false), "false")
 
-		t.AssertEQ(gconv.String([]byte("bytes")), "bytes")
+		t.AssertEQ(qn_conv.String([]byte("bytes")), "bytes")
 
-		t.AssertEQ(gconv.String(stringStruct1{"john"}), `{"Name":"john"}`)
-		t.AssertEQ(gconv.String(&stringStruct1{"john"}), "john")
+		t.AssertEQ(qn_conv.String(stringStruct1{"john"}), `{"Name":"john"}`)
+		t.AssertEQ(qn_conv.String(&stringStruct1{"john"}), "john")
 
-		t.AssertEQ(gconv.String(stringStruct2{"john"}), `{"Name":"john"}`)
-		t.AssertEQ(gconv.String(&stringStruct2{"john"}), `{"Name":"john"}`)
+		t.AssertEQ(qn_conv.String(stringStruct2{"john"}), `{"Name":"john"}`)
+		t.AssertEQ(qn_conv.String(&stringStruct2{"john"}), `{"Name":"john"}`)
 	})
 }

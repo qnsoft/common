@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"sync/atomic"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Bool is a struct for concurrent-safe operation for type bool.
@@ -88,12 +88,12 @@ func (v *Bool) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
 func (v *Bool) UnmarshalJSON(b []byte) error {
-	v.Set(gconv.Bool(bytes.Trim(b, `"`)))
+	v.Set(qn_conv.Bool(bytes.Trim(b, `"`)))
 	return nil
 }
 
 // UnmarshalValue is an interface implement which sets any type of value for <v>.
 func (v *Bool) UnmarshalValue(value interface{}) error {
-	v.Set(gconv.Bool(value))
+	v.Set(qn_conv.Bool(value))
 	return nil
 }

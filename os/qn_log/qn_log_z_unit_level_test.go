@@ -8,13 +8,14 @@ package qn_log
 
 import (
 	"bytes"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/text/gstr"
 	"testing"
+
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_LevelPrefix(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		t.Assert(l.GetLevelPrefix(LEVEL_DEBU), defaultLevelPrefixes[LEVEL_DEBU])
 		t.Assert(l.GetLevelPrefix(LEVEL_INFO), defaultLevelPrefixes[LEVEL_INFO])
@@ -34,7 +35,7 @@ func Test_LevelPrefix(t *testing.T) {
 		t.Assert(l.GetLevelPrefix(LEVEL_ERRO), defaultLevelPrefixes[LEVEL_ERRO])
 		t.Assert(l.GetLevelPrefix(LEVEL_CRIT), "critical")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		buffer := bytes.NewBuffer(nil)
 		l := New()
 		l.SetWriter(buffer)

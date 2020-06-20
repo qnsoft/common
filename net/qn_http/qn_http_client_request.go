@@ -20,13 +20,13 @@ import (
 
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/internal/utils"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/encoding/gparser"
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/encoding/qn_parser"
 	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/text/qn_regex"
 
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 // Get send GET request and returns the response object.
@@ -101,23 +101,23 @@ func (c *Client) DoRequest(method, url string, data ...interface{}) (resp *Clien
 		case "application/json":
 			switch data[0].(type) {
 			case string, []byte:
-				param = gconv.String(data[0])
+				param = qn_conv.String(data[0])
 			default:
 				if b, err := json.Marshal(data[0]); err != nil {
 					return nil, err
 				} else {
-					param = gconv.UnsafeBytesToStr(b)
+					param = qn_conv.UnsafeBytesToStr(b)
 				}
 			}
 		case "application/xml":
 			switch data[0].(type) {
 			case string, []byte:
-				param = gconv.String(data[0])
+				param = qn_conv.String(data[0])
 			default:
-				if b, err := gparser.VarToXml(data[0]); err != nil {
+				if b, err := qn_parser.VarToXml(data[0]); err != nil {
 					return nil, err
 				} else {
-					param = gconv.UnsafeBytesToStr(b)
+					param = qn_conv.UnsafeBytesToStr(b)
 				}
 			}
 		default:
@@ -133,7 +133,7 @@ func (c *Client) DoRequest(method, url string, data ...interface{}) (resp *Clien
 			array := strings.Split(item, "=")
 			if len(array[1]) > 6 && strings.Compare(array[1][0:6], "@file:") == 0 {
 				path := array[1][6:]
-				if !gfile.Exists(path) {
+				if !qn_file.Exists(path) {
 					return nil, errors.New(fmt.Sprintf(`"%s" does not exist`, path))
 				}
 				if file, err := writer.CreateFormFile(array[0], path); err == nil {
@@ -179,7 +179,7 @@ func (c *Client) DoRequest(method, url string, data ...interface{}) (resp *Clien
 				if (paramBytes[0] == '[' || paramBytes[0] == '{') && json.Valid(paramBytes) {
 					// Auto detecting and setting the post content format: JSON.
 					req.Header.Set("Content-Type", "application/json")
-				} else if gregex.IsMatchString(`^[\w\[\]]+=.+`, param) {
+				} else if qn_regex.IsMatchString(`^[\w\[\]]+=.+`, param) {
 					// If the parameters passed like "name=value", it then uses form type.
 					req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 				}

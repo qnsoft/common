@@ -16,10 +16,10 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/gogf/gf/util/grand"
 	"github.com/qnsoft/common/internal/utils"
+	"github.com/qnsoft/common/util/qn_rand"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Replace returns a copy of the string <origin>
@@ -476,7 +476,7 @@ func Str(haystack string, needle string) string {
 func Shuffle(str string) string {
 	runes := []rune(str)
 	s := make([]rune, len(runes))
-	for i, v := range grand.Perm(len(runes)) {
+	for i, v := range qn_rand.Perm(len(runes)) {
 		s[i] = runes[v]
 	}
 	return string(s)
@@ -526,7 +526,7 @@ func Join(array []string, sep string) string {
 //
 // The parameter <array> can be any type of slice, which be converted to string array.
 func JoinAny(array interface{}, sep string) string {
-	return strings.Join(gconv.Strings(array), sep)
+	return strings.Join(qn_conv.Strings(array), sep)
 }
 
 // Explode splits string <str> by a string <delimiter>, to an array.

@@ -10,13 +10,13 @@ import (
 	"container/list"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/test/gtest"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/test/qn_test"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 	"testing"
 )
 
-func checkListLen(t *gtest.T, l *List, len int) bool {
+func checkListLen(t *qn_test.T, l *List, len int) bool {
 	if n := l.Len(); n != len {
 		t.Errorf("l.Len() = %d, want %d", n, len)
 		return false
@@ -24,7 +24,7 @@ func checkListLen(t *gtest.T, l *List, len int) bool {
 	return true
 }
 
-func checkListPointers(t *gtest.T, l *List, es []*Element) {
+func checkListPointers(t *qn_test.T, l *List, es []*Element) {
 	if !checkListLen(t, l, len(es)) {
 		return
 	}
@@ -117,7 +117,7 @@ func TestBasic(t *testing.T) {
 }
 
 func TestList(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		checkListPointers(t, l, []*Element{})
 
@@ -199,7 +199,7 @@ func TestList(t *testing.T) {
 	})
 }
 
-func checkList(t *gtest.T, l *List, es []interface{}) {
+func checkList(t *qn_test.T, l *List, es []interface{}) {
 	if !checkListLen(t, l, len(es)) {
 		return
 	}
@@ -232,7 +232,7 @@ func checkList(t *gtest.T, l *List, es []interface{}) {
 }
 
 func TestExtending(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l1 := New()
 		l2 := New()
 
@@ -279,7 +279,7 @@ func TestExtending(t *testing.T) {
 }
 
 func TestRemove(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		e1 := l.PushBack(1)
 		e2 := l.PushBack(2)
@@ -332,7 +332,7 @@ func TestIssue6349(t *testing.T) {
 }
 
 func TestMove(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		e1 := l.PushBack(1)
 		e2 := l.PushBack(2)
@@ -369,7 +369,7 @@ func TestMove(t *testing.T) {
 
 // Test PushFront, PushBack, PushFrontList, PushBackList with uninitialized List
 func TestZeroList(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var l1 = New()
 		l1.PushFront(1)
 		checkList(t, l1, []interface{}{1})
@@ -390,7 +390,7 @@ func TestZeroList(t *testing.T) {
 
 // Test that a list l is not modified when calling InsertBefore with a mark that is not an element of l.
 func TestInsertBeforeUnknownMark(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		l.PushBack(1)
 		l.PushBack(2)
@@ -402,7 +402,7 @@ func TestInsertBeforeUnknownMark(t *testing.T) {
 
 // Test that a list l is not modified when calling InsertAfter with a mark that is not an element of l.
 func TestInsertAfterUnknownMark(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		l.PushBack(1)
 		l.PushBack(2)
@@ -414,7 +414,7 @@ func TestInsertAfterUnknownMark(t *testing.T) {
 
 // Test that a list l is not modified when calling MoveAfter or MoveBefore with a mark that is not an element of l.
 func TestMoveUnknownMark(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l1 := New()
 		e1 := l1.PushBack(1)
 
@@ -432,7 +432,7 @@ func TestMoveUnknownMark(t *testing.T) {
 }
 
 func TestList_RemoveAll(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		l.PushBack(1)
 		l.RemoveAll()
@@ -443,7 +443,7 @@ func TestList_RemoveAll(t *testing.T) {
 }
 
 func TestList_PushFronts(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2}
 		l.PushFronts(a1)
@@ -455,7 +455,7 @@ func TestList_PushFronts(t *testing.T) {
 }
 
 func TestList_PushBacks(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2}
 		l.PushBacks(a1)
@@ -467,7 +467,7 @@ func TestList_PushBacks(t *testing.T) {
 }
 
 func TestList_PopBacks(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		a2 := []interface{}{"a", "c", "b", "e"}
@@ -482,7 +482,7 @@ func TestList_PopBacks(t *testing.T) {
 }
 
 func TestList_PopFronts(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
@@ -493,7 +493,7 @@ func TestList_PopFronts(t *testing.T) {
 }
 
 func TestList_PopBackAll(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
@@ -504,7 +504,7 @@ func TestList_PopBackAll(t *testing.T) {
 }
 
 func TestList_PopFrontAll(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
@@ -515,7 +515,7 @@ func TestList_PopFrontAll(t *testing.T) {
 }
 
 func TestList_FrontAll(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
@@ -526,7 +526,7 @@ func TestList_FrontAll(t *testing.T) {
 }
 
 func TestList_BackAll(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
@@ -537,13 +537,13 @@ func TestList_BackAll(t *testing.T) {
 }
 
 func TestList_FrontValue(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		l2 := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
 		i1 := l.FrontValue()
-		t.Assert(gconv.Int(i1), 4)
+		t.Assert(qn_conv.Int(i1), 4)
 		t.Assert(l.Len(), 4)
 
 		i1 = l2.FrontValue()
@@ -552,13 +552,13 @@ func TestList_FrontValue(t *testing.T) {
 }
 
 func TestList_BackValue(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		l2 := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
 		i1 := l.BackValue()
-		t.Assert(gconv.Int(i1), 1)
+		t.Assert(qn_conv.Int(i1), 1)
 		t.Assert(l.Len(), 4)
 
 		i1 = l2.FrontValue()
@@ -567,7 +567,7 @@ func TestList_BackValue(t *testing.T) {
 }
 
 func TestList_Back(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
@@ -578,7 +578,7 @@ func TestList_Back(t *testing.T) {
 }
 
 func TestList_Size(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
@@ -589,7 +589,7 @@ func TestList_Size(t *testing.T) {
 }
 
 func TestList_Removes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
@@ -605,7 +605,7 @@ func TestList_Removes(t *testing.T) {
 }
 
 func TestList_Pop(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := NewFrom([]interface{}{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 		t.Assert(l.PopBack(), 9)
@@ -616,7 +616,7 @@ func TestList_Pop(t *testing.T) {
 }
 
 func TestList_Clear(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
@@ -626,13 +626,13 @@ func TestList_Clear(t *testing.T) {
 }
 
 func TestList_IteratorAsc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 5, 6, 3, 4}
 		l.PushFronts(a1)
 		e1 := l.Back()
 		fun1 := func(e *Element) bool {
-			if gconv.Int(e1.Value) > 2 {
+			if qn_conv.Int(e1.Value) > 2 {
 				return true
 			}
 			return false
@@ -644,13 +644,13 @@ func TestList_IteratorAsc(t *testing.T) {
 }
 
 func TestList_IteratorDesc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{1, 2, 3, 4}
 		l.PushFronts(a1)
 		e1 := l.Back()
 		fun1 := func(e *Element) bool {
-			if gconv.Int(e1.Value) > 6 {
+			if qn_conv.Int(e1.Value) > 6 {
 				return true
 			}
 			return false
@@ -662,13 +662,13 @@ func TestList_IteratorDesc(t *testing.T) {
 }
 
 func TestList_Iterator(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := New()
 		a1 := []interface{}{"a", "b", "c", "d", "e"}
 		l.PushFronts(a1)
 		e1 := l.Back()
 		fun1 := func(e *Element) bool {
-			if gconv.String(e1.Value) > "c" {
+			if qn_conv.String(e1.Value) > "c" {
 				return true
 			}
 			return false
@@ -680,7 +680,7 @@ func TestList_Iterator(t *testing.T) {
 }
 
 func TestList_Join(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := NewFrom([]interface{}{1, 2, "a", `"b"`, `\c`})
 		t.Assert(l.Join(","), `1,2,a,"b",\c`)
 		t.Assert(l.Join("."), `1.2.a."b".\c`)
@@ -688,7 +688,7 @@ func TestList_Join(t *testing.T) {
 }
 
 func TestList_String(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		l := NewFrom([]interface{}{1, 2, "a", `"b"`, `\c`})
 		t.Assert(l.String(), `[1,2,a,"b",\c]`)
 	})
@@ -696,7 +696,7 @@ func TestList_String(t *testing.T) {
 
 func TestList_Json(t *testing.T) {
 	// Marshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a := []interface{}{"a", "b", "c"}
 		l := New()
 		l.PushBacks(a)
@@ -706,7 +706,7 @@ func TestList_Json(t *testing.T) {
 		t.Assert(b1, b2)
 	})
 	// Unmarshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a := []interface{}{"a", "b", "c"}
 		l := New()
 		b, err := json.Marshal(a)
@@ -716,7 +716,7 @@ func TestList_Json(t *testing.T) {
 		t.Assert(err, nil)
 		t.Assert(l.FrontAll(), a)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var l List
 		a := []interface{}{"a", "b", "c"}
 		b, err := json.Marshal(a)
@@ -734,9 +734,9 @@ func TestList_UnmarshalValue(t *testing.T) {
 		List *List
 	}
 	// JSON
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var tlist *TList
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"list": []byte(`[1,2,3]`),
 		}, &tlist)
@@ -745,9 +745,9 @@ func TestList_UnmarshalValue(t *testing.T) {
 		t.Assert(tlist.List.FrontAll(), []interface{}{1, 2, 3})
 	})
 	// Map
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var tlist *TList
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"list": []interface{}{1, 2, 3},
 		}, &tlist)

@@ -8,7 +8,7 @@ package qn_http
 
 import (
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // GetRequest retrieves and returns the parameter named <key> passed from client and
@@ -239,7 +239,7 @@ func (r *Request) GetRequestMapStrStr(kvMap ...map[string]interface{}) map[strin
 	if len(requestMap) > 0 {
 		m := make(map[string]string, len(requestMap))
 		for k, v := range requestMap {
-			m[k] = gconv.String(v)
+			m[k] = qn_conv.String(v)
 		}
 		return m
 	}
@@ -267,7 +267,7 @@ func (r *Request) GetRequestMapStrVar(kvMap ...map[string]interface{}) map[strin
 // the parameter <pointer> is a pointer to the struct object.
 // The optional parameter <mapping> is used to specify the key to attribute mapping.
 func (r *Request) GetRequestStruct(pointer interface{}, mapping ...map[string]string) error {
-	return gconv.StructDeep(r.GetRequestMap(), pointer, mapping...)
+	return qn_conv.StructDeep(r.GetRequestMap(), pointer, mapping...)
 }
 
 // GetRequestToStruct is alias of GetRequestStruct. See GetRequestStruct.

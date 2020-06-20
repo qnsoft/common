@@ -11,12 +11,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_MTime(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 
 		var (
 			file1   = "/testfile_t1.txt"
@@ -29,13 +29,13 @@ func Test_MTime(t *testing.T) {
 		fileobj, err = os.Stat(testpath() + file1)
 		t.Assert(err, nil)
 
-		t.Assert(gfile.MTime(testpath()+file1), fileobj.ModTime())
-		t.Assert(gfile.MTime(""), "")
+		t.Assert(qn_file.MTime(testpath()+file1), fileobj.ModTime())
+		t.Assert(qn_file.MTime(""), "")
 	})
 }
 
 func Test_MTimeMillisecond(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			file1   = "/testfile_t1.txt"
 			err     error
@@ -49,9 +49,9 @@ func Test_MTimeMillisecond(t *testing.T) {
 
 		time.Sleep(time.Millisecond * 100)
 		t.AssertGE(
-			gfile.MTimestampMilli(testpath()+file1),
+			qn_file.MTimestampMilli(testpath()+file1),
 			fileobj.ModTime().UnixNano()/1000000,
 		)
-		t.Assert(gfile.MTimestampMilli(""), -1)
+		t.Assert(qn_file.MTimestampMilli(""), -1)
 	})
 }

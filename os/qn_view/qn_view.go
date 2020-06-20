@@ -17,8 +17,8 @@ import (
 
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/internal/cmdenv"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/glog"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 // View object for template engine.
@@ -72,7 +72,7 @@ func New(path ...string) *View {
 	} else {
 		// Customized dir path from env/cmd.
 		if envPath := cmdenv.Get("gf.gview.path").String(); envPath != "" {
-			if gfile.Exists(envPath) {
+			if qn_file.Exists(envPath) {
 				if err := view.SetPath(envPath); err != nil {
 					intlog.Error(err)
 				}
@@ -83,17 +83,17 @@ func New(path ...string) *View {
 			}
 		} else {
 			// Dir path of working dir.
-			if err := view.SetPath(gfile.Pwd()); err != nil {
+			if err := view.SetPath(qn_file.Pwd()); err != nil {
 				intlog.Error(err)
 			}
 			// Dir path of binary.
-			if selfPath := gfile.SelfDir(); selfPath != "" && gfile.Exists(selfPath) {
+			if selfPath := qn_file.SelfDir(); selfPath != "" && qn_file.Exists(selfPath) {
 				if err := view.AddPath(selfPath); err != nil {
 					intlog.Error(err)
 				}
 			}
 			// Dir path of main package.
-			if mainPath := gfile.MainPkgPath(); mainPath != "" && gfile.Exists(mainPath) {
+			if mainPath := qn_file.MainPkgPath(); mainPath != "" && qn_file.Exists(mainPath) {
 				if err := view.AddPath(mainPath); err != nil {
 					intlog.Error(err)
 				}

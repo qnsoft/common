@@ -10,9 +10,9 @@ import (
 	"net/http"
 	"reflect"
 
-	"github.com/qnsoft/common/errors/gerror"
+	"github.com/qnsoft/common/errors/qn_error"
 
-	gutil "github.com/qnsoft/common/util/qn_util"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 )
 
 // Middleware is the plugin for request workflow management.
@@ -45,7 +45,7 @@ func (m *Middleware) Next() {
 		// Router values switching.
 		m.request.routerMap = item.values
 
-		gutil.TryCatch(func() {
+		qn_util.TryCatch(func() {
 			// Execute bound middleware array of the item if it's not empty.
 			if m.handlerMDIndex < len(item.handler.middleware) {
 				md := item.handler.middleware[m.handlerMDIndex]
@@ -122,14 +122,14 @@ func (m *Middleware) Next() {
 				loop = false
 			}
 		}, func(exception interface{}) {
-			if e, ok := exception.(gerror.ApiStack); ok {
+			if e, ok := exception.(qn_error.ApiStack); ok {
 				// It's already an error that has stack info.
 				m.request.error = e.(error)
 			} else {
 				// Create a new error with stack info.
 				// Note that there's a skip pointing the start stacktrace
 				// of the real error point.
-				m.request.error = gerror.NewfSkip(1, "%v", exception)
+				m.request.error = qn_error.NewfSkip(1, "%v", exception)
 			}
 			m.request.Response.WriteStatus(http.StatusInternalServerError, exception)
 			loop = false

@@ -13,25 +13,25 @@ import (
 	"github.com/qnsoft/common/debug/gdebug"
 	"github.com/qnsoft/common/frame/gins"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Redis(t *testing.T) {
-	redisContent := gfile.GetContents(
+	redisContent := qn_file.GetContents(
 		gdebug.TestDataPath("redis", "config.toml"),
 	)
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var err error
-		dirPath := gfile.TempDir(gtime.TimestampNanoStr())
-		err = gfile.Mkdir(dirPath)
+		dirPath := qn_file.TempDir(qn_time.TimestampNanoStr())
+		err = qn_file.Mkdir(dirPath)
 		t.Assert(err, nil)
-		defer gfile.Remove(dirPath)
+		defer qn_file.Remove(dirPath)
 
 		name := "config.toml"
-		err = gfile.PutContents(gfile.Join(dirPath, name), redisContent)
+		err = qn_file.PutContents(qn_file.Join(dirPath, name), redisContent)
 		t.Assert(err, nil)
 
 		err = gins.Config().AddPath(dirPath)

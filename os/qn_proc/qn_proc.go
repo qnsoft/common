@@ -16,9 +16,9 @@ import (
 
 	"github.com/qnsoft/common/os/genv"
 	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 const (
@@ -44,7 +44,7 @@ func PPid() int {
 	}
 	ppidValue := os.Getenv(gPROC_ENV_KEY_PPID_KEY)
 	if ppidValue != "" && ppidValue != "0" {
-		return gconv.Int(ppidValue)
+		return qn_conv.Int(ppidValue)
 	}
 	return PPidOS()
 }
@@ -67,7 +67,7 @@ func IsChild() bool {
 // SetPPid sets custom parent pid for current process.
 func SetPPid(ppid int) error {
 	if ppid > 0 {
-		return os.Setenv(gPROC_ENV_KEY_PPID_KEY, gconv.String(ppid))
+		return os.Setenv(gPROC_ENV_KEY_PPID_KEY, qn_conv.String(ppid))
 	} else {
 		return os.Unsetenv(gPROC_ENV_KEY_PPID_KEY)
 	}
@@ -158,10 +158,10 @@ func getShell() string {
 		return SearchBinary("cmd.exe")
 	default:
 		// Check the default binary storage path.
-		if gfile.Exists("/bin/bash") {
+		if qn_file.Exists("/bin/bash") {
 			return "/bin/bash"
 		}
-		if gfile.Exists("/bin/sh") {
+		if qn_file.Exists("/bin/sh") {
 			return "/bin/sh"
 		}
 		// Else search the env PATH.
@@ -187,7 +187,7 @@ func getShellOption() string {
 // SearchBinary searches the binary <file> in current working folder and PATH environment.
 func SearchBinary(file string) string {
 	// Check if it's absolute path of exists at current working directory.
-	if gfile.Exists(file) {
+	if qn_file.Exists(file) {
 		return file
 	}
 	return SearchBinaryPath(file)
@@ -204,7 +204,7 @@ func SearchBinaryPath(file string) string {
 		} else if gstr.Contains(envPath, ":") {
 			array = gstr.SplitAndTrim(envPath, ":")
 		}
-		if gfile.Ext(file) != ".exe" {
+		if qn_file.Ext(file) != ".exe" {
 			file += ".exe"
 		}
 	default:
@@ -213,8 +213,8 @@ func SearchBinaryPath(file string) string {
 	if len(array) > 0 {
 		path := ""
 		for _, v := range array {
-			path = v + gfile.Separator + file
-			if gfile.Exists(path) && gfile.IsFile(path) {
+			path = v + qn_file.Separator + file
+			if qn_file.Exists(path) && qn_file.IsFile(path) {
 				return path
 			}
 		}

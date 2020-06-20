@@ -9,89 +9,89 @@ package qn_conv_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/util/gconv"
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Struct_Slice(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Scores []int
 		}
 		user := new(User)
 		array := g.Slice{1, 2, 3}
-		err := gconv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(g.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Scores []int32
 		}
 		user := new(User)
 		array := g.Slice{1, 2, 3}
-		err := gconv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(g.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Scores []int64
 		}
 		user := new(User)
 		array := g.Slice{1, 2, 3}
-		err := gconv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(g.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Scores []uint
 		}
 		user := new(User)
 		array := g.Slice{1, 2, 3}
-		err := gconv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(g.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Scores []uint32
 		}
 		user := new(User)
 		array := g.Slice{1, 2, 3}
-		err := gconv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(g.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Scores []uint64
 		}
 		user := new(User)
 		array := g.Slice{1, 2, 3}
-		err := gconv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(g.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Scores []float32
 		}
 		user := new(User)
 		array := g.Slice{1, 2, 3}
-		err := gconv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(g.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Scores []float64
 		}
 		user := new(User)
 		array := g.Slice{1, 2, 3}
-		err := gconv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(g.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
@@ -102,7 +102,7 @@ func Test_Struct_SliceWithTag(t *testing.T) {
 		Uid      int    `json:"id"`
 		NickName string `json:"name"`
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var users []User
 		params := g.Slice{
 			g.Map{
@@ -114,7 +114,7 @@ func Test_Struct_SliceWithTag(t *testing.T) {
 				"name": "name2",
 			},
 		}
-		err := gconv.Structs(params, &users)
+		err := qn_conv.Structs(params, &users)
 		t.Assert(err, nil)
 		t.Assert(len(users), 2)
 		t.Assert(users[0].Uid, 1)
@@ -122,7 +122,7 @@ func Test_Struct_SliceWithTag(t *testing.T) {
 		t.Assert(users[1].Uid, 2)
 		t.Assert(users[1].NickName, "name2")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var users []*User
 		params := g.Slice{
 			g.Map{
@@ -134,7 +134,7 @@ func Test_Struct_SliceWithTag(t *testing.T) {
 				"name": "name2",
 			},
 		}
-		err := gconv.Structs(params, &users)
+		err := qn_conv.Structs(params, &users)
 		t.Assert(err, nil)
 		t.Assert(len(users), 2)
 		t.Assert(users[0].Uid, 1)

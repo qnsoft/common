@@ -11,18 +11,18 @@ import (
 	"os"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/internal/json"
+	"github.com/qnsoft/common/os/qn_time"
 
 	"github.com/qnsoft/common/crypto/gaes"
 
 	"github.com/qnsoft/common/container/gset"
-	"github.com/qnsoft/common/encoding/gbinary"
+	"github.com/qnsoft/common/encoding/qn_binary"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtimer"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_timer"
 )
 
 // StorageFile implements the Session Storage interface with file system.
@@ -34,7 +34,7 @@ type StorageFile struct {
 }
 
 var (
-	DefaultStorageFilePath          = gfile.TempDir("gsessions")
+	DefaultStorageFilePath          = qn_file.TempDir("gsessions")
 	DefaultStorageFileCryptoKey     = []byte("Session storage file crypto key!")
 	DefaultStorageFileCryptoEnabled = false
 	DefaultStorageFileLoopInterval  = 10 * time.Second
@@ -44,16 +44,16 @@ var (
 func NewStorageFile(path ...string) *StorageFile {
 	storagePath := DefaultStorageFilePath
 	if len(path) > 0 && path[0] != "" {
-		storagePath, _ = gfile.Search(path[0])
+		storagePath, _ = qn_file.Search(path[0])
 		if storagePath == "" {
 			panic(fmt.Sprintf("'%s' does not exist", path[0]))
 		}
-		if !gfile.IsWritable(storagePath) {
+		if !qn_file.IsWritable(storagePath) {
 			panic(fmt.Sprintf("'%s' is not writable", path[0]))
 		}
 	}
 	if storagePath != "" {
-		if err := gfile.Mkdir(storagePath); err != nil {
+		if err := qn_file.Mkdir(storagePath); err != nil {
 			panic(fmt.Sprintf("mkdir '%s' failed: %v", path[0], err))
 		}
 	}
@@ -64,7 +64,7 @@ func NewStorageFile(path ...string) *StorageFile {
 		updatingIdSet: gset.NewStrSet(true),
 	}
 	// Batch updates the TTL for session ids timely.
-	gtimer.AddSingleton(DefaultStorageFileLoopInterval, func() {
+	qn_timer.AddSingleton(DefaultStorageFileLoopInterval, func() {
 		//intlog.Print("StorageFile.timer start")
 		var id string
 		var err error
@@ -94,7 +94,7 @@ func (s *StorageFile) SetCryptoEnabled(enabled bool) {
 
 // sessionFilePath returns the storage file path for given session id.
 func (s *StorageFile) sessionFilePath(id string) string {
-	return gfile.Join(s.path, id)
+	return qn_file.Join(s.path, id)
 }
 
 // New creates a session id.
@@ -154,10 +154,10 @@ func (s *StorageFile) GetSession(id string, ttl time.Duration, data *gmap.StrAny
 	}
 	//intlog.Printf("StorageFile.GetSession: %s, %v", id, ttl)
 	path := s.sessionFilePath(id)
-	content := gfile.GetBytes(path)
+	content := qn_file.GetBytes(path)
 	if len(content) > 8 {
-		timestampMilli := gbinary.DecodeToInt64(content[:8])
-		if timestampMilli+ttl.Nanoseconds()/1e6 < gtime.TimestampMilli() {
+		timestampMilli := qn_binary.DecodeToInt64(content[:8])
+		if timestampMilli+ttl.Nanoseconds()/1e6 < qn_time.TimestampMilli() {
 			return nil, nil
 		}
 		var err error
@@ -198,14 +198,14 @@ func (s *StorageFile) SetSession(id string, data *gmap.StrAnyMap, ttl time.Durat
 			return err
 		}
 	}
-	file, err := gfile.OpenWithFlagPerm(
+	file, err := qn_file.OpenWithFlagPerm(
 		path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, os.ModePerm,
 	)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
-	if _, err = file.Write(gbinary.EncodeInt64(gtime.TimestampMilli())); err != nil {
+	if _, err = file.Write(qn_binary.EncodeInt64(qn_time.TimestampMilli())); err != nil {
 		return err
 	}
 	if _, err = file.Write(content); err != nil {
@@ -229,11 +229,11 @@ func (s *StorageFile) UpdateTTL(id string, ttl time.Duration) error {
 func (s *StorageFile) doUpdateTTL(id string) error {
 	intlog.Printf("StorageFile.doUpdateTTL: %s", id)
 	path := s.sessionFilePath(id)
-	file, err := gfile.OpenWithFlag(path, os.O_WRONLY)
+	file, err := qn_file.OpenWithFlag(path, os.O_WRONLY)
 	if err != nil {
 		return err
 	}
-	if _, err = file.WriteAt(gbinary.EncodeInt64(gtime.TimestampMilli()), 0); err != nil {
+	if _, err = file.WriteAt(qn_binary.EncodeInt64(qn_time.TimestampMilli()), 0); err != nil {
 		return err
 	}
 	return file.Close()

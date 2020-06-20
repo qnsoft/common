@@ -10,23 +10,23 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/util/gconv"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Struct_Basic1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Uid      int
 			Name     string
 			Site_Url string
 			NickName string
-			Pass1    string `gconv:"password1"`
-			Pass2    string `gconv:"password2"`
+			Pass1    string `qn_conv:"password1"`
+			Pass2    string `qn_conv:"password2"`
 		}
 		user := new(User)
 		params1 := g.Map{
@@ -37,7 +37,7 @@ func Test_Struct_Basic1(t *testing.T) {
 			"PASS1":     "123",
 			"PASS2":     "456",
 		}
-		if err := gconv.Struct(params1, user); err != nil {
+		if err := qn_conv.Struct(params1, user); err != nil {
 			t.Error(err)
 		}
 		t.Assert(user, &User{
@@ -58,7 +58,7 @@ func Test_Struct_Basic1(t *testing.T) {
 			"password1": "111",
 			"password2": "222",
 		}
-		if err := gconv.Struct(params2, user); err != nil {
+		if err := qn_conv.Struct(params2, user); err != nil {
 			t.Error(err)
 		}
 		t.Assert(user, &User{
@@ -73,7 +73,7 @@ func Test_Struct_Basic1(t *testing.T) {
 }
 
 func Test_Struct_Basic2(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Uid     int
 			Name    string
@@ -89,7 +89,7 @@ func Test_Struct_Basic2(t *testing.T) {
 			"PASS1":    "123",
 			"PASS2":    "456",
 		}
-		if err := gconv.Struct(params, user); err != nil {
+		if err := qn_conv.Struct(params, user); err != nil {
 			t.Error(err)
 		}
 		t.Assert(user, &User{
@@ -103,7 +103,7 @@ func Test_Struct_Basic2(t *testing.T) {
 }
 
 func Test_Struct_Attr_Pointer(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Uid  *int
 			Name *string
@@ -113,7 +113,7 @@ func Test_Struct_Attr_Pointer(t *testing.T) {
 			"uid":  "1",
 			"Name": "john",
 		}
-		if err := gconv.Struct(params, user); err != nil {
+		if err := qn_conv.Struct(params, user); err != nil {
 			t.Error(err)
 		}
 		t.Assert(user.Uid, 1)
@@ -122,13 +122,13 @@ func Test_Struct_Attr_Pointer(t *testing.T) {
 }
 
 func Test_Struct_Attr_Slice1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Scores []int
 		}
 		scores := []interface{}{99, 100, 60, 140}
 		user := new(User)
-		if err := gconv.Struct(g.Map{"Scores": scores}, user); err != nil {
+		if err := qn_conv.Struct(g.Map{"Scores": scores}, user); err != nil {
 			t.Error(err)
 		} else {
 			t.Assert(user, &User{
@@ -140,13 +140,13 @@ func Test_Struct_Attr_Slice1(t *testing.T) {
 
 // It does not support this kind of converting yet.
 //func Test_Struct_Attr_Slice2(t *testing.T) {
-//	gtest.C(t, func(t *gtest.T) {
+//	qn_test.C(t, func(t *qn_test.T) {
 //		type User struct {
 //			Scores [][]int
 //		}
 //		scores := []interface{}{[]interface{}{99, 100, 60, 140}}
 //		user := new(User)
-//		if err := gconv.Struct(g.Map{"Scores": scores}, user); err != nil {
+//		if err := qn_conv.Struct(g.Map{"Scores": scores}, user); err != nil {
 //			t.Error(err)
 //		} else {
 //			t.Assert(user, &User{
@@ -157,7 +157,7 @@ func Test_Struct_Attr_Slice1(t *testing.T) {
 //}
 
 func Test_Struct_Attr_Struct(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type Score struct {
 			Name   string
 			Result int
@@ -175,7 +175,7 @@ func Test_Struct_Attr_Struct(t *testing.T) {
 		}
 
 		// 嵌套struct转换
-		if err := gconv.Struct(scores, user); err != nil {
+		if err := qn_conv.Struct(scores, user); err != nil {
 			t.Error(err)
 		} else {
 			t.Assert(user, &User{
@@ -189,7 +189,7 @@ func Test_Struct_Attr_Struct(t *testing.T) {
 }
 
 func Test_Struct_Attr_Struct_Ptr(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type Score struct {
 			Name   string
 			Result int
@@ -207,7 +207,7 @@ func Test_Struct_Attr_Struct_Ptr(t *testing.T) {
 		}
 
 		// 嵌套struct转换
-		if err := gconv.Struct(scores, user); err != nil {
+		if err := qn_conv.Struct(scores, user); err != nil {
 			t.Error(err)
 		} else {
 			t.Assert(user.Scores, &Score{
@@ -219,7 +219,7 @@ func Test_Struct_Attr_Struct_Ptr(t *testing.T) {
 }
 
 func Test_Struct_Attr_Struct_Slice1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type Score struct {
 			Name   string
 			Result int
@@ -236,7 +236,7 @@ func Test_Struct_Attr_Struct_Slice1(t *testing.T) {
 			},
 		}
 
-		if err := gconv.Struct(scores, user); err != nil {
+		if err := qn_conv.Struct(scores, user); err != nil {
 			t.Error(err)
 		} else {
 			t.Assert(user.Scores, []Score{
@@ -250,7 +250,7 @@ func Test_Struct_Attr_Struct_Slice1(t *testing.T) {
 }
 
 func Test_Struct_Attr_Struct_Slice2(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type Score struct {
 			Name   string
 			Result int
@@ -273,7 +273,7 @@ func Test_Struct_Attr_Struct_Slice2(t *testing.T) {
 			},
 		}
 
-		if err := gconv.Struct(scores, user); err != nil {
+		if err := qn_conv.Struct(scores, user); err != nil {
 			t.Error(err)
 		} else {
 			t.Assert(user.Scores, []Score{
@@ -291,7 +291,7 @@ func Test_Struct_Attr_Struct_Slice2(t *testing.T) {
 }
 
 func Test_Struct_Attr_Struct_Slice_Ptr(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type Score struct {
 			Name   string
 			Result int
@@ -315,7 +315,7 @@ func Test_Struct_Attr_Struct_Slice_Ptr(t *testing.T) {
 		}
 
 		// 嵌套struct转换，属性为slice类型，数值为slice map类型
-		if err := gconv.Struct(scores, user); err != nil {
+		if err := qn_conv.Struct(scores, user); err != nil {
 			t.Error(err)
 		} else {
 			t.Assert(len(user.Scores), 2)
@@ -337,9 +337,9 @@ func Test_Struct_Attr_CustomType1(t *testing.T) {
 		Id   MyInt
 		Name string
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
-		err := gconv.Struct(g.Map{"id": 1, "name": "john"}, user)
+		err := qn_conv.Struct(g.Map{"id": 1, "name": "john"}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, 1)
 		t.Assert(user.Name, "john")
@@ -352,9 +352,9 @@ func Test_Struct_Attr_CustomType2(t *testing.T) {
 		Id   []MyInt
 		Name string
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
-		err := gconv.Struct(g.Map{"id": g.Slice{1, 2}, "name": "john"}, user)
+		err := qn_conv.Struct(g.Map{"id": g.Slice{1, 2}, "name": "john"}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, g.Slice{1, 2})
 		t.Assert(user.Name, "john")
@@ -366,9 +366,9 @@ func Test_Struct_PrivateAttribute(t *testing.T) {
 		Id   int
 		name string
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
-		err := gconv.Struct(g.Map{"id": 1, "name": "john"}, user)
+		err := qn_conv.Struct(g.Map{"id": 1, "name": "john"}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, 1)
 		t.Assert(user.name, "")
@@ -384,28 +384,28 @@ func Test_StructDeep1(t *testing.T) {
 		Name string
 		Base
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
 		params := g.Map{
 			"id":   1,
 			"name": "john",
 			"age":  18,
 		}
-		err := gconv.Struct(params, user)
+		err := qn_conv.Struct(params, user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, params["id"])
 		t.Assert(user.Name, params["name"])
 		t.Assert(user.Age, 0)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
 		params := g.Map{
 			"id":   1,
 			"name": "john",
 			"age":  18,
 		}
-		err := gconv.StructDeep(params, user)
+		err := qn_conv.StructDeep(params, user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, params["id"])
 		t.Assert(user.Name, params["name"])
@@ -431,26 +431,26 @@ func Test_StructDeep2(t *testing.T) {
 		"uid":  10,
 		"name": "john",
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
-		err := gconv.Struct(params, user)
+		err := qn_conv.Struct(params, user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, 0)
 		t.Assert(user.Uid, 0)
 		t.Assert(user.Name, "john")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
-		err := gconv.StructDeep(params, user)
+		err := qn_conv.StructDeep(params, user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, 1)
 		t.Assert(user.Uid, 10)
 		t.Assert(user.Name, "john")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := (*User)(nil)
-		err := gconv.StructDeep(params, &user)
+		err := qn_conv.StructDeep(params, &user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, 1)
 		t.Assert(user.Uid, 10)
@@ -459,7 +459,7 @@ func Test_StructDeep2(t *testing.T) {
 }
 
 func Test_StructDeep3(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type Ids struct {
 			Id  int `json:"id"`
 			Uid int `json:"uid"`
@@ -483,7 +483,7 @@ func Test_StructDeep3(t *testing.T) {
 			"create_time": "2019",
 		}
 		user := new(User)
-		err := gconv.StructDeep(data, user)
+		err := qn_conv.StructDeep(data, user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, 100)
 		t.Assert(user.Uid, 101)
@@ -493,61 +493,61 @@ func Test_StructDeep3(t *testing.T) {
 }
 
 func Test_Struct_Time(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			CreateTime time.Time
 		}
 		now := time.Now()
 		user := new(User)
-		gconv.Struct(g.Map{
+		qn_conv.Struct(g.Map{
 			"create_time": now,
 		}, user)
 		t.Assert(user.CreateTime.UTC().String(), now.UTC().String())
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			CreateTime *time.Time
 		}
 		now := time.Now()
 		user := new(User)
-		gconv.Struct(g.Map{
+		qn_conv.Struct(g.Map{
 			"create_time": &now,
 		}, user)
 		t.Assert(user.CreateTime.UTC().String(), now.UTC().String())
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
-			CreateTime *gtime.Time
+			CreateTime *qn_time.Time
 		}
 		now := time.Now()
 		user := new(User)
-		gconv.Struct(g.Map{
+		qn_conv.Struct(g.Map{
 			"create_time": &now,
 		}, user)
 		t.Assert(user.CreateTime.Time.UTC().String(), now.UTC().String())
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
-			CreateTime gtime.Time
+			CreateTime qn_time.Time
 		}
 		now := time.Now()
 		user := new(User)
-		gconv.Struct(g.Map{
+		qn_conv.Struct(g.Map{
 			"create_time": &now,
 		}, user)
 		t.Assert(user.CreateTime.Time.UTC().String(), now.UTC().String())
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
-			CreateTime gtime.Time
+			CreateTime qn_time.Time
 		}
 		now := time.Now()
 		user := new(User)
-		gconv.Struct(g.Map{
+		qn_conv.Struct(g.Map{
 			"create_time": now,
 		}, user)
 		t.Assert(user.CreateTime.Time.UTC().String(), now.UTC().String())
@@ -556,7 +556,7 @@ func Test_Struct_Time(t *testing.T) {
 
 // Auto create struct when given pointer.
 func Test_Struct_Create(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Uid  int
 			Name string
@@ -566,13 +566,13 @@ func Test_Struct_Create(t *testing.T) {
 			"uid":  1,
 			"Name": "john",
 		}
-		err := gconv.Struct(params, &user)
+		err := qn_conv.Struct(params, &user)
 		t.Assert(err, nil)
 		t.Assert(user.Uid, 1)
 		t.Assert(user.Name, "john")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Uid  int
 			Name string
@@ -582,14 +582,14 @@ func Test_Struct_Create(t *testing.T) {
 			"uid":  1,
 			"Name": "john",
 		}
-		err := gconv.Struct(params, user)
+		err := qn_conv.Struct(params, user)
 		t.AssertNE(err, nil)
 		t.Assert(user, nil)
 	})
 }
 
 func Test_Struct_Interface(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Uid  interface{}
 			Name interface{}
@@ -599,7 +599,7 @@ func Test_Struct_Interface(t *testing.T) {
 			"uid":  1,
 			"Name": nil,
 		}
-		err := gconv.Struct(params, &user)
+		err := qn_conv.Struct(params, &user)
 		t.Assert(err, nil)
 		t.Assert(user.Uid, 1)
 		t.Assert(user.Name, nil)
@@ -607,7 +607,7 @@ func Test_Struct_Interface(t *testing.T) {
 }
 
 func Test_Struct_NilAttribute(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type Item struct {
 			Title string `json:"title"`
 			Key   string `json:"key"`
@@ -620,7 +620,7 @@ func Test_Struct_NilAttribute(t *testing.T) {
 			Items []*Item                `json:"items"`
 		}
 		m := new(M)
-		err := gconv.Struct(g.Map{
+		err := qn_conv.Struct(g.Map{
 			"id": "88888",
 			"me": g.Map{
 				"name": "mikey",
@@ -637,7 +637,7 @@ func Test_Struct_NilAttribute(t *testing.T) {
 }
 
 func Test_Struct_Complex(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type ApplyReportDetail struct {
 			ApplyScore        string `json:"apply_score"`
 			ApplyCredibility  string `json:"apply_credibility"`
@@ -666,7 +666,7 @@ func Test_Struct_Complex(t *testing.T) {
 			HistoryFailFee     string `json:"behavior_report_detailhistory_fail_fee"`
 			LatestOneMonthSuc  string `json:"behavior_report_detaillatest_one_month_suc"`
 			LatestOneMonthFail string `json:"behavior_report_detaillatest_one_month_fail"`
-			LoansLongTime      string `json:"behavior_report_detailloans_long_time"`
+			LoansLonqn_time    string `json:"behavior_report_detailloans_long_time"`
 			LoansLatestTime    string `json:"behavior_report_detailloans_latest_time"`
 		}
 		type CurrentReportDetail struct {
@@ -775,7 +775,7 @@ func Test_Struct_Complex(t *testing.T) {
 		t.Assert(err, nil)
 
 		model := new(XinYanModel)
-		err = gconv.Struct(m, model)
+		err = qn_conv.Struct(m, model)
 		t.Assert(err, nil)
 		t.Assert(model.ErrorCode, nil)
 		t.Assert(model.ErrorMsg, nil)
@@ -789,7 +789,7 @@ func Test_Struct_Complex(t *testing.T) {
 }
 
 func Test_Struct_CatchPanic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type Score struct {
 			Name   string
 			Result int
@@ -802,7 +802,7 @@ func Test_Struct_CatchPanic(t *testing.T) {
 		scores := map[string]interface{}{
 			"Score": 1,
 		}
-		err := gconv.Struct(scores, user)
+		err := qn_conv.Struct(scores, user)
 		t.AssertNE(err, nil)
 	})
 }

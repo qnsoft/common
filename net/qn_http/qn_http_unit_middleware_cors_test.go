@@ -8,11 +8,12 @@ package qn_http_test
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/test/gtest"
 	"testing"
 	"time"
+
+	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/net/ghttp"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Middleware_CORS1(t *testing.T) {
@@ -29,7 +30,7 @@ func Test_Middleware_CORS1(t *testing.T) {
 	s.Start()
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		// Common Checks.
@@ -54,7 +55,7 @@ func Test_Middleware_CORS1(t *testing.T) {
 		resp.Close()
 	})
 	// OPTIONS GET
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader("Access-Control-Request-Method", "GET")
@@ -66,7 +67,7 @@ func Test_Middleware_CORS1(t *testing.T) {
 		resp.Close()
 	})
 	// OPTIONS POST
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader("Access-Control-Request-Method", "POST")
@@ -92,7 +93,7 @@ func Test_Middleware_CORS2(t *testing.T) {
 	s.Start()
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		// Common Checks.
@@ -110,7 +111,7 @@ func Test_Middleware_CORS2(t *testing.T) {
 		resp.Close()
 	})
 	// OPTIONS GET None.
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader("Access-Control-Request-Method", "GET")
@@ -121,7 +122,7 @@ func Test_Middleware_CORS2(t *testing.T) {
 		resp.Close()
 	})
 	// OPTIONS GET
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader("Access-Control-Request-Method", "GET")
@@ -132,7 +133,7 @@ func Test_Middleware_CORS2(t *testing.T) {
 		resp.Close()
 	})
 	// OPTIONS POST
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		client.SetHeader("Access-Control-Request-Method", "POST")

@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/internal/rwmutex"
@@ -310,7 +310,7 @@ func (tree *BTree) Map() map[interface{}]interface{} {
 func (tree *BTree) MapStrAny() map[string]interface{} {
 	m := make(map[string]interface{}, tree.Size())
 	tree.IteratorAsc(func(key, value interface{}) bool {
-		m[gconv.String(key)] = value
+		m[qn_conv.String(key)] = value
 		return true
 	})
 	return m

@@ -17,12 +17,12 @@ import (
 
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/encoding/gjson"
+	"github.com/qnsoft/common/encoding/qn_json"
 	"github.com/qnsoft/common/internal/cmdenv"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gfsnotify"
 	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gspath"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 const (
@@ -56,7 +56,7 @@ func New(file ...string) *Config {
 	}
 	// Customized dir path from env/cmd.
 	if envPath := cmdenv.Get("gf.gcfg.path").String(); envPath != "" {
-		if gfile.Exists(envPath) {
+		if qn_file.Exists(envPath) {
 			_ = c.SetPath(envPath)
 		} else {
 			if errorPrint() {
@@ -65,13 +65,13 @@ func New(file ...string) *Config {
 		}
 	} else {
 		// Dir path of working dir.
-		_ = c.SetPath(gfile.Pwd())
+		_ = c.SetPath(qn_file.Pwd())
 		// Dir path of binary.
-		if selfPath := gfile.SelfDir(); selfPath != "" && gfile.Exists(selfPath) {
+		if selfPath := qn_file.SelfDir(); selfPath != "" && qn_file.Exists(selfPath) {
 			_ = c.AddPath(selfPath)
 		}
 		// Dir path of main package.
-		if mainPath := gfile.MainPkgPath(); mainPath != "" && gfile.Exists(mainPath) {
+		if mainPath := qn_file.MainPkgPath(); mainPath != "" && qn_file.Exists(mainPath) {
 			_ = c.AddPath(mainPath)
 		}
 	}
@@ -95,7 +95,7 @@ func (c *Config) filePath(file ...string) (path string) {
 					v = gstr.TrimRight(v, `\/`)
 					buffer.WriteString(fmt.Sprintf("\n%d. %s", index, v))
 					index++
-					buffer.WriteString(fmt.Sprintf("\n%d. %s", index, v+gfile.Separator+"config"))
+					buffer.WriteString(fmt.Sprintf("\n%d. %s", index, v+qn_file.Separator+"config"))
 					index++
 				}
 			})
@@ -120,7 +120,7 @@ func (c *Config) SetPath(path string) error {
 		isDir = file.FileInfo().IsDir()
 	} else {
 		// Absolute path.
-		realPath = gfile.RealPath(path)
+		realPath = qn_file.RealPath(path)
 		if realPath == "" {
 			// Relative path.
 			c.paths.RLockFunc(func(array []string) {
@@ -133,7 +133,7 @@ func (c *Config) SetPath(path string) error {
 			})
 		}
 		if realPath != "" {
-			isDir = gfile.IsDir(realPath)
+			isDir = qn_file.IsDir(realPath)
 		}
 	}
 	// Path not exist.
@@ -197,7 +197,7 @@ func (c *Config) AddPath(path string) error {
 		isDir = file.FileInfo().IsDir()
 	} else {
 		// Absolute path.
-		realPath = gfile.RealPath(path)
+		realPath = qn_file.RealPath(path)
 		if realPath == "" {
 			// Relative path.
 			c.paths.RLockFunc(func(array []string) {
@@ -210,7 +210,7 @@ func (c *Config) AddPath(path string) error {
 			})
 		}
 		if realPath != "" {
-			isDir = gfile.IsDir(realPath)
+			isDir = qn_file.IsDir(realPath)
 		}
 	}
 	if realPath == "" {
@@ -282,7 +282,7 @@ func (c *Config) FilePath(file ...string) (path string) {
 			if path, _ = gspath.Search(prefix, name); path != "" {
 				return
 			}
-			if path, _ = gspath.Search(prefix+gfile.Separator+"config", name); path != "" {
+			if path, _ = gspath.Search(prefix+qn_file.Separator+"config", name); path != "" {
 				return
 			}
 		}
@@ -318,9 +318,9 @@ func (c *Config) Available(file ...string) bool {
 	return false
 }
 
-// getJson returns a *gjson.Json object for the specified <file> content.
+// getJson returns a *qn_json.Json object for the specified <file> content.
 // It would print error if file reading fails. It return nil if any error occurs.
-func (c *Config) getJson(file ...string) *gjson.Json {
+func (c *Config) getJson(file ...string) *qn_json.Json {
 	var name string
 	if len(file) > 0 && file[0] != "" {
 		name = file[0]
@@ -338,10 +338,10 @@ func (c *Config) getJson(file ...string) *gjson.Json {
 			if file := gres.Get(filePath); file != nil {
 				content = string(file.Content())
 			} else {
-				content = gfile.GetContents(filePath)
+				content = qn_file.GetContents(filePath)
 			}
 		}
-		if j, err := gjson.LoadContent(content, true); err == nil {
+		if j, err := qn_json.LoadContent(content, true); err == nil {
 			j.SetViolenceCheck(c.vc)
 			// Add monitor for this configuration file,
 			// any changes of this file will refresh its cache in Config object.
@@ -366,7 +366,7 @@ func (c *Config) getJson(file ...string) *gjson.Json {
 		return nil
 	})
 	if r != nil {
-		return r.(*gjson.Json)
+		return r.(*qn_json.Json)
 	}
 	return nil
 }

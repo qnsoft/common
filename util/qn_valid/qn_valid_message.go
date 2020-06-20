@@ -67,7 +67,7 @@ func getErrorMessageByRule(ruleKey string, customMsgMap map[string]string) strin
 	if content != "" {
 		return content
 	}
-	content = gi18n.GetContent(fmt.Sprintf(`gf.gvalid.rule.%s`, ruleKey))
+	content = gi18n.GetContent(fmt.Sprintf(`gf.qn_valid.rule.%s`, ruleKey))
 	if content == "" {
 		content = defaultMessages[ruleKey]
 	}

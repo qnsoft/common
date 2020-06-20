@@ -12,7 +12,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Get(t *testing.T) {
@@ -20,7 +20,7 @@ func Test_Get(t *testing.T) {
 	os.Setenv("GF_TEST_VALUE1", "222")
 	os.Setenv("GF_TEST_VALUE2", "333")
 	doInit()
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(Get("gf.test.value1").String(), "111")
 		t.Assert(Get("gf.test.value2").String(), "333")
 		t.Assert(Get("gf.test.value3").String(), "")

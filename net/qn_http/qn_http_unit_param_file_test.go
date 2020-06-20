@@ -12,17 +12,17 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/text/gstr"
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Params_File_Single(t *testing.T) {
-	dstDirPath := gfile.TempDir(gtime.TimestampNanoStr())
+	dstDirPath := qn_file.TempDir(qn_time.TimestampNanoStr())
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	s.BindHandler("/upload/single", func(r *ghttp.Request) {
@@ -42,12 +42,12 @@ func Test_Params_File_Single(t *testing.T) {
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
 	// normal name
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		srcPath := gdebug.TestDataPath("upload", "file1.txt")
-		dstPath := gfile.Join(dstDirPath, "file1.txt")
+		dstPath := qn_file.Join(dstDirPath, "file1.txt")
 		content := client.PostContent("/upload/single", g.Map{
 			"file": "@file:" + srcPath,
 		})
@@ -55,10 +55,10 @@ func Test_Params_File_Single(t *testing.T) {
 		t.AssertNE(content, "upload file cannot be empty")
 		t.AssertNE(content, "upload failed")
 		t.Assert(content, "file1.txt")
-		t.Assert(gfile.GetContents(dstPath), gfile.GetContents(srcPath))
+		t.Assert(qn_file.GetContents(dstPath), qn_file.GetContents(srcPath))
 	})
 	// randomly rename.
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -67,16 +67,16 @@ func Test_Params_File_Single(t *testing.T) {
 			"file":           "@file:" + srcPath,
 			"randomlyRename": true,
 		})
-		dstPath := gfile.Join(dstDirPath, content)
+		dstPath := qn_file.Join(dstDirPath, content)
 		t.AssertNE(content, "")
 		t.AssertNE(content, "upload file cannot be empty")
 		t.AssertNE(content, "upload failed")
-		t.Assert(gfile.GetContents(dstPath), gfile.GetContents(srcPath))
+		t.Assert(qn_file.GetContents(dstPath), qn_file.GetContents(srcPath))
 	})
 }
 
 func Test_Params_File_CustomName(t *testing.T) {
-	dstDirPath := gfile.TempDir(gtime.TimestampNanoStr())
+	dstDirPath := qn_file.TempDir(qn_time.TimestampNanoStr())
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	s.BindHandler("/upload/single", func(r *ghttp.Request) {
@@ -95,12 +95,12 @@ func Test_Params_File_CustomName(t *testing.T) {
 	s.Start()
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		srcPath := gdebug.TestDataPath("upload", "file1.txt")
-		dstPath := gfile.Join(dstDirPath, "my.txt")
+		dstPath := qn_file.Join(dstDirPath, "my.txt")
 		content := client.PostContent("/upload/single", g.Map{
 			"file": "@file:" + srcPath,
 		})
@@ -108,12 +108,12 @@ func Test_Params_File_CustomName(t *testing.T) {
 		t.AssertNE(content, "upload file cannot be empty")
 		t.AssertNE(content, "upload failed")
 		t.Assert(content, "my.txt")
-		t.Assert(gfile.GetContents(dstPath), gfile.GetContents(srcPath))
+		t.Assert(qn_file.GetContents(dstPath), qn_file.GetContents(srcPath))
 	})
 }
 
 func Test_Params_File_Batch(t *testing.T) {
-	dstDirPath := gfile.TempDir(gtime.TimestampNanoStr())
+	dstDirPath := qn_file.TempDir(qn_time.TimestampNanoStr())
 	p, _ := ports.PopRand()
 	s := g.Server(p)
 	s.BindHandler("/upload/batch", func(r *ghttp.Request) {
@@ -132,14 +132,14 @@ func Test_Params_File_Batch(t *testing.T) {
 	defer s.Shutdown()
 	time.Sleep(100 * time.Millisecond)
 	// normal name
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		srcPath1 := gdebug.TestDataPath("upload", "file1.txt")
 		srcPath2 := gdebug.TestDataPath("upload", "file2.txt")
-		dstPath1 := gfile.Join(dstDirPath, "file1.txt")
-		dstPath2 := gfile.Join(dstDirPath, "file2.txt")
+		dstPath1 := qn_file.Join(dstDirPath, "file1.txt")
+		dstPath2 := qn_file.Join(dstDirPath, "file2.txt")
 		content := client.PostContent("/upload/batch", g.Map{
 			"file[0]": "@file:" + srcPath1,
 			"file[1]": "@file:" + srcPath2,
@@ -148,11 +148,11 @@ func Test_Params_File_Batch(t *testing.T) {
 		t.AssertNE(content, "upload file cannot be empty")
 		t.AssertNE(content, "upload failed")
 		t.Assert(content, "file1.txt,file2.txt")
-		t.Assert(gfile.GetContents(dstPath1), gfile.GetContents(srcPath1))
-		t.Assert(gfile.GetContents(dstPath2), gfile.GetContents(srcPath2))
+		t.Assert(qn_file.GetContents(dstPath1), qn_file.GetContents(srcPath1))
+		t.Assert(qn_file.GetContents(dstPath2), qn_file.GetContents(srcPath2))
 	})
 	// randomly rename.
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -169,9 +169,9 @@ func Test_Params_File_Batch(t *testing.T) {
 
 		array := gstr.SplitAndTrim(content, ",")
 		t.Assert(len(array), 2)
-		dstPath1 := gfile.Join(dstDirPath, array[0])
-		dstPath2 := gfile.Join(dstDirPath, array[1])
-		t.Assert(gfile.GetContents(dstPath1), gfile.GetContents(srcPath1))
-		t.Assert(gfile.GetContents(dstPath2), gfile.GetContents(srcPath2))
+		dstPath1 := qn_file.Join(dstDirPath, array[0])
+		dstPath2 := qn_file.Join(dstDirPath, array[1])
+		t.Assert(qn_file.GetContents(dstPath1), qn_file.GetContents(srcPath1))
+		t.Assert(qn_file.GetContents(dstPath2), qn_file.GetContents(srcPath2))
 	})
 }

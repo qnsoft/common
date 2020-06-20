@@ -9,9 +9,10 @@ package qn_cmd
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/internal/json"
 	"os"
 	"strings"
+
+	"github.com/qnsoft/common/internal/json"
 
 	"github.com/qnsoft/common/text/gstr"
 
@@ -19,7 +20,7 @@ import (
 
 	"github.com/qnsoft/common/container/qn_var"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 // Parser for arguments.
@@ -69,7 +70,7 @@ func ParseWithArgs(args []string, supportedOptions map[string]bool, strict ...bo
 
 	for i := 0; i < len(args); {
 		if option := parser.parseOption(args[i]); option != "" {
-			array, _ := gregex.MatchString(`^(.+?)=(.+)$`, option)
+			array, _ := qn_regex.MatchString(`^(.+?)=(.+)$`, option)
 			if len(array) == 3 {
 				if parser.isOptionValid(array[1]) {
 					parser.setOptionValue(array[1], array[2])
@@ -128,7 +129,7 @@ func (p *Parser) parseMultiOption(option string) []string {
 }
 
 func (p *Parser) parseOption(argument string) string {
-	array, _ := gregex.MatchString(`^\-{1,2}(.+)$`, argument)
+	array, _ := qn_regex.MatchString(`^\-{1,2}(.+)$`, argument)
 	if len(array) == 2 {
 		return array[1]
 	}

@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"sync/atomic"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Int32 is a struct for concurrent-safe operation for type int32.
@@ -61,17 +61,17 @@ func (v *Int32) String() string {
 
 // MarshalJSON implements the interface MarshalJSON for json.Marshal.
 func (v *Int32) MarshalJSON() ([]byte, error) {
-	return gconv.UnsafeStrToBytes(strconv.Itoa(int(v.Val()))), nil
+	return qn_conv.UnsafeStrToBytes(strconv.Itoa(int(v.Val()))), nil
 }
 
 // UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
 func (v *Int32) UnmarshalJSON(b []byte) error {
-	v.Set(gconv.Int32(gconv.UnsafeBytesToStr(b)))
+	v.Set(qn_conv.Int32(qn_conv.UnsafeBytesToStr(b)))
 	return nil
 }
 
 // UnmarshalValue is an interface implement which sets any type of value for <v>.
 func (v *Int32) UnmarshalValue(value interface{}) error {
-	v.Set(gconv.Int32(value))
+	v.Set(qn_conv.Int32(value))
 	return nil
 }

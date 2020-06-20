@@ -13,11 +13,11 @@ import (
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/gcron"
 	"github.com/qnsoft/common/os/glog"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func TestCron_Entry_Operations(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		cron.DelayAddTimes(500*time.Millisecond, "* * * * * *", 2, func() {
@@ -33,7 +33,7 @@ func TestCron_Entry_Operations(t *testing.T) {
 		t.Assert(cron.Size(), 0)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		cron := gcron.New()
 		array := qn_array.New(true)
 		entry, err1 := cron.Add("* * * * * *", func() {

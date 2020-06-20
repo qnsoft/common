@@ -7,31 +7,31 @@
 package qn_var
 
 import (
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Struct maps value of <v> to <pointer>.
 // The parameter <pointer> should be a pointer to a struct instance.
 // The parameter <mapping> is used to specify the key-to-attribute mapping rules.
 func (v *VarImp) Struct(pointer interface{}, mapping ...map[string]string) error {
-	return gconv.Struct(v.Val(), pointer, mapping...)
+	return qn_conv.Struct(v.Val(), pointer, mapping...)
 }
 
 // Struct maps value of <v> to <pointer> recursively.
 // The parameter <pointer> should be a pointer to a struct instance.
 // The parameter <mapping> is used to specify the key-to-attribute mapping rules.
 func (v *VarImp) StructDeep(pointer interface{}, mapping ...map[string]string) error {
-	return gconv.StructDeep(v.Val(), pointer, mapping...)
+	return qn_conv.StructDeep(v.Val(), pointer, mapping...)
 }
 
 // Structs converts and returns <v> as given struct slice.
 func (v *VarImp) Structs(pointer interface{}, mapping ...map[string]string) error {
-	return gconv.Structs(v.Val(), pointer, mapping...)
+	return qn_conv.Structs(v.Val(), pointer, mapping...)
 }
 
 // StructsDeep converts and returns <v> as given struct slice recursively.
 func (v *VarImp) StructsDeep(pointer interface{}, mapping ...map[string]string) error {
-	return gconv.StructsDeep(v.Val(), pointer, mapping...)
+	return qn_conv.StructsDeep(v.Val(), pointer, mapping...)
 }
 
 // Scan automatically calls Struct or Structs function according to the type of parameter
@@ -39,7 +39,7 @@ func (v *VarImp) StructsDeep(pointer interface{}, mapping ...map[string]string) 
 // It calls function Struct if <pointer> is type of *struct/**struct to do the converting.
 // It calls function Structs if <pointer> is type of *[]struct/*[]*struct to do the converting.
 func (v *VarImp) Scan(pointer interface{}, mapping ...map[string]string) error {
-	return gconv.Scan(v.Val(), pointer, mapping...)
+	return qn_conv.Scan(v.Val(), pointer, mapping...)
 }
 
 // ScanDeep automatically calls StructDeep or StructsDeep function according to the type of
@@ -47,5 +47,5 @@ func (v *VarImp) Scan(pointer interface{}, mapping ...map[string]string) error {
 // It calls function StructDeep if <pointer> is type of *struct/**struct to do the converting.
 // It calls function StructsDeep if <pointer> is type of *[]struct/*[]*struct to do the converting.
 func (v *VarImp) ScanDeep(pointer interface{}, mapping ...map[string]string) error {
-	return gconv.ScanDeep(v.Val(), pointer, mapping...)
+	return qn_conv.ScanDeep(v.Val(), pointer, mapping...)
 }

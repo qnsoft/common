@@ -11,11 +11,11 @@ import (
 
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/text/gstr"
-	gutil "github.com/qnsoft/common/util/qn_util"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 
 	"github.com/qnsoft/common/database/gdb"
-	"github.com/qnsoft/common/text/gregex"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/text/qn_regex"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 const (
@@ -106,16 +106,16 @@ func parseDBConfigNode(value interface{}) *gdb.ConfigNode {
 		return nil
 	}
 	node := &gdb.ConfigNode{}
-	err := gconv.Struct(nodeMap, node)
+	err := qn_conv.Struct(nodeMap, node)
 	if err != nil {
 		panic(err)
 	}
-	if _, v := gutil.MapPossibleItemByKey(nodeMap, "link"); v != nil {
-		node.LinkInfo = gconv.String(v)
+	if _, v := qn_util.MapPossibleItemByKey(nodeMap, "link"); v != nil {
+		node.LinkInfo = qn_conv.String(v)
 	}
 	// Parse link syntax.
 	if node.LinkInfo != "" && node.Type == "" {
-		match, _ := gregex.MatchString(`([a-z]+):(.+)`, node.LinkInfo)
+		match, _ := qn_regex.MatchString(`([a-z]+):(.+)`, node.LinkInfo)
 		if len(match) == 3 {
 			node.Type = gstr.Trim(match[1])
 			node.LinkInfo = gstr.Trim(match[2])

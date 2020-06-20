@@ -9,18 +9,18 @@ package qn_conv_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/util/gconv"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Unsafe(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := "I love 小泽玛利亚"
-		t.AssertEQ(gconv.UnsafeStrToBytes(s), []byte(s))
+		t.AssertEQ(qn_conv.UnsafeStrToBytes(s), []byte(s))
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		b := []byte("I love 小泽玛利亚")
-		t.AssertEQ(gconv.UnsafeBytesToStr(b), string(b))
+		t.AssertEQ(qn_conv.UnsafeBytesToStr(b), string(b))
 	})
 }

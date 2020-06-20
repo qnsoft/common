@@ -16,7 +16,7 @@ import (
 
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/text/gstr"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 const (
@@ -256,7 +256,7 @@ func IsWritable(path string) bool {
 	result := true
 	if IsDir(path) {
 		// If it's a directory, create a temporary file to test whether it's writable.
-		tmpFile := strings.TrimRight(path, Separator) + Separator + gconv.String(time.Now().UnixNano())
+		tmpFile := strings.TrimRight(path, Separator) + Separator + qn_conv.String(time.Now().UnixNano())
 		if f, err := Create(tmpFile); err != nil || !Exists(tmpFile) {
 			result = false
 		} else {

@@ -4,17 +4,17 @@ import (
 	"os"
 	"testing"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/gogf/gf/text/gstr"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gfpool"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_ConcurrentOS(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		defer gfile.Remove(path)
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		defer qn_file.Remove(path)
 		f1, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC|os.O_APPEND, 0666)
 		t.Assert(err, nil)
 		defer f1.Close()
@@ -40,12 +40,12 @@ func Test_ConcurrentOS(t *testing.T) {
 			_, err = f2.Write([]byte("@1234567890#"))
 			t.Assert(err, nil)
 		}
-		t.Assert(gstr.Count(gfile.GetContents(path), "@1234567890#"), 2200)
+		t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2200)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		defer gfile.Remove(path)
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		defer qn_file.Remove(path)
 		f1, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC|os.O_APPEND, 0666)
 		t.Assert(err, nil)
 		defer f1.Close()
@@ -62,11 +62,11 @@ func Test_ConcurrentOS(t *testing.T) {
 			_, err = f2.Write([]byte("@1234567890#"))
 			t.Assert(err, nil)
 		}
-		t.Assert(gstr.Count(gfile.GetContents(path), "@1234567890#"), 2000)
+		t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
 	})
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		defer gfile.Remove(path)
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		defer qn_file.Remove(path)
 		f1, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC|os.O_APPEND, 0666)
 		t.Assert(err, nil)
 		defer f1.Close()
@@ -89,12 +89,12 @@ func Test_ConcurrentOS(t *testing.T) {
 		_, err = f2.Write([]byte(s2))
 		t.Assert(err, nil)
 
-		t.Assert(gstr.Count(gfile.GetContents(path), "@1234567890#"), 2000)
+		t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
 	})
 	// DATA RACE
-	//gtest.C(t, func(t *gtest.T) {
-	//	path := gfile.TempDir(gtime.TimestampNanoStr())
-	//	defer gfile.Remove(path)
+	//qn_test.C(t, func(t *qn_test.T) {
+	//	path := qn_file.TempDir(qn_time.TimestampNanoStr())
+	//	defer qn_file.Remove(path)
 	//	f1, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC|os.O_APPEND, 0666)
 	//	t.Assert(err, nil)
 	//	defer f1.Close()
@@ -125,14 +125,14 @@ func Test_ConcurrentOS(t *testing.T) {
 	//	}
 	//	close(ch)
 	//	wg.Wait()
-	//	t.Assert(gstr.Count(gfile.GetContents(path), "@1234567890#"), 2000)
+	//	t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
 	//})
 }
 
 func Test_ConcurrentGFPool(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		path := gfile.TempDir(gtime.TimestampNanoStr())
-		defer gfile.Remove(path)
+	qn_test.C(t, func(t *qn_test.T) {
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
+		defer qn_file.Remove(path)
 		f1, err := gfpool.Open(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC|os.O_APPEND, 0666)
 		t.Assert(err, nil)
 		defer f1.Close()
@@ -149,12 +149,12 @@ func Test_ConcurrentGFPool(t *testing.T) {
 			_, err = f2.Write([]byte("@1234567890#"))
 			t.Assert(err, nil)
 		}
-		t.Assert(gstr.Count(gfile.GetContents(path), "@1234567890#"), 2000)
+		t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
 	})
 	// DATA RACE
-	//gtest.C(t, func(t *gtest.T) {
-	//	path := gfile.TempDir(gtime.TimestampNanoStr())
-	//	defer gfile.Remove(path)
+	//qn_test.C(t, func(t *qn_test.T) {
+	//	path := qn_file.TempDir(qn_time.TimestampNanoStr())
+	//	defer qn_file.Remove(path)
 	//	f1, err := gfpool.Open(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC|os.O_APPEND, 0666)
 	//	t.Assert(err, nil)
 	//	defer f1.Close()
@@ -185,6 +185,6 @@ func Test_ConcurrentGFPool(t *testing.T) {
 	//	}
 	//	close(ch)
 	//	wg.Wait()
-	//	t.Assert(gstr.Count(gfile.GetContents(path), "@1234567890#"), 2000)
+	//	t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
 	//})
 }

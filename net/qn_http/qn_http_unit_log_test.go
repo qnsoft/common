@@ -13,17 +13,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_Log(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		logDir := gfile.TempDir(gtime.TimestampNanoStr())
+	qn_test.C(t, func(t *qn_test.T) {
+		logDir := qn_file.TempDir(qn_time.TimestampNanoStr())
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.BindHandler("/hello", func(r *ghttp.Request) {
@@ -39,7 +39,7 @@ func Test_Log(t *testing.T) {
 		s.SetPort(p)
 		s.Start()
 		defer s.Shutdown()
-		defer gfile.Remove(logDir)
+		defer qn_file.Remove(logDir)
 		time.Sleep(100 * time.Millisecond)
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
@@ -47,16 +47,16 @@ func Test_Log(t *testing.T) {
 		t.Assert(client.GetContent("/hello"), "hello")
 		t.Assert(client.GetContent("/error"), "custom error")
 
-		logPath1 := gfile.Join(logDir, gtime.Now().Format("Y-m-d")+".log")
-		t.Assert(gstr.Contains(gfile.GetContents(logPath1), "http server started listening on"), true)
-		t.Assert(gstr.Contains(gfile.GetContents(logPath1), "HANDLER"), true)
+		logPath1 := qn_file.Join(logDir, qn_time.Now().Format("Y-m-d")+".log")
+		t.Assert(gstr.Contains(qn_file.GetContents(logPath1), "http server started listening on"), true)
+		t.Assert(gstr.Contains(qn_file.GetContents(logPath1), "HANDLER"), true)
 
-		logPath2 := gfile.Join(logDir, "access-"+gtime.Now().Format("Ymd")+".log")
-		//fmt.Println(gfile.GetContents(logPath2))
-		t.Assert(gstr.Contains(gfile.GetContents(logPath2), " /hello "), true)
+		logPath2 := qn_file.Join(logDir, "access-"+qn_time.Now().Format("Ymd")+".log")
+		//fmt.Println(qn_file.GetContents(logPath2))
+		t.Assert(gstr.Contains(qn_file.GetContents(logPath2), " /hello "), true)
 
-		logPath3 := gfile.Join(logDir, "error-"+gtime.Now().Format("Ymd")+".log")
-		//fmt.Println(gfile.GetContents(logPath3))
-		t.Assert(gstr.Contains(gfile.GetContents(logPath3), "custom error"), true)
+		logPath3 := qn_file.Join(logDir, "error-"+qn_time.Now().Format("Ymd")+".log")
+		//fmt.Println(qn_file.GetContents(logPath3))
+		t.Assert(gstr.Contains(qn_file.GetContents(logPath3), "custom error"), true)
 	})
 }

@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/qnsoft/common/errors/gerror"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/errors/qn_error"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func nilError() error {
@@ -20,79 +20,79 @@ func nilError() error {
 }
 
 func Test_Nil(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		t.Assert(gerror.New(""), nil)
-		t.Assert(gerror.Wrap(nilError(), "test"), nil)
+	qn_test.C(t, func(t *qn_test.T) {
+		t.Assert(qn_error.New(""), nil)
+		t.Assert(qn_error.Wrap(nilError(), "test"), nil)
 	})
 }
 
 func Test_Wrap(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		err := errors.New("1")
-		err = gerror.Wrap(err, "2")
-		err = gerror.Wrap(err, "3")
+		err = qn_error.Wrap(err, "2")
+		err = qn_error.Wrap(err, "3")
 		t.AssertNE(err, nil)
 		t.Assert(err.Error(), "3: 2: 1")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		err := gerror.New("1")
-		err = gerror.Wrap(err, "2")
-		err = gerror.Wrap(err, "3")
+	qn_test.C(t, func(t *qn_test.T) {
+		err := qn_error.New("1")
+		err = qn_error.Wrap(err, "2")
+		err = qn_error.Wrap(err, "3")
 		t.AssertNE(err, nil)
 		t.Assert(err.Error(), "3: 2: 1")
 	})
 }
 
 func Test_Cause(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		err := errors.New("1")
-		t.Assert(gerror.Cause(err), err)
+		t.Assert(qn_error.Cause(err), err)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		err := errors.New("1")
-		err = gerror.Wrap(err, "2")
-		err = gerror.Wrap(err, "3")
-		t.Assert(gerror.Cause(err), "1")
+		err = qn_error.Wrap(err, "2")
+		err = qn_error.Wrap(err, "3")
+		t.Assert(qn_error.Cause(err), "1")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		err := gerror.New("1")
-		t.Assert(gerror.Cause(err), "1")
+	qn_test.C(t, func(t *qn_test.T) {
+		err := qn_error.New("1")
+		t.Assert(qn_error.Cause(err), "1")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		err := gerror.New("1")
-		err = gerror.Wrap(err, "2")
-		err = gerror.Wrap(err, "3")
-		t.Assert(gerror.Cause(err), "1")
+	qn_test.C(t, func(t *qn_test.T) {
+		err := qn_error.New("1")
+		err = qn_error.Wrap(err, "2")
+		err = qn_error.Wrap(err, "3")
+		t.Assert(qn_error.Cause(err), "1")
 	})
 }
 
 func Test_Format(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		err := errors.New("1")
-		err = gerror.Wrap(err, "2")
-		err = gerror.Wrap(err, "3")
+		err = qn_error.Wrap(err, "2")
+		err = qn_error.Wrap(err, "3")
 		t.AssertNE(err, nil)
 		t.Assert(fmt.Sprintf("%s", err), "3: 2: 1")
 		t.Assert(fmt.Sprintf("%v", err), "3: 2: 1")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		err := gerror.New("1")
-		err = gerror.Wrap(err, "2")
-		err = gerror.Wrap(err, "3")
+	qn_test.C(t, func(t *qn_test.T) {
+		err := qn_error.New("1")
+		err = qn_error.Wrap(err, "2")
+		err = qn_error.Wrap(err, "3")
 		t.AssertNE(err, nil)
 		t.Assert(fmt.Sprintf("%s", err), "3: 2: 1")
 		t.Assert(fmt.Sprintf("%v", err), "3: 2: 1")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		err := gerror.New("1")
-		err = gerror.Wrap(err, "2")
-		err = gerror.Wrap(err, "3")
+	qn_test.C(t, func(t *qn_test.T) {
+		err := qn_error.New("1")
+		err = qn_error.Wrap(err, "2")
+		err = qn_error.Wrap(err, "3")
 		t.AssertNE(err, nil)
 		t.Assert(fmt.Sprintf("%-s", err), "3")
 		t.Assert(fmt.Sprintf("%-v", err), "3")
@@ -100,29 +100,29 @@ func Test_Format(t *testing.T) {
 }
 
 func Test_Stack(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		err := errors.New("1")
 		t.Assert(fmt.Sprintf("%+v", err), "1")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		err := errors.New("1")
-		err = gerror.Wrap(err, "2")
-		err = gerror.Wrap(err, "3")
+		err = qn_error.Wrap(err, "2")
+		err = qn_error.Wrap(err, "3")
 		t.AssertNE(err, nil)
 		//fmt.Printf("%+v", err)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		err := gerror.New("1")
+	qn_test.C(t, func(t *qn_test.T) {
+		err := qn_error.New("1")
 		t.AssertNE(fmt.Sprintf("%+v", err), "1")
 		//fmt.Printf("%+v", err)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		err := gerror.New("1")
-		err = gerror.Wrap(err, "2")
-		err = gerror.Wrap(err, "3")
+	qn_test.C(t, func(t *qn_test.T) {
+		err := qn_error.New("1")
+		err = qn_error.Wrap(err, "2")
+		err = qn_error.Wrap(err, "3")
 		t.AssertNE(err, nil)
 		//fmt.Printf("%+v", err)
 	})

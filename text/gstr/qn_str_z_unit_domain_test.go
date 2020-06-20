@@ -11,12 +11,12 @@ package qn_str_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_IsSubDomain(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		main := "goframe.org"
 		t.Assert(gstr.IsSubDomain("goframe.org", main), true)
 		t.Assert(gstr.IsSubDomain("s.goframe.org", main), true)
@@ -26,7 +26,7 @@ func Test_IsSubDomain(t *testing.T) {
 		t.Assert(gstr.IsSubDomain("s.johng.cn", main), false)
 		t.Assert(gstr.IsSubDomain("s.s.johng.cn", main), false)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		main := "*.goframe.org"
 		t.Assert(gstr.IsSubDomain("goframe.org", main), true)
 		t.Assert(gstr.IsSubDomain("s.goframe.org", main), true)
@@ -36,7 +36,7 @@ func Test_IsSubDomain(t *testing.T) {
 		t.Assert(gstr.IsSubDomain("s.johng.cn", main), false)
 		t.Assert(gstr.IsSubDomain("s.s.johng.cn", main), false)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		main := "*.*.goframe.org"
 		t.Assert(gstr.IsSubDomain("goframe.org", main), true)
 		t.Assert(gstr.IsSubDomain("s.goframe.org", main), true)
@@ -47,7 +47,7 @@ func Test_IsSubDomain(t *testing.T) {
 		t.Assert(gstr.IsSubDomain("s.johng.cn", main), false)
 		t.Assert(gstr.IsSubDomain("s.s.johng.cn", main), false)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		main := "*.*.goframe.org:8080"
 		t.Assert(gstr.IsSubDomain("goframe.org", main), true)
 		t.Assert(gstr.IsSubDomain("s.goframe.org", main), true)

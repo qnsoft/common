@@ -10,8 +10,8 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gutil"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_util"
 )
 
 func getValue() interface{} {
@@ -19,56 +19,56 @@ func getValue() interface{} {
 }
 
 func Test_Map_Var(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.Map
 		m.Set(1, 11)
 		t.Assert(m.Get(1), 11)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.IntAnyMap
 		m.Set(1, 11)
 		t.Assert(m.Get(1), 11)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.IntIntMap
 		m.Set(1, 11)
 		t.Assert(m.Get(1), 11)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.IntStrMap
 		m.Set(1, "11")
 		t.Assert(m.Get(1), "11")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.StrAnyMap
 		m.Set("1", "11")
 		t.Assert(m.Get("1"), "11")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.StrStrMap
 		m.Set("1", "11")
 		t.Assert(m.Get("1"), "11")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.StrIntMap
 		m.Set("1", 11)
 		t.Assert(m.Get("1"), 11)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.ListMap
 		m.Set("1", 11)
 		t.Assert(m.Get("1"), 11)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.TreeMap
-		m.SetComparator(gutil.ComparatorString)
+		m.SetComparator(qn_util.ComparatorString)
 		m.Set("1", 11)
 		t.Assert(m.Get("1"), 11)
 	})
 }
 
 func Test_Map_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.New()
 		m.Set("key1", "val1")
 		t.Assert(m.Keys(), []interface{}{"key1"})
@@ -102,7 +102,7 @@ func Test_Map_Basic(t *testing.T) {
 	})
 }
 func Test_Map_Set_Fun(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.New()
 		m.GetOrSetFunc("fun", getValue)
 		m.GetOrSetFuncLock("funlock", getValue)
@@ -115,7 +115,7 @@ func Test_Map_Set_Fun(t *testing.T) {
 }
 
 func Test_Map_Batch(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.New()
 		m.Sets(map[interface{}]interface{}{1: 1, "key1": "val1", "key2": "val2", "key3": "val3"})
 		t.Assert(m.Map(), map[interface{}]interface{}{1: 1, "key1": "val1", "key2": "val2", "key3": "val3"})
@@ -124,7 +124,7 @@ func Test_Map_Batch(t *testing.T) {
 	})
 }
 func Test_Map_Iterator(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[interface{}]interface{}{1: 1, "key1": "val1"}
 
 		m := gmap.NewFrom(expect)
@@ -149,7 +149,7 @@ func Test_Map_Iterator(t *testing.T) {
 }
 
 func Test_Map_Lock(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[interface{}]interface{}{1: 1, "key1": "val1"}
 		m := gmap.NewFrom(expect)
 		m.LockFunc(func(m map[interface{}]interface{}) {
@@ -162,7 +162,7 @@ func Test_Map_Lock(t *testing.T) {
 }
 
 func Test_Map_Clone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//clone 方法是深克隆
 		m := gmap.NewFrom(map[interface{}]interface{}{1: 1, "key1": "val1"})
 		m_clone := m.Clone()
@@ -176,7 +176,7 @@ func Test_Map_Clone(t *testing.T) {
 	})
 }
 func Test_Map_Basic_Merge(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := gmap.New()
 		m2 := gmap.New()
 		m1.Set("key1", "val1")

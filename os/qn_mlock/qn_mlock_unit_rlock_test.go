@@ -12,12 +12,12 @@ import (
 
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/os/gmlock"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Locker_RLock(t *testing.T) {
 	//RLock before Lock
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testRLockBeforeLock"
 		array := qn_array.New(true)
 		go func() {
@@ -39,7 +39,7 @@ func Test_Locker_RLock(t *testing.T) {
 	})
 
 	//Lock before RLock
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLockBeforeRLock"
 		array := qn_array.New(true)
 		go func() {
@@ -61,7 +61,7 @@ func Test_Locker_RLock(t *testing.T) {
 	})
 
 	//Lock before RLocks
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLockBeforeRLocks"
 		array := qn_array.New(true)
 		go func() {
@@ -93,7 +93,7 @@ func Test_Locker_RLock(t *testing.T) {
 
 func Test_Locker_TryRLock(t *testing.T) {
 	//Lock before TryRLock
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLockBeforeTryRLock"
 		array := qn_array.New(true)
 		go func() {
@@ -116,7 +116,7 @@ func Test_Locker_TryRLock(t *testing.T) {
 	})
 
 	//Lock before TryRLocks
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLockBeforeTryRLocks"
 		array := qn_array.New(true)
 		go func() {
@@ -148,7 +148,7 @@ func Test_Locker_TryRLock(t *testing.T) {
 
 func Test_Locker_RLockFunc(t *testing.T) {
 	//RLockFunc before Lock
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testRLockFuncBeforeLock"
 		array := qn_array.New(true)
 		go func() {
@@ -170,7 +170,7 @@ func Test_Locker_RLockFunc(t *testing.T) {
 	})
 
 	//Lock before RLockFunc
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLockBeforeRLockFunc"
 		array := qn_array.New(true)
 		go func() {
@@ -192,7 +192,7 @@ func Test_Locker_RLockFunc(t *testing.T) {
 	})
 
 	//Lock before RLockFuncs
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLockBeforeRLockFuncs"
 		array := qn_array.New(true)
 		go func() {
@@ -224,7 +224,7 @@ func Test_Locker_RLockFunc(t *testing.T) {
 
 func Test_Locker_TryRLockFunc(t *testing.T) {
 	//Lock before TryRLockFunc
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLockBeforeTryRLockFunc"
 		array := qn_array.New(true)
 		go func() {
@@ -246,7 +246,7 @@ func Test_Locker_TryRLockFunc(t *testing.T) {
 	})
 
 	//Lock before TryRLockFuncs
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		key := "testLockBeforeTryRLockFuncs"
 		array := qn_array.New(true)
 		go func() {

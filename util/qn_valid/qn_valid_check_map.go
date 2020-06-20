@@ -9,7 +9,7 @@ package qn_valid
 import (
 	"strings"
 
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // CheckMap validates map and returns the error result. It returns nil if with successful validation.
@@ -18,7 +18,7 @@ import (
 // if <rules> is type of []string.
 // The optional parameter <messages> specifies the custom error messages for specified keys and rules.
 func CheckMap(params interface{}, rules interface{}, messages ...CustomMsg) *Error {
-	data := gconv.Map(params)
+	data := qn_conv.Map(params)
 	if data == nil {
 		return newErrorStr(
 			"invalid_params",
@@ -91,7 +91,7 @@ func CheckMap(params interface{}, rules interface{}, messages ...CustomMsg) *Err
 			_, item := e.FirstItem()
 			// If value is nil or empty string and has no required* rules,
 			// clear the error message.
-			if gconv.String(value) == "" {
+			if qn_conv.String(value) == "" {
 				required := false
 				// rule => error
 				for k := range item {

@@ -13,12 +13,12 @@ import (
 
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Int32(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var wg sync.WaitGroup
 		addTimes := 1000
 		i := gtype.NewInt32(0)
@@ -42,7 +42,7 @@ func Test_Int32(t *testing.T) {
 }
 
 func Test_Int32_JSON(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := int32(math.MaxInt32)
 		i := gtype.NewInt32(v)
 		b1, err1 := json.Marshal(i)
@@ -63,9 +63,9 @@ func Test_Int32_UnmarshalValue(t *testing.T) {
 		Name string
 		Var  *gtype.Int32
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"var":  "123",
 		}, &v)

@@ -9,19 +9,19 @@ package qn_conv_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/util/gconv"
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Slice(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		value := 123.456
-		t.AssertEQ(gconv.Bytes("123"), []byte("123"))
-		t.AssertEQ(gconv.Strings(value), []string{"123.456"})
-		t.AssertEQ(gconv.Ints(value), []int{123})
-		t.AssertEQ(gconv.Floats(value), []float64{123.456})
-		t.AssertEQ(gconv.Interfaces(value), []interface{}{123.456})
+		t.AssertEQ(qn_conv.Bytes("123"), []byte("123"))
+		t.AssertEQ(qn_conv.Strings(value), []string{"123.456"})
+		t.AssertEQ(qn_conv.Ints(value), []int{123})
+		t.AssertEQ(qn_conv.Floats(value), []float64{123.456})
+		t.AssertEQ(qn_conv.Interfaces(value), []interface{}{123.456})
 	})
 }
 
@@ -30,9 +30,9 @@ func Test_Slice_PrivateAttribute(t *testing.T) {
 		Id   int
 		name string
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		user := &User{1, "john"}
-		t.Assert(gconv.Interfaces(user), g.Slice{1})
+		t.Assert(qn_conv.Interfaces(user), g.Slice{1})
 	})
 }
 
@@ -46,13 +46,13 @@ func Test_Slice_Structs(t *testing.T) {
 		Base
 	}
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		users := make([]User, 0)
 		params := []g.Map{
 			{"id": 1, "name": "john", "age": 18},
 			{"id": 2, "name": "smith", "age": 20},
 		}
-		err := gconv.Structs(params, &users)
+		err := qn_conv.Structs(params, &users)
 		t.Assert(err, nil)
 		t.Assert(len(users), 2)
 		t.Assert(users[0].Id, params[0]["id"])
@@ -64,13 +64,13 @@ func Test_Slice_Structs(t *testing.T) {
 		t.Assert(users[1].Age, 0)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		users := make([]User, 0)
 		params := []g.Map{
 			{"id": 1, "name": "john", "age": 18},
 			{"id": 2, "name": "smith", "age": 20},
 		}
-		err := gconv.StructsDeep(params, &users)
+		err := qn_conv.StructsDeep(params, &users)
 		t.Assert(err, nil)
 		t.Assert(len(users), 2)
 		t.Assert(users[0].Id, params[0]["id"])

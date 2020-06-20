@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogf/gf/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // checkLength checks <value> using length rules.
@@ -19,7 +19,7 @@ import (
 func checkLength(value, ruleKey, ruleVal string, customMsgMap map[string]string) string {
 	var (
 		msg       = ""
-		runeArray = gconv.Runes(value)
+		runeArray = qn_conv.Runes(value)
 		valueLen  = len(runeArray)
 	)
 	switch ruleKey {

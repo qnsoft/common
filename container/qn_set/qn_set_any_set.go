@@ -13,7 +13,7 @@ import (
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/internal/rwmutex"
 	"github.com/qnsoft/common/text/gstr"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 type Set struct {
@@ -40,7 +40,7 @@ func NewSet(safe ...bool) *Set {
 // Parameter <items> can be either a variable of any type, or a slice.
 func NewFrom(items interface{}, safe ...bool) *Set {
 	m := make(map[interface{}]struct{})
-	for _, v := range gconv.Interfaces(items) {
+	for _, v := range qn_conv.Interfaces(items) {
 		m[v] = struct{}{}
 	}
 	return &Set{
@@ -211,7 +211,7 @@ func (set *Set) Join(glue string) string {
 		buffer = bytes.NewBuffer(nil)
 	)
 	for k, _ := range set.data {
-		buffer.WriteString(gconv.String(k))
+		buffer.WriteString(qn_conv.String(k))
 		if i != l-1 {
 			buffer.WriteString(glue)
 		}
@@ -232,7 +232,7 @@ func (set *Set) String() string {
 	)
 	buffer.WriteByte('[')
 	for k, _ := range set.data {
-		s = gconv.String(k)
+		s = qn_conv.String(k)
 		if gstr.IsNumeric(s) {
 			buffer.WriteString(s)
 		} else {
@@ -413,7 +413,7 @@ func (set *Set) Sum() (sum int) {
 	set.mu.RLock()
 	defer set.mu.RUnlock()
 	for k, _ := range set.data {
-		sum += gconv.Int(k)
+		sum += qn_conv.Int(k)
 	}
 	return
 }
@@ -497,9 +497,9 @@ func (set *Set) UnmarshalValue(value interface{}) (err error) {
 	var array []interface{}
 	switch value.(type) {
 	case string, []byte:
-		err = json.Unmarshal(gconv.Bytes(value), &array)
+		err = json.Unmarshal(qn_conv.Bytes(value), &array)
 	default:
-		array = gconv.SliceAny(value)
+		array = qn_conv.SliceAny(value)
 	}
 	for _, v := range array {
 		set.data[v] = struct{}{}

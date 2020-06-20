@@ -12,7 +12,7 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // Float32 is a struct for concurrent-safe operation for type float32.
@@ -74,17 +74,17 @@ func (v *Float32) String() string {
 
 // MarshalJSON implements the interface MarshalJSON for json.Marshal.
 func (v *Float32) MarshalJSON() ([]byte, error) {
-	return gconv.UnsafeStrToBytes(strconv.FormatFloat(float64(v.Val()), 'g', -1, 32)), nil
+	return qn_conv.UnsafeStrToBytes(strconv.FormatFloat(float64(v.Val()), 'g', -1, 32)), nil
 }
 
 // UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
 func (v *Float32) UnmarshalJSON(b []byte) error {
-	v.Set(gconv.Float32(gconv.UnsafeBytesToStr(b)))
+	v.Set(qn_conv.Float32(qn_conv.UnsafeBytesToStr(b)))
 	return nil
 }
 
 // UnmarshalValue is an interface implement which sets any type of value for <v>.
 func (v *Float32) UnmarshalValue(value interface{}) error {
-	v.Set(gconv.Float32(value))
+	v.Set(qn_conv.Float32(value))
 	return nil
 }

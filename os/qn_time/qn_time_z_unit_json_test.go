@@ -10,27 +10,27 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Json_Pointer(t *testing.T) {
 	// Marshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type T struct {
-			Time *gtime.Time
+			Time *qn_time.Time
 		}
 		t1 := new(T)
 		s := "2006-01-02 15:04:05"
-		t1.Time = gtime.NewFromStr(s)
+		t1.Time = qn_time.NewFromStr(s)
 		j, err := json.Marshal(t1)
 		t.Assert(err, nil)
 		t.Assert(j, `{"Time":"2006-01-02 15:04:05"}`)
 	})
 	// Marshal nil
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type T struct {
-			Time *gtime.Time
+			Time *qn_time.Time
 		}
 		t1 := new(T)
 		j, err := json.Marshal(t1)
@@ -38,9 +38,9 @@ func Test_Json_Pointer(t *testing.T) {
 		t.Assert(j, `{"Time":null}`)
 	})
 	// Marshal nil omitempty
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type T struct {
-			Time *gtime.Time `json:"time,omitempty"`
+			Time *qn_time.Time `json:"time,omitempty"`
 		}
 		t1 := new(T)
 		j, err := json.Marshal(t1)
@@ -48,8 +48,8 @@ func Test_Json_Pointer(t *testing.T) {
 		t.Assert(j, `{}`)
 	})
 	// Unmarshal
-	gtest.C(t, func(t *gtest.T) {
-		var t1 gtime.Time
+	qn_test.C(t, func(t *qn_test.T) {
+		var t1 qn_time.Time
 		s := []byte(`"2006-01-02 15:04:05"`)
 		err := json.Unmarshal(s, &t1)
 		t.Assert(err, nil)
@@ -59,21 +59,21 @@ func Test_Json_Pointer(t *testing.T) {
 
 func Test_Json_Struct(t *testing.T) {
 	// Marshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type T struct {
-			Time gtime.Time
+			Time qn_time.Time
 		}
 		t1 := new(T)
 		s := "2006-01-02 15:04:05"
-		t1.Time = *gtime.NewFromStr(s)
+		t1.Time = *qn_time.NewFromStr(s)
 		j, err := json.Marshal(t1)
 		t.Assert(err, nil)
 		t.Assert(j, `{"Time":"2006-01-02 15:04:05"}`)
 	})
 	// Marshal nil
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type T struct {
-			Time gtime.Time
+			Time qn_time.Time
 		}
 		t1 := new(T)
 		j, err := json.Marshal(t1)
@@ -81,9 +81,9 @@ func Test_Json_Struct(t *testing.T) {
 		t.Assert(j, `{"Time":""}`)
 	})
 	// Marshal nil omitempty
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type T struct {
-			Time gtime.Time `json:"time,omitempty"`
+			Time qn_time.Time `json:"time,omitempty"`
 		}
 		t1 := new(T)
 		j, err := json.Marshal(t1)

@@ -10,11 +10,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/os/gtimer"
+	"github.com/qnsoft/common/os/qn_timer"
 )
 
 var (
-	timer = gtimer.New(5, 30*time.Millisecond)
+	timer = qn_timer.New(5, 30*time.Millisecond)
 )
 
 func Benchmark_Add(b *testing.B) {

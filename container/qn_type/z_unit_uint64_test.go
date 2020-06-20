@@ -12,10 +12,10 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 type Temp struct {
@@ -24,7 +24,7 @@ type Temp struct {
 }
 
 func Test_Uint64(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var wg sync.WaitGroup
 		addTimes := 1000
 		i := gtype.NewUint64(0)
@@ -47,7 +47,7 @@ func Test_Uint64(t *testing.T) {
 	})
 }
 func Test_Uint64_JSON(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := gtype.NewUint64(math.MaxUint64)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
@@ -67,9 +67,9 @@ func Test_Uint64_UnmarshalValue(t *testing.T) {
 		Name string
 		Var  *gtype.Uint64
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"var":  "123",
 		}, &v)

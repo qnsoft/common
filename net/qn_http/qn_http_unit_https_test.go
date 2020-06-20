@@ -12,12 +12,12 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/text/gstr"
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_HTTPS_Basic(t *testing.T) {
@@ -40,14 +40,14 @@ func Test_HTTPS_Basic(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 
 	// HTTP
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := g.Client()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.AssertIN(gstr.Trim(c.GetContent("/")), g.Slice{"", "Client sent an HTTP request to an HTTPS server."})
 		t.AssertIN(gstr.Trim(c.GetContent("/test")), g.Slice{"", "Client sent an HTTP request to an HTTPS server."})
 	})
 	// HTTPS
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := g.Client()
 		c.SetPrefix(fmt.Sprintf("https://127.0.0.1:%d", p))
 		t.Assert(c.GetContent("/"), "Not Found")
@@ -60,7 +60,7 @@ func Test_HTTPS_HTTP_Basic(t *testing.T) {
 		portHttp, _  = ports.PopRand()
 		portHttps, _ = ports.PopRand()
 	)
-	s := g.Server(gtime.TimestampNanoStr())
+	s := g.Server(qn_time.TimestampNanoStr())
 	s.Group("/", func(group *ghttp.RouterGroup) {
 		group.GET("/test", func(r *ghttp.Request) {
 			r.Response.Write("test")
@@ -79,14 +79,14 @@ func Test_HTTPS_HTTP_Basic(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 
 	// HTTP
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := g.Client()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", portHttp))
 		t.Assert(c.GetContent("/"), "Not Found")
 		t.Assert(c.GetContent("/test"), "test")
 	})
 	// HTTPS
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := g.Client()
 		c.SetPrefix(fmt.Sprintf("https://127.0.0.1:%d", portHttps))
 		t.Assert(c.GetContent("/"), "Not Found")

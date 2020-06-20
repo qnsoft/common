@@ -14,7 +14,7 @@ import (
 	"github.com/qnsoft/common/debug/gdebug"
 	"github.com/qnsoft/common/text/gstr"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 type (
@@ -151,12 +151,12 @@ func (g *RouterGroup) Bind(items []GroupItem) *RouterGroup {
 		if len(item) < 3 {
 			g.server.Logger().Fatalf("invalid router item: %s", item)
 		}
-		bindType := gstr.ToUpper(gconv.String(item[0]))
+		bindType := gstr.ToUpper(qn_conv.String(item[0]))
 		switch bindType {
 		case "REST":
-			group.preBindToLocalArray("REST", gconv.String(item[0])+":"+gconv.String(item[1]), item[2])
+			group.preBindToLocalArray("REST", qn_conv.String(item[0])+":"+qn_conv.String(item[1]), item[2])
 		case "MIDDLEWARE":
-			group.preBindToLocalArray("MIDDLEWARE", gconv.String(item[0])+":"+gconv.String(item[1]), item[2])
+			group.preBindToLocalArray("MIDDLEWARE", qn_conv.String(item[0])+":"+qn_conv.String(item[1]), item[2])
 		default:
 			if strings.EqualFold(bindType, "ALL") {
 				bindType = ""
@@ -164,9 +164,9 @@ func (g *RouterGroup) Bind(items []GroupItem) *RouterGroup {
 				bindType += ":"
 			}
 			if len(item) > 3 {
-				group.preBindToLocalArray("HANDLER", bindType+gconv.String(item[1]), item[2], item[3])
+				group.preBindToLocalArray("HANDLER", bindType+qn_conv.String(item[1]), item[2], item[3])
 			} else {
-				group.preBindToLocalArray("HANDLER", bindType+gconv.String(item[1]), item[2])
+				group.preBindToLocalArray("HANDLER", bindType+qn_conv.String(item[1]), item[2])
 			}
 		}
 	}
@@ -295,7 +295,7 @@ func (g *RouterGroup) doBindRoutersToServer(item *preBindItem) *RouterGroup {
 	// Filter repeated char '/'.
 	pattern = gstr.Replace(pattern, "//", "/")
 	// Convert params to string array.
-	extras := gconv.Strings(params)
+	extras := qn_conv.Strings(params)
 	// Check whether it's a hook handler.
 	if _, ok := object.(HandlerFunc); ok && len(extras) > 0 {
 		bindType = "HOOK"

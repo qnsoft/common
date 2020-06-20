@@ -13,15 +13,15 @@ import (
 	"github.com/qnsoft/common/internal/json"
 
 	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
-	"github.com/qnsoft/common/util/gutil"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/util/qn_util"
 )
 
 func Test_TreeMap_Var(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.TreeMap
-		m.SetComparator(gutil.ComparatorString)
+		m.SetComparator(qn_util.ComparatorString)
 		m.Set("key1", "val1")
 		t.Assert(m.Keys(), []interface{}{"key1"})
 
@@ -52,8 +52,8 @@ func Test_TreeMap_Var(t *testing.T) {
 }
 
 func Test_TreeMap_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		m := gmap.NewTreeMap(gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gmap.NewTreeMap(qn_util.ComparatorString)
 		m.Set("key1", "val1")
 		t.Assert(m.Keys(), []interface{}{"key1"})
 
@@ -81,14 +81,14 @@ func Test_TreeMap_Basic(t *testing.T) {
 		t.Assert(m.Size(), 0)
 		t.Assert(m.IsEmpty(), true)
 
-		m2 := gmap.NewTreeMapFrom(gutil.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
+		m2 := gmap.NewTreeMapFrom(qn_util.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
 		t.Assert(m2.Map(), map[interface{}]interface{}{1: 1, "key1": "val1"})
 	})
 }
 
 func Test_TreeMap_Set_Fun(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		m := gmap.NewTreeMap(gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gmap.NewTreeMap(qn_util.ComparatorString)
 		m.GetOrSetFunc("fun", getValue)
 		m.GetOrSetFuncLock("funlock", getValue)
 		t.Assert(m.Get("funlock"), 3)
@@ -100,8 +100,8 @@ func Test_TreeMap_Set_Fun(t *testing.T) {
 }
 
 func Test_TreeMap_Batch(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		m := gmap.NewTreeMap(gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gmap.NewTreeMap(qn_util.ComparatorString)
 		m.Sets(map[interface{}]interface{}{1: 1, "key1": "val1", "key2": "val2", "key3": "val3"})
 		t.Assert(m.Map(), map[interface{}]interface{}{1: 1, "key1": "val1", "key2": "val2", "key3": "val3"})
 		m.Removes([]interface{}{"key1", 1})
@@ -109,9 +109,9 @@ func Test_TreeMap_Batch(t *testing.T) {
 	})
 }
 func Test_TreeMap_Iterator(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[interface{}]interface{}{1: 1, "key1": "val1"}
-		m := gmap.NewTreeMapFrom(gutil.ComparatorString, expect)
+		m := gmap.NewTreeMapFrom(qn_util.ComparatorString, expect)
 		m.Iterator(func(k interface{}, v interface{}) bool {
 			t.Assert(expect[k], v)
 			return true
@@ -131,9 +131,9 @@ func Test_TreeMap_Iterator(t *testing.T) {
 		t.Assert(j, 1)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[interface{}]interface{}{1: 1, "key1": "val1"}
-		m := gmap.NewTreeMapFrom(gutil.ComparatorString, expect)
+		m := gmap.NewTreeMapFrom(qn_util.ComparatorString, expect)
 		for i := 0; i < 10; i++ {
 			m.IteratorAsc(func(k interface{}, v interface{}) bool {
 				t.Assert(expect[k], v)
@@ -152,9 +152,9 @@ func Test_TreeMap_Iterator(t *testing.T) {
 }
 
 func Test_TreeMap_Clone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//clone 方法是深克隆
-		m := gmap.NewTreeMapFrom(gutil.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
+		m := gmap.NewTreeMapFrom(qn_util.ComparatorString, map[interface{}]interface{}{1: 1, "key1": "val1"})
 		m_clone := m.Clone()
 		m.Remove(1)
 		//修改原 map,clone 后的 map 不影响
@@ -168,38 +168,38 @@ func Test_TreeMap_Clone(t *testing.T) {
 
 func Test_TreeMap_Json(t *testing.T) {
 	// Marshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		m1 := gmap.NewTreeMapFrom(gutil.ComparatorString, data)
+		m1 := gmap.NewTreeMapFrom(qn_util.ComparatorString, data)
 		b1, err1 := json.Marshal(m1)
-		b2, err2 := json.Marshal(gconv.Map(data))
+		b2, err2 := json.Marshal(qn_conv.Map(data))
 		t.Assert(err1, err2)
 		t.Assert(b1, b2)
 	})
 	// Unmarshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		b, err := json.Marshal(gconv.Map(data))
+		b, err := json.Marshal(qn_conv.Map(data))
 		t.Assert(err, nil)
 
-		m := gmap.NewTreeMap(gutil.ComparatorString)
+		m := gmap.NewTreeMap(qn_util.ComparatorString)
 		err = json.Unmarshal(b, m)
 		t.Assert(err, nil)
 		t.Assert(m.Get("k1"), data["k1"])
 		t.Assert(m.Get("k2"), data["k2"])
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		b, err := json.Marshal(gconv.Map(data))
+		b, err := json.Marshal(qn_conv.Map(data))
 		t.Assert(err, nil)
 
 		var m gmap.TreeMap
@@ -216,9 +216,9 @@ func TestTreeMap_UnmarshalValue(t *testing.T) {
 		Map  *gmap.TreeMap
 	}
 	// JSON
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"map":  []byte(`{"k1":"v1","k2":"v2"}`),
 		}, &v)
@@ -229,9 +229,9 @@ func TestTreeMap_UnmarshalValue(t *testing.T) {
 		t.Assert(v.Map.Get("k2"), "v2")
 	})
 	// Map
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"map": g.Map{
 				"k1": "v1",

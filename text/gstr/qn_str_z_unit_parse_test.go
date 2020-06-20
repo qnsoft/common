@@ -13,13 +13,13 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_Parse(t *testing.T) {
 	// url
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := "goframe.org/index?name=john&score=100"
 		u, err := url.Parse(s)
 		t.Assert(err, nil)

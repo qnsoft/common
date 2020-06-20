@@ -9,7 +9,7 @@ package qn_str
 import (
 	"strings"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // CompareVersion compares <a> and <b> as standard GNU version.
@@ -47,8 +47,8 @@ func CompareVersion(a, b string) int {
 	v1 := 0
 	v2 := 0
 	for i := 0; i < len(array1); i++ {
-		v1 = gconv.Int(array1[i])
-		v2 = gconv.Int(array2[i])
+		v1 = qn_conv.Int(array1[i])
+		v2 = qn_conv.Int(array2[i])
 		if v1 > v2 {
 			return 1
 		}
@@ -120,8 +120,8 @@ func CompareVersionGo(a, b string) int {
 	v1 := 0
 	v2 := 0
 	for i := 0; i < len(array1); i++ {
-		v1 = gconv.Int(array1[i])
-		v2 = gconv.Int(array2[i])
+		v1 = qn_conv.Int(array1[i])
+		v2 = qn_conv.Int(array2[i])
 		if v1 > v2 {
 			return 1
 		}

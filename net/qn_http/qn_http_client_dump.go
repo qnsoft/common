@@ -13,7 +13,7 @@ import (
 	"net/http/httputil"
 
 	"github.com/qnsoft/common/internal/utils"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // dumpTextFormat is the format of the dumped raw string
@@ -31,7 +31,7 @@ func getResponseBody(res *http.Response) string {
 	}
 	bodyContent, _ := ioutil.ReadAll(res.Body)
 	res.Body = utils.NewReadCloser(bodyContent, true)
-	return gconv.UnsafeBytesToStr(bodyContent)
+	return qn_conv.UnsafeBytesToStr(bodyContent)
 }
 
 // RawRequest returns the raw content of the request.
@@ -51,7 +51,7 @@ func (r *ClientResponse) RawRequest() string {
 	return fmt.Sprintf(
 		dumpTextFormat,
 		"REQUEST",
-		gconv.UnsafeBytesToStr(bs),
+		qn_conv.UnsafeBytesToStr(bs),
 		r.requestBody,
 	)
 }
@@ -70,7 +70,7 @@ func (r *ClientResponse) RawResponse() string {
 	return fmt.Sprintf(
 		dumpTextFormat,
 		"RESPONSE",
-		gconv.UnsafeBytesToStr(bs),
+		qn_conv.UnsafeBytesToStr(bs),
 		getResponseBody(r.Response),
 	)
 }

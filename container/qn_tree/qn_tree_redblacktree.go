@@ -10,8 +10,8 @@ import (
 	"fmt"
 
 	"github.com/qnsoft/common/internal/json"
-	gconv "github.com/qnsoft/common/util/qn_conv"
-	gutil "github.com/qnsoft/common/util/qn_util"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/internal/rwmutex"
@@ -378,7 +378,7 @@ func (tree *RedBlackTree) Map() map[interface{}]interface{} {
 func (tree *RedBlackTree) MapStrAny() map[string]interface{} {
 	m := make(map[string]interface{}, tree.Size())
 	tree.IteratorAsc(func(key, value interface{}) bool {
-		m[gconv.String(key)] = value
+		m[qn_conv.String(key)] = value
 		return true
 	})
 	return m
@@ -717,7 +717,7 @@ func (tree *RedBlackTree) doSearch(key interface{}) (node *RedBlackTreeNode, fou
 	return node, false
 }
 
-func (node *RedBlackTreeNode) grandparent() *RedBlackTreeNode {
+func (node *RedBlackTreeNode) qn_randparent() *RedBlackTreeNode {
 	if node != nil && node.parent != nil {
 		return node.parent.parent
 	}
@@ -798,19 +798,19 @@ func (tree *RedBlackTree) insertCase3(node *RedBlackTreeNode) {
 	if tree.nodeColor(uncle) == red {
 		node.parent.color = black
 		uncle.color = black
-		node.grandparent().color = red
-		tree.insertCase1(node.grandparent())
+		node.qn_randparent().color = red
+		tree.insertCase1(node.qn_randparent())
 	} else {
 		tree.insertCase4(node)
 	}
 }
 
 func (tree *RedBlackTree) insertCase4(node *RedBlackTreeNode) {
-	grandparent := node.grandparent()
-	if node == node.parent.right && node.parent == grandparent.left {
+	qn_randparent := node.qn_randparent()
+	if node == node.parent.right && node.parent == qn_randparent.left {
 		tree.rotateLeft(node.parent)
 		node = node.left
-	} else if node == node.parent.left && node.parent == grandparent.right {
+	} else if node == node.parent.left && node.parent == qn_randparent.right {
 		tree.rotateRight(node.parent)
 		node = node.right
 	}
@@ -819,12 +819,12 @@ func (tree *RedBlackTree) insertCase4(node *RedBlackTreeNode) {
 
 func (tree *RedBlackTree) insertCase5(node *RedBlackTreeNode) {
 	node.parent.color = black
-	grandparent := node.grandparent()
-	grandparent.color = red
-	if node == node.parent.left && node.parent == grandparent.left {
-		tree.rotateRight(grandparent)
-	} else if node == node.parent.right && node.parent == grandparent.right {
-		tree.rotateLeft(grandparent)
+	qn_randparent := node.qn_randparent()
+	qn_randparent.color = red
+	if node == node.parent.left && node.parent == qn_randparent.left {
+		tree.rotateRight(qn_randparent)
+	} else if node == node.parent.right && node.parent == qn_randparent.right {
+		tree.rotateLeft(qn_randparent)
 	}
 }
 
@@ -927,7 +927,7 @@ func (tree *RedBlackTree) nodeColor(node *RedBlackTreeNode) color {
 
 // MarshalJSON implements the interface MarshalJSON for json.Marshal.
 func (tree *RedBlackTree) MarshalJSON() ([]byte, error) {
-	return json.Marshal(gconv.Map(tree.Map()))
+	return json.Marshal(qn_conv.Map(tree.Map()))
 }
 
 // UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
@@ -935,7 +935,7 @@ func (tree *RedBlackTree) UnmarshalJSON(b []byte) error {
 	tree.mu.Lock()
 	defer tree.mu.Unlock()
 	if tree.comparator == nil {
-		tree.comparator = gutil.ComparatorString
+		tree.comparator = qn_util.ComparatorString
 	}
 	var data map[string]interface{}
 	if err := json.Unmarshal(b, &data); err != nil {
@@ -952,9 +952,9 @@ func (tree *RedBlackTree) UnmarshalValue(value interface{}) (err error) {
 	tree.mu.Lock()
 	defer tree.mu.Unlock()
 	if tree.comparator == nil {
-		tree.comparator = gutil.ComparatorString
+		tree.comparator = qn_util.ComparatorString
 	}
-	for k, v := range gconv.Map(value) {
+	for k, v := range qn_conv.Map(value) {
 		tree.doSet(k, v)
 	}
 	return

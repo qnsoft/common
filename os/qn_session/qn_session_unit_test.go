@@ -9,11 +9,11 @@ package qn_session
 import (
 	"testing"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_NewSessionId(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		id1 := NewSessionId()
 		id2 := NewSessionId()
 		t.AssertNE(id1, id2)

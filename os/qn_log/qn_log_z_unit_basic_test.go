@@ -8,13 +8,14 @@ package qn_log
 
 import (
 	"bytes"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/text/gstr"
 	"testing"
+
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_Print(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
 		l := NewWithWriter(w)
 		l.Print(1, 2, 3)
@@ -26,7 +27,7 @@ func Test_Print(t *testing.T) {
 }
 
 func Test_Debug(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
 		l := NewWithWriter(w)
 		l.Debug(1, 2, 3)
@@ -37,7 +38,7 @@ func Test_Debug(t *testing.T) {
 }
 
 func Test_Info(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
 		l := NewWithWriter(w)
 		l.Info(1, 2, 3)
@@ -48,7 +49,7 @@ func Test_Info(t *testing.T) {
 }
 
 func Test_Notice(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
 		l := NewWithWriter(w)
 		l.Notice(1, 2, 3)
@@ -59,7 +60,7 @@ func Test_Notice(t *testing.T) {
 }
 
 func Test_Warning(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
 		l := NewWithWriter(w)
 		l.Warning(1, 2, 3)
@@ -70,7 +71,7 @@ func Test_Warning(t *testing.T) {
 }
 
 func Test_Error(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		w := bytes.NewBuffer(nil)
 		l := NewWithWriter(w)
 		l.Error(1, 2, 3)

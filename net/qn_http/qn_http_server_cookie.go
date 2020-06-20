@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
+	"github.com/qnsoft/common/os/qn_time"
 )
 
 // Cookie for HTTP COOKIE management.
@@ -102,7 +102,7 @@ func (c *Cookie) SetCookie(key, value, domain, path string, maxAge time.Duration
 		isHttpOnly = httpOnly[0]
 	}
 	c.data[key] = CookieItem{
-		value, domain, path, gtime.Timestamp() + int64(maxAge.Seconds()), isHttpOnly,
+		value, domain, path, qn_time.Timestamp() + int64(maxAge.Seconds()), isHttpOnly,
 	}
 }
 

@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/qnsoft/common/encoding/gbase64"
+	"github.com/qnsoft/common/encoding/qn_base64"
 )
 
 // BasicAuth enables the http basic authentication feature with given passport and password
@@ -30,7 +30,7 @@ func (r *Request) BasicAuth(user, pass string, tips ...string) bool {
 	}
 	switch authArray[0] {
 	case "Basic":
-		authBytes, err := gbase64.DecodeString(authArray[1])
+		authBytes, err := qn_base64.DecodeString(authArray[1])
 		if err != nil {
 			r.Response.WriteStatus(http.StatusForbidden, err.Error())
 			return false

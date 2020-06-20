@@ -12,12 +12,12 @@ import (
 
 	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Float64(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := gtype.NewFloat64(0)
 		iClone := i.Clone()
 		t.AssertEQ(iClone.Set(0.1), float64(0))
@@ -29,7 +29,7 @@ func Test_Float64(t *testing.T) {
 }
 
 func Test_Float64_JSON(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := math.MaxFloat64
 		i := gtype.NewFloat64(v)
 		b1, err1 := json.Marshal(i)
@@ -50,9 +50,9 @@ func Test_Float64_UnmarshalValue(t *testing.T) {
 		Name string
 		Var  *gtype.Float64
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"var":  "123.456",
 		}, &v)

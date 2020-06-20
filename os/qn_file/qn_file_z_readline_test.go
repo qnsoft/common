@@ -7,25 +7,26 @@
 package qn_file_test
 
 import (
-	"github.com/qnsoft/common/debug/gdebug"
 	"testing"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/debug/gdebug"
+
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_NotFound(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		teatFile := gfile.Dir(gdebug.CallerFilePath()) + gfile.Separator + "testdata/readline/error.log"
+	qn_test.C(t, func(t *qn_test.T) {
+		teatFile := qn_file.Dir(gdebug.CallerFilePath()) + qn_file.Separator + "testdata/readline/error.log"
 		callback := func(line string) {
 		}
-		err := gfile.ReadLines(teatFile, callback)
+		err := qn_file.ReadLines(teatFile, callback)
 		t.AssertNE(err, nil)
 	})
 }
 
 func Test_ReadLines(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expectList := []string{"a", "b", "c", "d", "e"}
 
 		getList := make([]string, 0)
@@ -33,8 +34,8 @@ func Test_ReadLines(t *testing.T) {
 			getList = append(getList, line)
 		}
 
-		teatFile := gfile.Dir(gdebug.CallerFilePath()) + gfile.Separator + "testdata/readline/file.log"
-		err := gfile.ReadLines(teatFile, callback)
+		teatFile := qn_file.Dir(gdebug.CallerFilePath()) + qn_file.Separator + "testdata/readline/file.log"
+		err := qn_file.ReadLines(teatFile, callback)
 
 		t.AssertEQ(getList, expectList)
 		t.AssertEQ(err, nil)
@@ -42,7 +43,7 @@ func Test_ReadLines(t *testing.T) {
 }
 
 func Test_ReadByteLines(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expectList := [][]byte{[]byte("a"), []byte("b"), []byte("c"), []byte("d"), []byte("e")}
 
 		getList := make([][]byte, 0)
@@ -50,8 +51,8 @@ func Test_ReadByteLines(t *testing.T) {
 			getList = append(getList, line)
 		}
 
-		teatFile := gfile.Dir(gdebug.CallerFilePath()) + gfile.Separator + "testdata/readline/file.log"
-		err := gfile.ReadByteLines(teatFile, callback)
+		teatFile := qn_file.Dir(gdebug.CallerFilePath()) + qn_file.Separator + "testdata/readline/file.log"
+		err := qn_file.ReadByteLines(teatFile, callback)
 
 		t.AssertEQ(getList, expectList)
 		t.AssertEQ(err, nil)

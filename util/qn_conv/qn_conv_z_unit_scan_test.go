@@ -10,17 +10,18 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Scan(t *testing.T) {
 	type User struct {
 		Uid   int
 		Name  string
-		Pass1 string `gconv:"password1"`
-		Pass2 string `gconv:"password2"`
+		Pass1 string `qn_conv:"password1"`
+		Pass2 string `qn_conv:"password2"`
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			user   = new(User)
 			params = g.Map{
@@ -30,7 +31,7 @@ func Test_Scan(t *testing.T) {
 				"PASS2": "456",
 			}
 		)
-		err := gconv.Scan(params, user)
+		err := qn_conv.Scan(params, user)
 		t.Assert(err, nil)
 		t.Assert(user, &User{
 			Uid:   1,
@@ -39,7 +40,7 @@ func Test_Scan(t *testing.T) {
 			Pass2: "456",
 		})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			users  []User
 			params = g.Slice{
@@ -57,7 +58,7 @@ func Test_Scan(t *testing.T) {
 				},
 			}
 		)
-		err := gconv.Scan(params, &users)
+		err := qn_conv.Scan(params, &users)
 		t.Assert(err, nil)
 		t.Assert(users, g.Slice{
 			&User{
@@ -80,15 +81,15 @@ func Test_ScanStr(t *testing.T) {
 	type User struct {
 		Uid   int
 		Name  string
-		Pass1 string `gconv:"password1"`
-		Pass2 string `gconv:"password2"`
+		Pass1 string `qn_conv:"password1"`
+		Pass2 string `qn_conv:"password2"`
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			user   = new(User)
 			params = `{"uid":1,"name":"john", "pass1":"123","pass2":"456"}`
 		)
-		err := gconv.Scan(params, user)
+		err := qn_conv.Scan(params, user)
 		t.Assert(err, nil)
 		t.Assert(user, &User{
 			Uid:   1,
@@ -97,7 +98,7 @@ func Test_ScanStr(t *testing.T) {
 			Pass2: "456",
 		})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			users  []User
 			params = `[
@@ -105,7 +106,7 @@ func Test_ScanStr(t *testing.T) {
 {"uid":2,"name":"john2", "pass1":"333","pass2":"444"}
 ]`
 		)
-		err := gconv.Scan(params, &users)
+		err := qn_conv.Scan(params, &users)
 		t.Assert(err, nil)
 		t.Assert(users, g.Slice{
 			&User{

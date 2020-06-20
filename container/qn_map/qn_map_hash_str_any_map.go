@@ -9,7 +9,7 @@ package qn_map
 
 import (
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/internal/empty"
 
@@ -428,7 +428,7 @@ func (m *StrAnyMap) Flip() {
 	defer m.mu.Unlock()
 	n := make(map[string]interface{}, len(m.data))
 	for k, v := range m.data {
-		n[gconv.String(v)] = k
+		n[qn_conv.String(v)] = k
 	}
 	m.data = n
 }
@@ -475,6 +475,6 @@ func (m *StrAnyMap) UnmarshalJSON(b []byte) error {
 func (m *StrAnyMap) UnmarshalValue(value interface{}) (err error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	m.data = gconv.Map(value)
+	m.data = qn_conv.Map(value)
 	return
 }

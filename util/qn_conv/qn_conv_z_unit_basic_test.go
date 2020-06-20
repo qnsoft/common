@@ -9,34 +9,34 @@ package qn_conv_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/util/gconv"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		f32 := float32(123.456)
 		i64 := int64(1552578474888)
-		t.AssertEQ(gconv.Int(f32), int(123))
-		t.AssertEQ(gconv.Int8(f32), int8(123))
-		t.AssertEQ(gconv.Int16(f32), int16(123))
-		t.AssertEQ(gconv.Int32(f32), int32(123))
-		t.AssertEQ(gconv.Int64(f32), int64(123))
-		t.AssertEQ(gconv.Int64(f32), int64(123))
-		t.AssertEQ(gconv.Uint(f32), uint(123))
-		t.AssertEQ(gconv.Uint8(f32), uint8(123))
-		t.AssertEQ(gconv.Uint16(f32), uint16(123))
-		t.AssertEQ(gconv.Uint32(f32), uint32(123))
-		t.AssertEQ(gconv.Uint64(f32), uint64(123))
-		t.AssertEQ(gconv.Float32(f32), float32(123.456))
-		t.AssertEQ(gconv.Float64(i64), float64(i64))
-		t.AssertEQ(gconv.Bool(f32), true)
-		t.AssertEQ(gconv.String(f32), "123.456")
-		t.AssertEQ(gconv.String(i64), "1552578474888")
+		t.AssertEQ(qn_conv.Int(f32), int(123))
+		t.AssertEQ(qn_conv.Int8(f32), int8(123))
+		t.AssertEQ(qn_conv.Int16(f32), int16(123))
+		t.AssertEQ(qn_conv.Int32(f32), int32(123))
+		t.AssertEQ(qn_conv.Int64(f32), int64(123))
+		t.AssertEQ(qn_conv.Int64(f32), int64(123))
+		t.AssertEQ(qn_conv.Uint(f32), uint(123))
+		t.AssertEQ(qn_conv.Uint8(f32), uint8(123))
+		t.AssertEQ(qn_conv.Uint16(f32), uint16(123))
+		t.AssertEQ(qn_conv.Uint32(f32), uint32(123))
+		t.AssertEQ(qn_conv.Uint64(f32), uint64(123))
+		t.AssertEQ(qn_conv.Float32(f32), float32(123.456))
+		t.AssertEQ(qn_conv.Float64(i64), float64(i64))
+		t.AssertEQ(qn_conv.Bool(f32), true)
+		t.AssertEQ(qn_conv.String(f32), "123.456")
+		t.AssertEQ(qn_conv.String(i64), "1552578474888")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := "-0xFF"
-		t.Assert(gconv.Int(s), int64(-0xFF))
+		t.Assert(qn_conv.Int(s), int64(-0xFF))
 	})
 }

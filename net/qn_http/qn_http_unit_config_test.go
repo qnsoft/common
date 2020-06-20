@@ -11,19 +11,19 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_ConfigFromMap(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := g.Map{
 			"address":         ":8199",
 			"readTimeout":     "60s",
@@ -33,8 +33,8 @@ func Test_ConfigFromMap(t *testing.T) {
 		}
 		config, err := ghttp.ConfigFromMap(m)
 		t.Assert(err, nil)
-		d1, _ := time.ParseDuration(gconv.String(m["readTimeout"]))
-		d2, _ := time.ParseDuration(gconv.String(m["cookieMaxAge"]))
+		d1, _ := time.ParseDuration(qn_conv.String(m["readTimeout"]))
+		d2, _ := time.ParseDuration(qn_conv.String(m["cookieMaxAge"]))
 		t.Assert(config.Address, m["address"])
 		t.Assert(config.ReadTimeout, d1)
 		t.Assert(config.CookieMaxAge, d2)
@@ -44,7 +44,7 @@ func Test_ConfigFromMap(t *testing.T) {
 }
 
 func Test_SetConfigWithMap(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := g.Map{
 			"Address": ":8199",
 			//"ServerRoot":       "/var/www/MyServerRoot",
@@ -75,7 +75,7 @@ func Test_ClientMaxBodySize(t *testing.T) {
 		"Address":           p,
 		"ClientMaxBodySize": "1k",
 	}
-	gtest.Assert(s.SetConfigWithMap(m), nil)
+	qn_test.Assert(s.SetConfigWithMap(m), nil)
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
 	s.Start()
@@ -83,7 +83,7 @@ func Test_ClientMaxBodySize(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := g.Client()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -112,7 +112,7 @@ func Test_ClientMaxBodySize_File(t *testing.T) {
 		"ErrorLogEnabled":   false,
 		"ClientMaxBodySize": "1k",
 	}
-	gtest.Assert(s.SetConfigWithMap(m), nil)
+	qn_test.Assert(s.SetConfigWithMap(m), nil)
 	s.SetPort(p)
 	s.SetDumpRouterMap(false)
 	s.Start()
@@ -121,17 +121,17 @@ func Test_ClientMaxBodySize_File(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 
 	// ok
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := g.Client()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
-		path := gfile.TempDir(gtime.TimestampNanoStr())
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
 		data := make([]byte, 512)
 		for i := 0; i < 512; i++ {
 			data[i] = 'a'
 		}
-		t.Assert(gfile.PutBytes(path, data), nil)
-		defer gfile.Remove(path)
+		t.Assert(qn_file.PutBytes(path, data), nil)
+		defer qn_file.Remove(path)
 		t.Assert(
 			gstr.Trim(c.PostContent("/", "name=john&file=@file:"+path)),
 			"ok",
@@ -139,17 +139,17 @@ func Test_ClientMaxBodySize_File(t *testing.T) {
 	})
 
 	// too large
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := g.Client()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
-		path := gfile.TempDir(gtime.TimestampNanoStr())
+		path := qn_file.TempDir(qn_time.TimestampNanoStr())
 		data := make([]byte, 1056)
 		for i := 0; i < 1056; i++ {
 			data[i] = 'a'
 		}
-		t.Assert(gfile.PutBytes(path, data), nil)
-		defer gfile.Remove(path)
+		t.Assert(qn_file.PutBytes(path, data), nil)
+		defer qn_file.Remove(path)
 		t.Assert(
 			gstr.Trim(c.PostContent("/", "name=john&file=@file:"+path)),
 			"http: request body too large",

@@ -13,7 +13,7 @@ import (
 
 	"github.com/qnsoft/common/container/qn_var"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 var (
@@ -30,7 +30,7 @@ func doInit() {
 	// Parsing os.Args with default algorithm.
 	// The option should use '=' to separate its name and value in default.
 	for _, arg := range os.Args {
-		array, _ := gregex.MatchString(`^\-{1,2}([\w\?\.\-]+)={0,1}(.*)$`, arg)
+		array, _ := qn_regex.MatchString(`^\-{1,2}([\w\?\.\-]+)={0,1}(.*)$`, arg)
 		if len(array) == 3 {
 			defaultParsedOptions[array[1]] = array[2]
 		} else {

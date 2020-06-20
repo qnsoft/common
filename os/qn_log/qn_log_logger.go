@@ -16,17 +16,17 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/gfpool"
 	"github.com/qnsoft/common/os/gmlock"
-	"github.com/qnsoft/common/os/gtimer"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/os/qn_timer"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/debug/gdebug"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 // Logger is the struct for logging management.
@@ -61,8 +61,8 @@ func New() *Logger {
 		config: DefaultConfig(),
 	}
 	// Initialize the internal handler after some delay.
-	gtimer.AddOnce(time.Second, func() {
-		gtimer.AddOnce(logger.config.RotateCheckInterval, logger.rotateChecksTimely)
+	qn_timer.AddOnce(time.Second, func() {
+		qn_timer.AddOnce(logger.config.RotateCheckInterval, logger.rotateChecksTimely)
 	})
 	return logger
 }
@@ -86,12 +86,12 @@ func (l *Logger) Clone() *Logger {
 // getFilePath returns the logging file path.
 // The logging file name must have extension name of "log".
 func (l *Logger) getFilePath(now time.Time) string {
-	// Content containing "{}" in the file name is formatted using gtime.
-	file, _ := gregex.ReplaceStringFunc(`{.+?}`, l.config.File, func(s string) string {
-		return gtime.New(now).Format(strings.Trim(s, "{}"))
+	// Content containing "{}" in the file name is formatted using qn_time.
+	file, _ := qn_regex.ReplaceStringFunc(`{.+?}`, l.config.File, func(s string) string {
+		return qn_time.New(now).Format(strings.Trim(s, "{}"))
 	})
-	file = gfile.Join(l.config.Path, file)
-	if gfile.ExtName(file) != "log" {
+	file = qn_file.Join(l.config.Path, file)
+	if qn_file.ExtName(file) != "log" {
 		file += ".log"
 	}
 	return file
@@ -133,7 +133,7 @@ func (l *Logger) print(std io.Writer, lead string, values ...interface{}) {
 		}
 		if l.config.Flags&F_FILE_SHORT > 0 {
 			_, path, line := gdebug.CallerWithFilter(gPATH_FILTER_KEY, l.config.StSkip)
-			callerPath = fmt.Sprintf(`%s:%d: `, gfile.Basename(path), line)
+			callerPath = fmt.Sprintf(`%s:%d: `, qn_file.Basename(path), line)
 		}
 		if len(callerPath) > 0 {
 			buffer.WriteString(callerPath)
@@ -167,7 +167,7 @@ func (l *Logger) print(std io.Writer, lead string, values ...interface{}) {
 		if err, ok := v.(error); ok {
 			tempStr = fmt.Sprintf("%+v", err)
 		} else {
-			tempStr = gconv.String(v)
+			tempStr = qn_conv.String(v)
 		}
 		if len(valueStr) > 0 {
 			if valueStr[len(valueStr)-1] == '\n' {
@@ -220,12 +220,12 @@ func (l *Logger) printToWriter(now time.Time, std io.Writer, buffer *bytes.Buffe
 // printToFile outputs logging content to disk file.
 func (l *Logger) printToFile(now time.Time, buffer *bytes.Buffer) {
 	var (
-		logFilePath   = l.getFilePath(now)
-		memoryLockKey = "glog.file.lock:" + logFilePath
+		loqn_filePath = l.getFilePath(now)
+		memoryLockKey = "glog.file.lock:" + loqn_filePath
 	)
 	gmlock.Lock(memoryLockKey)
 	defer gmlock.Unlock(memoryLockKey)
-	file := l.getFilePointer(logFilePath)
+	file := l.getFilePointer(loqn_filePath)
 	defer file.Close()
 	// Rotation file size checks.
 	if l.config.RotateSize > 0 {
@@ -235,7 +235,7 @@ func (l *Logger) printToFile(now time.Time, buffer *bytes.Buffer) {
 		}
 		if stat.Size() > l.config.RotateSize {
 			l.rotateFileBySize(now)
-			file = l.getFilePointer(logFilePath)
+			file = l.getFilePointer(loqn_filePath)
 			defer file.Close()
 		}
 	}

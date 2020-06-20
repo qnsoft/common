@@ -9,61 +9,61 @@ package qn_conv_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/util/gconv"
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_MapToMap1(t *testing.T) {
 	// map[int]int -> map[string]string
 	// empty original map.
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := g.MapIntInt{}
 		m2 := g.MapStrStr{}
-		t.Assert(gconv.MapToMap(m1, &m2), nil)
+		t.Assert(qn_conv.MapToMap(m1, &m2), nil)
 		t.Assert(len(m1), len(m2))
 	})
 	// map[int]int -> map[string]string
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := g.MapIntInt{
 			1: 100,
 			2: 200,
 		}
 		m2 := g.MapStrStr{}
-		t.Assert(gconv.MapToMap(m1, &m2), nil)
+		t.Assert(qn_conv.MapToMap(m1, &m2), nil)
 		t.Assert(m2["1"], m1[1])
 		t.Assert(m2["2"], m1[2])
 	})
 	// map[string]interface{} -> map[string]string
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := g.Map{
 			"k1": "v1",
 			"k2": "v2",
 		}
 		m2 := g.MapStrStr{}
-		t.Assert(gconv.MapToMap(m1, &m2), nil)
+		t.Assert(qn_conv.MapToMap(m1, &m2), nil)
 		t.Assert(m2["k1"], m1["k1"])
 		t.Assert(m2["k2"], m1["k2"])
 	})
 	// map[string]string -> map[string]interface{}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := g.MapStrStr{
 			"k1": "v1",
 			"k2": "v2",
 		}
 		m2 := g.Map{}
-		t.Assert(gconv.MapToMap(m1, &m2), nil)
+		t.Assert(qn_conv.MapToMap(m1, &m2), nil)
 		t.Assert(m2["k1"], m1["k1"])
 		t.Assert(m2["k2"], m1["k2"])
 	})
 	// map[string]interface{} -> map[interface{}]interface{}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := g.MapStrStr{
 			"k1": "v1",
 			"k2": "v2",
 		}
 		m2 := g.MapAnyAny{}
-		t.Assert(gconv.MapToMap(m1, &m2), nil)
+		t.Assert(qn_conv.MapToMap(m1, &m2), nil)
 		t.Assert(m2["k1"], m1["k1"])
 		t.Assert(m2["k2"], m1["k2"])
 	})
@@ -80,33 +80,33 @@ func Test_MapToMap2(t *testing.T) {
 			"name": "john",
 		},
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[string]User)
-		err := gconv.MapToMap(params, &m)
+		err := qn_conv.MapToMap(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 1)
 		t.Assert(m["key"].Id, 1)
 		t.Assert(m["key"].Name, "john")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := (map[string]User)(nil)
-		err := gconv.MapToMap(params, &m)
+		err := qn_conv.MapToMap(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 1)
 		t.Assert(m["key"].Id, 1)
 		t.Assert(m["key"].Name, "john")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[string]*User)
-		err := gconv.MapToMap(params, &m)
+		err := qn_conv.MapToMap(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 1)
 		t.Assert(m["key"].Id, 1)
 		t.Assert(m["key"].Name, "john")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := (map[string]*User)(nil)
-		err := gconv.MapToMap(params, &m)
+		err := qn_conv.MapToMap(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 1)
 		t.Assert(m["key"].Id, 1)
@@ -133,17 +133,17 @@ func Test_MapToMapDeep(t *testing.T) {
 			"name": "john",
 		},
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := (map[string]*User)(nil)
-		err := gconv.MapToMap(params, &m)
+		err := qn_conv.MapToMap(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 1)
 		t.Assert(m["key"].Id, 0)
 		t.Assert(m["key"].Name, "john")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := (map[string]*User)(nil)
-		err := gconv.MapToMapDeep(params, &m)
+		err := qn_conv.MapToMapDeep(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 1)
 		t.Assert(m["key"].Id, 1)
@@ -166,9 +166,9 @@ func Test_MapToMaps1(t *testing.T) {
 			g.Map{"id": 4, "name": "jim"},
 		},
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[string][]User)
-		err := gconv.MapToMaps(params, &m)
+		err := qn_conv.MapToMaps(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m["key1"][0].Id, 1)
@@ -176,9 +176,9 @@ func Test_MapToMaps1(t *testing.T) {
 		t.Assert(m["key2"][0].Id, 3)
 		t.Assert(m["key2"][1].Id, 4)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := (map[string][]User)(nil)
-		err := gconv.MapToMaps(params, &m)
+		err := qn_conv.MapToMaps(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m["key1"][0].Id, 1)
@@ -186,9 +186,9 @@ func Test_MapToMaps1(t *testing.T) {
 		t.Assert(m["key2"][0].Id, 3)
 		t.Assert(m["key2"][1].Id, 4)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[string][]*User)
-		err := gconv.MapToMaps(params, &m)
+		err := qn_conv.MapToMaps(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m["key1"][0].Id, 1)
@@ -196,9 +196,9 @@ func Test_MapToMaps1(t *testing.T) {
 		t.Assert(m["key2"][0].Id, 3)
 		t.Assert(m["key2"][1].Id, 4)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := (map[string][]*User)(nil)
-		err := gconv.MapToMaps(params, &m)
+		err := qn_conv.MapToMaps(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m["key1"][0].Id, 1)
@@ -223,9 +223,9 @@ func Test_MapToMaps2(t *testing.T) {
 			g.Map{"id": 4, "name": "jim"},
 		},
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[int][]User)
-		err := gconv.MapToMaps(params, &m)
+		err := qn_conv.MapToMaps(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m[100][0].Id, 1)
@@ -233,9 +233,9 @@ func Test_MapToMaps2(t *testing.T) {
 		t.Assert(m[200][0].Id, 3)
 		t.Assert(m[200][1].Id, 4)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[int][]*User)
-		err := gconv.MapToMaps(params, &m)
+		err := qn_conv.MapToMaps(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m[100][0].Id, 1)
@@ -243,9 +243,9 @@ func Test_MapToMaps2(t *testing.T) {
 		t.Assert(m[200][0].Id, 3)
 		t.Assert(m[200][1].Id, 4)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[string][]*User)
-		err := gconv.MapToMaps(params, &m)
+		err := qn_conv.MapToMaps(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m["100"][0].Id, 1)
@@ -278,9 +278,9 @@ func Test_MapToMapsDeep(t *testing.T) {
 			g.Map{"id": 4, "name": "jim"},
 		},
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[string][]*User)
-		err := gconv.MapToMaps(params, &m)
+		err := qn_conv.MapToMaps(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m["100"][0].Id, 0)
@@ -292,9 +292,9 @@ func Test_MapToMapsDeep(t *testing.T) {
 		t.Assert(m["200"][0].Name, "green")
 		t.Assert(m["200"][1].Name, "jim")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[string][]*User)
-		err := gconv.MapToMapsDeep(params, &m)
+		err := qn_conv.MapToMapsDeep(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m["100"][0].Id, 1)
@@ -331,9 +331,9 @@ func Test_MapToMapsDeepWithTag(t *testing.T) {
 			g.Map{"id": 4, "name": "jim"},
 		},
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[string][]*User)
-		err := gconv.MapToMaps(params, &m)
+		err := qn_conv.MapToMaps(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m["100"][0].Id, 0)
@@ -345,9 +345,9 @@ func Test_MapToMapsDeepWithTag(t *testing.T) {
 		t.Assert(m["200"][0].Name, "green")
 		t.Assert(m["200"][1].Name, "jim")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := make(map[string][]*User)
-		err := gconv.MapToMapsDeep(params, &m)
+		err := qn_conv.MapToMapsDeep(params, &m)
 		t.Assert(err, nil)
 		t.Assert(len(m), 2)
 		t.Assert(m["100"][0].Id, 1)

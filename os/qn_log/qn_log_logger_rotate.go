@@ -10,13 +10,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/encoding/gcompress"
+	"github.com/qnsoft/common/encoding/qn_compress"
 	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/os/gtimer"
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/os/qn_timer"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 // rotateFileBySize rotates the current logging file according to the
@@ -36,7 +36,7 @@ func (l *Logger) rotateFileBySize(now time.Time) {
 func (l *Logger) doRotateFile(filePath string) error {
 	// No backups, it then just removes the current logging file.
 	if l.config.RotateBackupLimit == 0 {
-		if err := gfile.Remove(filePath); err != nil {
+		if err := qn_file.Remove(filePath); err != nil {
 			return err
 		}
 		intlog.Printf(`%d size exceeds, no backups set, remove original logging file: %s`, l.config.RotateSize, filePath)
@@ -44,9 +44,9 @@ func (l *Logger) doRotateFile(filePath string) error {
 	}
 	// Else it creates new backup files.
 	var (
-		dirPath     = gfile.Dir(filePath)
-		fileName    = gfile.Name(filePath)
-		fileExtName = gfile.ExtName(filePath)
+		dirPath     = qn_file.Dir(filePath)
+		fileName    = qn_file.Name(filePath)
+		fileExtName = qn_file.ExtName(filePath)
 		newFilePath = ""
 	)
 	// Rename the logging file by adding extra datetime information to microseconds, like:
@@ -54,24 +54,24 @@ func (l *Logger) doRotateFile(filePath string) error {
 	// access.20200326.log -> access.20200326.20200326101301899002.log
 	for {
 		var (
-			now   = gtime.Now()
+			now   = qn_time.Now()
 			micro = now.Microsecond() % 1000
 		)
 		for micro < 100 {
 			micro *= 10
 		}
-		newFilePath = gfile.Join(
+		newFilePath = qn_file.Join(
 			dirPath,
 			fmt.Sprintf(
 				`%s.%s%d.%s`,
 				fileName, now.Format("YmdHisu"), micro, fileExtName,
 			),
 		)
-		if !gfile.Exists(newFilePath) {
+		if !qn_file.Exists(newFilePath) {
 			break
 		}
 	}
-	if err := gfile.Rename(filePath, newFilePath); err != nil {
+	if err := qn_file.Rename(filePath, newFilePath); err != nil {
 		return err
 	}
 	return nil
@@ -79,7 +79,7 @@ func (l *Logger) doRotateFile(filePath string) error {
 
 // rotateChecksTimely timely checks the backups expiration and the compression.
 func (l *Logger) rotateChecksTimely() {
-	defer gtimer.AddOnce(l.config.RotateCheckInterval, l.rotateChecksTimely)
+	defer qn_timer.AddOnce(l.config.RotateCheckInterval, l.rotateChecksTimely)
 	// Checks whether file rotation not enabled.
 	if l.config.RotateSize <= 0 && l.config.RotateExpire == 0 {
 		return
@@ -87,7 +87,7 @@ func (l *Logger) rotateChecksTimely() {
 	var (
 		now      = time.Now()
 		pattern  = "*.log, *.gz"
-		files, _ = gfile.ScanDirFile(l.config.Path, pattern, true)
+		files, _ = qn_file.ScanDirFile(l.config.Path, pattern, true)
 	)
 	intlog.Printf("logging rotation start checks: %+v", files)
 	// =============================================================
@@ -100,10 +100,10 @@ func (l *Logger) rotateChecksTimely() {
 			expireRotated bool
 		)
 		for _, file := range files {
-			if gfile.ExtName(file) == "gz" {
+			if qn_file.ExtName(file) == "gz" {
 				continue
 			}
-			mtime = gfile.MTime(file)
+			mtime = qn_file.MTime(file)
 			subDuration = now.Sub(mtime)
 			if subDuration > l.config.RotateExpire {
 				expireRotated = true
@@ -118,7 +118,7 @@ func (l *Logger) rotateChecksTimely() {
 		}
 		if expireRotated {
 			// Update the files array.
-			files, _ = gfile.ScanDirFile(l.config.Path, pattern, true)
+			files, _ = qn_file.ScanDirFile(l.config.Path, pattern, true)
 		}
 	}
 
@@ -129,21 +129,21 @@ func (l *Logger) rotateChecksTimely() {
 	if l.config.RotateBackupCompress > 0 {
 		for _, file := range files {
 			// Eg: access.20200326101301899002.log.gz
-			if gfile.ExtName(file) == "gz" {
+			if qn_file.ExtName(file) == "gz" {
 				continue
 			}
 			// Eg:
 			// access.20200326101301899002.log
-			if gregex.IsMatchString(`.+\.\d{20}\.log`, gfile.Basename(file)) {
+			if qn_regex.IsMatchString(`.+\.\d{20}\.log`, qn_file.Basename(file)) {
 				needCompressFileArray.Append(file)
 			}
 		}
 		if needCompressFileArray.Len() > 0 {
 			needCompressFileArray.Iterator(func(_ int, path string) bool {
-				err := gcompress.GzipFile(path, path+".gz")
+				err := qn_compress.GzipFile(path, path+".gz")
 				if err == nil {
 					intlog.Printf(`compressed done, remove original logging file: %s`, path)
-					if err = gfile.Remove(path); err != nil {
+					if err = qn_file.Remove(path); err != nil {
 						intlog.Print(err)
 					}
 				} else {
@@ -152,7 +152,7 @@ func (l *Logger) rotateChecksTimely() {
 				return true
 			})
 			// Update the files array.
-			files, _ = gfile.ScanDirFile(l.config.Path, pattern, true)
+			files, _ = qn_file.ScanDirFile(l.config.Path, pattern, true)
 		}
 	}
 
@@ -160,19 +160,19 @@ func (l *Logger) rotateChecksTimely() {
 	// Backups count limit and expiration checks.
 	// =============================================================
 	var (
-		backupFilesMap          = make(map[string]*qn_array.SortedArray)
-		originalLoggingFilePath = ""
+		backupFilesMap            = make(map[string]*qn_array.SortedArray)
+		originalLogginqn_filePath = ""
 	)
 	if l.config.RotateBackupLimit > 0 || l.config.RotateBackupExpire > 0 {
 		for _, file := range files {
-			originalLoggingFilePath, _ = gregex.ReplaceString(`\.\d{20}`, "", file)
-			if backupFilesMap[originalLoggingFilePath] == nil {
-				backupFilesMap[originalLoggingFilePath] = qn_array.NewSortedArray(func(a, b interface{}) int {
+			originalLogginqn_filePath, _ = qn_regex.ReplaceString(`\.\d{20}`, "", file)
+			if backupFilesMap[originalLogginqn_filePath] == nil {
+				backupFilesMap[originalLogginqn_filePath] = qn_array.NewSortedArray(func(a, b interface{}) int {
 					// Sorted by rotated/backup file mtime.
 					// The old rotated/backup file is put in the head of array.
 					file1 := a.(string)
 					file2 := b.(string)
-					result := gfile.MTimestampMilli(file1) - gfile.MTimestampMilli(file2)
+					result := qn_file.MTimestampMilli(file1) - qn_file.MTimestampMilli(file2)
 					if result <= 0 {
 						return -1
 					}
@@ -180,8 +180,8 @@ func (l *Logger) rotateChecksTimely() {
 				})
 			}
 			// Check if this file a rotated/backup file.
-			if gregex.IsMatchString(`.+\.\d{20}\.log`, gfile.Basename(file)) {
-				backupFilesMap[originalLoggingFilePath].Add(file)
+			if qn_regex.IsMatchString(`.+\.\d{20}\.log`, qn_file.Basename(file)) {
+				backupFilesMap[originalLogginqn_filePath].Add(file)
 			}
 		}
 		intlog.Printf(`calculated backup files map: %+v`, backupFilesMap)
@@ -190,7 +190,7 @@ func (l *Logger) rotateChecksTimely() {
 			for i := 0; i < diff; i++ {
 				path, _ := array.PopLeft()
 				intlog.Printf(`remove exceeded backup limit file: %s`, path)
-				if err := gfile.Remove(path.(string)); err != nil {
+				if err := qn_file.Remove(path.(string)); err != nil {
 					intlog.Print(err)
 				}
 			}
@@ -204,14 +204,14 @@ func (l *Logger) rotateChecksTimely() {
 			for _, array := range backupFilesMap {
 				array.Iterator(func(_ int, v interface{}) bool {
 					path := v.(string)
-					mtime = gfile.MTime(path)
+					mtime = qn_file.MTime(path)
 					subDuration = now.Sub(mtime)
 					if subDuration > l.config.RotateBackupExpire {
 						intlog.Printf(
 							`%v - %v = %v > %v, remove expired backup file: %s`,
 							now, mtime, subDuration, l.config.RotateBackupExpire, path,
 						)
-						if err := gfile.Remove(path); err != nil {
+						if err := qn_file.Remove(path); err != nil {
 							intlog.Print(err)
 						}
 						return true

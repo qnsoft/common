@@ -15,11 +15,11 @@ import (
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/os/gcmd"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Default(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		os.Args = []string{"gf", "--force", "remove", "-fq", "-p=www", "path", "-n", "root"}
 		t.Assert(len(gcmd.GetArgAll()), 4)
 		t.Assert(gcmd.GetArg(1), "remove")
@@ -34,14 +34,14 @@ func Test_Default(t *testing.T) {
 }
 
 func Test_BuildOptions(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gcmd.BuildOptions(g.MapStrStr{
 			"n": "john",
 		})
 		t.Assert(s, "-n=john")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gcmd.BuildOptions(g.MapStrStr{
 			"n": "john",
 		}, "-test")

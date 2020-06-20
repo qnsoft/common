@@ -12,35 +12,35 @@ import (
 
 	"github.com/qnsoft/common/debug/gdebug"
 	"github.com/qnsoft/common/os/gcfg"
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/qnsoft/common/os/qn_time"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_View(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.AssertNE(View(), nil)
 		b, e := View().ParseContent(`{{"我是中国人" | substr 2 -1}}`, nil)
 		t.Assert(e, nil)
 		t.Assert(b, "中国人")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		tpl := "t.tpl"
-		err := gfile.PutContents(tpl, `{{"我是中国人" | substr 2 -1}}`)
+		err := qn_file.PutContents(tpl, `{{"我是中国人" | substr 2 -1}}`)
 		t.Assert(err, nil)
-		defer gfile.Remove(tpl)
+		defer qn_file.Remove(tpl)
 
 		b, e := View().Parse("t.tpl", nil)
 		t.Assert(e, nil)
 		t.Assert(b, "中国人")
 	})
-	gtest.C(t, func(t *gtest.T) {
-		path := fmt.Sprintf(`%s/%d`, gfile.TempDir(), gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := fmt.Sprintf(`%s/%d`, qn_file.TempDir(), qn_time.TimestampNano())
 		tpl := fmt.Sprintf(`%s/%s`, path, "t.tpl")
-		err := gfile.PutContents(tpl, `{{"我是中国人" | substr 2 -1}}`)
+		err := qn_file.PutContents(tpl, `{{"我是中国人" | substr 2 -1}}`)
 		t.Assert(err, nil)
-		defer gfile.Remove(tpl)
+		defer qn_file.Remove(tpl)
 		err = View().AddPath(path)
 		t.Assert(err, nil)
 
@@ -52,9 +52,9 @@ func Test_View(t *testing.T) {
 
 func Test_View_Config(t *testing.T) {
 	// view1 test1
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		dirPath := gdebug.TestDataPath("view1")
-		gcfg.SetContent(gfile.GetContents(gfile.Join(dirPath, "config.toml")))
+		gcfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
 		defer gcfg.ClearContent()
 		defer instances.Clear()
 
@@ -74,9 +74,9 @@ func Test_View_Config(t *testing.T) {
 		t.Assert(result, "test1:test1")
 	})
 	// view1 test2
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		dirPath := gdebug.TestDataPath("view1")
-		gcfg.SetContent(gfile.GetContents(gfile.Join(dirPath, "config.toml")))
+		gcfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
 		defer gcfg.ClearContent()
 		defer instances.Clear()
 
@@ -96,9 +96,9 @@ func Test_View_Config(t *testing.T) {
 		t.Assert(result, "test2:test2")
 	})
 	// view2
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		dirPath := gdebug.TestDataPath("view2")
-		gcfg.SetContent(gfile.GetContents(gfile.Join(dirPath, "config.toml")))
+		gcfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
 		defer gcfg.ClearContent()
 		defer instances.Clear()
 
@@ -118,9 +118,9 @@ func Test_View_Config(t *testing.T) {
 		t.Assert(result, "test:test")
 	})
 	// view2
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		dirPath := gdebug.TestDataPath("view2")
-		gcfg.SetContent(gfile.GetContents(gfile.Join(dirPath, "config.toml")))
+		gcfg.SetContent(qn_file.GetContents(qn_file.Join(dirPath, "config.toml")))
 		defer gcfg.ClearContent()
 		defer instances.Clear()
 

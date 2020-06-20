@@ -11,7 +11,7 @@ import (
 	"github.com/qnsoft/common/os/gcfg"
 	"github.com/qnsoft/common/os/gview"
 	"github.com/qnsoft/common/util/gmode"
-	gutil "github.com/qnsoft/common/util/qn_util"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 )
 
 // WriteTpl parses and responses given template file.
@@ -75,9 +75,9 @@ func (r *Response) ParseTplContent(content string, params ...gview.Params) (stri
 
 // buildInVars merges build-in variables into <params> and returns the new template variables.
 func (r *Response) buildInVars(params ...map[string]interface{}) map[string]interface{} {
-	m := gutil.MapMergeCopy(params...)
+	m := qn_util.MapMergeCopy(params...)
 	// Retrieve custom template variables from request object.
-	gutil.MapMerge(m, r.Request.viewParams, map[string]interface{}{
+	qn_util.MapMerge(m, r.Request.viewParams, map[string]interface{}{
 		"Form":    r.Request.GetFormMap(),
 		"Query":   r.Request.GetQueryMap(),
 		"Request": r.Request.GetMap(),

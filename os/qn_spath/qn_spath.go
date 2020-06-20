@@ -23,7 +23,7 @@ import (
 
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 // SPath manages the path searching feature.
@@ -96,19 +96,19 @@ func SearchWithCache(root string, name string, indexFiles ...string) (filePath s
 
 // Set deletes all other searching directories and sets the searching directory for this manager.
 func (sp *SPath) Set(path string) (realPath string, err error) {
-	realPath = gfile.RealPath(path)
+	realPath = qn_file.RealPath(path)
 	if realPath == "" {
 		realPath, _ = sp.Search(path)
 		if realPath == "" {
-			realPath = gfile.RealPath(gfile.Pwd() + gfile.Separator + path)
+			realPath = qn_file.RealPath(qn_file.Pwd() + qn_file.Separator + path)
 		}
 	}
 	if realPath == "" {
 		return realPath, errors.New(fmt.Sprintf(`path "%s" does not exist`, path))
 	}
 	// The set path must be a directory.
-	if gfile.IsDir(realPath) {
-		realPath = strings.TrimRight(realPath, gfile.Separator)
+	if qn_file.IsDir(realPath) {
+		realPath = strings.TrimRight(realPath, qn_file.Separator)
 		if sp.paths.Search(realPath) != -1 {
 			for _, v := range sp.paths.Slice() {
 				sp.removeMonitorByPath(v)
@@ -131,22 +131,22 @@ func (sp *SPath) Set(path string) (realPath string, err error) {
 // Add adds more searching directory to the manager.
 // The manager will search file in added order.
 func (sp *SPath) Add(path string) (realPath string, err error) {
-	realPath = gfile.RealPath(path)
+	realPath = qn_file.RealPath(path)
 	if realPath == "" {
 		realPath, _ = sp.Search(path)
 		if realPath == "" {
-			realPath = gfile.RealPath(gfile.Pwd() + gfile.Separator + path)
+			realPath = qn_file.RealPath(qn_file.Pwd() + qn_file.Separator + path)
 		}
 	}
 	if realPath == "" {
 		return realPath, errors.New(fmt.Sprintf(`path "%s" does not exist`, path))
 	}
 	// The added path must be a directory.
-	if gfile.IsDir(realPath) {
+	if qn_file.IsDir(realPath) {
 		//fmt.Println("gspath:", realPath, sp.paths.Search(realPath))
 		// It will not add twice for the same directory.
 		if sp.paths.Search(realPath) < 0 {
-			realPath = strings.TrimRight(realPath, gfile.Separator)
+			realPath = strings.TrimRight(realPath, qn_file.Separator)
 			sp.paths.Append(realPath)
 			sp.updateCacheByPath(realPath)
 			sp.addMonitorByPath(realPath)
@@ -168,9 +168,9 @@ func (sp *SPath) Search(name string, indexFiles ...string) (filePath string, isD
 		sp.paths.LockFunc(func(array []string) {
 			path := ""
 			for _, v := range array {
-				path = gfile.Join(v, name)
+				path = qn_file.Join(v, name)
 				if stat, err := os.Stat(path); stat != nil && !os.IsNotExist(err) {
-					path = gfile.Abs(path)
+					path = qn_file.Abs(path)
 					// Security check: the result file path must be under the searching directory.
 					if len(path) >= len(v) && path[:len(v)] == v {
 						filePath = path
@@ -186,8 +186,8 @@ func (sp *SPath) Search(name string, indexFiles ...string) (filePath string, isD
 			}
 			path := ""
 			for _, file := range indexFiles {
-				path = filePath + gfile.Separator + file
-				if gfile.Exists(path) {
+				path = filePath + qn_file.Separator + file
+				if qn_file.Exists(path) {
 					filePath = path
 					isDir = false
 					break
@@ -220,7 +220,7 @@ func (sp *SPath) Remove(path string) {
 	if sp.cache == nil {
 		return
 	}
-	if gfile.Exists(path) {
+	if qn_file.Exists(path) {
 		for _, v := range sp.paths.Slice() {
 			name := gstr.Replace(path, v, "")
 			name = sp.formatCacheName(name)

@@ -12,8 +12,8 @@ import (
 	"os"
 	"reflect"
 
-	"github.com/gogf/gf/util/gconv"
 	"github.com/qnsoft/common/internal/json"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // Dump prints variables <i...> to stdout with more manually readable.
@@ -39,9 +39,9 @@ func Export(i ...interface{}) string {
 			}
 			switch kind {
 			case reflect.Slice, reflect.Array:
-				v = gconv.Interfaces(v)
+				v = qn_conv.Interfaces(v)
 			case reflect.Map, reflect.Struct:
-				v = gconv.Map(v)
+				v = qn_conv.Map(v)
 			}
 			encoder := json.NewEncoder(buffer)
 			encoder.SetEscapeHTML(false)

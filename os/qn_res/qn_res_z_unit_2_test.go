@@ -12,20 +12,20 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 
 	"github.com/qnsoft/common/os/gres"
 )
 
 func Test_Basic(t *testing.T) {
 	gres.Dump()
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gres.Get("none"), nil)
 		t.Assert(gres.Contains("none"), false)
 		t.Assert(gres.Contains("dir1"), true)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := "dir1/test1"
 		file := gres.Get(path)
 		t.AssertNE(file, nil)
@@ -49,7 +49,7 @@ func Test_Basic(t *testing.T) {
 		t.Assert(file.Content(), "test1 content")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := "dir2"
 		file := gres.Get(path)
 		t.AssertNE(file, nil)
@@ -67,7 +67,7 @@ func Test_Basic(t *testing.T) {
 		t.Assert(file.Content(), nil)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := "dir2/test2"
 		file := gres.Get(path)
 		t.AssertNE(file, nil)
@@ -78,15 +78,15 @@ func Test_Basic(t *testing.T) {
 
 func Test_Get(t *testing.T) {
 	gres.Dump()
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.AssertNE(gres.Get("dir1/test1"), nil)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		file := gres.GetWithIndex("dir1", g.SliceStr{"test1"})
 		t.AssertNE(file, nil)
 		t.Assert(file.Name(), "dir1/test1")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gres.GetContent("dir1"), "")
 		t.Assert(gres.GetContent("dir1/test1"), "test1 content")
 	})
@@ -94,20 +94,20 @@ func Test_Get(t *testing.T) {
 
 func Test_ScanDir(t *testing.T) {
 	gres.Dump()
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := "dir1"
 		files := gres.ScanDir(path, "*", false)
 		t.AssertNE(files, nil)
 		t.Assert(len(files), 2)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := "dir1"
 		files := gres.ScanDir(path, "*", true)
 		t.AssertNE(files, nil)
 		t.Assert(len(files), 3)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := "dir1"
 		files := gres.ScanDir(path, "*.*", true)
 		t.AssertNE(files, nil)
@@ -119,20 +119,20 @@ func Test_ScanDir(t *testing.T) {
 
 func Test_ScanDirFile(t *testing.T) {
 	gres.Dump()
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := "dir2"
 		files := gres.ScanDirFile(path, "*", false)
 		t.AssertNE(files, nil)
 		t.Assert(len(files), 1)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := "dir2"
 		files := gres.ScanDirFile(path, "*", true)
 		t.AssertNE(files, nil)
 		t.Assert(len(files), 2)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := "dir2"
 		files := gres.ScanDirFile(path, "*.*", true)
 		t.AssertNE(files, nil)

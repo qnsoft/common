@@ -11,7 +11,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/qnsoft/common/errors/gerror"
+	"github.com/qnsoft/common/errors/qn_error"
 	"github.com/qnsoft/common/internal/json"
 
 	"github.com/qnsoft/common/internal/empty"
@@ -23,7 +23,7 @@ import (
 //
 // If <value> is a struct/*struct object, the second parameter <tags> specifies the most priority
 // tags that will be detected, otherwise it detects the tags in order of:
-// gconv, json, field name.
+// qn_conv, json, field name.
 func Map(value interface{}, tags ...string) map[string]interface{} {
 	return doMapConvert(value, false, tags...)
 }
@@ -347,7 +347,7 @@ func doMapToMap(params interface{}, pointer interface{}, deep bool, mapping ...m
 	defer func() {
 		// Catch the panic, especially the reflect operation panics.
 		if e := recover(); e != nil {
-			err = gerror.NewfSkip(1, "%v", e)
+			err = qn_error.NewfSkip(1, "%v", e)
 		}
 	}()
 	var (
@@ -453,7 +453,7 @@ func doMapToMaps(params interface{}, pointer interface{}, deep bool, mapping ...
 	defer func() {
 		// Catch the panic, especially the reflect operation panics.
 		if e := recover(); e != nil {
-			err = gerror.NewfSkip(1, "%v", e)
+			err = qn_error.NewfSkip(1, "%v", e)
 		}
 	}()
 	var (

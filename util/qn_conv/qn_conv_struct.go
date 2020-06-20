@@ -13,7 +13,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/qnsoft/common/errors/gerror"
+	"github.com/qnsoft/common/errors/qn_error"
 	"github.com/qnsoft/common/internal/empty"
 
 	"github.com/qnsoft/common/internal/structs"
@@ -48,7 +48,7 @@ func Struct(params interface{}, pointer interface{}, mapping ...map[string]strin
 	defer func() {
 		// Catch the panic, especially the reflect operation panics.
 		if e := recover(); e != nil {
-			err = gerror.NewfSkip(1, "%v", e)
+			err = qn_error.NewfSkip(1, "%v", e)
 		}
 	}()
 

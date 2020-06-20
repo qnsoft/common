@@ -14,7 +14,7 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Client_Basic(t *testing.T) {
@@ -29,7 +29,7 @@ func Test_Client_Basic(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		url := fmt.Sprintf("http://127.0.0.1:%d", p)
 		client := ghttp.NewClient()
 		client.SetPrefix(url)
@@ -58,7 +58,7 @@ func Test_Client_BasicAuth(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := g.Client()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(c.BasicAuth("admin", "123").GetContent("/auth"), "0")
@@ -78,7 +78,7 @@ func Test_Client_Cookie(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := ghttp.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -99,7 +99,7 @@ func Test_Client_MapParam(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := ghttp.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -121,7 +121,7 @@ func Test_Client_Cookies(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := ghttp.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -155,7 +155,7 @@ func Test_Client_Chain_Header(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := ghttp.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -178,7 +178,7 @@ func Test_Client_Chain_Context(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := ghttp.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -203,7 +203,7 @@ func Test_Client_Chain_Timeout(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := ghttp.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(c.Timeout(100*time.Millisecond).GetContent("/timeout"), "")
@@ -223,7 +223,7 @@ func Test_Client_Chain_ContentJson(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := ghttp.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(c.ContentJson().PostContent("/json", g.Map{
@@ -252,7 +252,7 @@ func Test_Client_Chain_ContentXml(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c := ghttp.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(c.ContentXml().PostContent("/xml", g.Map{

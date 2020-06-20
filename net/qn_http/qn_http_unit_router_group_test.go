@@ -14,7 +14,7 @@ import (
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/frame/gmvc"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 // 执行对象
@@ -90,7 +90,7 @@ func Test_Router_GroupBasic1(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -138,7 +138,7 @@ func Test_Router_GroupBasic2(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -174,7 +174,7 @@ func Test_Router_GroupBuildInVar(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
@@ -205,7 +205,7 @@ func Test_Router_Group_Mthods(t *testing.T) {
 	defer s.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 		t.Assert(client.GetContent("/ctl/show"), "1Controller Show2")
@@ -234,13 +234,13 @@ func Test_Router_Group_MultiServer(t *testing.T) {
 	s2.SetPort(p2)
 	s1.SetDumpRouterMap(false)
 	s2.SetDumpRouterMap(false)
-	gtest.Assert(s1.Start(), nil)
-	gtest.Assert(s2.Start(), nil)
+	qn_test.Assert(s1.Start(), nil)
+	qn_test.Assert(s2.Start(), nil)
 	defer s1.Shutdown()
 	defer s2.Shutdown()
 
 	time.Sleep(100 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		c1 := ghttp.NewClient()
 		c1.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p1))
 		c2 := ghttp.NewClient()

@@ -16,8 +16,8 @@ import (
 	"github.com/qnsoft/common/text/gstr"
 
 	"github.com/qnsoft/common/internal/rwmutex"
-	"github.com/qnsoft/common/util/gconv"
-	"github.com/qnsoft/common/util/grand"
+	"github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/util/qn_rand"
 )
 
 // SortedStrArray is a golang sorted string array with rich features.
@@ -212,7 +212,7 @@ func (a *SortedStrArray) PopRight() (value string, found bool) {
 func (a *SortedStrArray) PopRand() (value string, found bool) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	return a.doRemoveWithoutLock(grand.Intn(len(a.array)))
+	return a.doRemoveWithoutLock(qn_rand.Intn(len(a.array)))
 }
 
 // PopRands randomly pops and returns <size> items out of array.
@@ -229,7 +229,7 @@ func (a *SortedStrArray) PopRands(size int) []string {
 	}
 	array := make([]string, size)
 	for i := 0; i < size; i++ {
-		array[i], _ = a.doRemoveWithoutLock(grand.Intn(len(a.array)))
+		array[i], _ = a.doRemoveWithoutLock(qn_rand.Intn(len(a.array)))
 	}
 	return array
 }
@@ -358,7 +358,7 @@ func (a *SortedStrArray) Sum() (sum int) {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
 	for _, v := range a.array {
-		sum += gconv.Int(v)
+		sum += qn_conv.Int(v)
 	}
 	return
 }
@@ -533,7 +533,7 @@ func (a *SortedStrArray) RLockFunc(f func(array []string)) *SortedStrArray {
 // The difference between Merge and Append is Append supports only specified slice type,
 // but Merge supports more parameter types.
 func (a *SortedStrArray) Merge(array interface{}) *SortedStrArray {
-	return a.Add(gconv.Strings(array)...)
+	return a.Add(qn_conv.Strings(array)...)
 }
 
 // Chunk splits an array into multiple arrays,
@@ -566,7 +566,7 @@ func (a *SortedStrArray) Rand() (value string, found bool) {
 	if len(a.array) == 0 {
 		return "", false
 	}
-	return a.array[grand.Intn(len(a.array))], true
+	return a.array[qn_rand.Intn(len(a.array))], true
 }
 
 // Rands randomly returns <size> items from array(no deleting).
@@ -578,7 +578,7 @@ func (a *SortedStrArray) Rands(size int) []string {
 	}
 	array := make([]string, size)
 	for i := 0; i < size; i++ {
-		array[i] = a.array[grand.Intn(len(a.array))]
+		array[i] = a.array[qn_rand.Intn(len(a.array))]
 	}
 	return array
 }
@@ -690,9 +690,9 @@ func (a *SortedStrArray) UnmarshalValue(value interface{}) (err error) {
 	defer a.mu.Unlock()
 	switch value.(type) {
 	case string, []byte:
-		err = json.Unmarshal(gconv.Bytes(value), &a.array)
+		err = json.Unmarshal(qn_conv.Bytes(value), &a.array)
 	default:
-		a.array = gconv.SliceStr(value)
+		a.array = qn_conv.SliceStr(value)
 	}
 	if a.array != nil {
 		sort.Strings(a.array)

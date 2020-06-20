@@ -11,9 +11,9 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 // BindController registers controller to server routes with specified pattern. The controller
@@ -77,7 +77,7 @@ func (s *Server) doBindController(
 	v := reflect.ValueOf(controller)
 	t := v.Type()
 	pkgPath := t.Elem().PkgPath()
-	pkgName := gfile.Basename(pkgPath)
+	pkgName := qn_file.Basename(pkgPath)
 	structName := t.Elem().Name()
 	for i := 0; i < v.NumMethod(); i++ {
 		methodName := t.Method(i).Name
@@ -125,7 +125,7 @@ func (s *Server) doBindController(
 		//
 		// Note that if there's built-in variables in pattern, this route will not be added
 		// automatically.
-		if strings.EqualFold(methodName, "Index") && !gregex.IsMatchString(`\{\.\w+\}`, pattern) {
+		if strings.EqualFold(methodName, "Index") && !qn_regex.IsMatchString(`\{\.\w+\}`, pattern) {
 			p := gstr.PosRI(key, "/index")
 			k := key[0:p] + key[p+6:]
 			if len(k) == 0 || k[0] == '@' {
@@ -164,7 +164,7 @@ func (s *Server) doBindControllerMethod(
 		return
 	}
 	pkgPath := t.Elem().PkgPath()
-	pkgName := gfile.Basename(pkgPath)
+	pkgName := qn_file.Basename(pkgPath)
 	ctlName := gstr.Replace(t.String(), fmt.Sprintf(`%s.`, pkgName), "")
 	if ctlName[0] == '*' {
 		ctlName = fmt.Sprintf(`(%s)`, ctlName)
@@ -204,7 +204,7 @@ func (s *Server) doBindControllerRest(
 		if _, ok := methodsMap[strings.ToUpper(methodName)]; !ok {
 			continue
 		}
-		pkgName := gfile.Basename(pkgPath)
+		pkgName := qn_file.Basename(pkgPath)
 		ctlName := gstr.Replace(t.String(), fmt.Sprintf(`%s.`, pkgName), "")
 		if ctlName[0] == '*' {
 			ctlName = fmt.Sprintf(`(%s)`, ctlName)

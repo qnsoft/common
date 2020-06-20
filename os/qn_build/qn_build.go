@@ -12,10 +12,10 @@ import (
 
 	"github.com/gogf/gf"
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/encoding/gbase64"
+	"github.com/qnsoft/common/encoding/qn_base64"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/internal/json"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 var (
@@ -25,7 +25,7 @@ var (
 
 func init() {
 	if builtInVarStr != "" {
-		err := json.Unmarshal(gbase64.MustDecodeString(builtInVarStr), &builtInVarMap)
+		err := json.Unmarshal(qn_base64.MustDecodeString(builtInVarStr), &builtInVarMap)
 		if err != nil {
 			intlog.Error(err)
 		}
@@ -67,7 +67,7 @@ func GetVar(name string, def ...interface{}) qn_var.Var {
 
 // GetString retrieves and returns the build-in binary variable of given name as string.
 func GetString(name string, def ...interface{}) string {
-	return gconv.String(Get(name, def...))
+	return qn_conv.String(Get(name, def...))
 }
 
 // Map returns the custom build-in variable map.

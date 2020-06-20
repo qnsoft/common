@@ -9,7 +9,7 @@ package qn_map
 
 import (
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/internal/empty"
 	"github.com/qnsoft/common/internal/rwmutex"
@@ -406,7 +406,7 @@ func (m *StrIntMap) Flip() {
 	defer m.mu.Unlock()
 	n := make(map[string]int, len(m.data))
 	for k, v := range m.data {
-		n[gconv.String(v)] = gconv.Int(k)
+		n[qn_conv.String(v)] = qn_conv.Int(k)
 	}
 	m.data = n
 }
@@ -458,10 +458,10 @@ func (m *StrIntMap) UnmarshalValue(value interface{}) (err error) {
 	}
 	switch value.(type) {
 	case string, []byte:
-		return json.Unmarshal(gconv.Bytes(value), &m.data)
+		return json.Unmarshal(qn_conv.Bytes(value), &m.data)
 	default:
-		for k, v := range gconv.Map(value) {
-			m.data[k] = gconv.Int(v)
+		for k, v := range qn_conv.Map(value) {
+			m.data[k] = qn_conv.Int(v)
 		}
 	}
 	return

@@ -6,16 +6,16 @@
 
 package qn_var
 
-import gconv "github.com/qnsoft/common/util/qn_conv"
+import qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 // Map converts and returns <v> as map[string]interface{}.
 func (v *VarImp) Map(tags ...string) map[string]interface{} {
-	return gconv.Map(v.Val(), tags...)
+	return qn_conv.Map(v.Val(), tags...)
 }
 
 // MapStrStr converts and returns <v> as map[string]string.
 func (v *VarImp) MapStrStr(tags ...string) map[string]string {
-	return gconv.MapStrStr(v.Val(), tags...)
+	return qn_conv.MapStrStr(v.Val(), tags...)
 }
 
 // MapStrVar converts and returns <v> as map[string]Var.
@@ -33,12 +33,12 @@ func (v *VarImp) MapStrVar(tags ...string) map[string]Var {
 
 // MapDeep converts and returns <v> as map[string]interface{} recursively.
 func (v *VarImp) MapDeep(tags ...string) map[string]interface{} {
-	return gconv.MapDeep(v.Val(), tags...)
+	return qn_conv.MapDeep(v.Val(), tags...)
 }
 
 // MapDeep converts and returns <v> as map[string]string recursively.
 func (v *VarImp) MapStrStrDeep(tags ...string) map[string]string {
-	return gconv.MapStrStrDeep(v.Val(), tags...)
+	return qn_conv.MapStrStrDeep(v.Val(), tags...)
 }
 
 // MapStrVarDeep converts and returns <v> as map[string]*VarImp recursively.
@@ -55,33 +55,33 @@ func (v *VarImp) MapStrVarDeep(tags ...string) map[string]Var {
 }
 
 // Maps converts and returns <v> as map[string]string.
-// See gconv.Maps.
+// See qn_conv.Maps.
 func (v *VarImp) Maps(tags ...string) []map[string]interface{} {
-	return gconv.Maps(v.Val(), tags...)
+	return qn_conv.Maps(v.Val(), tags...)
 }
 
 // MapToMap converts any map type variable <params> to another map type variable <pointer>.
-// See gconv.MapToMap.
+// See qn_conv.MapToMap.
 func (v *VarImp) MapToMap(pointer interface{}, mapping ...map[string]string) (err error) {
-	return gconv.MapToMap(v.Val(), pointer, mapping...)
+	return qn_conv.MapToMap(v.Val(), pointer, mapping...)
 }
 
 // MapToMapDeep converts any map type variable <params> to another map type variable
 // <pointer> recursively.
-// See gconv.MapToMapDeep.
+// See qn_conv.MapToMapDeep.
 func (v *VarImp) MapToMapDeep(pointer interface{}, mapping ...map[string]string) (err error) {
-	return gconv.MapToMapDeep(v.Val(), pointer, mapping...)
+	return qn_conv.MapToMapDeep(v.Val(), pointer, mapping...)
 }
 
 // MapToMaps converts any map type variable <params> to another map type variable <pointer>.
-// See gconv.MapToMaps.
+// See qn_conv.MapToMaps.
 func (v *VarImp) MapToMaps(pointer interface{}, mapping ...map[string]string) (err error) {
-	return gconv.MapToMaps(v.Val(), pointer, mapping...)
+	return qn_conv.MapToMaps(v.Val(), pointer, mapping...)
 }
 
 // MapToMapsDeep converts any map type variable <params> to another map type variable
 // <pointer> recursively.
-// See gconv.MapToMapsDeep.
+// See qn_conv.MapToMapsDeep.
 func (v *VarImp) MapToMapsDeep(pointer interface{}, mapping ...map[string]string) (err error) {
-	return gconv.MapToMapsDeep(v.Val(), pointer, mapping...)
+	return qn_conv.MapToMapsDeep(v.Val(), pointer, mapping...)
 }

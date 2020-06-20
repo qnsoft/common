@@ -7,14 +7,15 @@
 package utils_test
 
 import (
-	"github.com/qnsoft/common/internal/utils"
-	"github.com/qnsoft/common/test/gtest"
 	"io/ioutil"
 	"testing"
+
+	"github.com/qnsoft/common/internal/utils"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_ReadCloser(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			n    int
 			b    = make([]byte, 3)
@@ -30,7 +31,7 @@ func Test_ReadCloser(t *testing.T) {
 		n, _ = body.Read(b)
 		t.Assert(b[:n], []byte{})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			r    []byte
 			body = utils.NewReadCloser([]byte{1, 2, 3, 4}, false)
@@ -40,7 +41,7 @@ func Test_ReadCloser(t *testing.T) {
 		r, _ = ioutil.ReadAll(body)
 		t.Assert(r, []byte{})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			n    int
 			r    []byte

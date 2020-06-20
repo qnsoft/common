@@ -18,8 +18,8 @@ import (
 	"github.com/qnsoft/common/text/gstr"
 
 	"github.com/qnsoft/common/internal/rwmutex"
-	"github.com/qnsoft/common/util/gconv"
-	"github.com/qnsoft/common/util/grand"
+	"github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/util/qn_rand"
 )
 
 // StrArray is a golang string array with rich features.
@@ -118,7 +118,7 @@ func (a *StrArray) Sum() (sum int) {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
 	for _, v := range a.array {
-		sum += gconv.Int(v)
+		sum += qn_conv.Int(v)
 	}
 	return
 }
@@ -268,7 +268,7 @@ func (a *StrArray) PopRight() (value string, found bool) {
 func (a *StrArray) PopRand() (value string, found bool) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	return a.doRemoveWithoutLock(grand.Intn(len(a.array)))
+	return a.doRemoveWithoutLock(qn_rand.Intn(len(a.array)))
 }
 
 // PopRands randomly pops and returns <size> items out of array.
@@ -285,7 +285,7 @@ func (a *StrArray) PopRands(size int) []string {
 	}
 	array := make([]string, size)
 	for i := 0; i < size; i++ {
-		array[i], _ = a.doRemoveWithoutLock(grand.Intn(len(a.array)))
+		array[i], _ = a.doRemoveWithoutLock(qn_rand.Intn(len(a.array)))
 	}
 	return array
 }
@@ -546,7 +546,7 @@ func (a *StrArray) RLockFunc(f func(array []string)) *StrArray {
 // The difference between Merge and Append is Append supports only specified slice type,
 // but Merge supports more parameter types.
 func (a *StrArray) Merge(array interface{}) *StrArray {
-	return a.Append(gconv.Strings(array)...)
+	return a.Append(qn_conv.Strings(array)...)
 }
 
 // Fill fills an array with num entries of the value <value>,
@@ -624,7 +624,7 @@ func (a *StrArray) Rand() (value string, found bool) {
 	if len(a.array) == 0 {
 		return "", false
 	}
-	return a.array[grand.Intn(len(a.array))], true
+	return a.array[qn_rand.Intn(len(a.array))], true
 }
 
 // Rands randomly returns <size> items from array(no deleting).
@@ -636,7 +636,7 @@ func (a *StrArray) Rands(size int) []string {
 	}
 	array := make([]string, size)
 	for i := 0; i < size; i++ {
-		array[i] = a.array[grand.Intn(len(a.array))]
+		array[i] = a.array[qn_rand.Intn(len(a.array))]
 	}
 	return array
 }
@@ -645,7 +645,7 @@ func (a *StrArray) Rands(size int) []string {
 func (a *StrArray) Shuffle() *StrArray {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	for i, v := range grand.Perm(len(a.array)) {
+	for i, v := range qn_rand.Perm(len(a.array)) {
 		a.array[i], a.array[v] = a.array[v], a.array[i]
 	}
 	return a
@@ -761,9 +761,9 @@ func (a *StrArray) UnmarshalValue(value interface{}) error {
 	defer a.mu.Unlock()
 	switch value.(type) {
 	case string, []byte:
-		return json.Unmarshal(gconv.Bytes(value), &a.array)
+		return json.Unmarshal(qn_conv.Bytes(value), &a.array)
 	default:
-		a.array = gconv.SliceStr(value)
+		a.array = qn_conv.SliceStr(value)
 	}
 	return nil
 }

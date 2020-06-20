@@ -5,17 +5,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gfpool"
 	"github.com/qnsoft/common/os/glog"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 // TestOpen test open file cache
 func TestOpen(t *testing.T) {
 	testFile := start("TestOpen.txt")
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		f, err := gfpool.Open(testFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC|os.O_APPEND, 0666)
 		t.AssertEQ(err, nil)
 		f.Close()
@@ -31,7 +31,7 @@ func TestOpen(t *testing.T) {
 
 // TestOpenErr test open file error
 func TestOpenErr(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		testErrFile := "errorPath"
 		_, err := gfpool.Open(testErrFile, os.O_RDWR, 0666)
 		t.AssertNE(err, nil)
@@ -78,7 +78,7 @@ func TestOpenErr(t *testing.T) {
 func TestOpenExpire(t *testing.T) {
 	testFile := start("TestOpenExpire.txt")
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		f, err := gfpool.Open(testFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC|os.O_APPEND, 0666, 100*time.Millisecond)
 		t.AssertEQ(err, nil)
 		f.Close()
@@ -97,7 +97,7 @@ func TestOpenExpire(t *testing.T) {
 func TestNewPool(t *testing.T) {
 	testFile := start("TestNewPool.txt")
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		f, err := gfpool.Open(testFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC|os.O_APPEND, 0666)
 		t.AssertEQ(err, nil)
 		f.Close()
@@ -118,18 +118,18 @@ func TestNewPool(t *testing.T) {
 // test before
 func start(name string) string {
 	testFile := os.TempDir() + string(os.PathSeparator) + name
-	if gfile.Exists(testFile) {
-		gfile.Remove(testFile)
+	if qn_file.Exists(testFile) {
+		qn_file.Remove(testFile)
 	}
 	content := "123"
-	gfile.PutContents(testFile, content)
+	qn_file.PutContents(testFile, content)
 	return testFile
 }
 
 // test after
 func stop(testFile string) {
-	if gfile.Exists(testFile) {
-		err := gfile.Remove(testFile)
+	if qn_file.Exists(testFile) {
+		err := qn_file.Remove(testFile)
 		if err != nil {
 			glog.Error(err)
 		}

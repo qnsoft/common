@@ -11,15 +11,15 @@ import (
 
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_ListMap_Var(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.ListMap
 		m.Set("key1", "val1")
 		t.Assert(m.Keys(), []interface{}{"key1"})
@@ -51,7 +51,7 @@ func Test_ListMap_Var(t *testing.T) {
 }
 
 func Test_ListMap_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewListMap()
 		m.Set("key1", "val1")
 		t.Assert(m.Keys(), []interface{}{"key1"})
@@ -86,7 +86,7 @@ func Test_ListMap_Basic(t *testing.T) {
 }
 
 func Test_ListMap_Set_Fun(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewListMap()
 		m.GetOrSetFunc("fun", getValue)
 		m.GetOrSetFuncLock("funlock", getValue)
@@ -99,7 +99,7 @@ func Test_ListMap_Set_Fun(t *testing.T) {
 }
 
 func Test_ListMap_Batch(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewListMap()
 		m.Sets(map[interface{}]interface{}{1: 1, "key1": "val1", "key2": "val2", "key3": "val3"})
 		t.Assert(m.Map(), map[interface{}]interface{}{1: 1, "key1": "val1", "key2": "val2", "key3": "val3"})
@@ -108,7 +108,7 @@ func Test_ListMap_Batch(t *testing.T) {
 	})
 }
 func Test_ListMap_Iterator(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[interface{}]interface{}{1: 1, "key1": "val1"}
 
 		m := gmap.NewListMapFrom(expect)
@@ -133,7 +133,7 @@ func Test_ListMap_Iterator(t *testing.T) {
 }
 
 func Test_ListMap_Clone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//clone 方法是深克隆
 		m := gmap.NewListMapFrom(map[interface{}]interface{}{1: 1, "key1": "val1"})
 		m_clone := m.Clone()
@@ -148,7 +148,7 @@ func Test_ListMap_Clone(t *testing.T) {
 }
 
 func Test_ListMap_Basic_Merge(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := gmap.NewListMap()
 		m2 := gmap.NewListMap()
 		m1.Set("key1", "val1")
@@ -159,7 +159,7 @@ func Test_ListMap_Basic_Merge(t *testing.T) {
 }
 
 func Test_ListMap_Order(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewListMap()
 		m.Set("k1", "v1")
 		m.Set("k2", "v2")
@@ -170,7 +170,7 @@ func Test_ListMap_Order(t *testing.T) {
 }
 
 func Test_ListMap_FilterEmpty(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewListMap()
 		m.Set(1, "")
 		m.Set(2, "2")
@@ -184,24 +184,24 @@ func Test_ListMap_FilterEmpty(t *testing.T) {
 
 func Test_ListMap_Json(t *testing.T) {
 	// Marshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
 		m1 := gmap.NewListMapFrom(data)
 		b1, err1 := json.Marshal(m1)
-		b2, err2 := json.Marshal(gconv.Map(data))
+		b2, err2 := json.Marshal(qn_conv.Map(data))
 		t.Assert(err1, err2)
 		t.Assert(b1, b2)
 	})
 	// Unmarshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		b, err := json.Marshal(gconv.Map(data))
+		b, err := json.Marshal(qn_conv.Map(data))
 		t.Assert(err, nil)
 
 		m := gmap.NewListMap()
@@ -211,12 +211,12 @@ func Test_ListMap_Json(t *testing.T) {
 		t.Assert(m.Get("k2"), data["k2"])
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		b, err := json.Marshal(gconv.Map(data))
+		b, err := json.Marshal(qn_conv.Map(data))
 		t.Assert(err, nil)
 
 		var m gmap.ListMap
@@ -228,7 +228,7 @@ func Test_ListMap_Json(t *testing.T) {
 }
 
 func Test_ListMap_Pop(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewListMapFrom(g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
@@ -250,7 +250,7 @@ func Test_ListMap_Pop(t *testing.T) {
 }
 
 func Test_ListMap_Pops(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewListMapFrom(g.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
@@ -286,9 +286,9 @@ func TestListMap_UnmarshalValue(t *testing.T) {
 		Map  *gmap.ListMap
 	}
 	// JSON
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"map":  []byte(`{"1":"v1","2":"v2"}`),
 		}, &v)
@@ -299,9 +299,9 @@ func TestListMap_UnmarshalValue(t *testing.T) {
 		t.Assert(v.Map.Get("2"), "v2")
 	})
 	// Map
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"map": g.MapIntAny{
 				1: "v1",

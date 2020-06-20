@@ -14,7 +14,7 @@ import (
 	"github.com/qnsoft/common/frame/g"
 
 	"github.com/qnsoft/common/container/gpool"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 var nf gpool.NewFunc = func() (i interface{}, e error) {
@@ -24,11 +24,11 @@ var nf gpool.NewFunc = func() (i interface{}, e error) {
 var assertIndex int = 0
 var ef gpool.ExpireFunc = func(i interface{}) {
 	assertIndex++
-	gtest.Assert(i, assertIndex)
+	qn_test.Assert(i, assertIndex)
 }
 
 func Test_Gpool(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//
 		//expire = 0
 		p1 := gpool.New(0, nf)
@@ -59,7 +59,7 @@ func Test_Gpool(t *testing.T) {
 		t.Assert(v1, "hello")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//
 		//expire > 0
 		p2 := gpool.New(2*time.Second, nil, ef)
@@ -88,7 +88,7 @@ func Test_Gpool(t *testing.T) {
 		time.Sleep(3 * time.Second)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//
 		//expire < 0
 		p3 := gpool.New(-1, nil)

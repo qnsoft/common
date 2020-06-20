@@ -12,9 +12,9 @@ import (
 	"net/http"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/encoding/gparser"
+	"github.com/qnsoft/common/encoding/qn_parser"
 )
 
 // Write writes <content> to the response buffer.
@@ -32,7 +32,7 @@ func (r *Response) Write(content ...interface{}) {
 		case string:
 			r.buffer.WriteString(value)
 		default:
-			r.buffer.WriteString(gconv.String(v))
+			r.buffer.WriteString(qn_conv.String(v))
 		}
 	}
 }
@@ -108,7 +108,7 @@ func (r *Response) WriteJson(content interface{}) error {
 	switch content.(type) {
 	case string, []byte:
 		r.Header().Set("Content-Type", "application/json")
-		r.Write(gconv.String(content))
+		r.Write(qn_conv.String(content))
 		return nil
 	}
 	// Else use json.Marshal function to encode the parameter.
@@ -140,7 +140,7 @@ func (r *Response) WriteJsonP(content interface{}) error {
 	switch content.(type) {
 	case string, []byte:
 		r.Header().Set("Content-Type", "application/json")
-		r.Write(gconv.String(content))
+		r.Write(qn_conv.String(content))
 		return nil
 	}
 	// Else use json.Marshal function to encode the parameter.
@@ -180,11 +180,11 @@ func (r *Response) WriteXml(content interface{}, rootTag ...string) error {
 	switch content.(type) {
 	case string, []byte:
 		r.Header().Set("Content-Type", "application/xml")
-		r.Write(gconv.String(content))
+		r.Write(qn_conv.String(content))
 		return nil
 	}
-	// Else use gparser.VarToXml function to encode the parameter.
-	if b, err := gparser.VarToXml(content, rootTag...); err != nil {
+	// Else use qn_parser.VarToXml function to encode the parameter.
+	if b, err := qn_parser.VarToXml(content, rootTag...); err != nil {
 		return err
 	} else {
 		r.Header().Set("Content-Type", "application/xml")

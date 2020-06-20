@@ -14,7 +14,7 @@ import (
 
 	"github.com/qnsoft/common/os/gres"
 
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 // Response is the http response manager.
@@ -48,7 +48,7 @@ func (r *Response) ServeFile(path string, allowIndex ...bool) {
 			IsDir: file.FileInfo().IsDir(),
 		}
 	} else {
-		path = gfile.RealPath(path)
+		path = qn_file.RealPath(path)
 		if path == "" {
 			r.WriteStatus(http.StatusNotFound)
 			return
@@ -71,17 +71,17 @@ func (r *Response) ServeFileDownload(path string, name ...string) {
 			IsDir: file.FileInfo().IsDir(),
 		}
 		if downloadName == "" {
-			downloadName = gfile.Basename(file.Name())
+			downloadName = qn_file.Basename(file.Name())
 		}
 	} else {
-		path = gfile.RealPath(path)
+		path = qn_file.RealPath(path)
 		if path == "" {
 			r.WriteStatus(http.StatusNotFound)
 			return
 		}
 		serveFile = &StaticFile{Path: path}
 		if downloadName == "" {
-			downloadName = gfile.Basename(path)
+			downloadName = qn_file.Basename(path)
 		}
 	}
 	r.Header().Set("Content-Type", "application/force-download")

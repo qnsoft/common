@@ -12,10 +12,10 @@ import (
 	"github.com/qnsoft/common/container/qn_array"
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func getAny() interface{} {
@@ -23,7 +23,7 @@ func getAny() interface{} {
 }
 
 func Test_IntAnyMap_Var(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var m gmap.IntAnyMap
 		m.Set(1, 1)
 
@@ -53,7 +53,7 @@ func Test_IntAnyMap_Var(t *testing.T) {
 }
 
 func Test_IntAnyMap_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewIntAnyMap()
 		m.Set(1, 1)
 
@@ -86,7 +86,7 @@ func Test_IntAnyMap_Basic(t *testing.T) {
 }
 
 func Test_IntAnyMap_Set_Fun(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewIntAnyMap()
 
 		m.GetOrSetFunc(1, getAny)
@@ -103,7 +103,7 @@ func Test_IntAnyMap_Set_Fun(t *testing.T) {
 }
 
 func Test_IntAnyMap_Batch(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewIntAnyMap()
 
 		m.Sets(map[int]interface{}{1: 1, 2: "2", 3: 3})
@@ -113,7 +113,7 @@ func Test_IntAnyMap_Batch(t *testing.T) {
 	})
 }
 func Test_IntAnyMap_Iterator(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[int]interface{}{1: 1, 2: "2"}
 		m := gmap.NewIntAnyMapFrom(expect)
 		m.Iterator(func(k int, v interface{}) bool {
@@ -138,7 +138,7 @@ func Test_IntAnyMap_Iterator(t *testing.T) {
 }
 
 func Test_IntAnyMap_Lock(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[int]interface{}{1: 1, 2: "2"}
 		m := gmap.NewIntAnyMapFrom(expect)
 		m.LockFunc(func(m map[int]interface{}) {
@@ -150,7 +150,7 @@ func Test_IntAnyMap_Lock(t *testing.T) {
 	})
 }
 func Test_IntAnyMap_Clone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//clone 方法是深克隆
 		m := gmap.NewIntAnyMapFrom(map[int]interface{}{1: 1, 2: "2"})
 
@@ -165,7 +165,7 @@ func Test_IntAnyMap_Clone(t *testing.T) {
 	})
 }
 func Test_IntAnyMap_Merge(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := gmap.NewIntAnyMap()
 		m2 := gmap.NewIntAnyMap()
 		m1.Set(1, 1)
@@ -176,7 +176,7 @@ func Test_IntAnyMap_Merge(t *testing.T) {
 }
 
 func Test_IntAnyMap_Map(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewIntAnyMap()
 		m.Set(1, 0)
 		m.Set(2, 2)
@@ -193,7 +193,7 @@ func Test_IntAnyMap_Map(t *testing.T) {
 }
 
 func Test_IntAnyMap_MapCopy(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewIntAnyMap()
 		m.Set(1, 0)
 		m.Set(2, 2)
@@ -210,7 +210,7 @@ func Test_IntAnyMap_MapCopy(t *testing.T) {
 }
 
 func Test_IntAnyMap_FilterEmpty(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewIntAnyMap()
 		m.Set(1, 0)
 		m.Set(2, 2)
@@ -225,7 +225,7 @@ func Test_IntAnyMap_FilterEmpty(t *testing.T) {
 
 func Test_IntAnyMap_Json(t *testing.T) {
 	// Marshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapIntAny{
 			1: "v1",
 			2: "v2",
@@ -237,7 +237,7 @@ func Test_IntAnyMap_Json(t *testing.T) {
 		t.Assert(b1, b2)
 	})
 	// Unmarshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		data := g.MapIntAny{
 			1: "v1",
 			2: "v2",
@@ -254,7 +254,7 @@ func Test_IntAnyMap_Json(t *testing.T) {
 }
 
 func Test_IntAnyMap_Pop(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewIntAnyMapFrom(g.MapIntAny{
 			1: "v1",
 			2: "v2",
@@ -276,7 +276,7 @@ func Test_IntAnyMap_Pop(t *testing.T) {
 }
 
 func Test_IntAnyMap_Pops(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gmap.NewIntAnyMapFrom(g.MapIntAny{
 			1: "v1",
 			2: "v2",
@@ -312,9 +312,9 @@ func TestIntAnyMap_UnmarshalValue(t *testing.T) {
 		Map  *gmap.IntAnyMap
 	}
 	// JSON
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"map":  []byte(`{"1":"v1","2":"v2"}`),
 		}, &v)
@@ -325,9 +325,9 @@ func TestIntAnyMap_UnmarshalValue(t *testing.T) {
 		t.Assert(v.Map.Get(2), "v2")
 	})
 	// Map
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"map": g.MapIntAny{
 				1: "v1",

@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"sync/atomic"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // String is a struct for concurrent-safe operation for type string.
@@ -56,17 +56,17 @@ func (v *String) String() string {
 
 // MarshalJSON implements the interface MarshalJSON for json.Marshal.
 func (v *String) MarshalJSON() ([]byte, error) {
-	return gconv.UnsafeStrToBytes(`"` + v.Val() + `"`), nil
+	return qn_conv.UnsafeStrToBytes(`"` + v.Val() + `"`), nil
 }
 
 // UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
 func (v *String) UnmarshalJSON(b []byte) error {
-	v.Set(gconv.UnsafeBytesToStr(bytes.Trim(b, `"`)))
+	v.Set(qn_conv.UnsafeBytesToStr(bytes.Trim(b, `"`)))
 	return nil
 }
 
 // UnmarshalValue is an interface implement which sets any type of value for <v>.
 func (v *String) UnmarshalValue(value interface{}) error {
-	v.Set(gconv.String(value))
+	v.Set(qn_conv.String(value))
 	return nil
 }

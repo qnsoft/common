@@ -13,7 +13,7 @@ import (
 	"github.com/qnsoft/common/database/gredis"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/os/gtimer"
+	"github.com/qnsoft/common/os/qn_timer"
 )
 
 // StorageRedis implements the Session Storage interface with redis.
@@ -43,7 +43,7 @@ func NewStorageRedis(redis *gredis.Redis, prefix ...string) *StorageRedis {
 		s.prefix = prefix[0]
 	}
 	// Batch updates the TTL for session ids timely.
-	gtimer.AddSingleton(DefaultStorageRedisLoopInterval, func() {
+	qn_timer.AddSingleton(DefaultStorageRedisLoopInterval, func() {
 		intlog.Print("StorageRedis.timer start")
 		var id string
 		var err error

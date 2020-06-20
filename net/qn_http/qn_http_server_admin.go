@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/os/gproc"
-	"github.com/qnsoft/common/os/gtimer"
 	"github.com/qnsoft/common/os/gview"
+	"github.com/qnsoft/common/os/qn_timer"
 )
 
 // utilAdmin is the controller for administration.
@@ -86,7 +86,7 @@ func (s *Server) EnableAdmin(pattern ...string) {
 func (s *Server) Shutdown() error {
 	// It shuts down the server after 1 second, which is not triggered by system signal,
 	// to ensure the response successfully to the client.
-	gtimer.SetTimeout(time.Second, func() {
+	qn_timer.SetTimeout(time.Second, func() {
 		// Only shut down current server.
 		// It may have multiple underlying http servers.
 		for _, v := range s.servers {

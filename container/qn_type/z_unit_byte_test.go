@@ -11,14 +11,14 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Byte(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var wg sync.WaitGroup
 		addTimes := 127
 		i := gtype.NewByte(byte(0))
@@ -42,7 +42,7 @@ func Test_Byte(t *testing.T) {
 }
 
 func Test_Byte_JSON(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := gtype.NewByte(49)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
@@ -51,7 +51,7 @@ func Test_Byte_JSON(t *testing.T) {
 		t.Assert(b1, b2)
 	})
 	// Unmarshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var err error
 		i := gtype.NewByte()
 		err = json.Unmarshal([]byte("49"), &i)
@@ -65,9 +65,9 @@ func Test_Byte_UnmarshalValue(t *testing.T) {
 		Name string
 		Var  *gtype.Byte
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"var":  "2",
 		}, &v)

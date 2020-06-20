@@ -13,11 +13,11 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/container/gqueue"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func TestQueue_Len(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		max := 100
 		for n := 10; n < max; n++ {
 			q1 := gqueue.New(max)
@@ -31,7 +31,7 @@ func TestQueue_Len(t *testing.T) {
 }
 
 func TestQueue_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		q := gqueue.New()
 		for i := 0; i < 100; i++ {
 			q.Push(i)
@@ -42,7 +42,7 @@ func TestQueue_Basic(t *testing.T) {
 }
 
 func TestQueue_Pop(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		q1 := gqueue.New()
 		q1.Push(1)
 		q1.Push(2)
@@ -54,7 +54,7 @@ func TestQueue_Pop(t *testing.T) {
 }
 
 func TestQueue_Close(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		q1 := gqueue.New()
 		q1.Push(1)
 		q1.Push(2)

@@ -12,7 +12,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 var (
@@ -23,7 +23,7 @@ var (
 // GetContents returns the file content of <path> as string.
 // It returns en empty string if it fails reading.
 func GetContents(path string) string {
-	return gconv.UnsafeBytesToStr(GetBytes(path))
+	return qn_conv.UnsafeBytesToStr(GetBytes(path))
 }
 
 // GetBytes returns the file content of <path> as []byte.
@@ -171,7 +171,7 @@ func GetBytesByTwoOffsetsByPath(path string, start int64, end int64) []byte {
 // will be passed to callback function <callback> even if it has no newline marker.
 func ReadLines(file string, callback func(text string)) error {
 	cb := func(bytes []byte) {
-		callback(gconv.UnsafeBytesToStr(bytes))
+		callback(qn_conv.UnsafeBytesToStr(bytes))
 	}
 	return ReadByteLines(file, cb)
 }

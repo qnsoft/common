@@ -10,21 +10,21 @@ import (
 	"os"
 	"testing"
 
-	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/os/genv"
-	"github.com/qnsoft/common/test/gtest"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 func Test_GEnv_All(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(os.Environ(), genv.All())
 	})
 }
 
 func Test_GEnv_Map(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		value := gconv.String(gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		value := qn_conv.String(qn_time.TimestampNano())
 		key := "TEST_ENV_" + value
 		err := os.Setenv(key, "TEST")
 		t.Assert(err, nil)
@@ -33,8 +33,8 @@ func Test_GEnv_Map(t *testing.T) {
 }
 
 func Test_GEnv_Get(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		value := gconv.String(gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		value := qn_conv.String(qn_time.TimestampNano())
 		key := "TEST_ENV_" + value
 		err := os.Setenv(key, "TEST")
 		t.Assert(err, nil)
@@ -43,8 +43,8 @@ func Test_GEnv_Get(t *testing.T) {
 }
 
 func Test_GEnv_Contains(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		value := gconv.String(gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		value := qn_conv.String(qn_time.TimestampNano())
 		key := "TEST_ENV_" + value
 		err := os.Setenv(key, "TEST")
 		t.Assert(err, nil)
@@ -54,8 +54,8 @@ func Test_GEnv_Contains(t *testing.T) {
 }
 
 func Test_GEnv_Set(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		value := gconv.String(gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		value := qn_conv.String(qn_time.TimestampNano())
 		key := "TEST_ENV_" + value
 		err := genv.Set(key, "TEST")
 		t.Assert(err, nil)
@@ -64,7 +64,7 @@ func Test_GEnv_Set(t *testing.T) {
 }
 
 func Test_GEnv_Build(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := genv.Build(map[string]string{
 			"k1": "v1",
 			"k2": "v2",
@@ -75,8 +75,8 @@ func Test_GEnv_Build(t *testing.T) {
 }
 
 func Test_GEnv_Remove(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		value := gconv.String(gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		value := qn_conv.String(qn_time.TimestampNano())
 		key := "TEST_ENV_" + value
 		err := os.Setenv(key, "TEST")
 		t.Assert(err, nil)

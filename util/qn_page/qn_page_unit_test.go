@@ -13,17 +13,17 @@ import (
 
 	"github.com/qnsoft/common/util/gpage"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_New(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		page := gpage.New(9, 2, 1, `/user/list?page={.page}`)
 		t.Assert(page.TotalSize, 9)
 		t.Assert(page.TotalPage, 5)
 		t.Assert(page.CurrentPage, 1)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		page := gpage.New(9, 2, 0, `/user/list?page={.page}`)
 		t.Assert(page.TotalSize, 9)
 		t.Assert(page.TotalPage, 5)
@@ -32,7 +32,7 @@ func Test_New(t *testing.T) {
 }
 
 func Test_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		page := gpage.New(9, 2, 1, `/user/list?page={.page}`)
 		t.Assert(page.NextPage(), `<a class="GPageLink" href="/user/list?page=2" title="">></a>`)
 		t.Assert(page.PrevPage(), `<span class="GPageSpan"><</span>`)
@@ -41,7 +41,7 @@ func Test_Basic(t *testing.T) {
 		t.Assert(page.PageBar(), `<span class="GPageSpan">1</span><a class="GPageLink" href="/user/list?page=2" title="2">2</a><a class="GPageLink" href="/user/list?page=3" title="3">3</a><a class="GPageLink" href="/user/list?page=4" title="4">4</a><a class="GPageLink" href="/user/list?page=5" title="5">5</a>`)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		page := gpage.New(9, 2, 3, `/user/list?page={.page}`)
 		t.Assert(page.NextPage(), `<a class="GPageLink" href="/user/list?page=4" title="">></a>`)
 		t.Assert(page.PrevPage(), `<a class="GPageLink" href="/user/list?page=2" title=""><</a>`)
@@ -50,7 +50,7 @@ func Test_Basic(t *testing.T) {
 		t.Assert(page.PageBar(), `<a class="GPageLink" href="/user/list?page=1" title="1">1</a><a class="GPageLink" href="/user/list?page=2" title="2">2</a><span class="GPageSpan">3</span><a class="GPageLink" href="/user/list?page=4" title="4">4</a><a class="GPageLink" href="/user/list?page=5" title="5">5</a>`)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		page := gpage.New(9, 2, 5, `/user/list?page={.page}`)
 		t.Assert(page.NextPage(), `<span class="GPageSpan">></span>`)
 		t.Assert(page.PrevPage(), `<a class="GPageLink" href="/user/list?page=4" title=""><</a>`)
@@ -61,7 +61,7 @@ func Test_Basic(t *testing.T) {
 }
 
 func Test_CustomTag(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		page := gpage.New(5, 1, 2, `/user/list/{.page}`)
 		page.PrevPageTag = "《"
 		page.NextPageTag = "》"
@@ -78,7 +78,7 @@ func Test_CustomTag(t *testing.T) {
 }
 
 func Test_CustomStyle(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		page := gpage.New(5, 1, 2, `/user/list/{.page}`)
 		page.LinkStyle = "MyPageLink"
 		page.SpanStyle = "MyPageSpan"
@@ -93,7 +93,7 @@ func Test_CustomStyle(t *testing.T) {
 }
 
 func Test_Ajax(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		page := gpage.New(5, 1, 2, `/user/list/{.page}`)
 		page.AjaxActionName = "LoadPage"
 		t.Assert(page.NextPage(), `<a class="GPageLink" href="javascript:LoadPage('/user/list/3')" title="">></a>`)
@@ -105,7 +105,7 @@ func Test_Ajax(t *testing.T) {
 }
 
 func Test_PredefinedContent(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		page := gpage.New(5, 1, 2, `/user/list/{.page}`)
 		page.AjaxActionName = "LoadPage"
 		t.Assert(page.GetContent(1), `<a class="GPageLink" href="javascript:LoadPage('/user/list/1')" title="">上一页</a> <span class="current">2</span> <a class="GPageLink" href="javascript:LoadPage('/user/list/3')" title="">下一页</a>`)

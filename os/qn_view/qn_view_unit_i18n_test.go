@@ -10,14 +10,14 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_I18n(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		content := `{{.name}} says "{#hello}{#world}!"`
 		expect1 := `john says "你好世界!"`
 		expect2 := `john says "こんにちは世界!"`
@@ -46,13 +46,13 @@ func Test_I18n(t *testing.T) {
 		t.Assert(err, nil)
 		t.Assert(result3, expect3)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		content := `{{.name}} says "{#hello}{#world}!"`
 		expect1 := `john says "你好世界!"`
 		expect2 := `john says "こんにちは世界!"`
 		expect3 := `john says "{#hello}{#world}!"`
 
-		g.I18n().SetPath(gdebug.CallerDirectory() + gfile.Separator + "testdata" + gfile.Separator + "i18n")
+		g.I18n().SetPath(gdebug.CallerDirectory() + qn_file.Separator + "testdata" + qn_file.Separator + "i18n")
 
 		result1, err := g.View().ParseContent(content, g.Map{
 			"name":         "john",

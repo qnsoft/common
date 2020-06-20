@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/gogf/gf/text/gstr"
-	"github.com/gogf/gf/util/gconv"
+	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // Page is the pagination implementer.
@@ -114,7 +114,7 @@ func (p *Page) PageBar() string {
 	for i := begin; i < begin+p.PageBarNum; i++ {
 		if i <= p.TotalPage {
 			if i != p.CurrentPage {
-				barText := gconv.String(i)
+				barText := qn_conv.String(i)
 				barContent += p.GetLink(i, barText, barText)
 			} else {
 				barContent += fmt.Sprintf(`<span class="%s">%d</span>`, p.SpanStyle, i)
@@ -207,7 +207,7 @@ func (p *Page) GetContent(mode int) string {
 // Note that the UrlTemplate attribute can be either an URL or a URI string with "{.page}"
 // place holder specifying the page number position.
 func (p *Page) GetUrl(page int) string {
-	return gstr.Replace(p.UrlTemplate, PAGE_PLACE_HOLDER, gconv.String(page))
+	return gstr.Replace(p.UrlTemplate, PAGE_PLACE_HOLDER, qn_conv.String(page))
 }
 
 // GetLink returns the HTML link tag <a> content for given page number.

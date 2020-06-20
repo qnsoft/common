@@ -7,35 +7,36 @@
 package gins_test
 
 import (
-	"github.com/qnsoft/common/frame/gins"
 	"testing"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/frame/gins"
+
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_SetGet(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		gins.Set("test-user", 1)
 		t.Assert(gins.Get("test-user"), 1)
 		t.Assert(gins.Get("none-exists"), nil)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gins.GetOrSet("test-1", 1), 1)
 		t.Assert(gins.Get("test-1"), 1)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gins.GetOrSetFunc("test-2", func() interface{} {
 			return 2
 		}), 2)
 		t.Assert(gins.Get("test-2"), 2)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gins.GetOrSetFuncLock("test-3", func() interface{} {
 			return 3
 		}), 3)
 		t.Assert(gins.Get("test-3"), 3)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(gins.SetIfNotExist("test-4", 4), true)
 		t.Assert(gins.Get("test-4"), 4)
 		t.Assert(gins.SetIfNotExist("test-4", 5), false)

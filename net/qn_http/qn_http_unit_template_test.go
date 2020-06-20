@@ -10,19 +10,20 @@ package qn_http_test
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/encoding/ghtml"
-	"github.com/qnsoft/common/os/gview"
 	"testing"
 	"time"
 
+	"github.com/qnsoft/common/debug/gdebug"
+	"github.com/qnsoft/common/encoding/qn_html"
+	"github.com/qnsoft/common/os/gview"
+
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/ghttp"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Template_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := gview.New(gdebug.TestDataPath("template", "basic"))
 		p, _ := ports.PopRand()
 		s := g.Server(p)
@@ -47,7 +48,7 @@ func Test_Template_Basic(t *testing.T) {
 }
 
 func Test_Template_Encode(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := gview.New(gdebug.TestDataPath("template", "basic"))
 		v.SetAutoEncode(true)
 		p, _ := ports.PopRand()
@@ -73,7 +74,7 @@ func Test_Template_Encode(t *testing.T) {
 }
 
 func Test_Template_Layout1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := gview.New(gdebug.TestDataPath("template", "layout1"))
 		p, _ := ports.PopRand()
 		s := g.Server(p)
@@ -103,7 +104,7 @@ func Test_Template_Layout1(t *testing.T) {
 }
 
 func Test_Template_Layout2(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := gview.New(gdebug.TestDataPath("template", "layout2"))
 		p, _ := ports.PopRand()
 		s := g.Server(p)
@@ -140,7 +141,7 @@ func Test_Template_Layout2(t *testing.T) {
 }
 
 func Test_Template_XSS(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := gview.New()
 		v.SetAutoEncode(true)
 		c := "<br>"
@@ -161,6 +162,6 @@ func Test_Template_XSS(t *testing.T) {
 		client := ghttp.NewClient()
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
-		t.Assert(client.GetContent("/"), ghtml.Entities(c))
+		t.Assert(client.GetContent("/"), qn_html.Entities(c))
 	})
 }

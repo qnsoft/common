@@ -15,8 +15,8 @@ import (
 	"github.com/qnsoft/common/internal/json"
 
 	"github.com/qnsoft/common/internal/rwmutex"
-	"github.com/qnsoft/common/util/gconv"
-	"github.com/qnsoft/common/util/grand"
+	"github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/util/qn_rand"
 )
 
 // SortedIntArray is a golang sorted int array with rich features.
@@ -226,7 +226,7 @@ func (a *SortedIntArray) PopRight() (value int, found bool) {
 func (a *SortedIntArray) PopRand() (value int, found bool) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	return a.doRemoveWithoutLock(grand.Intn(len(a.array)))
+	return a.doRemoveWithoutLock(qn_rand.Intn(len(a.array)))
 }
 
 // PopRands randomly pops and returns <size> items out of array.
@@ -243,7 +243,7 @@ func (a *SortedIntArray) PopRands(size int) []int {
 	}
 	array := make([]int, size)
 	for i := 0; i < size; i++ {
-		array[i], _ = a.doRemoveWithoutLock(grand.Intn(len(a.array)))
+		array[i], _ = a.doRemoveWithoutLock(qn_rand.Intn(len(a.array)))
 	}
 	return array
 }
@@ -531,7 +531,7 @@ func (a *SortedIntArray) RLockFunc(f func(array []int)) *SortedIntArray {
 // The difference between Merge and Append is Append supports only specified slice type,
 // but Merge supports more parameter types.
 func (a *SortedIntArray) Merge(array interface{}) *SortedIntArray {
-	return a.Add(gconv.Ints(array)...)
+	return a.Add(qn_conv.Ints(array)...)
 }
 
 // Chunk splits an array into multiple arrays,
@@ -564,7 +564,7 @@ func (a *SortedIntArray) Rand() (value int, found bool) {
 	if len(a.array) == 0 {
 		return 0, false
 	}
-	return a.array[grand.Intn(len(a.array))], true
+	return a.array[qn_rand.Intn(len(a.array))], true
 }
 
 // Rands randomly returns <size> items from array(no deleting).
@@ -576,7 +576,7 @@ func (a *SortedIntArray) Rands(size int) []int {
 	}
 	array := make([]int, size)
 	for i := 0; i < size; i++ {
-		array[i] = a.array[grand.Intn(len(a.array))]
+		array[i] = a.array[qn_rand.Intn(len(a.array))]
 	}
 	return array
 }
@@ -590,7 +590,7 @@ func (a *SortedIntArray) Join(glue string) string {
 	}
 	buffer := bytes.NewBuffer(nil)
 	for k, v := range a.array {
-		buffer.WriteString(gconv.String(v))
+		buffer.WriteString(qn_conv.String(v))
 		if k != len(a.array)-1 {
 			buffer.WriteString(glue)
 		}
@@ -677,9 +677,9 @@ func (a *SortedIntArray) UnmarshalValue(value interface{}) (err error) {
 	defer a.mu.Unlock()
 	switch value.(type) {
 	case string, []byte:
-		err = json.Unmarshal(gconv.Bytes(value), &a.array)
+		err = json.Unmarshal(qn_conv.Bytes(value), &a.array)
 	default:
-		a.array = gconv.SliceInt(value)
+		a.array = qn_conv.SliceInt(value)
 	}
 	if a.array != nil {
 		sort.Ints(a.array)

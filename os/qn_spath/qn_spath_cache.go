@@ -13,8 +13,8 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gfsnotify"
+	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/text/gstr"
 )
 
@@ -64,16 +64,16 @@ func (sp *SPath) parseCacheValue(value string) (filePath string, isDir bool) {
 // to the cache.
 func (sp *SPath) addToCache(filePath, rootPath string) {
 	// Add itself firstly.
-	idDir := gfile.IsDir(filePath)
+	idDir := qn_file.IsDir(filePath)
 	sp.cache.SetIfNotExist(
 		sp.nameFromPath(filePath, rootPath), sp.makeCacheValue(filePath, idDir),
 	)
 	// If it's a directory, it adds its all sub files/directories recursively.
 	if idDir {
-		if files, err := gfile.ScanDir(filePath, "*", true); err == nil {
+		if files, err := qn_file.ScanDir(filePath, "*", true); err == nil {
 			//fmt.Println("gspath add to cache:", filePath, files)
 			for _, path := range files {
-				sp.cache.SetIfNotExist(sp.nameFromPath(path, rootPath), sp.makeCacheValue(path, gfile.IsDir(path)))
+				sp.cache.SetIfNotExist(sp.nameFromPath(path, rootPath), sp.makeCacheValue(path, qn_file.IsDir(path)))
 			}
 		} else {
 			//fmt.Errorf(err.Error())
@@ -97,7 +97,7 @@ func (sp *SPath) addMonitorByPath(path string) {
 			sp.cache.Remove(sp.nameFromPath(event.Path, path))
 
 		case event.IsRename():
-			if !gfile.Exists(event.Path) {
+			if !qn_file.Exists(event.Path) {
 				sp.cache.Remove(sp.nameFromPath(event.Path, path))
 			}
 

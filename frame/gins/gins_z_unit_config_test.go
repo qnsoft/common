@@ -15,38 +15,38 @@ import (
 	"github.com/qnsoft/common/frame/gins"
 
 	"github.com/qnsoft/common/os/gcfg"
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/qnsoft/common/os/qn_time"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 var (
-	configContent = gfile.GetContents(
+	configContent = qn_file.GetContents(
 		gdebug.TestDataPath("config", "config.toml"),
 	)
 )
 
 func Test_Config1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.AssertNE(configContent, "")
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.AssertNE(gins.Config(), nil)
 	})
 }
 
 func Test_Config2(t *testing.T) {
 	// relative path
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var err error
-		dirPath := gfile.TempDir(gtime.TimestampNanoStr())
-		err = gfile.Mkdir(dirPath)
+		dirPath := qn_file.TempDir(qn_time.TimestampNanoStr())
+		err = qn_file.Mkdir(dirPath)
 		t.Assert(err, nil)
-		defer gfile.Remove(dirPath)
+		defer qn_file.Remove(dirPath)
 
 		name := "config.toml"
-		err = gfile.PutContents(gfile.Join(dirPath, name), configContent)
+		err = qn_file.PutContents(qn_file.Join(dirPath, name), configContent)
 		t.Assert(err, nil)
 
 		err = gins.Config().AddPath(dirPath)
@@ -62,15 +62,15 @@ func Test_Config2(t *testing.T) {
 	time.Sleep(500 * time.Millisecond)
 
 	// relative path, config folder
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var err error
-		dirPath := gfile.TempDir(gtime.TimestampNanoStr())
-		err = gfile.Mkdir(dirPath)
+		dirPath := qn_file.TempDir(qn_time.TimestampNanoStr())
+		err = qn_file.Mkdir(dirPath)
 		t.Assert(err, nil)
-		defer gfile.Remove(dirPath)
+		defer qn_file.Remove(dirPath)
 
 		name := "config/config.toml"
-		err = gfile.PutContents(gfile.Join(dirPath, name), configContent)
+		err = qn_file.PutContents(qn_file.Join(dirPath, name), configContent)
 		t.Assert(err, nil)
 
 		err = gins.Config().AddPath(dirPath)
@@ -88,15 +88,15 @@ func Test_Config2(t *testing.T) {
 }
 
 func Test_Config3(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var err error
-		dirPath := gfile.TempDir(gtime.TimestampNanoStr())
-		err = gfile.Mkdir(dirPath)
+		dirPath := qn_file.TempDir(qn_time.TimestampNanoStr())
+		err = qn_file.Mkdir(dirPath)
 		t.Assert(err, nil)
-		defer gfile.Remove(dirPath)
+		defer qn_file.Remove(dirPath)
 
 		name := "test.toml"
-		err = gfile.PutContents(gfile.Join(dirPath, name), configContent)
+		err = qn_file.PutContents(qn_file.Join(dirPath, name), configContent)
 		t.Assert(err, nil)
 
 		err = gins.Config("test").AddPath(dirPath)
@@ -112,15 +112,15 @@ func Test_Config3(t *testing.T) {
 	// for gfsnotify callbacks to refresh cache of config file
 	time.Sleep(500 * time.Millisecond)
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var err error
-		dirPath := gfile.TempDir(gtime.TimestampNanoStr())
-		err = gfile.Mkdir(dirPath)
+		dirPath := qn_file.TempDir(qn_time.TimestampNanoStr())
+		err = qn_file.Mkdir(dirPath)
 		t.Assert(err, nil)
-		defer gfile.Remove(dirPath)
+		defer qn_file.Remove(dirPath)
 
 		name := "config/test.toml"
-		err = gfile.PutContents(gfile.Join(dirPath, name), configContent)
+		err = qn_file.PutContents(qn_file.Join(dirPath, name), configContent)
 		t.Assert(err, nil)
 
 		err = gins.Config("test").AddPath(dirPath)
@@ -139,12 +139,12 @@ func Test_Config3(t *testing.T) {
 
 func Test_Config4(t *testing.T) {
 	// absolute path
-	gtest.C(t, func(t *gtest.T) {
-		path := fmt.Sprintf(`%s/%d`, gfile.TempDir(), gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := fmt.Sprintf(`%s/%d`, qn_file.TempDir(), qn_time.TimestampNano())
 		file := fmt.Sprintf(`%s/%s`, path, "config.toml")
-		err := gfile.PutContents(file, configContent)
+		err := qn_file.PutContents(file, configContent)
 		t.Assert(err, nil)
-		defer gfile.Remove(file)
+		defer qn_file.Remove(file)
 		defer gins.Config().Clear()
 
 		t.Assert(gins.Config().AddPath(path), nil)
@@ -154,12 +154,12 @@ func Test_Config4(t *testing.T) {
 	})
 	time.Sleep(500 * time.Millisecond)
 
-	gtest.C(t, func(t *gtest.T) {
-		path := fmt.Sprintf(`%s/%d/config`, gfile.TempDir(), gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := fmt.Sprintf(`%s/%d/config`, qn_file.TempDir(), qn_time.TimestampNano())
 		file := fmt.Sprintf(`%s/%s`, path, "config.toml")
-		err := gfile.PutContents(file, configContent)
+		err := qn_file.PutContents(file, configContent)
 		t.Assert(err, nil)
-		defer gfile.Remove(file)
+		defer qn_file.Remove(file)
 		defer gins.Config().Clear()
 		t.Assert(gins.Config().AddPath(path), nil)
 		t.Assert(gins.Config().Get("test"), "v=1")
@@ -168,12 +168,12 @@ func Test_Config4(t *testing.T) {
 	})
 	time.Sleep(500 * time.Millisecond)
 
-	gtest.C(t, func(t *gtest.T) {
-		path := fmt.Sprintf(`%s/%d`, gfile.TempDir(), gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := fmt.Sprintf(`%s/%d`, qn_file.TempDir(), qn_time.TimestampNano())
 		file := fmt.Sprintf(`%s/%s`, path, "test.toml")
-		err := gfile.PutContents(file, configContent)
+		err := qn_file.PutContents(file, configContent)
 		t.Assert(err, nil)
-		defer gfile.Remove(file)
+		defer qn_file.Remove(file)
 		defer gins.Config("test").Clear()
 		gins.Config("test").SetFileName("test.toml")
 		t.Assert(gins.Config("test").AddPath(path), nil)
@@ -183,12 +183,12 @@ func Test_Config4(t *testing.T) {
 	})
 	time.Sleep(500 * time.Millisecond)
 
-	gtest.C(t, func(t *gtest.T) {
-		path := fmt.Sprintf(`%s/%d/config`, gfile.TempDir(), gtime.TimestampNano())
+	qn_test.C(t, func(t *qn_test.T) {
+		path := fmt.Sprintf(`%s/%d/config`, qn_file.TempDir(), qn_time.TimestampNano())
 		file := fmt.Sprintf(`%s/%s`, path, "test.toml")
-		err := gfile.PutContents(file, configContent)
+		err := qn_file.PutContents(file, configContent)
 		t.Assert(err, nil)
-		defer gfile.Remove(file)
+		defer qn_file.Remove(file)
 		defer gins.Config().Clear()
 		gins.Config("test").SetFileName("test.toml")
 		t.Assert(gins.Config("test").AddPath(path), nil)
@@ -199,12 +199,12 @@ func Test_Config4(t *testing.T) {
 }
 func Test_Basic2(t *testing.T) {
 	config := `log-path = "logs"`
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		path := gcfg.DEFAULT_CONFIG_FILE
-		err := gfile.PutContents(path, config)
+		err := qn_file.PutContents(path, config)
 		t.Assert(err, nil)
 		defer func() {
-			_ = gfile.Remove(path)
+			_ = qn_file.Remove(path)
 		}()
 
 		t.Assert(gins.Config().Get("log-path"), "logs")

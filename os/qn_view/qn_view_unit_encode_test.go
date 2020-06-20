@@ -7,16 +7,17 @@
 package qn_view_test
 
 import (
+	"testing"
+
 	"github.com/qnsoft/common/debug/gdebug"
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gview"
-	"github.com/qnsoft/common/test/gtest"
-	"testing"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Encode_Parse(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := gview.New()
 		v.SetPath(gdebug.TestDataPath("tpl"))
 		v.SetAutoEncode(true)
@@ -29,9 +30,9 @@ func Test_Encode_Parse(t *testing.T) {
 }
 
 func Test_Encode_ParseContent(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		v := gview.New()
-		tplContent := gfile.GetContents(gdebug.TestDataPath("tpl", "encode.tpl"))
+		tplContent := qn_file.GetContents(gdebug.TestDataPath("tpl", "encode.tpl"))
 		v.SetAutoEncode(true)
 		result, err := v.ParseContent(tplContent, g.Map{
 			"title": "<b>my title</b>",

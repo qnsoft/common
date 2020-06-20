@@ -10,7 +10,7 @@ import (
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/internal/empty"
 	"github.com/qnsoft/common/net/ghttp"
-	gutil "github.com/qnsoft/common/util/qn_util"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 )
 
 // NewVar returns a qn_var.Var.
@@ -25,23 +25,23 @@ func Wait() {
 
 // Dump dumps a variable to stdout with more manually readable.
 func Dump(i ...interface{}) {
-	gutil.Dump(i...)
+	qn_util.Dump(i...)
 }
 
 // Export exports a variable to string with more manually readable.
 func Export(i ...interface{}) string {
-	return gutil.Export(i...)
+	return qn_util.Export(i...)
 }
 
 // Throw throws a exception, which can be caught by TryCatch function.
 // It always be used in TryCatch function.
 func Throw(exception interface{}) {
-	gutil.Throw(exception)
+	qn_util.Throw(exception)
 }
 
 // TryCatch does the try...catch... mechanism.
 func TryCatch(try func(), catch ...func(exception interface{})) {
-	gutil.TryCatch(try, catch...)
+	qn_util.TryCatch(try, catch...)
 }
 
 // IsNil checks whether given <value> is nil.

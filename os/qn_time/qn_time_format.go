@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 var (
@@ -238,9 +238,9 @@ func formatToStdLayout(format string) string {
 
 // formatToRegexPattern converts the custom format to its corresponding regular expression.
 func formatToRegexPattern(format string) string {
-	s := gregex.Quote(formatToStdLayout(format))
-	s, _ = gregex.ReplaceString(`[0-9]`, `[0-9]`, s)
-	s, _ = gregex.ReplaceString(`[A-Za-z]`, `[A-Za-z]`, s)
+	s := qn_regex.Quote(formatToStdLayout(format))
+	s, _ = qn_regex.ReplaceString(`[0-9]`, `[0-9]`, s)
+	s, _ = qn_regex.ReplaceString(`[A-Za-z]`, `[A-Za-z]`, s)
 	return s
 }
 

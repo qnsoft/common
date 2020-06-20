@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 // 运行时间管理对象
@@ -30,7 +30,7 @@ type cronSchedule struct {
 }
 
 const (
-	gREGEX_FOR_CRON = `^([\-/\d\*\?,]+)\s+([\-/\d\*\?,]+)\s+([\-/\d\*\?,]+)\s+([\-/\d\*\?,]+)\s+([\-/\d\*\?,]+)\s+([\-/\d\*\?,]+)$`
+	qn_regex_FOR_CRON = `^([\-/\d\*\?,]+)\s+([\-/\d\*\?,]+)\s+([\-/\d\*\?,]+)\s+([\-/\d\*\?,]+)\s+([\-/\d\*\?,]+)\s+([\-/\d\*\?,]+)$`
 )
 
 var (
@@ -74,7 +74,7 @@ var (
 // 解析定时格式为cronSchedule对象
 func newSchedule(pattern string) (*cronSchedule, error) {
 	// 处理预定义的定时格式
-	if match, _ := gregex.MatchString(`(@\w+)\s*(\w*)\s*`, pattern); len(match) > 0 {
+	if match, _ := qn_regex.MatchString(`(@\w+)\s*(\w*)\s*`, pattern); len(match) > 0 {
 		key := strings.ToLower(match[1])
 		if v, ok := predefinedPatternMap[key]; ok {
 			pattern = v
@@ -93,7 +93,7 @@ func newSchedule(pattern string) (*cronSchedule, error) {
 		}
 	}
 	// 处理通用的定时格式定义
-	if match, _ := gregex.MatchString(gREGEX_FOR_CRON, pattern); len(match) == 7 {
+	if match, _ := qn_regex.MatchString(qn_regex_FOR_CRON, pattern); len(match) == 7 {
 		schedule := &cronSchedule{
 			create:  time.Now().Unix(),
 			every:   0,
@@ -195,7 +195,7 @@ func parseItem(item string, min int, max int, allowQuestionMark bool) (map[int]s
 
 // 将配置项值转换为数字
 func parseItemValue(value string, valueType byte) (int, error) {
-	if gregex.IsMatchString(`^\d+$`, value) {
+	if qn_regex.IsMatchString(`^\d+$`, value) {
 		// 纯数字
 		if i, err := strconv.Atoi(value); err == nil {
 			return i, nil

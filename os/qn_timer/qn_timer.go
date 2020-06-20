@@ -8,12 +8,12 @@
 // running and management.
 //
 // This package is designed for management for millions of timing jobs. The differences
-// between gtimer and gcron are as follows:
+// between qn_timer and gcron are as follows:
 // 1. package qn_cron is implemented based on package qn_timer.
-// 2. gtimer is designed for high performance and for millions of timing jobs.
+// 2. qn_timer is designed for high performance and for millions of timing jobs.
 // 3. gcron supports configuration pattern grammar like linux crontab, which is more manually
 //    readable.
-// 4. gtimer's benchmark OP is measured in nanoseconds, and gcron's benchmark OP is measured
+// 4. qn_timer's benchmark OP is measured in nanoseconds, and gcron's benchmark OP is measured
 //    in microseconds.
 //
 // ALSO VERY NOTE the common delay of the timer: https://github.com/golang/go/issues/14410
@@ -39,9 +39,9 @@ const (
 )
 
 var (
-	defaultSlots    = cmdenv.Get("gf.gtimer.slots", gDEFAULT_SLOT_NUMBER).Int()
-	defaultLevel    = cmdenv.Get("gf.gtimer.level", gDEFAULT_WHEEL_LEVEL).Int()
-	defaultInterval = cmdenv.Get("gf.gtimer.interval", gDEFAULT_WHEEL_INTERVAL).Duration() * time.Millisecond
+	defaultSlots    = cmdenv.Get("gf.qn_timer.slots", gDEFAULT_SLOT_NUMBER).Int()
+	defaultLevel    = cmdenv.Get("gf.qn_timer.level", gDEFAULT_WHEEL_LEVEL).Int()
+	defaultInterval = cmdenv.Get("gf.qn_timer.interval", gDEFAULT_WHEEL_INTERVAL).Duration() * time.Millisecond
 	defaultTimer    = New(defaultSlots, defaultInterval, defaultLevel)
 )
 

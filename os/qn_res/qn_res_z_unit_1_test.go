@@ -10,16 +10,16 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/gogf/gf/os/gtime"
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_time"
 
 	"github.com/qnsoft/common/debug/gdebug"
 	"github.com/qnsoft/common/os/gres"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_PackToGoFile(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		srcPath := gdebug.TestDataPath("files")
 		goFilePath := gdebug.TestDataPath("testdata.go")
 		pkgName := "testdata"
@@ -29,7 +29,7 @@ func Test_PackToGoFile(t *testing.T) {
 }
 
 func Test_Pack(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		srcPath := gdebug.TestDataPath("files")
 		data, err := gres.Pack(srcPath)
 		t.Assert(err, nil)
@@ -43,13 +43,13 @@ func Test_Pack(t *testing.T) {
 }
 
 func Test_PackToFile(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		srcPath := gdebug.TestDataPath("files")
-		dstPath := gfile.TempDir(gtime.TimestampNanoStr())
+		dstPath := qn_file.TempDir(qn_time.TimestampNanoStr())
 		err := gres.PackToFile(srcPath, dstPath)
 		t.Assert(err, nil)
 
-		defer gfile.Remove(dstPath)
+		defer qn_file.Remove(dstPath)
 
 		r := gres.New()
 		err = r.Load(dstPath)
@@ -59,11 +59,11 @@ func Test_PackToFile(t *testing.T) {
 }
 
 func Test_PackMulti(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		srcPath := gdebug.TestDataPath("files")
 		goFilePath := gdebug.TestDataPath("data/data.go")
 		pkgName := "data"
-		array, err := gfile.ScanDir(srcPath, "*", false)
+		array, err := qn_file.ScanDir(srcPath, "*", false)
 		t.Assert(err, nil)
 		err = gres.PackToGoFile(strings.Join(array, ","), goFilePath, pkgName)
 		t.Assert(err, nil)
@@ -71,9 +71,9 @@ func Test_PackMulti(t *testing.T) {
 }
 
 func Test_PackWithPrefix1(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		srcPath := gdebug.TestDataPath("files")
-		goFilePath := gfile.TempDir("testdata.go")
+		goFilePath := qn_file.TempDir("testdata.go")
 		pkgName := "testdata"
 		err := gres.PackToGoFile(srcPath, goFilePath, pkgName, "www/gf-site/test")
 		t.Assert(err, nil)
@@ -81,9 +81,9 @@ func Test_PackWithPrefix1(t *testing.T) {
 }
 
 func Test_PackWithPrefix2(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		srcPath := gdebug.TestDataPath("files")
-		goFilePath := gfile.TempDir("testdata.go")
+		goFilePath := qn_file.TempDir("testdata.go")
 		pkgName := "testdata"
 		err := gres.PackToGoFile(srcPath, goFilePath, pkgName, "/var/www/gf-site/test")
 		t.Assert(err, nil)

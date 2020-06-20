@@ -11,16 +11,16 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 
-	"github.com/qnsoft/common/test/gtest"
-	"github.com/qnsoft/common/util/gutil"
+	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/util/qn_util"
 )
 
 func Test_MapCopy(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := g.Map{
 			"k1": "v1",
 		}
-		m2 := gutil.MapCopy(m1)
+		m2 := qn_util.MapCopy(m1)
 		m2["k2"] = "v2"
 
 		t.Assert(m1["k1"], "v1")
@@ -31,18 +31,18 @@ func Test_MapCopy(t *testing.T) {
 }
 
 func Test_MapContains(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := g.Map{
 			"k1": "v1",
 		}
-		t.Assert(gutil.MapContains(m1, "k1"), true)
-		t.Assert(gutil.MapContains(m1, "K1"), false)
-		t.Assert(gutil.MapContains(m1, "k2"), false)
+		t.Assert(qn_util.MapContains(m1, "k1"), true)
+		t.Assert(qn_util.MapContains(m1, "K1"), false)
+		t.Assert(qn_util.MapContains(m1, "k2"), false)
 	})
 }
 
 func Test_MapMerge(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := g.Map{
 			"k1": "v1",
 		}
@@ -52,7 +52,7 @@ func Test_MapMerge(t *testing.T) {
 		m3 := g.Map{
 			"k3": "v3",
 		}
-		gutil.MapMerge(m1, m2, m3, nil)
+		qn_util.MapMerge(m1, m2, m3, nil)
 		t.Assert(m1["k1"], "v1")
 		t.Assert(m1["k2"], "v2")
 		t.Assert(m1["k3"], "v3")
@@ -62,7 +62,7 @@ func Test_MapMerge(t *testing.T) {
 }
 
 func Test_MapMergeCopy(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m1 := g.Map{
 			"k1": "v1",
 		}
@@ -72,7 +72,7 @@ func Test_MapMergeCopy(t *testing.T) {
 		m3 := g.Map{
 			"k3": "v3",
 		}
-		m := gutil.MapMergeCopy(m1, m2, m3, nil)
+		m := qn_util.MapMergeCopy(m1, m2, m3, nil)
 		t.Assert(m["k1"], "v1")
 		t.Assert(m["k2"], "v2")
 		t.Assert(m["k3"], "v3")
@@ -84,38 +84,38 @@ func Test_MapMergeCopy(t *testing.T) {
 }
 
 func Test_MapPossibleItemByKey(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := g.Map{
 			"name":     "guo",
 			"NickName": "john",
 		}
-		k, v := gutil.MapPossibleItemByKey(m, "NAME")
+		k, v := qn_util.MapPossibleItemByKey(m, "NAME")
 		t.Assert(k, "name")
 		t.Assert(v, "guo")
 
-		k, v = gutil.MapPossibleItemByKey(m, "nick name")
+		k, v = qn_util.MapPossibleItemByKey(m, "nick name")
 		t.Assert(k, "NickName")
 		t.Assert(v, "john")
 
-		k, v = gutil.MapPossibleItemByKey(m, "none")
+		k, v = qn_util.MapPossibleItemByKey(m, "none")
 		t.Assert(k, "")
 		t.Assert(v, nil)
 	})
 }
 
 func Test_MapContainsPossibleKey(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := g.Map{
 			"name":     "guo",
 			"NickName": "john",
 		}
-		t.Assert(gutil.MapContainsPossibleKey(m, "name"), true)
-		t.Assert(gutil.MapContainsPossibleKey(m, "NAME"), true)
-		t.Assert(gutil.MapContainsPossibleKey(m, "nickname"), true)
-		t.Assert(gutil.MapContainsPossibleKey(m, "nick name"), true)
-		t.Assert(gutil.MapContainsPossibleKey(m, "nick_name"), true)
-		t.Assert(gutil.MapContainsPossibleKey(m, "nick-name"), true)
-		t.Assert(gutil.MapContainsPossibleKey(m, "nick.name"), true)
-		t.Assert(gutil.MapContainsPossibleKey(m, "none"), false)
+		t.Assert(qn_util.MapContainsPossibleKey(m, "name"), true)
+		t.Assert(qn_util.MapContainsPossibleKey(m, "NAME"), true)
+		t.Assert(qn_util.MapContainsPossibleKey(m, "nickname"), true)
+		t.Assert(qn_util.MapContainsPossibleKey(m, "nick name"), true)
+		t.Assert(qn_util.MapContainsPossibleKey(m, "nick_name"), true)
+		t.Assert(qn_util.MapContainsPossibleKey(m, "nick-name"), true)
+		t.Assert(qn_util.MapContainsPossibleKey(m, "nick.name"), true)
+		t.Assert(qn_util.MapContainsPossibleKey(m, "none"), false)
 	})
 }

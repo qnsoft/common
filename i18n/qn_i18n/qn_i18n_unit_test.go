@@ -9,24 +9,24 @@ package qn_i18n_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/os/gres"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/os/qn_time"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/frame/g"
 
 	"github.com/qnsoft/common/i18n/gi18n"
 
 	"github.com/qnsoft/common/debug/gdebug"
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 
 	_ "github.com/qnsoft/common/os/gres/testdata/data"
 )
 
 func Test_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i18n := gi18n.New(gi18n.Options{
 			Path: gdebug.TestDataPath("i18n"),
 		})
@@ -43,7 +43,7 @@ func Test_Basic(t *testing.T) {
 		t.Assert(i18n.T("{$hello}{$world}"), "你好世界")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i18n := gi18n.New(gi18n.Options{
 			Path: gdebug.TestDataPath("i18n-file"),
 		})
@@ -57,9 +57,9 @@ func Test_Basic(t *testing.T) {
 		t.Assert(i18n.T("{#hello}{#world}"), "你好世界")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i18n := gi18n.New(gi18n.Options{
-			Path: gdebug.CallerDirectory() + gfile.Separator + "testdata" + gfile.Separator + "i18n-dir",
+			Path: gdebug.CallerDirectory() + qn_file.Separator + "testdata" + qn_file.Separator + "i18n-dir",
 		})
 		i18n.SetLanguage("none")
 		t.Assert(i18n.T("{#hello}{#world}"), "{#hello}{#world}")
@@ -73,7 +73,7 @@ func Test_Basic(t *testing.T) {
 }
 
 func Test_DefaultManager(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		err := gi18n.SetPath(gdebug.TestDataPath("i18n"))
 		t.Assert(err, nil)
 
@@ -87,8 +87,8 @@ func Test_DefaultManager(t *testing.T) {
 		t.Assert(gi18n.T("{#hello}{#world}"), "你好世界")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
-		err := gi18n.SetPath(gdebug.CallerDirectory() + gfile.Separator + "testdata" + gfile.Separator + "i18n-dir")
+	qn_test.C(t, func(t *qn_test.T) {
+		err := gi18n.SetPath(gdebug.CallerDirectory() + qn_file.Separator + "testdata" + qn_file.Separator + "i18n-dir")
 		t.Assert(err, nil)
 
 		gi18n.SetLanguage("none")
@@ -104,7 +104,7 @@ func Test_DefaultManager(t *testing.T) {
 
 func Test_Instance(t *testing.T) {
 	gres.Dump()
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gi18n.Instance()
 		err := m.SetPath("i18n-dir")
 		t.Assert(err, nil)
@@ -112,23 +112,23 @@ func Test_Instance(t *testing.T) {
 		t.Assert(m.T("{#hello}{#world}"), "你好世界")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := gi18n.Instance()
 		t.Assert(m.T("{#hello}{#world}"), "你好世界")
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(g.I18n().T("{#hello}{#world}"), "你好世界")
 	})
 	// Default language is: en
-	gtest.C(t, func(t *gtest.T) {
-		m := gi18n.Instance(gconv.String(gtime.TimestampNano()))
+	qn_test.C(t, func(t *qn_test.T) {
+		m := gi18n.Instance(qn_conv.String(qn_time.TimestampNano()))
 		t.Assert(m.T("{#hello}{#world}"), "HelloWorld")
 	})
 }
 
 func Test_Resource(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		m := g.I18n("resource")
 		err := m.SetPath("i18n-dir")
 		t.Assert(err, nil)

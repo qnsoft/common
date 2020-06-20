@@ -12,7 +12,7 @@ import (
 	"github.com/qnsoft/common/container/glist"
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/os/gtimer"
+	"github.com/qnsoft/common/os/qn_timer"
 )
 
 // LRU cache object.
@@ -34,7 +34,7 @@ func newMemCacheLru(cache *memCache) *memCacheLru {
 		rawList: glist.New(true),
 		closed:  gtype.NewBool(),
 	}
-	gtimer.AddSingleton(time.Second, lru.SyncAndClear)
+	qn_timer.AddSingleton(time.Second, lru.SyncAndClear)
 	return lru
 }
 
@@ -82,7 +82,7 @@ func (lru *memCacheLru) Pop() interface{} {
 // using Least Recently Used algorithm.
 func (lru *memCacheLru) SyncAndClear() {
 	if lru.closed.Val() {
-		gtimer.Exit()
+		qn_timer.Exit()
 		return
 	}
 	// Data synchronization.

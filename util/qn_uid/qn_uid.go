@@ -17,11 +17,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gogf/gf/util/gconv"
-	"github.com/gogf/gf/util/grand"
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/encoding/ghash"
-	"github.com/qnsoft/common/net/gipv4"
+	"github.com/qnsoft/common/encoding/qn_hash"
+	"github.com/qnsoft/common/net/qn_ipv4"
+	"github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/util/qn_rand"
 )
 
 var (
@@ -35,14 +35,14 @@ var (
 // init initializes several fixed local variable.
 func init() {
 	// MAC addresses hash result in 7 bytes.
-	macs, _ := gipv4.GetMacArray()
+	macs, _ := qn_ipv4.GetMacArray()
 	if len(macs) > 0 {
 		var macAddrBytes []byte
 		for _, mac := range macs {
 			macAddrBytes = append(macAddrBytes, []byte(mac)...)
 		}
 		b := []byte{'0', '0', '0', '0', '0', '0', '0'}
-		s := strconv.FormatUint(uint64(ghash.DJBHash(macAddrBytes)), 36)
+		s := strconv.FormatUint(uint64(qn_hash.DJBHash(macAddrBytes)), 36)
 		copy(b, s)
 		macAddrStr = string(b)
 	}
@@ -98,7 +98,7 @@ func S(data ...[]byte) string {
 	} else {
 		panic("data count too long, no more than 2")
 	}
-	return gconv.UnsafeBytesToStr(b)
+	return qn_conv.UnsafeBytesToStr(b)
 }
 
 // getSequence increases and returns the sequence string in 3 bytes.
@@ -117,7 +117,7 @@ func getRandomStr(n int) []byte {
 	}
 	var (
 		b           = make([]byte, n)
-		numberBytes = grand.B(n)
+		numberBytes = qn_rand.B(n)
 	)
 	for i := range b {
 		b[i] = randomStrBase[numberBytes[i]%36]
@@ -128,7 +128,7 @@ func getRandomStr(n int) []byte {
 // getDataHashStr creates and returns hash bytes in 7 bytes with given data bytes.
 func getDataHashStr(data []byte) []byte {
 	b := []byte{'0', '0', '0', '0', '0', '0', '0'}
-	s := strconv.FormatUint(uint64(ghash.DJBHash(data)), 36)
+	s := strconv.FormatUint(uint64(qn_hash.DJBHash(data)), 36)
 	copy(b, s)
 	return b
 }

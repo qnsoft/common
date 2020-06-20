@@ -15,8 +15,8 @@ import (
 
 	"github.com/qnsoft/common/text/gstr"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func createTestFile(filename, content string) error {
@@ -54,7 +54,7 @@ func testpath() string {
 }
 
 func Test_GetContents(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 
 		var (
 			filepaths string = "/testfile_t1.txt"
@@ -62,14 +62,14 @@ func Test_GetContents(t *testing.T) {
 		createTestFile(filepaths, "my name is jroam")
 		defer delTestFiles(filepaths)
 
-		t.Assert(gfile.GetContents(testpath()+filepaths), "my name is jroam")
-		t.Assert(gfile.GetContents(""), "")
+		t.Assert(qn_file.GetContents(testpath()+filepaths), "my name is jroam")
+		t.Assert(qn_file.GetContents(""), "")
 
 	})
 }
 
 func Test_GetBinContents(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			filepaths1  = "/testfile_t1.txt"
 			filepaths2  = testpath() + "/testfile_t1_no.txt"
@@ -78,19 +78,19 @@ func Test_GetBinContents(t *testing.T) {
 		)
 		createTestFile(filepaths1, str1)
 		defer delTestFiles(filepaths1)
-		readcontent = gfile.GetBytes(testpath() + filepaths1)
+		readcontent = qn_file.GetBytes(testpath() + filepaths1)
 		t.Assert(readcontent, []byte(str1))
 
-		readcontent = gfile.GetBytes(filepaths2)
+		readcontent = qn_file.GetBytes(filepaths2)
 		t.Assert(string(readcontent), "")
 
-		t.Assert(string(gfile.GetBytes(filepaths2)), "")
+		t.Assert(string(qn_file.GetBytes(filepaths2)), "")
 
 	})
 }
 
 func Test_Truncate(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			filepaths1 = "/testfile_GetContentsyyui.txt"
 			err        error
@@ -98,7 +98,7 @@ func Test_Truncate(t *testing.T) {
 		)
 		createTestFile(filepaths1, "abcdefghijkmln")
 		defer delTestFiles(filepaths1)
-		err = gfile.Truncate(testpath()+filepaths1, 10)
+		err = qn_file.Truncate(testpath()+filepaths1, 10)
 		t.Assert(err, nil)
 
 		files, err = os.Open(testpath() + filepaths1)
@@ -108,14 +108,14 @@ func Test_Truncate(t *testing.T) {
 		t.Assert(err2, nil)
 		t.Assert(fileinfo.Size(), 10)
 
-		err = gfile.Truncate("", 10)
+		err = qn_file.Truncate("", 10)
 		t.AssertNE(err, nil)
 
 	})
 }
 
 func Test_PutContents(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			filepaths   = "/testfile_PutContents.txt"
 			err         error
@@ -124,21 +124,21 @@ func Test_PutContents(t *testing.T) {
 		createTestFile(filepaths, "a")
 		defer delTestFiles(filepaths)
 
-		err = gfile.PutContents(testpath()+filepaths, "test!")
+		err = qn_file.PutContents(testpath()+filepaths, "test!")
 		t.Assert(err, nil)
 
 		readcontent, err = ioutil.ReadFile(testpath() + filepaths)
 		t.Assert(err, nil)
 		t.Assert(string(readcontent), "test!")
 
-		err = gfile.PutContents("", "test!")
+		err = qn_file.PutContents("", "test!")
 		t.AssertNE(err, nil)
 
 	})
 }
 
 func Test_PutContentsAppend(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			filepaths   = "/testfile_PutContents.txt"
 			err         error
@@ -147,14 +147,14 @@ func Test_PutContentsAppend(t *testing.T) {
 
 		createTestFile(filepaths, "a")
 		defer delTestFiles(filepaths)
-		err = gfile.PutContentsAppend(testpath()+filepaths, "hello")
+		err = qn_file.PutContentsAppend(testpath()+filepaths, "hello")
 		t.Assert(err, nil)
 
 		readcontent, err = ioutil.ReadFile(testpath() + filepaths)
 		t.Assert(err, nil)
 		t.Assert(string(readcontent), "ahello")
 
-		err = gfile.PutContentsAppend("", "hello")
+		err = qn_file.PutContentsAppend("", "hello")
 		t.AssertNE(err, nil)
 
 	})
@@ -162,7 +162,7 @@ func Test_PutContentsAppend(t *testing.T) {
 }
 
 func Test_PutBinContents(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			filepaths   = "/testfile_PutContents.txt"
 			err         error
@@ -171,21 +171,21 @@ func Test_PutBinContents(t *testing.T) {
 		createTestFile(filepaths, "a")
 		defer delTestFiles(filepaths)
 
-		err = gfile.PutBytes(testpath()+filepaths, []byte("test!!"))
+		err = qn_file.PutBytes(testpath()+filepaths, []byte("test!!"))
 		t.Assert(err, nil)
 
 		readcontent, err = ioutil.ReadFile(testpath() + filepaths)
 		t.Assert(err, nil)
 		t.Assert(string(readcontent), "test!!")
 
-		err = gfile.PutBytes("", []byte("test!!"))
+		err = qn_file.PutBytes("", []byte("test!!"))
 		t.AssertNE(err, nil)
 
 	})
 }
 
 func Test_PutBinContentsAppend(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			filepaths   = "/testfile_PutContents.txt"
 			err         error
@@ -193,21 +193,21 @@ func Test_PutBinContentsAppend(t *testing.T) {
 		)
 		createTestFile(filepaths, "test!!")
 		defer delTestFiles(filepaths)
-		err = gfile.PutBytesAppend(testpath()+filepaths, []byte("word"))
+		err = qn_file.PutBytesAppend(testpath()+filepaths, []byte("word"))
 		t.Assert(err, nil)
 
 		readcontent, err = ioutil.ReadFile(testpath() + filepaths)
 		t.Assert(err, nil)
 		t.Assert(string(readcontent), "test!!word")
 
-		err = gfile.PutBytesAppend("", []byte("word"))
+		err = qn_file.PutBytesAppend("", []byte("word"))
 		t.AssertNE(err, nil)
 
 	})
 }
 
 func Test_GetBinContentsByTwoOffsetsByPath(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			filepaths   = "/testfile_GetContents.txt"
 			readcontent []byte
@@ -215,11 +215,11 @@ func Test_GetBinContentsByTwoOffsetsByPath(t *testing.T) {
 
 		createTestFile(filepaths, "abcdefghijk")
 		defer delTestFiles(filepaths)
-		readcontent = gfile.GetBytesByTwoOffsetsByPath(testpath()+filepaths, 2, 5)
+		readcontent = qn_file.GetBytesByTwoOffsetsByPath(testpath()+filepaths, 2, 5)
 
 		t.Assert(string(readcontent), "cde")
 
-		readcontent = gfile.GetBytesByTwoOffsetsByPath("", 2, 5)
+		readcontent = qn_file.GetBytesByTwoOffsetsByPath("", 2, 5)
 		t.Assert(len(readcontent), 0)
 
 	})
@@ -227,73 +227,73 @@ func Test_GetBinContentsByTwoOffsetsByPath(t *testing.T) {
 }
 
 func Test_GetNextCharOffsetByPath(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			filepaths  = "/testfile_GetContents.txt"
 			localindex int64
 		)
 		createTestFile(filepaths, "abcdefghijk")
 		defer delTestFiles(filepaths)
-		localindex = gfile.GetNextCharOffsetByPath(testpath()+filepaths, 'd', 1)
+		localindex = qn_file.GetNextCharOffsetByPath(testpath()+filepaths, 'd', 1)
 		t.Assert(localindex, 3)
 
-		localindex = gfile.GetNextCharOffsetByPath("", 'd', 1)
+		localindex = qn_file.GetNextCharOffsetByPath("", 'd', 1)
 		t.Assert(localindex, -1)
 
 	})
 }
 
 func Test_GetNextCharOffset(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			localindex int64
 		)
 		reader := strings.NewReader("helloword")
 
-		localindex = gfile.GetNextCharOffset(reader, 'w', 1)
+		localindex = qn_file.GetNextCharOffset(reader, 'w', 1)
 		t.Assert(localindex, 5)
 
-		localindex = gfile.GetNextCharOffset(reader, 'j', 1)
+		localindex = qn_file.GetNextCharOffset(reader, 'j', 1)
 		t.Assert(localindex, -1)
 
 	})
 }
 
 func Test_GetBinContentsByTwoOffsets(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			reads []byte
 		)
 		reader := strings.NewReader("helloword")
 
-		reads = gfile.GetBytesByTwoOffsets(reader, 1, 3)
+		reads = qn_file.GetBytesByTwoOffsets(reader, 1, 3)
 		t.Assert(string(reads), "el")
 
-		reads = gfile.GetBytesByTwoOffsets(reader, 10, 30)
+		reads = qn_file.GetBytesByTwoOffsets(reader, 10, 30)
 		t.Assert(string(reads), "")
 
 	})
 }
 
 func Test_GetBinContentsTilChar(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			reads  []byte
 			indexs int64
 		)
 		reader := strings.NewReader("helloword")
 
-		reads, _ = gfile.GetBytesTilChar(reader, 'w', 2)
+		reads, _ = qn_file.GetBytesTilChar(reader, 'w', 2)
 		t.Assert(string(reads), "llow")
 
-		_, indexs = gfile.GetBytesTilChar(reader, 'w', 20)
+		_, indexs = qn_file.GetBytesTilChar(reader, 'w', 20)
 		t.Assert(indexs, -1)
 
 	})
 }
 
 func Test_GetBinContentsTilCharByPath(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			reads     []byte
 			indexs    int64
@@ -303,26 +303,26 @@ func Test_GetBinContentsTilCharByPath(t *testing.T) {
 		createTestFile(filepaths, "abcdefghijklmn")
 		defer delTestFiles(filepaths)
 
-		reads, _ = gfile.GetBytesTilCharByPath(testpath()+filepaths, 'c', 2)
+		reads, _ = qn_file.GetBytesTilCharByPath(testpath()+filepaths, 'c', 2)
 		t.Assert(string(reads), "c")
 
-		reads, _ = gfile.GetBytesTilCharByPath(testpath()+filepaths, 'y', 1)
+		reads, _ = qn_file.GetBytesTilCharByPath(testpath()+filepaths, 'y', 1)
 		t.Assert(string(reads), "")
 
-		_, indexs = gfile.GetBytesTilCharByPath(testpath()+filepaths, 'x', 1)
+		_, indexs = qn_file.GetBytesTilCharByPath(testpath()+filepaths, 'x', 1)
 		t.Assert(indexs, -1)
 
 	})
 }
 
 func Test_Home(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			reads string
 			err   error
 		)
 
-		reads, err = gfile.Home()
+		reads, err = qn_file.Home()
 		t.Assert(err, nil)
 		t.AssertNE(reads, "")
 	})

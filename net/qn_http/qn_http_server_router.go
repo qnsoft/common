@@ -9,14 +9,15 @@ package qn_http
 import (
 	"errors"
 	"fmt"
-	"github.com/qnsoft/common/container/gtype"
 	"strings"
+
+	"github.com/qnsoft/common/container/gtype"
 
 	"github.com/qnsoft/common/debug/gdebug"
 
 	"github.com/qnsoft/common/container/glist"
-	"github.com/qnsoft/common/text/gregex"
 	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 const (
@@ -40,13 +41,13 @@ func (s *Server) parsePattern(pattern string) (domain, method, path string, err 
 	path = strings.TrimSpace(pattern)
 	domain = gDEFAULT_DOMAIN
 	method = gDEFAULT_METHOD
-	if array, err := gregex.MatchString(`([a-zA-Z]+):(.+)`, pattern); len(array) > 1 && err == nil {
+	if array, err := qn_regex.MatchString(`([a-zA-Z]+):(.+)`, pattern); len(array) > 1 && err == nil {
 		path = strings.TrimSpace(array[2])
 		if v := strings.TrimSpace(array[1]); v != "" {
 			method = v
 		}
 	}
-	if array, err := gregex.MatchString(`(.+)@([\w\.\-]+)`, path); len(array) > 1 && err == nil {
+	if array, err := qn_regex.MatchString(`(.+)@([\w\.\-]+)`, path); len(array) > 1 && err == nil {
 		path = strings.TrimSpace(array[1])
 		if v := strings.TrimSpace(array[2]); v != "" {
 			domain = v
@@ -134,7 +135,7 @@ func (s *Server) setHandler(pattern string, handler *handlerItem) {
 			continue
 		}
 		// Check if it's a fuzzy node.
-		if gregex.IsMatchString(`^[:\*]|\{[\w\.\-]+\}|\*`, part) {
+		if qn_regex.IsMatchString(`^[:\*]|\{[\w\.\-]+\}|\*`, part) {
 			part = "*fuzz"
 			// If it's a fuzzy node, it creates a "*list" item - which is a list - in the hash map.
 			// All the sub router items from this fuzzy node will also be added to its "*list" item.
@@ -238,12 +239,12 @@ func (s *Server) compareRouterPriority(newItem *handlerItem, oldItem *handlerIte
 	// /admin-goods-{page} > /admin-{page}
 	// /{hash}.{type}      > /{hash}
 	var uriNew, uriOld string
-	uriNew, _ = gregex.ReplaceString(`\{[^/]+?\}`, "", newItem.router.Uri)
-	uriOld, _ = gregex.ReplaceString(`\{[^/]+?\}`, "", oldItem.router.Uri)
-	uriNew, _ = gregex.ReplaceString(`:[^/]+?`, "", uriNew)
-	uriOld, _ = gregex.ReplaceString(`:[^/]+?`, "", uriOld)
-	uriNew, _ = gregex.ReplaceString(`\*[^/]*`, "", uriNew) // Replace "/*" and "/*any".
-	uriOld, _ = gregex.ReplaceString(`\*[^/]*`, "", uriOld) // Replace "/*" and "/*any".
+	uriNew, _ = qn_regex.ReplaceString(`\{[^/]+?\}`, "", newItem.router.Uri)
+	uriOld, _ = qn_regex.ReplaceString(`\{[^/]+?\}`, "", oldItem.router.Uri)
+	uriNew, _ = qn_regex.ReplaceString(`:[^/]+?`, "", uriNew)
+	uriOld, _ = qn_regex.ReplaceString(`:[^/]+?`, "", uriOld)
+	uriNew, _ = qn_regex.ReplaceString(`\*[^/]*`, "", uriNew) // Replace "/*" and "/*any".
+	uriOld, _ = qn_regex.ReplaceString(`\*[^/]*`, "", uriOld) // Replace "/*" and "/*any".
 	if len(uriNew) > len(uriOld) {
 		return true
 	}
@@ -365,7 +366,7 @@ func (s *Server) patternToRegular(rule string) (regular string, names []string) 
 				`+`: `\+`,
 				`*`: `.*`,
 			})
-			s, _ := gregex.ReplaceStringFunc(`\{[\w\.\-]+\}`, v, func(s string) string {
+			s, _ := qn_regex.ReplaceStringFunc(`\{[\w\.\-]+\}`, v, func(s string) string {
 				names = append(names, s[1:len(s)-1])
 				return `([^/]+)`
 			})

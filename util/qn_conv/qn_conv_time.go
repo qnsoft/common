@@ -9,8 +9,8 @@ package qn_conv
 import (
 	"time"
 
-	"github.com/gogf/gf/os/gtime"
 	"github.com/qnsoft/common/internal/utils"
+	"github.com/qnsoft/common/os/qn_time"
 )
 
 // Time converts <i> to time.Time.
@@ -21,7 +21,7 @@ func Time(i interface{}, format ...string) time.Time {
 			return v
 		}
 	}
-	if t := GTime(i, format...); t != nil {
+	if t := qn_time(i, format...); t != nil {
 		return t.Time
 	}
 	return time.Time{}
@@ -43,33 +43,33 @@ func Duration(i interface{}) time.Duration {
 	return time.Duration(Int64(i))
 }
 
-// GTime converts <i> to *gtime.Time.
+// qn_time converts <i> to *qn_time.Time.
 // The parameter <format> can be used to specify the format of <i>.
-// If no <format> given, it converts <i> using gtime.NewFromTimeStamp if <i> is numeric,
-// or using gtime.StrToTime if <i> is string.
-func GTime(i interface{}, format ...string) *gtime.Time {
+// If no <format> given, it converts <i> using qn_time.NewFromTimeStamp if <i> is numeric,
+// or using qn_time.StrToTime if <i> is string.
+func qn_time(i interface{}, format ...string) *qn_time.Time {
 	if i == nil {
 		return nil
 	}
 	// It's already this type.
 	if len(format) == 0 {
-		if v, ok := i.(*gtime.Time); ok {
+		if v, ok := i.(*qn_time.Time); ok {
 			return v
 		}
 	}
 	s := String(i)
 	if len(s) == 0 {
-		return gtime.New()
+		return qn_time.New()
 	}
 	// Priority conversion using given format.
 	if len(format) > 0 {
-		t, _ := gtime.StrToTimeFormat(s, format[0])
+		t, _ := qn_time.StrToTimeFormat(s, format[0])
 		return t
 	}
 	if utils.IsNumeric(s) {
-		return gtime.NewFromTimeStamp(Int64(s))
+		return qn_time.NewFromTimeStamp(Int64(s))
 	} else {
-		t, _ := gtime.StrToTime(s)
+		t, _ := qn_time.StrToTime(s)
 		return t
 	}
 }

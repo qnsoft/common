@@ -15,15 +15,15 @@ import (
 	"strings"
 
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/encoding/gjson"
-	"github.com/qnsoft/common/encoding/gurl"
-	"github.com/qnsoft/common/encoding/gxml"
+	"github.com/qnsoft/common/encoding/qn_json"
+	"github.com/qnsoft/common/encoding/qn_url"
+	"github.com/qnsoft/common/encoding/qn_xml"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/internal/utils"
-	"github.com/qnsoft/common/text/gregex"
 	"github.com/qnsoft/common/text/gstr"
-	"github.com/qnsoft/common/util/gvalid"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/text/qn_regex"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/util/qn_valid"
 )
 
 var (
@@ -66,7 +66,7 @@ func (r *Request) Parse(pointer interface{}) error {
 			return err
 		}
 		// Validation.
-		if err := gvalid.CheckStruct(pointer, nil); err != nil {
+		if err := qn_valid.CheckStruct(pointer, nil); err != nil {
 			return err
 		}
 
@@ -74,8 +74,8 @@ func (r *Request) Parse(pointer interface{}) error {
 	// [{"id":1, "name":"john"}, {"id":, "name":"smith"}]
 	case reflect.Array, reflect.Slice:
 		// If struct slice conversion, it might post JSON/XML content,
-		// so it uses gjson for the conversion.
-		j, err := gjson.LoadContent(r.GetBody())
+		// so it uses qn_json for the conversion.
+		j, err := qn_json.LoadContent(r.GetBody())
 		if err != nil {
 			return err
 		}
@@ -83,7 +83,7 @@ func (r *Request) Parse(pointer interface{}) error {
 			return err
 		}
 		for i := 0; i < reflectVal2.Len(); i++ {
-			if err := gvalid.CheckStruct(reflectVal2.Index(i), nil); err != nil {
+			if err := qn_valid.CheckStruct(reflectVal2.Index(i), nil); err != nil {
 				return err
 			}
 		}
@@ -131,13 +131,13 @@ func (r *Request) GetBody() []byte {
 // GetBodyString retrieves and returns request body content as string.
 // It can be called multiple times retrieving the same body content.
 func (r *Request) GetBodyString() string {
-	return gconv.UnsafeBytesToStr(r.GetBody())
+	return qn_conv.UnsafeBytesToStr(r.GetBody())
 }
 
 // GetJson parses current request content as JSON format, and returns the JSON object.
 // Note that the request content is read from request BODY, not from any field of FORM.
-func (r *Request) GetJson() (*gjson.Json, error) {
-	return gjson.LoadJson(r.GetBody())
+func (r *Request) GetJson() (*qn_json.Json, error) {
+	return qn_json.LoadJson(r.GetBody())
 }
 
 // GetString is an alias and convenient function for GetRequestString.
@@ -286,10 +286,10 @@ func (r *Request) parseBody() {
 		}
 		// XML format checks.
 		if len(body) > 5 && bytes.EqualFold(body[:5], xmlHeaderBytes) {
-			r.bodyMap, _ = gxml.DecodeWithoutRoot(body)
+			r.bodyMap, _ = qn_xml.DecodeWithoutRoot(body)
 		}
 		if body[0] == '<' && body[len(body)-1] == '>' {
-			r.bodyMap, _ = gxml.DecodeWithoutRoot(body)
+			r.bodyMap, _ = qn_xml.DecodeWithoutRoot(body)
 		}
 		// Default parameters decoding.
 		if r.bodyMap == nil {
@@ -326,11 +326,11 @@ func (r *Request) parseForm() {
 			for name, values := range r.PostForm {
 				// Invalid parameter name.
 				// Only allow chars of: '\w', '[', ']', '-'.
-				if !gregex.IsMatchString(`^[\w\-\[\]]+$`, name) && len(r.PostForm) == 1 {
+				if !qn_regex.IsMatchString(`^[\w\-\[\]]+$`, name) && len(r.PostForm) == 1 {
 					// It might be JSON/XML content.
 					if s := gstr.Trim(name + strings.Join(values, " ")); len(s) > 0 {
 						if s[0] == '{' && s[len(s)-1] == '}' || s[0] == '<' && s[len(s)-1] == '>' {
-							r.bodyContent = gconv.UnsafeStrToBytes(s)
+							r.bodyContent = qn_conv.UnsafeStrToBytes(s)
 							params = ""
 							break
 						}
@@ -340,7 +340,7 @@ func (r *Request) parseForm() {
 					if len(params) > 0 {
 						params += "&"
 					}
-					params += name + "=" + gurl.Encode(values[0])
+					params += name + "=" + qn_url.Encode(values[0])
 				} else {
 					if len(name) > 2 && name[len(name)-2:] == "[]" {
 						name = name[:len(name)-2]
@@ -348,13 +348,13 @@ func (r *Request) parseForm() {
 							if len(params) > 0 {
 								params += "&"
 							}
-							params += name + "[]=" + gurl.Encode(v)
+							params += name + "[]=" + qn_url.Encode(v)
 						}
 					} else {
 						if len(params) > 0 {
 							params += "&"
 						}
-						params += name + "=" + gurl.Encode(values[len(values)-1])
+						params += name + "=" + qn_url.Encode(values[len(values)-1])
 					}
 				}
 			}

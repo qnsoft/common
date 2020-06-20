@@ -8,7 +8,8 @@ package qn_http
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/errors/gerror"
+
+	"github.com/qnsoft/common/errors/qn_error"
 	"github.com/qnsoft/common/os/glog"
 )
 
@@ -55,7 +56,7 @@ func (s *Server) handleErrorLog(err error, r *Request) {
 		r.GetClientIp(), r.Referer(), r.UserAgent(),
 	)
 	if s.config.ErrorStack {
-		if stack := gerror.Stack(err); stack != "" {
+		if stack := qn_error.Stack(err); stack != "" {
 			content += "\nStack:\n" + stack
 		} else {
 			content += ", " + err.Error()

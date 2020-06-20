@@ -17,7 +17,7 @@ import (
 	"net/smtp"
 	"strings"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // SMTP is the structure for smtp connection
@@ -86,7 +86,7 @@ func (s *SMTP) SendMail(from, tos, subject, body string, contentType ...string) 
 	header := map[string]string{
 		"From":                      from,
 		"To":                        strings.Join(tosArr, ";"),
-		"Subject":                   fmt.Sprintf("=?UTF-8?B?%s?=", contentEncoding.EncodeToString(gconv.UnsafeStrToBytes(subject))),
+		"Subject":                   fmt.Sprintf("=?UTF-8?B?%s?=", contentEncoding.EncodeToString(qn_conv.UnsafeStrToBytes(subject))),
 		"MIME-Version":              "1.0",
 		"Content-Type":              "text/plain; charset=UTF-8",
 		"Content-Transfer-Encoding": "base64",
@@ -98,12 +98,12 @@ func (s *SMTP) SendMail(from, tos, subject, body string, contentType ...string) 
 	for k, v := range header {
 		message += fmt.Sprintf("%s: %s\r\n", k, v)
 	}
-	message += "\r\n" + contentEncoding.EncodeToString(gconv.UnsafeStrToBytes(body))
+	message += "\r\n" + contentEncoding.EncodeToString(qn_conv.UnsafeStrToBytes(body))
 	return smtp.SendMail(
 		address,
 		smtp.PlainAuth("", s.Username, s.Password, server),
 		from,
 		tosArr,
-		gconv.UnsafeStrToBytes(message),
+		qn_conv.UnsafeStrToBytes(message),
 	)
 }

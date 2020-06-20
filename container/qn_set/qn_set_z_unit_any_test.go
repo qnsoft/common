@@ -15,17 +15,17 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/internal/json"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/gset"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 
 	"testing"
 )
 
 func TestSet_Var(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var s gset.Set
 		s.Add(1, 1, 2)
 		s.Add([]interface{}{3, 4}...)
@@ -45,7 +45,7 @@ func TestSet_Var(t *testing.T) {
 }
 
 func TestSet_New(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.New()
 		s.Add(1, 1, 2)
 		s.Add([]interface{}{3, 4}...)
@@ -65,7 +65,7 @@ func TestSet_New(t *testing.T) {
 }
 
 func TestSet_Basic(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.NewSet()
 		s.Add(1, 1, 2)
 		s.Add([]interface{}{3, 4}...)
@@ -85,7 +85,7 @@ func TestSet_Basic(t *testing.T) {
 }
 
 func TestSet_Iterator(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.NewSet()
 		s.Add(1, 2, 3)
 		t.Assert(s.Size(), 3)
@@ -106,7 +106,7 @@ func TestSet_Iterator(t *testing.T) {
 }
 
 func TestSet_LockFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.NewSet()
 		s.Add(1, 2, 3)
 		t.Assert(s.Size(), 3)
@@ -124,7 +124,7 @@ func TestSet_LockFunc(t *testing.T) {
 }
 
 func TestSet_Equal(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.NewSet()
 		s2 := gset.NewSet()
 		s3 := gset.NewSet()
@@ -137,7 +137,7 @@ func TestSet_Equal(t *testing.T) {
 }
 
 func TestSet_IsSubsetOf(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.NewSet()
 		s2 := gset.NewSet()
 		s3 := gset.NewSet()
@@ -153,7 +153,7 @@ func TestSet_IsSubsetOf(t *testing.T) {
 }
 
 func TestSet_Union(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.NewSet()
 		s2 := gset.NewSet()
 		s1.Add(1, 2)
@@ -167,7 +167,7 @@ func TestSet_Union(t *testing.T) {
 }
 
 func TestSet_Diff(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.NewSet()
 		s2 := gset.NewSet()
 		s1.Add(1, 2, 3)
@@ -181,7 +181,7 @@ func TestSet_Diff(t *testing.T) {
 }
 
 func TestSet_Intersect(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.NewSet()
 		s2 := gset.NewSet()
 		s1.Add(1, 2, 3)
@@ -195,7 +195,7 @@ func TestSet_Intersect(t *testing.T) {
 }
 
 func TestSet_Complement(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.NewSet()
 		s2 := gset.NewSet()
 		s1.Add(1, 2, 3)
@@ -209,7 +209,7 @@ func TestSet_Complement(t *testing.T) {
 }
 
 func TestNewFrom(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.NewFrom("a")
 		s2 := gset.NewFrom("b", false)
 		s3 := gset.NewFrom(3, true)
@@ -224,7 +224,7 @@ func TestNewFrom(t *testing.T) {
 }
 
 func TestNew(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.New()
 		s1.Add("a", 2)
 		s2 := gset.New(true)
@@ -235,13 +235,13 @@ func TestNew(t *testing.T) {
 }
 
 func TestSet_Join(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.New(true)
 		s1.Add("a", "a1", "b", "c")
 		str1 := s1.Join(",")
 		t.Assert(strings.Contains(str1, "a1"), true)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.New(true)
 		s1.Add("a", `"b"`, `\c`)
 		str1 := s1.Join(",")
@@ -252,7 +252,7 @@ func TestSet_Join(t *testing.T) {
 }
 
 func TestSet_String(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.New(true)
 		s1.Add("a", "a2", "b", "c")
 		str1 := s1.String()
@@ -263,7 +263,7 @@ func TestSet_String(t *testing.T) {
 }
 
 func TestSet_Merge(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.New(true)
 		s2 := gset.New(true)
 		s1.Add("a", "a2", "b", "c")
@@ -276,7 +276,7 @@ func TestSet_Merge(t *testing.T) {
 }
 
 func TestSet_Sum(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := gset.New(true)
 		s1.Add(1, 2, 3, 4)
 		t.Assert(s1.Sum(), int(10))
@@ -285,7 +285,7 @@ func TestSet_Sum(t *testing.T) {
 }
 
 func TestSet_Pop(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.New(true)
 		s.Add(1, 2, 3, 4)
 		t.Assert(s.Size(), 4)
@@ -295,7 +295,7 @@ func TestSet_Pop(t *testing.T) {
 }
 
 func TestSet_Pops(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.New(true)
 		s.Add(1, 2, 3, 4)
 		t.Assert(s.Size(), 4)
@@ -308,7 +308,7 @@ func TestSet_Pops(t *testing.T) {
 		t.Assert(s.Size(), 0)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.New(true)
 		a := []interface{}{1, 2, 3, 4}
 		s.Add(a...)
@@ -319,7 +319,7 @@ func TestSet_Pops(t *testing.T) {
 }
 
 func TestSet_Json(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := []interface{}{"a", "b", "d", "c"}
 		a1 := gset.NewFrom(s1)
 		b1, err1 := json.Marshal(a1)
@@ -348,7 +348,7 @@ func TestSet_Json(t *testing.T) {
 }
 
 func TestSet_AddIfNotExist(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.New(true)
 		s.Add(1)
 		t.Assert(s.Contains(1), true)
@@ -361,7 +361,7 @@ func TestSet_AddIfNotExist(t *testing.T) {
 }
 
 func TestSet_AddIfNotExistFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.New(true)
 		s.Add(1)
 		t.Assert(s.Contains(1), true)
@@ -373,7 +373,7 @@ func TestSet_AddIfNotExistFunc(t *testing.T) {
 		t.Assert(s.AddIfNotExistFunc(2, func() bool { return true }), false)
 		t.Assert(s.Contains(2), true)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.New(true)
 		wg := sync.WaitGroup{}
 		wg.Add(1)
@@ -391,11 +391,11 @@ func TestSet_AddIfNotExistFunc(t *testing.T) {
 }
 
 func TestSet_Walk(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var set gset.Set
 		set.Add(g.Slice{1, 2}...)
 		set.Walk(func(item interface{}) interface{} {
-			return gconv.Int(item) + 10
+			return qn_conv.Int(item) + 10
 		})
 		t.Assert(set.Size(), 2)
 		t.Assert(set.Contains(11), true)
@@ -404,7 +404,7 @@ func TestSet_Walk(t *testing.T) {
 }
 
 func TestSet_AddIfNotExistFuncLock(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := gset.New(true)
 		wg := sync.WaitGroup{}
 		wg.Add(2)
@@ -434,9 +434,9 @@ func TestSet_UnmarshalValue(t *testing.T) {
 		Set  *gset.Set
 	}
 	// JSON
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(g.Map{
+		err := qn_conv.Struct(g.Map{
 			"name": "john",
 			"set":  []byte(`["k1","k2","k3"]`),
 		}, &v)
@@ -449,9 +449,9 @@ func TestSet_UnmarshalValue(t *testing.T) {
 		t.Assert(v.Set.Contains("k4"), false)
 	})
 	// Map
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(g.Map{
+		err := qn_conv.Struct(g.Map{
 			"name": "john",
 			"set":  g.Slice{"k1", "k2", "k3"},
 		}, &v)

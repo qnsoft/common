@@ -12,7 +12,7 @@ import (
 
 	"github.com/qnsoft/common/container/gring"
 	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 type Student struct {
@@ -22,7 +22,7 @@ type Student struct {
 }
 
 func TestRing_Val(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		//定义cap 为3的ring类型数据
 		r := gring.New(3, true)
 		//分别给3个元素初始化赋值
@@ -44,7 +44,7 @@ func TestRing_Val(t *testing.T) {
 	})
 }
 func TestRing_CapLen(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		r := gring.New(10)
 		r.Put("goframe")
 		//cap长度 10
@@ -55,7 +55,7 @@ func TestRing_CapLen(t *testing.T) {
 }
 
 func TestRing_Position(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		r := gring.New(2)
 		r.Put(1)
 		r.Put(2)
@@ -70,7 +70,7 @@ func TestRing_Position(t *testing.T) {
 }
 
 func TestRing_Link(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		r := gring.New(3)
 		r.Put(1)
 		r.Put(2)
@@ -86,7 +86,7 @@ func TestRing_Link(t *testing.T) {
 }
 
 func TestRing_Unlink(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		r := gring.New(5)
 		for i := 0; i < 5; i++ {
 			r.Put(i + 1)
@@ -101,7 +101,7 @@ func TestRing_Unlink(t *testing.T) {
 }
 
 func TestRing_Slice(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		ringLen := 5
 		r := gring.New(ringLen)
 		for i := 0; i < ringLen; i++ {
@@ -136,7 +136,7 @@ func TestRing_Slice(t *testing.T) {
 }
 
 func TestRing_RLockIterator(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		ringLen := 5
 		r := gring.New(ringLen)
 
@@ -177,7 +177,7 @@ func TestRing_RLockIterator(t *testing.T) {
 }
 
 func TestRing_LockIterator(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		ringLen := 5
 		r := gring.New(ringLen)
 

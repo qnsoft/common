@@ -15,21 +15,21 @@ import (
 	"strings"
 	texttpl "text/template"
 
-	"github.com/qnsoft/common/encoding/ghash"
+	"github.com/qnsoft/common/encoding/qn_hash"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/gfcache"
 	"github.com/qnsoft/common/os/gfsnotify"
 	"github.com/qnsoft/common/os/gmlock"
 	"github.com/qnsoft/common/text/gstr"
-	gconv "github.com/qnsoft/common/util/qn_conv"
-	gutil "github.com/qnsoft/common/util/qn_util"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 
 	"github.com/qnsoft/common/os/gres"
 
 	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/glog"
 	"github.com/qnsoft/common/os/gspath"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 const (
@@ -67,7 +67,7 @@ func (view *View) Parse(file string, params ...Params) (result string, err error
 			return nil
 		}
 		if resource != nil {
-			content = gconv.UnsafeBytesToStr(resource.Content())
+			content = qn_conv.UnsafeBytesToStr(resource.Content())
 		} else {
 			content = gfcache.GetContents(path)
 		}
@@ -97,7 +97,7 @@ func (view *View) Parse(file string, params ...Params) (result string, err error
 		return "", nil
 	}
 	// Get the template object instance for <folder>.
-	tpl, err = view.getTemplate(item.path, item.folder, fmt.Sprintf(`*%s`, gfile.Ext(item.path)))
+	tpl, err = view.getTemplate(item.path, item.folder, fmt.Sprintf(`*%s`, qn_file.Ext(item.path)))
 	if err != nil {
 		return "", err
 	}
@@ -115,9 +115,9 @@ func (view *View) Parse(file string, params ...Params) (result string, err error
 	// Note that the template variable assignment cannot change the value
 	// of the existing <params> or view.data because both variables are pointers.
 	// It needs to merge the values of the two maps into a new map.
-	variables := gutil.MapMergeCopy(params...)
+	variables := qn_util.MapMergeCopy(params...)
 	if len(view.data) > 0 {
-		gutil.MapMerge(variables, view.data)
+		qn_util.MapMerge(variables, view.data)
 	}
 	buffer := bytes.NewBuffer(nil)
 	if view.config.AutoEncode {
@@ -167,7 +167,7 @@ func (view *View) ParseContent(content string, params ...Params) (string, error)
 		).Funcs(view.funcMap)
 	})
 	// Using memory lock to ensure concurrent safety for content parsing.
-	hash := strconv.FormatUint(ghash.DJBHash64([]byte(content)), 10)
+	hash := strconv.FormatUint(qn_hash.DJBHash64([]byte(content)), 10)
 	gmlock.LockFunc("gview.ParseContent:"+hash, func() {
 		if view.config.AutoEncode {
 			tpl, err = tpl.(*htmltpl.Template).Parse(content)
@@ -181,9 +181,9 @@ func (view *View) ParseContent(content string, params ...Params) (string, error)
 	// Note that the template variable assignment cannot change the value
 	// of the existing <params> or view.data because both variables are pointers.
 	// It needs to merge the values of the two maps into a new map.
-	variables := gutil.MapMergeCopy(params...)
+	variables := qn_util.MapMergeCopy(params...)
 	if len(view.data) > 0 {
-		gutil.MapMerge(variables, view.data)
+		qn_util.MapMerge(variables, view.data)
 	}
 	buffer := bytes.NewBuffer(nil)
 	if view.config.AutoEncode {
@@ -249,7 +249,7 @@ func (view *View) getTemplate(filePath, folderPath, pattern string) (tpl interfa
 
 		// Secondly checking the file system.
 		var files []string
-		files, err = gfile.ScanDir(folderPath, pattern, true)
+		files, err = qn_file.ScanDir(folderPath, pattern, true)
 		if err != nil {
 			return nil
 		}
@@ -287,7 +287,7 @@ func (view *View) searchFile(file string) (path string, folder string, resource 
 		// Search folders.
 		view.paths.RLockFunc(func(array []string) {
 			for _, v := range array {
-				v = strings.TrimRight(v, "/"+gfile.Separator)
+				v = strings.TrimRight(v, "/"+qn_file.Separator)
 				if resource = gres.Get(v + "/" + file); resource != nil {
 					path = resource.Name()
 					folder = v
@@ -306,13 +306,13 @@ func (view *View) searchFile(file string) (path string, folder string, resource 
 	if path == "" {
 		view.paths.RLockFunc(func(array []string) {
 			for _, folderPath := range array {
-				folderPath = strings.TrimRight(folderPath, gfile.Separator)
+				folderPath = strings.TrimRight(folderPath, qn_file.Separator)
 				if path, _ = gspath.Search(folderPath, file); path != "" {
 					folder = folderPath
 					break
 				}
-				if path, _ = gspath.Search(folderPath+gfile.Separator+"template", file); path != "" {
-					folder = folderPath + gfile.Separator + "template"
+				if path, _ = gspath.Search(folderPath+qn_file.Separator+"template", file); path != "" {
+					folder = folderPath + qn_file.Separator + "template"
 					break
 				}
 			}
@@ -333,7 +333,7 @@ func (view *View) searchFile(file string) (path string, folder string, resource 
 					}
 					buffer.WriteString(fmt.Sprintf("\n%d. %s", index, folderPath))
 					index++
-					buffer.WriteString(fmt.Sprintf("\n%d. %s", index, strings.TrimRight(folderPath, "/")+gfile.Separator+"template"))
+					buffer.WriteString(fmt.Sprintf("\n%d. %s", index, strings.TrimRight(folderPath, "/")+qn_file.Separator+"template"))
 					index++
 				}
 			})

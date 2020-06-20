@@ -15,19 +15,19 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
-	"github.com/qnsoft/common/util/gutil"
+	"github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/util/qn_util"
 
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func TestSortedArray_NewSortedArrayFrom(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "f", "c"}
 		a2 := []interface{}{"h", "j", "i", "k"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		func2 := func(v1, v2 interface{}) int {
 			return -1
@@ -44,11 +44,11 @@ func TestSortedArray_NewSortedArrayFrom(t *testing.T) {
 }
 
 func TestNewSortedArrayFromCopy(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "f", "c"}
 
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		func2 := func(v1, v2 interface{}) int {
 			return -1
@@ -63,12 +63,12 @@ func TestNewSortedArrayFromCopy(t *testing.T) {
 }
 
 func TestSortedArray_SetArray(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "f", "c"}
 		a2 := []interface{}{"e", "h", "g", "k"}
 
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
@@ -80,10 +80,10 @@ func TestSortedArray_SetArray(t *testing.T) {
 }
 
 func TestSortedArray_Sort(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "f", "c"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		array1.Sort()
@@ -94,10 +94,10 @@ func TestSortedArray_Sort(t *testing.T) {
 }
 
 func TestSortedArray_Get(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "f", "c"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		v, ok := array1.Get(2)
@@ -112,15 +112,15 @@ func TestSortedArray_Get(t *testing.T) {
 }
 
 func TestSortedArray_Remove(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		i1, ok := array1.Remove(1)
 		t.Assert(ok, true)
-		t.Assert(gconv.String(i1), "b")
+		t.Assert(qn_conv.String(i1), "b")
 		t.Assert(array1.Len(), 3)
 		t.Assert(array1.Contains("b"), false)
 
@@ -134,13 +134,13 @@ func TestSortedArray_Remove(t *testing.T) {
 
 		i2, ok := array1.Remove(0)
 		t.Assert(ok, true)
-		t.Assert(gconv.String(i2), "a")
+		t.Assert(qn_conv.String(i2), "a")
 		t.Assert(array1.Len(), 2)
 		t.Assert(array1.Contains("a"), false)
 
 		i3, ok := array1.Remove(1)
 		t.Assert(ok, true)
-		t.Assert(gconv.String(i3), "d")
+		t.Assert(qn_conv.String(i3), "d")
 		t.Assert(array1.Len(), 1)
 		t.Assert(array1.Contains("d"), false)
 	})
@@ -148,19 +148,19 @@ func TestSortedArray_Remove(t *testing.T) {
 }
 
 func TestSortedArray_PopLeft(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array1 := qn_array.NewSortedArrayFrom(
 			[]interface{}{"a", "d", "c", "b"},
-			gutil.ComparatorString,
+			qn_util.ComparatorString,
 		)
 		i1, ok := array1.PopLeft()
 		t.Assert(ok, true)
-		t.Assert(gconv.String(i1), "a")
+		t.Assert(qn_conv.String(i1), "a")
 		t.Assert(array1.Len(), 3)
 		t.Assert(array1, []interface{}{"b", "c", "d"})
 	})
-	gtest.C(t, func(t *gtest.T) {
-		array := qn_array.NewSortedArrayFrom(g.Slice{1, 2, 3}, gutil.ComparatorInt)
+	qn_test.C(t, func(t *qn_test.T) {
+		array := qn_array.NewSortedArrayFrom(g.Slice{1, 2, 3}, qn_util.ComparatorInt)
 		v, ok := array.PopLeft()
 		t.Assert(v, 1)
 		t.Assert(ok, true)
@@ -177,19 +177,19 @@ func TestSortedArray_PopLeft(t *testing.T) {
 }
 
 func TestSortedArray_PopRight(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array1 := qn_array.NewSortedArrayFrom(
 			[]interface{}{"a", "d", "c", "b"},
-			gutil.ComparatorString,
+			qn_util.ComparatorString,
 		)
 		i1, ok := array1.PopRight()
 		t.Assert(ok, true)
-		t.Assert(gconv.String(i1), "d")
+		t.Assert(qn_conv.String(i1), "d")
 		t.Assert(array1.Len(), 3)
 		t.Assert(array1, []interface{}{"a", "b", "c"})
 	})
-	gtest.C(t, func(t *gtest.T) {
-		array := qn_array.NewSortedArrayFrom(g.Slice{1, 2, 3}, gutil.ComparatorInt)
+	qn_test.C(t, func(t *qn_test.T) {
+		array := qn_array.NewSortedArrayFrom(g.Slice{1, 2, 3}, qn_util.ComparatorInt)
 		v, ok := array.PopRight()
 		t.Assert(v, 3)
 		t.Assert(ok, true)
@@ -208,10 +208,10 @@ func TestSortedArray_PopRight(t *testing.T) {
 }
 
 func TestSortedArray_PopRand(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		i1, ok := array1.PopRand()
@@ -223,10 +223,10 @@ func TestSortedArray_PopRand(t *testing.T) {
 }
 
 func TestSortedArray_PopRands(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		i1 := array1.PopRands(2)
@@ -243,8 +243,8 @@ func TestSortedArray_PopRands(t *testing.T) {
 }
 
 func TestSortedArray_Empty(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		array := qn_array.NewSortedArray(gutil.ComparatorInt)
+	qn_test.C(t, func(t *qn_test.T) {
+		array := qn_array.NewSortedArray(qn_util.ComparatorInt)
 		v, ok := array.PopLeft()
 		t.Assert(v, nil)
 		t.Assert(ok, false)
@@ -263,10 +263,10 @@ func TestSortedArray_Empty(t *testing.T) {
 }
 
 func TestSortedArray_PopLefts(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b", "e", "f"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		i1 := array1.PopLefts(2)
@@ -282,10 +282,10 @@ func TestSortedArray_PopLefts(t *testing.T) {
 }
 
 func TestSortedArray_PopRights(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b", "e", "f"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		i1 := array1.PopRights(2)
@@ -300,10 +300,10 @@ func TestSortedArray_PopRights(t *testing.T) {
 }
 
 func TestSortedArray_Range(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b", "e", "f"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		array2 := qn_array.NewSortedArrayFrom(a1, func1, true)
@@ -326,12 +326,12 @@ func TestSortedArray_Range(t *testing.T) {
 }
 
 func TestSortedArray_Sum(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b", "e", "f"}
 		a2 := []interface{}{"1", "2", "3", "b", "e", "f"}
 		a3 := []interface{}{"4", "5", "6"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		array2 := qn_array.NewSortedArrayFrom(a2, func1)
@@ -344,11 +344,11 @@ func TestSortedArray_Sum(t *testing.T) {
 }
 
 func TestSortedArray_Clone(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b", "e", "f"}
 
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		array2 := array1.Clone()
@@ -360,11 +360,11 @@ func TestSortedArray_Clone(t *testing.T) {
 }
 
 func TestSortedArray_Clear(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b", "e", "f"}
 
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		t.Assert(array1.Len(), 6)
@@ -375,11 +375,11 @@ func TestSortedArray_Clear(t *testing.T) {
 }
 
 func TestSortedArray_Chunk(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b", "e"}
 
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		i1 := array1.Chunk(2)
@@ -390,18 +390,18 @@ func TestSortedArray_Chunk(t *testing.T) {
 		i1 = array1.Chunk(0)
 		t.Assert(len(i1), 0)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{1, 2, 3, 4, 5}
-		array1 := qn_array.NewSortedArrayFrom(a1, gutil.ComparatorInt)
+		array1 := qn_array.NewSortedArrayFrom(a1, qn_util.ComparatorInt)
 		chunks := array1.Chunk(3)
 		t.Assert(len(chunks), 2)
 		t.Assert(chunks[0], []interface{}{1, 2, 3})
 		t.Assert(chunks[1], []interface{}{4, 5})
 		t.Assert(array1.Chunk(0), nil)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{1, 2, 3, 4, 5, 6}
-		array1 := qn_array.NewSortedArrayFrom(a1, gutil.ComparatorInt)
+		array1 := qn_array.NewSortedArrayFrom(a1, qn_util.ComparatorInt)
 		chunks := array1.Chunk(2)
 		t.Assert(len(chunks), 3)
 		t.Assert(chunks[0], []interface{}{1, 2})
@@ -409,9 +409,9 @@ func TestSortedArray_Chunk(t *testing.T) {
 		t.Assert(chunks[2], []interface{}{5, 6})
 		t.Assert(array1.Chunk(0), nil)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{1, 2, 3, 4, 5, 6}
-		array1 := qn_array.NewSortedArrayFrom(a1, gutil.ComparatorInt)
+		array1 := qn_array.NewSortedArrayFrom(a1, qn_util.ComparatorInt)
 		chunks := array1.Chunk(3)
 		t.Assert(len(chunks), 2)
 		t.Assert(chunks[0], []interface{}{1, 2, 3})
@@ -421,11 +421,11 @@ func TestSortedArray_Chunk(t *testing.T) {
 }
 
 func TestSortedArray_SubSlice(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "b", "e"}
 
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		array2 := qn_array.NewSortedArrayFrom(a1, func1, true)
@@ -451,11 +451,11 @@ func TestSortedArray_SubSlice(t *testing.T) {
 }
 
 func TestSortedArray_Rand(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c"}
 
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		i1, ok := array1.Rand()
@@ -466,11 +466,11 @@ func TestSortedArray_Rand(t *testing.T) {
 }
 
 func TestSortedArray_Rands(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c"}
 
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		i1 := array1.Rands(2)
@@ -484,37 +484,37 @@ func TestSortedArray_Rands(t *testing.T) {
 }
 
 func TestSortedArray_Join(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c"}
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		t.Assert(array1.Join(","), `a,c,d`)
 		t.Assert(array1.Join("."), `a.c.d`)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{0, 1, `"a"`, `\a`}
-		array1 := qn_array.NewSortedArrayFrom(a1, gutil.ComparatorString)
+		array1 := qn_array.NewSortedArrayFrom(a1, qn_util.ComparatorString)
 		t.Assert(array1.Join("."), `"a".0.1.\a`)
 	})
 }
 
 func TestSortedArray_String(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{0, 1, "a", "b"}
-		array1 := qn_array.NewSortedArrayFrom(a1, gutil.ComparatorString)
+		array1 := qn_array.NewSortedArrayFrom(a1, qn_util.ComparatorString)
 		t.Assert(array1.String(), `[0,1,"a","b"]`)
 	})
 }
 
 func TestSortedArray_CountValues(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "c"}
 
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		m1 := array1.CountValues()
@@ -526,11 +526,11 @@ func TestSortedArray_CountValues(t *testing.T) {
 }
 
 func TestSortedArray_SetUnique(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		a1 := []interface{}{"a", "d", "c", "c"}
 
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		array1 := qn_array.NewSortedArrayFrom(a1, func1)
 		array1.SetUnique(true)
@@ -540,9 +540,9 @@ func TestSortedArray_SetUnique(t *testing.T) {
 }
 
 func TestSortedArray_LockFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		s1 := []interface{}{"a", "b", "c", "d"}
 		a1 := qn_array.NewSortedArrayFrom(s1, func1, true)
@@ -553,15 +553,15 @@ func TestSortedArray_LockFunc(t *testing.T) {
 		go a1.LockFunc(func(n1 []interface{}) { //读写锁
 			time.Sleep(2 * time.Second) //暂停2秒
 			n1[2] = "g"
-			ch2 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch2 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 		})
 
 		//go2
 		go func() {
 			time.Sleep(100 * time.Millisecond) //故意暂停0.01秒,等go1执行锁后，再开始执行.
-			ch1 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch1 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 			a1.Len()
-			ch1 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch1 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 		}()
 
 		t1 := <-ch1
@@ -575,9 +575,9 @@ func TestSortedArray_LockFunc(t *testing.T) {
 }
 
 func TestSortedArray_RLockFunc(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		func1 := func(v1, v2 interface{}) int {
-			return strings.Compare(gconv.String(v1), gconv.String(v2))
+			return strings.Compare(qn_conv.String(v1), qn_conv.String(v2))
 		}
 		s1 := []interface{}{"a", "b", "c", "d"}
 		a1 := qn_array.NewSortedArrayFrom(s1, func1, true)
@@ -588,15 +588,15 @@ func TestSortedArray_RLockFunc(t *testing.T) {
 		go a1.RLockFunc(func(n1 []interface{}) { //读写锁
 			time.Sleep(2 * time.Second) //暂停2秒
 			n1[2] = "g"
-			ch2 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch2 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 		})
 
 		//go2
 		go func() {
 			time.Sleep(100 * time.Millisecond) //故意暂停0.01秒,等go1执行锁后，再开始执行.
-			ch1 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch1 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 			a1.Len()
-			ch1 <- gconv.Int64(time.Now().UnixNano() / 1000 / 1000)
+			ch1 <- qn_conv.Int64(time.Now().UnixNano() / 1000 / 1000)
 		}()
 
 		t1 := <-ch1
@@ -610,9 +610,9 @@ func TestSortedArray_RLockFunc(t *testing.T) {
 }
 
 func TestSortedArray_Merge(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		func1 := func(v1, v2 interface{}) int {
-			if gconv.Int(v1) < gconv.Int(v2) {
+			if qn_conv.Int(v1) < qn_conv.Int(v2) {
 				return 0
 			}
 			return 1
@@ -641,16 +641,16 @@ func TestSortedArray_Merge(t *testing.T) {
 
 func TestSortedArray_Json(t *testing.T) {
 	// array pointer
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := []interface{}{"a", "b", "d", "c"}
 		s2 := []interface{}{"a", "b", "c", "d"}
-		a1 := qn_array.NewSortedArrayFrom(s1, gutil.ComparatorString)
+		a1 := qn_array.NewSortedArrayFrom(s1, qn_util.ComparatorString)
 		b1, err1 := json.Marshal(a1)
 		b2, err2 := json.Marshal(s1)
 		t.Assert(b1, b2)
 		t.Assert(err1, err2)
 
-		a2 := qn_array.NewSortedArray(gutil.ComparatorString)
+		a2 := qn_array.NewSortedArray(qn_util.ComparatorString)
 		err1 = json.Unmarshal(b2, &a2)
 		t.Assert(a2.Slice(), s2)
 
@@ -661,16 +661,16 @@ func TestSortedArray_Json(t *testing.T) {
 		t.Assert(a3.Interfaces(), s1)
 	})
 	// array value
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s1 := []interface{}{"a", "b", "d", "c"}
 		s2 := []interface{}{"a", "b", "c", "d"}
-		a1 := *qn_array.NewSortedArrayFrom(s1, gutil.ComparatorString)
+		a1 := *qn_array.NewSortedArrayFrom(s1, qn_util.ComparatorString)
 		b1, err1 := json.Marshal(a1)
 		b2, err2 := json.Marshal(s1)
 		t.Assert(b1, b2)
 		t.Assert(err1, err2)
 
-		a2 := qn_array.NewSortedArray(gutil.ComparatorString)
+		a2 := qn_array.NewSortedArray(qn_util.ComparatorString)
 		err1 = json.Unmarshal(b2, &a2)
 		t.Assert(a2.Slice(), s2)
 
@@ -681,7 +681,7 @@ func TestSortedArray_Json(t *testing.T) {
 		t.Assert(a3.Interfaces(), s1)
 	})
 	// array pointer
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Name   string
 			Scores *qn_array.SortedArray
@@ -717,7 +717,7 @@ func TestSortedArray_Json(t *testing.T) {
 		t.Assert(ok, false)
 	})
 	// array value
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		type User struct {
 			Name   string
 			Scores qn_array.SortedArray
@@ -756,26 +756,26 @@ func TestSortedArray_Json(t *testing.T) {
 
 func TestSortedArray_Iterator(t *testing.T) {
 	slice := g.Slice{"a", "b", "d", "c"}
-	array := qn_array.NewSortedArrayFrom(slice, gutil.ComparatorString)
-	gtest.C(t, func(t *gtest.T) {
+	array := qn_array.NewSortedArrayFrom(slice, qn_util.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
 		array.Iterator(func(k int, v interface{}) bool {
 			t.Assert(v, slice[k])
 			return true
 		})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array.IteratorAsc(func(k int, v interface{}) bool {
 			t.Assert(v, slice[k])
 			return true
 		})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		array.IteratorDesc(func(k int, v interface{}) bool {
 			t.Assert(v, slice[k])
 			return true
 		})
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		index := 0
 		array.Iterator(func(k int, v interface{}) bool {
 			index++
@@ -783,7 +783,7 @@ func TestSortedArray_Iterator(t *testing.T) {
 		})
 		t.Assert(index, 1)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		index := 0
 		array.IteratorAsc(func(k int, v interface{}) bool {
 			index++
@@ -791,7 +791,7 @@ func TestSortedArray_Iterator(t *testing.T) {
 		})
 		t.Assert(index, 1)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		index := 0
 		array.IteratorDesc(func(k int, v interface{}) bool {
 			index++
@@ -803,8 +803,8 @@ func TestSortedArray_Iterator(t *testing.T) {
 
 func TestSortedArray_RemoveValue(t *testing.T) {
 	slice := g.Slice{"a", "b", "d", "c"}
-	array := qn_array.NewSortedArrayFrom(slice, gutil.ComparatorString)
-	gtest.C(t, func(t *gtest.T) {
+	array := qn_array.NewSortedArrayFrom(slice, qn_util.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(array.RemoveValue("e"), false)
 		t.Assert(array.RemoveValue("b"), true)
 		t.Assert(array.RemoveValue("a"), true)
@@ -819,9 +819,9 @@ func TestSortedArray_UnmarshalValue(t *testing.T) {
 		Array *qn_array.SortedArray
 	}
 	// JSON
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(g.Map{
+		err := qn_conv.Struct(g.Map{
 			"name":  "john",
 			"array": []byte(`[2,3,1]`),
 		}, &v)
@@ -830,9 +830,9 @@ func TestSortedArray_UnmarshalValue(t *testing.T) {
 		t.Assert(v.Array.Slice(), g.Slice{1, 2, 3})
 	})
 	// Map
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(g.Map{
+		err := qn_conv.Struct(g.Map{
 			"name":  "john",
 			"array": g.Slice{2, 3, 1},
 		}, &v)
@@ -843,33 +843,33 @@ func TestSortedArray_UnmarshalValue(t *testing.T) {
 }
 
 func TestSortedArray_FilterNil(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		values := g.Slice{0, 1, 2, 3, 4, "", g.Slice{}}
-		array := qn_array.NewSortedArrayFromCopy(values, gutil.ComparatorInt)
+		array := qn_array.NewSortedArrayFromCopy(values, qn_util.ComparatorInt)
 		t.Assert(array.FilterNil().Slice(), g.Slice{0, "", g.Slice{}, 1, 2, 3, 4})
 	})
-	gtest.C(t, func(t *gtest.T) {
-		array := qn_array.NewSortedArrayFromCopy(g.Slice{nil, 1, 2, 3, 4, nil}, gutil.ComparatorInt)
+	qn_test.C(t, func(t *qn_test.T) {
+		array := qn_array.NewSortedArrayFromCopy(g.Slice{nil, 1, 2, 3, 4, nil}, qn_util.ComparatorInt)
 		t.Assert(array.FilterNil(), g.Slice{1, 2, 3, 4})
 	})
 }
 
 func TestSortedArray_FilterEmpty(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		array := qn_array.NewSortedArrayFrom(g.Slice{0, 1, 2, 3, 4, "", g.Slice{}}, gutil.ComparatorInt)
+	qn_test.C(t, func(t *qn_test.T) {
+		array := qn_array.NewSortedArrayFrom(g.Slice{0, 1, 2, 3, 4, "", g.Slice{}}, qn_util.ComparatorInt)
 		t.Assert(array.FilterEmpty(), g.Slice{1, 2, 3, 4})
 	})
-	gtest.C(t, func(t *gtest.T) {
-		array := qn_array.NewSortedArrayFrom(g.Slice{1, 2, 3, 4}, gutil.ComparatorInt)
+	qn_test.C(t, func(t *qn_test.T) {
+		array := qn_array.NewSortedArrayFrom(g.Slice{1, 2, 3, 4}, qn_util.ComparatorInt)
 		t.Assert(array.FilterEmpty(), g.Slice{1, 2, 3, 4})
 	})
 }
 
 func TestSortedArray_Walk(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		array := qn_array.NewSortedArrayFrom(g.Slice{"1", "2"}, gutil.ComparatorString)
+	qn_test.C(t, func(t *qn_test.T) {
+		array := qn_array.NewSortedArrayFrom(g.Slice{"1", "2"}, qn_util.ComparatorString)
 		t.Assert(array.Walk(func(value interface{}) interface{} {
-			return "key-" + gconv.String(value)
+			return "key-" + qn_conv.String(value)
 		}), g.Slice{"key-1", "key-2"})
 	})
 }

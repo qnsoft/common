@@ -18,14 +18,14 @@ import (
 
 	"github.com/qnsoft/common/os/gfsnotify"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/encoding/gjson"
+	"github.com/qnsoft/common/encoding/qn_json"
 
-	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/os/gres"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 // Manager, it is concurrent safe, supporting hot reload.
@@ -65,8 +65,8 @@ func New(options ...Options) *Manager {
 		options: opts,
 		pattern: fmt.Sprintf(
 			`%s(\w+)%s`,
-			gregex.Quote(opts.Delimiters[0]),
-			gregex.Quote(opts.Delimiters[1]),
+			qn_regex.Quote(opts.Delimiters[0]),
+			qn_regex.Quote(opts.Delimiters[1]),
 		),
 	}
 	intlog.Printf(`New: %#v`, m)
@@ -77,12 +77,12 @@ func New(options ...Options) *Manager {
 func DefaultOptions() Options {
 	var (
 		path        = "i18n"
-		realPath, _ = gfile.Search(path)
+		realPath, _ = qn_file.Search(path)
 	)
 	if realPath != "" {
 		path = realPath
 		// To avoid of the source path of GF: github.com/gogf/i18n/gi18n
-		if gfile.Exists(path + gfile.Separator + "gi18n") {
+		if qn_file.Exists(path + qn_file.Separator + "gi18n") {
 			path = ""
 		}
 	}
@@ -98,7 +98,7 @@ func (m *Manager) SetPath(path string) error {
 	if gres.Contains(path) {
 		m.options.Path = path
 	} else {
-		realPath, _ := gfile.Search(path)
+		realPath, _ := qn_file.Search(path)
 		if realPath == "" {
 			return errors.New(fmt.Sprintf(`%s does not exist`, path))
 		}
@@ -116,7 +116,7 @@ func (m *Manager) SetLanguage(language string) {
 
 // SetDelimiters sets the delimiters for translator.
 func (m *Manager) SetDelimiters(left, right string) {
-	m.pattern = fmt.Sprintf(`%s(\w+)%s`, gregex.Quote(left), gregex.Quote(right))
+	m.pattern = fmt.Sprintf(`%s(\w+)%s`, qn_regex.Quote(left), qn_regex.Quote(right))
 	intlog.Printf(`SetDelimiters: %v`, m.pattern)
 }
 
@@ -146,7 +146,7 @@ func (m *Manager) Translate(content string, language ...string) string {
 		return v
 	}
 	// Parse content as variables container.
-	result, _ := gregex.ReplaceStringFuncMatch(
+	result, _ := qn_regex.ReplaceStringFuncMatch(
 		m.pattern, content,
 		func(match []string) string {
 			if v, ok := data[match[1]]; ok {
@@ -206,14 +206,14 @@ func (m *Manager) init() {
 				if len(array) > 1 {
 					lang = array[0]
 				} else {
-					lang = gfile.Name(array[0])
+					lang = qn_file.Name(array[0])
 				}
 				if m.data[lang] == nil {
 					m.data[lang] = make(map[string]string)
 				}
-				if j, err := gjson.LoadContent(file.Content()); err == nil {
+				if j, err := qn_json.LoadContent(file.Content()); err == nil {
 					for k, v := range j.ToMap() {
-						m.data[lang][k] = gconv.String(v)
+						m.data[lang][k] = qn_conv.String(v)
 					}
 				} else {
 					glog.Errorf("load i18n file '%s' failed: %v", name, err)
@@ -221,7 +221,7 @@ func (m *Manager) init() {
 			}
 		}
 	} else if m.options.Path != "" {
-		files, _ := gfile.ScanDirFile(m.options.Path, "*.*", true)
+		files, _ := qn_file.ScanDirFile(m.options.Path, "*.*", true)
 		if len(files) == 0 {
 			intlog.Printf(
 				"no i18n files found in configured directory: %s",
@@ -237,18 +237,18 @@ func (m *Manager) init() {
 		m.data = make(map[string]map[string]string)
 		for _, file := range files {
 			path = file[len(m.options.Path)+1:]
-			array = strings.Split(path, gfile.Separator)
+			array = strings.Split(path, qn_file.Separator)
 			if len(array) > 1 {
 				lang = array[0]
 			} else {
-				lang = gfile.Name(array[0])
+				lang = qn_file.Name(array[0])
 			}
 			if m.data[lang] == nil {
 				m.data[lang] = make(map[string]string)
 			}
-			if j, err := gjson.LoadContent(gfile.GetBytes(file)); err == nil {
+			if j, err := qn_json.LoadContent(qn_file.GetBytes(file)); err == nil {
 				for k, v := range j.ToMap() {
-					m.data[lang][k] = gconv.String(v)
+					m.data[lang][k] = qn_conv.String(v)
 				}
 			} else {
 				glog.Errorf("load i18n file '%s' failed: %v", file, err)

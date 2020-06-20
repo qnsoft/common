@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/internal/intstore"
-	"github.com/qnsoft/common/os/gtime"
+	"github.com/qnsoft/common/os/qn_time"
 )
 
 // Var is a universal variable interface, like generics.
@@ -72,7 +72,7 @@ type Var interface {
 
 	Time(format ...string) time.Time
 	Duration() time.Duration
-	GTime(format ...string) *gtime.Time
+	qn_time(format ...string) *qn_time.Time
 
 	MarshalJSON() ([]byte, error)
 	UnmarshalJSON(b []byte) error

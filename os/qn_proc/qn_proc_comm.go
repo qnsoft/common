@@ -13,8 +13,8 @@ import (
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/net/gtcp"
 	"github.com/qnsoft/common/os/gfcache"
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/util/qn_conv"
 )
 
 // MsgRequest is the request structure for process communication.
@@ -44,13 +44,13 @@ var (
 	commReceiveQueues = gmap.NewStrAnyMap(true)
 
 	// commPidFolderPath specifies the folder path storing pid to port mapping files.
-	commPidFolderPath = gfile.TempDir("gproc")
+	commPidFolderPath = qn_file.TempDir("gproc")
 )
 
 func init() {
 	// Automatically create the storage folder.
-	if !gfile.Exists(commPidFolderPath) {
-		err := gfile.Mkdir(commPidFolderPath)
+	if !qn_file.Exists(commPidFolderPath) {
+		err := qn_file.Mkdir(commPidFolderPath)
 		if err != nil {
 			panic(fmt.Errorf(`create gproc folder failed: %v`, err))
 		}
@@ -75,10 +75,10 @@ func getConnByPid(pid int) (*gtcp.PoolConn, error) {
 func getPortByPid(pid int) int {
 	path := getCommFilePath(pid)
 	content := gfcache.GetContents(path)
-	return gconv.Int(content)
+	return qn_conv.Int(content)
 }
 
 // getCommFilePath returns the pid to port mapping file path for given pid.
 func getCommFilePath(pid int) string {
-	return gfile.Join(commPidFolderPath, gconv.String(pid))
+	return qn_file.Join(commPidFolderPath, qn_conv.String(pid))
 }

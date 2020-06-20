@@ -9,10 +9,10 @@ package qn_http
 import (
 	"strings"
 
-	"github.com/qnsoft/common/errors/gerror"
+	"github.com/qnsoft/common/errors/qn_error"
 
-	"github.com/qnsoft/common/encoding/gurl"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	"github.com/qnsoft/common/encoding/qn_url"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // BuildParams builds the request string for the http client. The <params> can be type of:
@@ -23,7 +23,7 @@ func BuildParams(params interface{}, noUrlEncode ...bool) (encodedParamStr strin
 	// If given string/[]byte, converts and returns it directly as string.
 	switch v := params.(type) {
 	case string, []byte:
-		return gconv.String(params)
+		return qn_conv.String(params)
 	case []interface{}:
 		if len(v) > 0 {
 			params = v[0]
@@ -32,9 +32,9 @@ func BuildParams(params interface{}, noUrlEncode ...bool) (encodedParamStr strin
 		}
 	}
 	// Else converts it to map and does the url encoding.
-	m, urlEncode := gconv.Map(params), true
+	m, urlEncode := qn_conv.Map(params), true
 	if len(m) == 0 {
-		return gconv.String(params)
+		return qn_conv.String(params)
 	}
 	if len(noUrlEncode) == 1 {
 		urlEncode = !noUrlEncode[0]
@@ -44,9 +44,9 @@ func BuildParams(params interface{}, noUrlEncode ...bool) (encodedParamStr strin
 		if len(encodedParamStr) > 0 {
 			encodedParamStr += "&"
 		}
-		s = gconv.String(v)
+		s = qn_conv.String(v)
 		if urlEncode && len(s) > 6 && strings.Compare(s[0:6], "@file:") != 0 {
-			s = gurl.Encode(s)
+			s = qn_url.Encode(s)
 		}
 		encodedParamStr += k + "=" + s
 	}
@@ -61,14 +61,14 @@ func niceCallFunc(f func()) {
 			case gEXCEPTION_EXIT, gEXCEPTION_EXIT_ALL:
 				return
 			default:
-				if _, ok := e.(gerror.ApiStack); ok {
+				if _, ok := e.(qn_error.ApiStack); ok {
 					// It's already an error that has stack info.
 					panic(e)
 				} else {
 					// Create a new error with stack info.
 					// Note that there's a skip pointing the start stacktrace
 					// of the real error point.
-					panic(gerror.NewfSkip(1, "%v", e))
+					panic(qn_error.NewfSkip(1, "%v", e))
 				}
 			}
 		}

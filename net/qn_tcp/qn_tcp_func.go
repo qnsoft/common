@@ -12,7 +12,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 const (
@@ -119,11 +119,11 @@ func isTimeout(err error) bool {
 
 // LoadKeyCrt creates and returns a TLS configuration object with given certificate and key files.
 func LoadKeyCrt(crtFile, keyFile string) (*tls.Config, error) {
-	crtPath, err := gfile.Search(crtFile)
+	crtPath, err := qn_file.Search(crtFile)
 	if err != nil {
 		return nil, err
 	}
-	keyPath, err := gfile.Search(keyFile)
+	keyPath, err := qn_file.Search(keyFile)
 	if err != nil {
 		return nil, err
 	}

@@ -12,12 +12,12 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/container/gmap"
-	gutil "github.com/qnsoft/common/util/qn_util"
+	qn_util "github.com/qnsoft/common/util/qn_util"
 )
 
 var hashMap = gmap.New(true)
 var listMap = gmap.NewListMap(true)
-var treeMap = gmap.NewTreeMap(gutil.ComparatorInt, true)
+var treeMap = gmap.NewTreeMap(qn_util.ComparatorInt, true)
 
 func Benchmark_HashMap_Set(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {

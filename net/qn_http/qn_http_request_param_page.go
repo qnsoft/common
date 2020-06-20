@@ -8,8 +8,9 @@ package qn_http
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/text/gregex"
+
 	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/text/qn_regex"
 	"github.com/qnsoft/common/util/gpage"
 )
 
@@ -33,15 +34,15 @@ func (r *Request) GetPage(totalSize, pageSize int) *gpage.Page {
 			}
 		}
 		if uriHasPageName {
-			if match, err := gregex.MatchString(r.Router.RegRule, url.Path); err == nil && len(match) > 0 {
+			if match, err := qn_regex.MatchString(r.Router.RegRule, url.Path); err == nil && len(match) > 0 {
 				if len(match) > len(r.Router.RegNames) {
 					urlTemplate = r.Router.Uri
 					for i, name := range r.Router.RegNames {
 						rule := fmt.Sprintf(`[:\*]%s|\{%s\}`, name, name)
 						if name == gpage.PAGE_NAME {
-							urlTemplate, _ = gregex.ReplaceString(rule, gpage.PAGE_PLACE_HOLDER, urlTemplate)
+							urlTemplate, _ = qn_regex.ReplaceString(rule, gpage.PAGE_PLACE_HOLDER, urlTemplate)
 						} else {
-							urlTemplate, _ = gregex.ReplaceString(rule, match[i+1], urlTemplate)
+							urlTemplate, _ = qn_regex.ReplaceString(rule, match[i+1], urlTemplate)
 						}
 					}
 				}

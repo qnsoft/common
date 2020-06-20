@@ -12,7 +12,7 @@ import (
 	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/database/gredis"
 	"github.com/qnsoft/common/internal/intlog"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
 // StorageRedisHashTable implements the Session Storage interface with redis hash table.
@@ -47,7 +47,7 @@ func (s *StorageRedisHashTable) New(ttl time.Duration) (id string) {
 func (s *StorageRedisHashTable) Get(id string, key string) interface{} {
 	r, _ := s.redis.Do("HGET", s.key(id), key)
 	if r != nil {
-		return gconv.String(r)
+		return qn_conv.String(r)
 	}
 	return r
 }
@@ -62,9 +62,9 @@ func (s *StorageRedisHashTable) GetMap(id string) map[string]interface{} {
 	m := make(map[string]interface{})
 	for i := 0; i < len(array); i += 2 {
 		if array[i+1] != nil {
-			m[gconv.String(array[i])] = gconv.String(array[i+1])
+			m[qn_conv.String(array[i])] = qn_conv.String(array[i+1])
 		} else {
-			m[gconv.String(array[i])] = array[i+1]
+			m[qn_conv.String(array[i])] = array[i+1]
 		}
 	}
 	return m

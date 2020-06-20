@@ -7,25 +7,26 @@
 package qn_session_test
 
 import (
-	"github.com/qnsoft/common/database/gredis"
-	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/os/gsession"
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/database/gredis"
+	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/os/gsession"
+
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_StorageRedisHashTable(t *testing.T) {
 	redis, err := gredis.NewFromStr("127.0.0.1:6379,0")
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(err, nil)
 	})
 
 	storage := gsession.NewStorageRedisHashTable(redis)
 	manager := gsession.New(time.Second, storage)
 	sessionId := ""
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := manager.New()
 		defer s.Close()
 		s.Set("k1", "v1")
@@ -37,7 +38,7 @@ func Test_StorageRedisHashTable(t *testing.T) {
 		t.Assert(s.IsDirty(), true)
 		sessionId = s.Id()
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := manager.New(sessionId)
 		t.Assert(s.Get("k1"), "v1")
 		t.Assert(s.Get("k2"), "v2")
@@ -70,7 +71,7 @@ func Test_StorageRedisHashTable(t *testing.T) {
 	})
 
 	time.Sleep(1500 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := manager.New(sessionId)
 		t.Assert(s.Size(), 0)
 		t.Assert(s.Get("k5"), nil)
@@ -80,7 +81,7 @@ func Test_StorageRedisHashTable(t *testing.T) {
 
 func Test_StorageRedisHashTablePrefix(t *testing.T) {
 	redis, err := gredis.NewFromStr("127.0.0.1:6379,0")
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(err, nil)
 	})
 
@@ -88,7 +89,7 @@ func Test_StorageRedisHashTablePrefix(t *testing.T) {
 	storage := gsession.NewStorageRedisHashTable(redis, prefix)
 	manager := gsession.New(time.Second, storage)
 	sessionId := ""
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := manager.New()
 		defer s.Close()
 		s.Set("k1", "v1")
@@ -100,7 +101,7 @@ func Test_StorageRedisHashTablePrefix(t *testing.T) {
 		t.Assert(s.IsDirty(), true)
 		sessionId = s.Id()
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := manager.New(sessionId)
 		t.Assert(s.Get("k1"), "v1")
 		t.Assert(s.Get("k2"), "v2")
@@ -133,7 +134,7 @@ func Test_StorageRedisHashTablePrefix(t *testing.T) {
 	})
 
 	time.Sleep(1500 * time.Millisecond)
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		s := manager.New(sessionId)
 		t.Assert(s.Size(), 0)
 		t.Assert(s.Get("k5"), nil)

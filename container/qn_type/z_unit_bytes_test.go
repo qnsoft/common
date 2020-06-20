@@ -10,14 +10,14 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Bytes(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := gtype.NewBytes([]byte("abc"))
 		iClone := i.Clone()
 		t.AssertEQ(iClone.Set([]byte("123")), []byte("abc"))
@@ -30,7 +30,7 @@ func Test_Bytes(t *testing.T) {
 }
 
 func Test_Bytes_JSON(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		b := []byte("i love gf")
 		i := gtype.NewBytes(b)
 		b1, err1 := json.Marshal(i)
@@ -51,9 +51,9 @@ func Test_Bytes_UnmarshalValue(t *testing.T) {
 		Name string
 		Var  *gtype.Bytes
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"var":  "123",
 		}, &v)

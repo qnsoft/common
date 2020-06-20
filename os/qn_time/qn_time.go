@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 const (
@@ -367,7 +367,7 @@ func StrToTimeLayout(str string, layout string) (*Time, error) {
 // It only retrieves and parses the time information with given <format> if it's passed.
 func ParseTimeFromContent(content string, format ...string) *Time {
 	if len(format) > 0 {
-		if match, err := gregex.MatchString(formatToRegexPattern(format[0]), content); err == nil && len(match) > 0 {
+		if match, err := qn_regex.MatchString(formatToRegexPattern(format[0]), content); err == nil && len(match) > 0 {
 			return NewFromStrFormat(match[0], format[0])
 		}
 	} else {

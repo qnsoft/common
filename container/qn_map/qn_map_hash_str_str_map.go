@@ -9,7 +9,7 @@ package qn_map
 
 import (
 	"github.com/qnsoft/common/internal/json"
-	gconv "github.com/qnsoft/common/util/qn_conv"
+	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/internal/empty"
 
@@ -453,6 +453,6 @@ func (m *StrStrMap) UnmarshalJSON(b []byte) error {
 func (m *StrStrMap) UnmarshalValue(value interface{}) (err error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	m.data = gconv.MapStrStr(value)
+	m.data = qn_conv.MapStrStr(value)
 	return
 }

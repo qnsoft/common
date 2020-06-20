@@ -10,7 +10,7 @@ import (
 	"context"
 	"io"
 
-	"github.com/qnsoft/common/os/gfile"
+	"github.com/qnsoft/common/os/qn_file"
 )
 
 // Ctx is a chaining function,
@@ -72,7 +72,7 @@ func (l *Logger) Cat(category string) *Logger {
 		logger = l
 	}
 	if logger.config.Path != "" {
-		if err := logger.SetPath(gfile.Join(logger.config.Path, category)); err != nil {
+		if err := logger.SetPath(qn_file.Join(logger.config.Path, category)); err != nil {
 			panic(err)
 		}
 	}

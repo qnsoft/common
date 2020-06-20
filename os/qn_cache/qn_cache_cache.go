@@ -11,7 +11,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/qnsoft/common/os/gtimer"
+	"github.com/qnsoft/common/os/qn_timer"
 )
 
 // Cache struct.
@@ -24,7 +24,7 @@ func New(lruCap ...int) *Cache {
 	c := &Cache{
 		memCache: newMemCache(lruCap...),
 	}
-	gtimer.AddSingleton(time.Second, c.syncEventAndClearExpired)
+	qn_timer.AddSingleton(time.Second, c.syncEventAndClearExpired)
 	return c
 }
 

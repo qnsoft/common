@@ -8,7 +8,7 @@ package qn_map
 
 import (
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/internal/empty"
 
@@ -136,7 +136,7 @@ func (m *ListMap) MapStrAny() map[string]interface{} {
 		data = make(map[string]interface{}, len(m.data))
 		m.list.IteratorAsc(func(e *glist.Element) bool {
 			node = e.Value.(*gListMapNode)
-			data[gconv.String(node.key)] = node.value
+			data[qn_conv.String(node.key)] = node.value
 			return true
 		})
 	}
@@ -511,7 +511,7 @@ func (m *ListMap) Merge(other *ListMap) {
 
 // MarshalJSON implements the interface MarshalJSON for json.Marshal.
 func (m *ListMap) MarshalJSON() ([]byte, error) {
-	return json.Marshal(gconv.Map(m.Map()))
+	return json.Marshal(qn_conv.Map(m.Map()))
 }
 
 // UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
@@ -544,7 +544,7 @@ func (m *ListMap) UnmarshalValue(value interface{}) (err error) {
 		m.data = make(map[interface{}]*glist.Element)
 		m.list = glist.New()
 	}
-	for k, v := range gconv.Map(value) {
+	for k, v := range qn_conv.Map(value) {
 		if e, ok := m.data[k]; !ok {
 			m.data[k] = m.list.PushBack(&gListMapNode{k, v})
 		} else {

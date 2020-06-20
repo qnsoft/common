@@ -4,7 +4,7 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-// Package gregex provides high performance API for regular expression functionality.
+// Package qn_regex provides high performance API for regular expression functionality.
 package qn_regex
 
 import (

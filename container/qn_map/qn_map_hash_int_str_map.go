@@ -8,7 +8,7 @@ package qn_map
 
 import (
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/internal/empty"
 
@@ -78,7 +78,7 @@ func (m *IntStrMap) MapStrAny() map[string]interface{} {
 	m.mu.RLock()
 	data := make(map[string]interface{}, len(m.data))
 	for k, v := range m.data {
-		data[gconv.String(k)] = v
+		data[qn_conv.String(k)] = v
 	}
 	m.mu.RUnlock()
 	return data
@@ -403,7 +403,7 @@ func (m *IntStrMap) Flip() {
 	defer m.mu.Unlock()
 	n := make(map[int]string, len(m.data))
 	for k, v := range m.data {
-		n[gconv.Int(v)] = gconv.String(k)
+		n[qn_conv.Int(v)] = qn_conv.String(k)
 	}
 	m.data = n
 }
@@ -455,10 +455,10 @@ func (m *IntStrMap) UnmarshalValue(value interface{}) (err error) {
 	}
 	switch value.(type) {
 	case string, []byte:
-		return json.Unmarshal(gconv.Bytes(value), &m.data)
+		return json.Unmarshal(qn_conv.Bytes(value), &m.data)
 	default:
-		for k, v := range gconv.Map(value) {
-			m.data[gconv.Int(k)] = gconv.String(v)
+		for k, v := range qn_conv.Map(value) {
+			m.data[qn_conv.Int(k)] = qn_conv.String(v)
 		}
 	}
 	return

@@ -10,14 +10,14 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/util/gconv"
+	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Bool(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := gtype.NewBool(true)
 		iClone := i.Clone()
 		t.AssertEQ(iClone.Set(false), true)
@@ -36,7 +36,7 @@ func Test_Bool(t *testing.T) {
 
 func Test_Bool_JSON(t *testing.T) {
 	// Marshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := gtype.NewBool(true)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
@@ -44,7 +44,7 @@ func Test_Bool_JSON(t *testing.T) {
 		t.Assert(err2, nil)
 		t.Assert(b1, b2)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := gtype.NewBool(false)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
@@ -53,7 +53,7 @@ func Test_Bool_JSON(t *testing.T) {
 		t.Assert(b1, b2)
 	})
 	// Unmarshal
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var err error
 		i := gtype.NewBool()
 		err = json.Unmarshal([]byte("true"), &i)
@@ -70,7 +70,7 @@ func Test_Bool_JSON(t *testing.T) {
 		t.Assert(i.Val(), false)
 	})
 
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := gtype.NewBool(true)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
@@ -83,7 +83,7 @@ func Test_Bool_JSON(t *testing.T) {
 		t.Assert(err, nil)
 		t.Assert(i2.Val(), i.Val())
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		i := gtype.NewBool(false)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
@@ -103,9 +103,9 @@ func Test_Bool_UnmarshalValue(t *testing.T) {
 		Name string
 		Var  *gtype.Bool
 	}
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"var":  "true",
 		}, &v)
@@ -113,9 +113,9 @@ func Test_Bool_UnmarshalValue(t *testing.T) {
 		t.Assert(v.Name, "john")
 		t.Assert(v.Var.Val(), true)
 	})
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := gconv.Struct(map[string]interface{}{
+		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
 			"var":  "false",
 		}, &v)

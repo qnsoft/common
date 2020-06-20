@@ -12,7 +12,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/qnsoft/common/text/gregex"
+	"github.com/qnsoft/common/text/qn_regex"
 )
 
 var pattern = `(\w+).+\-\-\s*(.+)`
@@ -20,13 +20,13 @@ var src = `GF is best! -- John`
 
 func Benchmark_GF_IsMatchString(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		gregex.IsMatchString(pattern, src)
+		qn_regex.IsMatchString(pattern, src)
 	}
 }
 
 func Benchmark_GF_MatchString(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		gregex.MatchString(pattern, src)
+		qn_regex.MatchString(pattern, src)
 	}
 }
 

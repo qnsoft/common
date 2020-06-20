@@ -12,10 +12,10 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/qnsoft/common/encoding/gbinary"
+	"github.com/qnsoft/common/encoding/qn_binary"
 )
 
-var valueBytes = gbinary.Encode(123456789)
+var valueBytes = qn_binary.Encode(123456789)
 
 func Benchmark_Bytes_To_String_Normal(b *testing.B) {
 	for i := 0; i < b.N; i++ {

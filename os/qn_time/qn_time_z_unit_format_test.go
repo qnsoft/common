@@ -9,13 +9,13 @@ package qn_time_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/os/gtime"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Format(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		timeTemp, err := gtime.StrToTime("2006-01-11 15:04:05", "Y-m-d H:i:s")
+	qn_test.C(t, func(t *qn_test.T) {
+		timeTemp, err := qn_time.StrToTime("2006-01-11 15:04:05", "Y-m-d H:i:s")
 		timeTemp.ToZone("Asia/Shanghai")
 		if err != nil {
 			t.Error("test fail")
@@ -37,13 +37,13 @@ func Test_Format(t *testing.T) {
 		t.Assert(timeTemp.Format("c"), "2006-01-11T15:04:05+08:00")
 
 		//补零
-		timeTemp1, err := gtime.StrToTime("2006-01-02 03:04:05", "Y-m-d H:i:s")
+		timeTemp1, err := qn_time.StrToTime("2006-01-02 03:04:05", "Y-m-d H:i:s")
 		if err != nil {
 			t.Error("test fail")
 		}
 		t.Assert(timeTemp1.Format("Y-m-d h:i:s"), "2006-01-02 03:04:05")
 		//不补零
-		timeTemp2, err := gtime.StrToTime("2006-01-02 03:04:05", "Y-m-d H:i:s")
+		timeTemp2, err := qn_time.StrToTime("2006-01-02 03:04:05", "Y-m-d H:i:s")
 		if err != nil {
 			t.Error("test fail")
 		}
@@ -86,7 +86,7 @@ func Test_Format(t *testing.T) {
 		}
 
 		for _, v := range times {
-			t1, err1 := gtime.StrToTime(v["k"], "Y-m-d")
+			t1, err1 := qn_time.StrToTime(v["k"], "Y-m-d")
 			t.Assert(err1, nil)
 			t.Assert(t1.Format(v["f"]), v["r"])
 		}
@@ -95,30 +95,30 @@ func Test_Format(t *testing.T) {
 }
 
 func Test_Format_ZeroString(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		timeTemp, err := gtime.StrToTime("0000-00-00 00:00:00")
+	qn_test.C(t, func(t *qn_test.T) {
+		timeTemp, err := qn_time.StrToTime("0000-00-00 00:00:00")
 		t.AssertNE(err, nil)
 		t.Assert(timeTemp.String(), "")
 	})
 }
 
 func Test_FormatTo(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		timeTemp := gtime.Now()
+	qn_test.C(t, func(t *qn_test.T) {
+		timeTemp := qn_time.Now()
 		t.Assert(timeTemp.FormatTo("Y-m-01 00:00:01"), timeTemp.Time.Format("2006-01")+"-01 00:00:01")
 	})
 }
 
 func Test_Layout(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		timeTemp := gtime.Now()
+	qn_test.C(t, func(t *qn_test.T) {
+		timeTemp := qn_time.Now()
 		t.Assert(timeTemp.Layout("2006-01-02 15:04:05"), timeTemp.Time.Format("2006-01-02 15:04:05"))
 	})
 }
 
 func Test_LayoutTo(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
-		timeTemp := gtime.Now()
+	qn_test.C(t, func(t *qn_test.T) {
+		timeTemp := qn_time.Now()
 		t.Assert(timeTemp.LayoutTo("2006-01-02 00:00:00"), timeTemp.Time.Format("2006-01-02 00:00:00"))
 	})
 }

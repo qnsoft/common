@@ -14,11 +14,11 @@ import (
 	"github.com/qnsoft/common/container/gset"
 	"github.com/qnsoft/common/util/guid"
 
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_S(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		set := gset.NewStrSet()
 		for i := 0; i < 1000000; i++ {
 			s := guid.S()
@@ -29,7 +29,7 @@ func Test_S(t *testing.T) {
 }
 
 func Test_S_Data(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(len(guid.S([]byte("123"))), 32)
 	})
 }

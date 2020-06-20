@@ -10,12 +10,12 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/qnsoft/common/os/gfile"
-	"github.com/qnsoft/common/test/gtest"
+	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Search(t *testing.T) {
-	gtest.C(t, func(t *gtest.T) {
+	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			paths1  string = "/testfiless"
 			paths2  string = "./testfile/dirfiles_no"
@@ -30,13 +30,13 @@ func Test_Search(t *testing.T) {
 		defer delTestFiles(paths1)
 		ypaths1 = paths1
 
-		tpath, err = gfile.Search(testpath() + paths1)
+		tpath, err = qn_file.Search(testpath() + paths1)
 		t.Assert(err, nil)
 
 		tpath = filepath.ToSlash(tpath)
 
 		// 自定义优先路径
-		tpath2, err = gfile.Search(testpath() + paths1)
+		tpath2, err = qn_file.Search(testpath() + paths1)
 		t.Assert(err, nil)
 		tpath2 = filepath.ToSlash(tpath2)
 
@@ -49,7 +49,7 @@ func Test_Search(t *testing.T) {
 		t.Assert(tpath2, tpath)
 
 		// 测试给定目录
-		tpath2, err = gfile.Search(paths1, "testfiless")
+		tpath2, err = qn_file.Search(paths1, "testfiless")
 		tpath2 = filepath.ToSlash(tpath2)
 		tempss := filepath.ToSlash(paths1)
 		t.Assert(tpath2, tempss)
@@ -63,7 +63,7 @@ func Test_Search(t *testing.T) {
 		t.Assert(tpath2, paths1)
 
 		// 测试目录不存在时
-		_, err = gfile.Search(paths2)
+		_, err = qn_file.Search(paths2)
 		t.AssertNE(err, nil)
 
 	})
