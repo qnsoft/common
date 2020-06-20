@@ -21,15 +21,15 @@ package qn_queue
 import (
 	"math"
 
-	"github.com/qnsoft/common/container/glist"
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_list"
+	"github.com/qnsoft/common/container/qn_type"
 )
 
 // Queue is a concurrent-safe queue built on doubly linked list and channel.
 type Queue struct {
 	limit  int              // Limit for queue size.
-	list   *glist.List      // Underlying list structure for data maintaining.
-	closed *gtype.Bool      // Whether queue is closed.
+	list   *qn_list.List      // Underlying list structure for data maintaining.
+	closed *qn_type.Bool      // Whether queue is closed.
 	events chan struct{}    // Events for data writing.
 	C      chan interface{} // Underlying channel for data reading.
 }
@@ -46,13 +46,13 @@ const (
 // When <limit> is given, the queue will be static and high performance which is comparable with stdlib channel.
 func New(limit ...int) *Queue {
 	q := &Queue{
-		closed: gtype.NewBool(),
+		closed: qn_type.NewBool(),
 	}
 	if len(limit) > 0 && limit[0] > 0 {
 		q.limit = limit[0]
 		q.C = make(chan interface{}, limit[0])
 	} else {
-		q.list = glist.New(true)
+		q.list = qn_list.New(true)
 		q.events = make(chan struct{}, math.MaxInt32)
 		q.C = make(chan interface{}, gDEFAULT_QUEUE_SIZE)
 		go q.asyncLoopFromListToChannel()

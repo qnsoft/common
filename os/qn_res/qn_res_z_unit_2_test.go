@@ -7,11 +7,11 @@
 package qn_res_test
 
 import (
+	"github.com/qnsoft/common/frame/qn"
 	_ "github.com/qnsoft/common/os/qn_res/testdata/data"
 
 	"testing"
 
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/test/qn_test"
 
 	"github.com/qnsoft/common/os/qn_res"
@@ -82,7 +82,7 @@ func Test_Get(t *testing.T) {
 		t.AssertNE(qn_res.Get("dir1/test1"), nil)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		file := qn_res.GetWithIndex("dir1", g.SliceStr{"test1"})
+		file := qn_res.GetWithIndex("dir1", qn.SliceStr{"test1"})
 		t.AssertNE(file, nil)
 		t.Assert(file.Name(), "dir1/test1")
 	})

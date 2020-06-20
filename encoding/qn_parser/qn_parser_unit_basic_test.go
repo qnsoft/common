@@ -9,8 +9,9 @@ package qn_parser_test
 import (
 	"testing"
 
+	"github.com/gogf/gf/frame/g"
 	"github.com/qnsoft/common/encoding/qn_parser"
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -19,9 +20,9 @@ func Test_New(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		j := qn_parser.New(data)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
-		v := j.Value().(g.Map)
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
+		v := j.Value().(qn.Map)
 		t.Assert(v["n"], 123456789)
 	})
 }
@@ -31,15 +32,15 @@ func Test_NewUnsafe(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		j := qn_parser.New(data)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m.k"), "v")
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
 		t.Assert(j.Get("a.1"), 2)
 	})
 }
 
 func Test_Encode(t *testing.T) {
-	value := g.Slice{1, 2, 3}
+	value := qn.Slice{1, 2, 3}
 	qn_test.C(t, func(t *qn_test.T) {
 		b, err := qn_parser.VarToJson(value)
 		t.Assert(err, nil)
@@ -53,9 +54,9 @@ func Test_Decode(t *testing.T) {
 		j := qn_parser.New(data)
 		t.AssertNE(j, nil)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m.k"), "v")
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
 		t.Assert(j.Get("a.1"), 2)
 	})
 }
@@ -67,9 +68,9 @@ func Test_SplitChar(t *testing.T) {
 		j.SetSplitChar(byte('#'))
 		t.AssertNE(j, nil)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m#k"), "v")
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
 		t.Assert(j.Get("a#1"), 2)
 	})
 }
@@ -92,10 +93,10 @@ func Test_GetVar(t *testing.T) {
 		j := qn_parser.New(data)
 		t.AssertNE(j, nil)
 		t.Assert(j.GetVar("n").String(), "123456789")
-		t.Assert(j.GetVar("m").Map(), g.Map{"k": "v"})
-		t.Assert(j.GetVar("a").Interfaces(), g.Slice{1, 2, 3})
-		t.Assert(j.GetVar("a").Slice(), g.Slice{1, 2, 3})
-		t.Assert(j.GetMap("a"), g.Map{"1": "2", "3": nil})
+		t.Assert(j.GetVar("m").Map(), qn.Map{"k": "v"})
+		t.Assert(j.GetVar("a").Interfaces(), qn.Slice{1, 2, 3})
+		t.Assert(j.GetVar("a").Slice(), qn.Slice{1, 2, 3})
+		t.Assert(j.GetMap("a"), qn.Map{"1": "2", "3": nil})
 	})
 }
 
@@ -105,8 +106,8 @@ func Test_GetMap(t *testing.T) {
 		j := qn_parser.New(data)
 		t.AssertNE(j, nil)
 		t.Assert(j.GetMap("n"), nil)
-		t.Assert(j.GetMap("m"), g.Map{"k": "v"})
-		t.Assert(j.GetMap("a"), g.Map{"1": "2", "3": nil})
+		t.Assert(j.GetMap("m"), qn.Map{"k": "v"})
+		t.Assert(j.GetMap("a"), qn.Map{"1": "2", "3": nil})
 	})
 }
 
@@ -116,7 +117,7 @@ func Test_GetArray(t *testing.T) {
 		j := qn_parser.New(data)
 		t.AssertNE(j, nil)
 		t.Assert(j.GetArray("n"), g.Array{123456789})
-		t.Assert(j.GetArray("m"), g.Array{g.Map{"k": "v"}})
+		t.Assert(j.GetArray("m"), g.Array{qn.Map{"k": "v"}})
 		t.Assert(j.GetArray("a"), g.Array{1, 2, 3})
 	})
 }
@@ -138,9 +139,9 @@ func Test_GetStrings(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		j := qn_parser.New(data)
 		t.AssertNE(j, nil)
-		t.AssertEQ(j.GetStrings("n"), g.SliceStr{"123456789"})
-		t.AssertEQ(j.GetStrings("m"), g.SliceStr{`{"k":"v"}`})
-		t.AssertEQ(j.GetStrings("a"), g.SliceStr{"1", "2", "3"})
+		t.AssertEQ(j.GetStrings("n"), qn.SliceStr{"123456789"})
+		t.AssertEQ(j.GetStrings("m"), qn.SliceStr{`{"k":"v"}`})
+		t.AssertEQ(j.GetStrings("a"), qn.SliceStr{"1", "2", "3"})
 		t.AssertEQ(j.GetStrings("i"), nil)
 	})
 }
@@ -151,7 +152,7 @@ func Test_GetInterfaces(t *testing.T) {
 		j := qn_parser.New(data)
 		t.AssertNE(j, nil)
 		t.AssertEQ(j.GetInterfaces("n"), g.Array{123456789})
-		t.AssertEQ(j.GetInterfaces("m"), g.Array{g.Map{"k": "v"}})
+		t.AssertEQ(j.GetInterfaces("m"), g.Array{qn.Map{"k": "v"}})
 		t.AssertEQ(j.GetInterfaces("a"), g.Array{1, 2, 3})
 	})
 }
@@ -181,15 +182,15 @@ func Test_Append(t *testing.T) {
 		p := qn_parser.New(nil)
 		p.Append("a", 1)
 		p.Append("a", 2)
-		t.Assert(p.Get("a"), g.Slice{1, 2})
+		t.Assert(p.Get("a"), qn.Slice{1, 2})
 	})
 	qn_test.C(t, func(t *qn_test.T) {
 		p := qn_parser.New(nil)
 		p.Append("a.b", 1)
 		p.Append("a.c", 2)
-		t.Assert(p.Get("a"), g.Map{
-			"b": g.Slice{1},
-			"c": g.Slice{2},
+		t.Assert(p.Get("a"), qn.Map{
+			"b": qn.Slice{1},
+			"c": qn.Slice{2},
 		})
 	})
 	qn_test.C(t, func(t *qn_test.T) {
@@ -282,11 +283,11 @@ func Test_Convert2(t *testing.T) {
 		t.Assert(err, nil)
 		t.Assert(str, "{\n\t\"name\": \"gf\"\n}")
 
-		p = qn_parser.New(g.Map{"name": "gf"})
+		p = qn_parser.New(qn.Map{"name": "gf"})
 		arr, err = p.ToYaml()
 		t.Assert(err, nil)
 		t.Assert(arr, "name: gf\n")
-		arr, err = qn_parser.VarToYaml(g.Map{"name": "gf"})
+		arr, err = qn_parser.VarToYaml(qn.Map{"name": "gf"})
 		t.Assert(err, nil)
 		t.Assert(arr, "name: gf\n")
 

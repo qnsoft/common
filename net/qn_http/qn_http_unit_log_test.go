@@ -18,7 +18,6 @@ import (
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/test/qn_test"
-	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_Log(t *testing.T) {
@@ -48,15 +47,15 @@ func Test_Log(t *testing.T) {
 		t.Assert(client.GetContent("/error"), "custom error")
 
 		logPath1 := qn_file.Join(logDir, qn_time.Now().Format("Y-m-d")+".log")
-		t.Assert(gstr.Contains(qn_file.GetContents(logPath1), "http server started listening on"), true)
-		t.Assert(gstr.Contains(qn_file.GetContents(logPath1), "HANDLER"), true)
+		t.Assert(qn.str.Contains(qn_file.GetContents(logPath1), "http server started listening on"), true)
+		t.Assert(qn.str.Contains(qn_file.GetContents(logPath1), "HANDLER"), true)
 
 		logPath2 := qn_file.Join(logDir, "access-"+qn_time.Now().Format("Ymd")+".log")
 		//fmt.Println(qn_file.GetContents(logPath2))
-		t.Assert(gstr.Contains(qn_file.GetContents(logPath2), " /hello "), true)
+		t.Assert(qn.str.Contains(qn_file.GetContents(logPath2), " /hello "), true)
 
 		logPath3 := qn_file.Join(logDir, "error-"+qn_time.Now().Format("Ymd")+".log")
 		//fmt.Println(qn_file.GetContents(logPath3))
-		t.Assert(gstr.Contains(qn_file.GetContents(logPath3), "custom error"), true)
+		t.Assert(qn.str.Contains(qn_file.GetContents(logPath3), "custom error"), true)
 	})
 }

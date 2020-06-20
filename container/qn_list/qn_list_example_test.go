@@ -10,15 +10,16 @@ import (
 	"container/list"
 	"fmt"
 
+	"github.com/gogf/gf/frame/qn"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 
-	"github.com/qnsoft/common/container/glist"
+	"github.com/qnsoft/common/container/qn_list"
 )
 
 func ExampleNew() {
 	n := 10
-	l := glist.New()
+	l := qn_list.New()
 	for i := 0; i < n; i++ {
 		l.PushBack(i)
 	}
@@ -42,7 +43,7 @@ func ExampleNew() {
 
 func ExampleList_RLockFunc() {
 	// concurrent-safe list.
-	l := glist.NewFrom(qn_array.NewArrayRange(1, 10, 1).Slice(), true)
+	l := qn_list.NewFrom(qn_array.NewArrayRange(1, 10, 1).Slice(), true)
 	// iterate reading from head.
 	l.RLockFunc(func(list *list.List) {
 		length := list.Len()
@@ -71,9 +72,9 @@ func ExampleList_RLockFunc() {
 
 func ExampleList_IteratorAsc() {
 	// concurrent-safe list.
-	l := glist.NewFrom(qn_array.NewArrayRange(1, 10, 1).Slice(), true)
+	l := qn_list.NewFrom(qn_array.NewArrayRange(1, 10, 1).Slice(), true)
 	// iterate reading from head using IteratorAsc.
-	l.IteratorAsc(func(e *glist.Element) bool {
+	l.IteratorAsc(func(e *qn_list.Element) bool {
 		fmt.Print(e.Value)
 		return true
 	})
@@ -84,9 +85,9 @@ func ExampleList_IteratorAsc() {
 
 func ExampleList_IteratorDesc() {
 	// concurrent-safe list.
-	l := glist.NewFrom(qn_array.NewArrayRange(1, 10, 1).Slice(), true)
+	l := qn_list.NewFrom(qn_array.NewArrayRange(1, 10, 1).Slice(), true)
 	// iterate reading from tail using IteratorDesc.
-	l.IteratorDesc(func(e *glist.Element) bool {
+	l.IteratorDesc(func(e *qn_list.Element) bool {
 		fmt.Print(e.Value)
 		return true
 	})
@@ -96,7 +97,7 @@ func ExampleList_IteratorDesc() {
 
 func ExampleList_LockFunc() {
 	// concurrent-safe list.
-	l := glist.NewFrom(qn_array.NewArrayRange(1, 10, 1).Slice(), true)
+	l := qn_list.NewFrom(qn_array.NewArrayRange(1, 10, 1).Slice(), true)
 	// iterate writing from head.
 	l.LockFunc(func(list *list.List) {
 		length := list.Len()
@@ -116,7 +117,7 @@ func ExampleList_LockFunc() {
 }
 
 func ExampleList_PopBack() {
-	l := glist.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	l := qn_list.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 	fmt.Println(l.PopBack())
 
@@ -124,7 +125,7 @@ func ExampleList_PopBack() {
 	// 9
 }
 func ExampleList_PopBacks() {
-	l := glist.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	l := qn_list.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 	fmt.Println(l.PopBacks(2))
 
@@ -133,7 +134,7 @@ func ExampleList_PopBacks() {
 }
 
 func ExampleList_PopFront() {
-	l := glist.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	l := qn_list.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 	fmt.Println(l.PopFront())
 
@@ -142,7 +143,7 @@ func ExampleList_PopFront() {
 }
 
 func ExampleList_PopFronts() {
-	l := glist.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	l := qn_list.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 	fmt.Println(l.PopFronts(2))
 
@@ -151,8 +152,8 @@ func ExampleList_PopFronts() {
 }
 
 func ExampleList_Join() {
-	var l glist.List
-	l.PushBacks(g.Slice{"a", "b", "c", "d"})
+	var l qn_list.List
+	l.PushBacks(qn.Slice{"a", "b", "c", "d"})
 
 	fmt.Println(l.Join(","))
 

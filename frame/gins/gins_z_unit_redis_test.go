@@ -39,7 +39,7 @@ func Test_Redis(t *testing.T) {
 
 		defer qn_ins.Config().Clear()
 
-		// for gfsnotify callbacks to refresh cache of config file
+		// for qn_snotify callbacks to refresh cache of config file
 		time.Sleep(500 * time.Millisecond)
 
 		//fmt.Println("qn_ins Test_Redis", Config().Get("test"))

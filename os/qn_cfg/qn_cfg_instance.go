@@ -8,7 +8,8 @@ package qn_cfg
 
 import (
 	"fmt"
-	"github.com/qnsoft/common/container/gmap"
+
+	"github.com/qnsoft/common/container/qn_map"
 )
 
 const (
@@ -18,7 +19,7 @@ const (
 
 var (
 	// Instances map containing configuration instances.
-	instances = gmap.NewStrAnyMap(true)
+	instances = qn_map.NewStrAnyMap(true)
 )
 
 // Instance returns an instance of Config with default settings.

@@ -9,7 +9,7 @@ package qn_valid_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/util/qn_valid"
 )
@@ -47,20 +47,20 @@ func Test_Required(t *testing.T) {
 func Test_RequiredIf(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		rule := "required-if:id,1,age,18"
-		t.AssertNE(qn_valid.Check("", rule, nil, g.Map{"id": 1}), nil)
-		t.Assert(qn_valid.Check("", rule, nil, g.Map{"id": 0}), nil)
-		t.AssertNE(qn_valid.Check("", rule, nil, g.Map{"age": 18}), nil)
-		t.Assert(qn_valid.Check("", rule, nil, g.Map{"age": 20}), nil)
+		t.AssertNE(qn_valid.Check("", rule, nil, qn.Map{"id": 1}), nil)
+		t.Assert(qn_valid.Check("", rule, nil, qn.Map{"id": 0}), nil)
+		t.AssertNE(qn_valid.Check("", rule, nil, qn.Map{"age": 18}), nil)
+		t.Assert(qn_valid.Check("", rule, nil, qn.Map{"age": 20}), nil)
 	})
 }
 
 func Test_RequiredUnless(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		rule := "required-unless:id,1,age,18"
-		t.Assert(qn_valid.Check("", rule, nil, g.Map{"id": 1}), nil)
-		t.AssertNE(qn_valid.Check("", rule, nil, g.Map{"id": 0}), nil)
-		t.Assert(qn_valid.Check("", rule, nil, g.Map{"age": 18}), nil)
-		t.AssertNE(qn_valid.Check("", rule, nil, g.Map{"age": 20}), nil)
+		t.Assert(qn_valid.Check("", rule, nil, qn.Map{"id": 1}), nil)
+		t.AssertNE(qn_valid.Check("", rule, nil, qn.Map{"id": 0}), nil)
+		t.Assert(qn_valid.Check("", rule, nil, qn.Map{"age": 18}), nil)
+		t.AssertNE(qn_valid.Check("", rule, nil, qn.Map{"age": 20}), nil)
 	})
 }
 
@@ -68,13 +68,13 @@ func Test_RequiredWith(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		rule := "required-with:id,name"
 		val1 := ""
-		params1 := g.Map{
+		params1 := qn.Map{
 			"age": 18,
 		}
-		params2 := g.Map{
+		params2 := qn.Map{
 			"id": 100,
 		}
-		params3 := g.Map{
+		params3 := qn.Map{
 			"id":   100,
 			"name": "john",
 		}
@@ -91,13 +91,13 @@ func Test_RequiredWithAll(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		rule := "required-with-all:id,name"
 		val1 := ""
-		params1 := g.Map{
+		params1 := qn.Map{
 			"age": 18,
 		}
-		params2 := g.Map{
+		params2 := qn.Map{
 			"id": 100,
 		}
-		params3 := g.Map{
+		params3 := qn.Map{
 			"id":   100,
 			"name": "john",
 		}
@@ -114,13 +114,13 @@ func Test_RequiredWithOut(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		rule := "required-without:id,name"
 		val1 := ""
-		params1 := g.Map{
+		params1 := qn.Map{
 			"age": 18,
 		}
-		params2 := g.Map{
+		params2 := qn.Map{
 			"id": 100,
 		}
-		params3 := g.Map{
+		params3 := qn.Map{
 			"id":   100,
 			"name": "john",
 		}
@@ -137,13 +137,13 @@ func Test_RequiredWithOutAll(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		rule := "required-without-all:id,name"
 		val1 := ""
-		params1 := g.Map{
+		params1 := qn.Map{
 			"age": 18,
 		}
-		params2 := g.Map{
+		params2 := qn.Map{
 			"id": 100,
 		}
-		params3 := g.Map{
+		params3 := qn.Map{
 			"id":   100,
 			"name": "john",
 		}
@@ -524,7 +524,7 @@ func Test_URL(t *testing.T) {
 
 func Test_Domain(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := g.MapStrBool{
+		m := qn.MapStrBool{
 			"localhost":     false,
 			"baidu.com":     true,
 			"www.baidu.com": true,
@@ -768,13 +768,13 @@ func Test_Same(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		rule := "same:id"
 		val1 := "100"
-		params1 := g.Map{
+		params1 := qn.Map{
 			"age": 18,
 		}
-		params2 := g.Map{
+		params2 := qn.Map{
 			"id": 100,
 		}
-		params3 := g.Map{
+		params3 := qn.Map{
 			"id":   100,
 			"name": "john",
 		}
@@ -791,13 +791,13 @@ func Test_Different(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		rule := "different:id"
 		val1 := "100"
-		params1 := g.Map{
+		params1 := qn.Map{
 			"age": 18,
 		}
-		params2 := g.Map{
+		params2 := qn.Map{
 			"id": 100,
 		}
-		params3 := g.Map{
+		params3 := qn.Map{
 			"id":   100,
 			"name": "john",
 		}

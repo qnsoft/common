@@ -14,7 +14,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/gfile"
 )
@@ -138,15 +137,15 @@ func UnZipContent(data []byte, dest string, path ...string) error {
 func unZipFileWithReader(reader *zip.Reader, dest string, path ...string) error {
 	prefix := ""
 	if len(path) > 0 {
-		prefix = gstr.Replace(path[0], `\`, `/`)
+		prefix = qn.str.Replace(path[0], `\`, `/`)
 	}
 	if err := os.MkdirAll(dest, 0755); err != nil {
 		return err
 	}
 	name := ""
 	for _, file := range reader.File {
-		name = gstr.Replace(file.Name, `\`, `/`)
-		name = gstr.Trim(name, "/")
+		name = qn.str.Replace(file.Name, `\`, `/`)
+		name = qn.str.Trim(name, "/")
 		if prefix != "" {
 			if name[0:len(prefix)] != prefix {
 				continue

@@ -13,45 +13,44 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/encoding/qn_html"
+	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/os/qn_time"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/os/gview"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_view"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func init() {
-	os.Setenv("GF_GVIEW_ERRORPRINT", "false")
+	os.Setenv("GF_qn_view_ERRORPRINT", "false")
 }
 
 func Test_Basic(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		str := `hello {{.name}},version:{{.version}};hello {{GetName}},version:{{GetVersion}};{{.other}}`
 		pwd := qn_file.Pwd()
-		view := gview.New()
+		view := qn_view.New()
 		view.SetDelimiters("{{", "}}")
 		view.AddPath(pwd)
 		view.SetPath(pwd)
 		view.Assign("name", "gf")
 		view.Assigns(g.Map{"version": "1.7.0"})
 		view.BindFunc("GetName", func() string { return "gf" })
-		view.BindFuncMap(gview.FuncMap{"GetVersion": func() string { return "1.7.0" }})
+		view.BindFuncMap(qn_view.FuncMap{"GetVersion": func() string { return "1.7.0" }})
 		result, err := view.ParseContent(str, g.Map{"other": "that's all"})
 		t.Assert(err != nil, false)
 		t.Assert(result, "hello gf,version:1.7.0;hello gf,version:1.7.0;that's all")
 
 		//测试api方法
 		str = `hello {{.name}}`
-		result, err = gview.ParseContent(str, g.Map{"name": "gf"})
+		result, err = qn_view.ParseContent(str, g.Map{"name": "gf"})
 		t.Assert(err != nil, false)
 		t.Assert(result, "hello gf")
 
 		//测试instance方法
-		result, err = gview.Instance().ParseContent(str, g.Map{"name": "gf"})
+		result, err = qn_view.Instance().ParseContent(str, g.Map{"name": "gf"})
 		t.Assert(err != nil, false)
 		t.Assert(result, "hello gf")
 	})
@@ -60,119 +59,119 @@ func Test_Basic(t *testing.T) {
 func Test_Func(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		str := `{{eq 1 1}};{{eq 1 2}};{{eq "A" "B"}}`
-		result, err := gview.ParseContent(str, nil)
+		result, err := qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `true;false;false`)
 
 		str = `{{ne 1 2}};{{ne 1 1}};{{ne "A" "B"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `true;false;true`)
 
 		str = `{{lt 1 2}};{{lt 1 1}};{{lt 1 0}};{{lt "A" "B"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `true;false;false;true`)
 
 		str = `{{le 1 2}};{{le 1 1}};{{le 1 0}};{{le "A" "B"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `true;true;false;true`)
 
 		str = `{{gt 1 2}};{{gt 1 1}};{{gt 1 0}};{{gt "A" "B"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `false;false;true;false`)
 
 		str = `{{ge 1 2}};{{ge 1 1}};{{ge 1 0}};{{ge "A" "B"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `false;true;true;false`)
 
 		str = `{{"<div>测试</div>"|text}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `测试`)
 
 		str = `{{"<div>测试</div>"|html}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `&lt;div&gt;测试&lt;/div&gt;`)
 
 		str = `{{"<div>测试</div>"|htmlencode}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `&lt;div&gt;测试&lt;/div&gt;`)
 
 		str = `{{"&lt;div&gt;测试&lt;/div&gt;"|htmldecode}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `<div>测试</div>`)
 
 		str = `{{"https://goframe.org"|url}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `https%3A%2F%2Fgoframe.org`)
 
 		str = `{{"https://goframe.org"|urlencode}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `https%3A%2F%2Fgoframe.org`)
 
 		str = `{{"https%3A%2F%2Fgoframe.org"|urldecode}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `https://goframe.org`)
 		str = `{{"https%3NA%2F%2Fgoframe.org"|urldecode}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
-		t.Assert(gstr.Contains(result, "invalid URL escape"), true)
+		t.Assert(qn.str.Contains(result, "invalid URL escape"), true)
 
 		str = `{{1540822968 | date "Y-m-d"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `2018-10-29`)
 		str = `{{date "Y-m-d"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 
 		str = `{{"我是中国人" | substr 2 -1}};{{"我是中国人" | substr 2  2}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `中国人;中国`)
 
 		str = `{{"我是中国人" | strlimit 2  "..."}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `我是...`)
 
 		str = `{{"I'm中国人" | replace "I'm" "我是"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `我是中国人`)
 
 		str = `{{compare "A" "B"}};{{compare "1" "2"}};{{compare 2 1}};{{compare 1 1}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `-1;-1;1;0`)
 
 		str = `{{"热爱GF热爱生活" | hidestr 20  "*"}};{{"热爱GF热爱生活" | hidestr 50  "*"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `热爱GF*爱生活;热爱****生活`)
 
 		str = `{{"热爱GF热爱生活" | highlight "GF" "red"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `热爱<span style="color:red;">GF</span>热爱生活`)
 
 		str = `{{"gf" | toupper}};{{"GF" | tolower}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err != nil, false)
 		t.Assert(result, `GF;gf`)
 
 		str = `{{concat "I" "Love" "GoFrame"}}`
-		result, err = gview.ParseContent(str, nil)
+		result, err = qn_view.ParseContent(str, nil)
 		t.Assert(err, nil)
 		t.Assert(result, `ILoveGoFrame`)
 	})
@@ -181,7 +180,7 @@ func Test_Func(t *testing.T) {
 func Test_FuncNl2Br(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		str := `{{"Go\nFrame" | nl2br}}`
-		result, err := gview.ParseContent(str, nil)
+		result, err := qn_view.ParseContent(str, nil)
 		t.Assert(err, nil)
 		t.Assert(result, `Go<br>Frame`)
 	})
@@ -191,7 +190,7 @@ func Test_FuncNl2Br(t *testing.T) {
 			s += "Go\nFrame\n中文"
 		}
 		str := `{{.content | nl2br}}`
-		result, err := gview.ParseContent(str, g.Map{
+		result, err := qn_view.ParseContent(str, g.Map{
 			"content": s,
 		})
 		t.Assert(err, nil)
@@ -218,7 +217,7 @@ func Test_FuncInclude(t *testing.T) {
 		ioutil.WriteFile(templatePath+qn_file.Separator+"main.html", []byte(main), 0644)
 		ioutil.WriteFile(templatePath+qn_file.Separator+"footer.html", []byte(footer), 0644)
 		ioutil.WriteFile(templatePath+qn_file.Separator+"layout.html", []byte(layout), 0644)
-		view := gview.New(templatePath)
+		view := qn_view.New(templatePath)
 		result, err := view.Parse("notfound.html")
 		t.Assert(err != nil, true)
 		t.Assert(result, ``)
@@ -239,38 +238,38 @@ func Test_FuncInclude(t *testing.T) {
 
 func Test_SetPath(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		view := gview.Instance("addpath")
+		view := qn_view.Instance("addpath")
 		err := view.AddPath("tmp")
 		t.AssertNE(err, nil)
 
-		err = view.AddPath("gview.go")
+		err = view.AddPath("qn_view.go")
 		t.AssertNE(err, nil)
 
-		os.Setenv("GF_GVIEW_PATH", "tmp")
-		view = gview.Instance("setpath")
+		os.Setenv("GF_qn_view_PATH", "tmp")
+		view = qn_view.Instance("setpath")
 		err = view.SetPath("tmp")
 		t.AssertNE(err, nil)
 
-		err = view.SetPath("gview.go")
+		err = view.SetPath("qn_view.go")
 		t.AssertNE(err, nil)
 
-		view = gview.New(qn_file.Pwd())
+		view = qn_view.New(qn_file.Pwd())
 		err = view.SetPath("tmp")
 		t.AssertNE(err, nil)
 
-		err = view.SetPath("gview.go")
+		err = view.SetPath("qn_view.go")
 		t.AssertNE(err, nil)
 
-		os.Setenv("GF_GVIEW_PATH", "template")
+		os.Setenv("GF_qn_view_PATH", "template")
 		qn_file.Mkdir(qn_file.Pwd() + qn_file.Separator + "template")
-		view = gview.New()
+		view = qn_view.New()
 	})
 }
 
 func Test_ParseContent(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		str := `{{.name}}`
-		view := gview.New()
+		view := qn_view.New()
 		result, err := view.ParseContent(str, g.Map{"name": func() {}})
 		t.Assert(err != nil, true)
 		t.Assert(result, ``)
@@ -291,7 +290,7 @@ func Test_HotReload(t *testing.T) {
 		err := qn_file.PutContents(filePath, "test:{{.var}}")
 		t.Assert(err, nil)
 
-		view := gview.New(dirPath)
+		view := qn_view.New(dirPath)
 
 		time.Sleep(100 * time.Millisecond)
 		result, err := view.Parse("test.html", g.Map{
@@ -315,7 +314,7 @@ func Test_HotReload(t *testing.T) {
 
 func Test_XSS(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New()
+		v := qn_view.New()
 		s := "<br>"
 		r, err := v.ParseContent("{{.v}}", g.Map{
 			"v": s,
@@ -324,7 +323,7 @@ func Test_XSS(t *testing.T) {
 		t.Assert(r, s)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New()
+		v := qn_view.New()
 		v.SetAutoEncode(true)
 		s := "<br>"
 		r, err := v.ParseContent("{{.v}}", g.Map{
@@ -335,7 +334,7 @@ func Test_XSS(t *testing.T) {
 	})
 	// Tag "if".
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New()
+		v := qn_view.New()
 		v.SetAutoEncode(true)
 		s := "<br>"
 		r, err := v.ParseContent("{{if eq 1 1}}{{.v}}{{end}}", g.Map{

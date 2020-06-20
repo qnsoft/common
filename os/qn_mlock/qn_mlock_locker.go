@@ -7,7 +7,7 @@
 package qn_mlock
 
 import (
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/os/gmutex"
 )
 
@@ -15,14 +15,14 @@ import (
 // Note that there's no cache expire mechanism for mutex in locker.
 // You need remove certain mutex manually when you do not want use it any more.
 type Locker struct {
-	m *gmap.StrAnyMap
+	m *qn_map.StrAnyMap
 }
 
 // New creates and returns a new memory locker.
 // A memory locker can lock/unlock with dynamic string key.
 func New() *Locker {
 	return &Locker{
-		m: gmap.NewStrAnyMap(true),
+		m: qn_map.NewStrAnyMap(true),
 	}
 }
 

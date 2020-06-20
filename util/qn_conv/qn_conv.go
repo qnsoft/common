@@ -25,7 +25,7 @@ import (
 
 var (
 	// Empty strings.
-	emptyStringMap = map[string]struct{}{
+	emptyStrinqn_map = map[string]struct{}{
 		"":      {},
 		"0":     {},
 		"no":    {},
@@ -419,12 +419,12 @@ func Bool(i interface{}) bool {
 	case bool:
 		return value
 	case []byte:
-		if _, ok := emptyStringMap[strings.ToLower(string(value))]; ok {
+		if _, ok := emptyStrinqn_map[strings.ToLower(string(value))]; ok {
 			return false
 		}
 		return true
 	case string:
-		if _, ok := emptyStringMap[strings.ToLower(value)]; ok {
+		if _, ok := emptyStrinqn_map[strings.ToLower(value)]; ok {
 			return false
 		}
 		return true
@@ -443,7 +443,7 @@ func Bool(i interface{}) bool {
 			return true
 		default:
 			s := strings.ToLower(String(i))
-			if _, ok := emptyStringMap[s]; ok {
+			if _, ok := emptyStrinqn_map[s]; ok {
 				return false
 			}
 			return true

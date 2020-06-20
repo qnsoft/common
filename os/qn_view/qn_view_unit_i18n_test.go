@@ -9,10 +9,10 @@ package qn_view_test
 import (
 	"testing"
 
+	"github.com/gogf/gf/frame/g"
 	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/os/qn_file"
 
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/test/qn_test"
 )
 

@@ -4,13 +4,12 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-// Package gset provides kinds of concurrent-safe/unsafe sets.
+// Package qn_set provides kinds of concurrent-safe/unsafe sets.
 package qn_set
 
 import (
 	"bytes"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/internal/rwmutex"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
@@ -233,10 +232,10 @@ func (set *Set) String() string {
 	buffer.WriteByte('[')
 	for k, _ := range set.data {
 		s = qn_conv.String(k)
-		if gstr.IsNumeric(s) {
+		if qn.str.IsNumeric(s) {
 			buffer.WriteString(s)
 		} else {
-			buffer.WriteString(`"` + gstr.QuoteMeta(s, `"\`) + `"`)
+			buffer.WriteString(`"` + qn.str.QuoteMeta(s, `"\`) + `"`)
 		}
 		if i != l-1 {
 			buffer.WriteByte(',')

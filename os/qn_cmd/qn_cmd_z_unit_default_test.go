@@ -12,7 +12,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/os/gcmd"
 
 	"github.com/qnsoft/common/test/qn_test"
@@ -35,14 +35,14 @@ func Test_Default(t *testing.T) {
 
 func Test_BuildOptions(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		s := gcmd.BuildOptions(g.MapStrStr{
+		s := gcmd.BuildOptions(qn.MapStrStr{
 			"n": "john",
 		})
 		t.Assert(s, "-n=john")
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
-		s := gcmd.BuildOptions(g.MapStrStr{
+		s := gcmd.BuildOptions(qn.MapStrStr{
 			"n": "john",
 		}, "-test")
 		t.Assert(s, "-testn=john")

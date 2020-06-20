@@ -14,7 +14,7 @@ import (
 
 	"github.com/qnsoft/common/internal/empty"
 
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
@@ -31,7 +31,7 @@ func New(value interface{}, safe ...bool) Var {
 	v := VarImp{}
 	if len(safe) > 0 && !safe[0] {
 		v.safe = true
-		v.value = gtype.NewInterface(value)
+		v.value = qn_type.NewInterface(value)
 	} else {
 		v.value = value
 	}
@@ -46,7 +46,7 @@ func Create(value interface{}, safe ...bool) VarImp {
 	v := VarImp{}
 	if len(safe) > 0 && !safe[0] {
 		v.safe = true
-		v.value = gtype.NewInterface(value)
+		v.value = qn_type.NewInterface(value)
 	} else {
 		v.value = value
 	}
@@ -61,7 +61,7 @@ func (v *VarImp) Clone() Var {
 // Set sets <value> to <v>, and returns the old value.
 func (v *VarImp) Set(value interface{}) (old interface{}) {
 	if v.safe {
-		if t, ok := v.value.(*gtype.Interface); ok {
+		if t, ok := v.value.(*qn_type.Interface); ok {
 			old = t.Set(value)
 			return
 		}
@@ -77,7 +77,7 @@ func (v *VarImp) Val() interface{} {
 		return nil
 	}
 	if v.safe {
-		if t, ok := v.value.(*gtype.Interface); ok {
+		if t, ok := v.value.(*qn_type.Interface); ok {
 			return t.Val()
 		}
 	}

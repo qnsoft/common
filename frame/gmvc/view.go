@@ -14,7 +14,7 @@ import (
 	"github.com/qnsoft/common/util/gmode"
 
 	"github.com/qnsoft/common/net/qn_http"
-	"github.com/qnsoft/common/os/gview"
+	"github.com/qnsoft/common/os/qn_view"
 )
 
 // View is the view object for controller.
@@ -22,8 +22,8 @@ import (
 // when the controller request closes.
 type View struct {
 	mu       sync.RWMutex
-	view     *gview.View
-	data     gview.Params
+	view     *qn_view.View
+	data     qn_view.Params
 	response *qn_http.Response
 }
 
@@ -31,13 +31,13 @@ type View struct {
 func NewView(w *qn_http.Response) *View {
 	return &View{
 		view:     qn_ins.View(),
-		data:     make(gview.Params),
+		data:     make(qn_view.Params),
 		response: w,
 	}
 }
 
 // Assigns assigns template variables to this view object.
-func (view *View) Assigns(data gview.Params) {
+func (view *View) Assigns(data qn_view.Params) {
 	view.mu.Lock()
 	for k, v := range data {
 		view.data[k] = v
@@ -71,14 +71,14 @@ func (view *View) ParseContent(content string) (string, error) {
 }
 
 // LockFunc locks writing for template variables by callback function <f>.
-func (view *View) LockFunc(f func(data gview.Params)) {
+func (view *View) LockFunc(f func(data qn_view.Params)) {
 	view.mu.Lock()
 	defer view.mu.Unlock()
 	f(view.data)
 }
 
 // LockFunc locks reading for template variables by callback function <f>.
-func (view *View) RLockFunc(f func(data gview.Params)) {
+func (view *View) RLockFunc(f func(data qn_view.Params)) {
 	view.mu.RLock()
 	defer view.mu.RUnlock()
 	f(view.data)
@@ -94,7 +94,7 @@ func (view *View) BindFunc(name string, function interface{}) {
 // BindFuncMap registers customized template functions by map to current view object.
 // The key of map is the template function name
 // and the value of map is the address of customized function.
-func (view *View) BindFuncMap(funcMap gview.FuncMap) {
+func (view *View) BindFuncMap(funcMap qn_view.FuncMap) {
 	view.view.BindFuncMap(funcMap)
 }
 

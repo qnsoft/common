@@ -27,11 +27,11 @@ func Test_WebSocket(t *testing.T) {
 			r.Exit()
 		}
 		for {
-			msgType, msg, err := ws.ReadMessage()
+			msqn_type, msg, err := ws.ReadMessage()
 			if err != nil {
 				return
 			}
-			if err = ws.WriteMessage(msgType, msg); err != nil {
+			if err = ws.WriteMessage(msqn_type, msg); err != nil {
 				return
 			}
 		}

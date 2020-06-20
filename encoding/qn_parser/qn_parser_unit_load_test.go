@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/encoding/qn_parser"
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/os/gfile"
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -23,9 +23,9 @@ func Test_Load_JSON(t *testing.T) {
 		j, err := qn_parser.LoadContent(data)
 		t.Assert(err, nil)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m.k"), "v")
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
 		t.Assert(j.Get("a.1"), 2)
 	})
 	// JSON
@@ -36,9 +36,9 @@ func Test_Load_JSON(t *testing.T) {
 		j, err := qn_parser.Load(path)
 		t.Assert(err, nil)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m.k"), "v")
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
 		t.Assert(j.Get("a.1"), 2)
 	})
 }
@@ -50,9 +50,9 @@ func Test_Load_XML(t *testing.T) {
 		j, err := qn_parser.LoadContent(data)
 		t.Assert(err, nil)
 		t.Assert(j.Get("doc.n"), "123456789")
-		t.Assert(j.Get("doc.m"), g.Map{"k": "v"})
+		t.Assert(j.Get("doc.m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("doc.m.k"), "v")
-		t.Assert(j.Get("doc.a"), g.Slice{"1", "2", "3"})
+		t.Assert(j.Get("doc.a"), qn.Slice{"1", "2", "3"})
 		t.Assert(j.Get("doc.a.1"), 2)
 	})
 	// XML
@@ -63,9 +63,9 @@ func Test_Load_XML(t *testing.T) {
 		j, err := qn_parser.Load(path)
 		t.Assert(err, nil)
 		t.Assert(j.Get("doc.n"), "123456789")
-		t.Assert(j.Get("doc.m"), g.Map{"k": "v"})
+		t.Assert(j.Get("doc.m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("doc.m.k"), "v")
-		t.Assert(j.Get("doc.a"), g.Slice{"1", "2", "3"})
+		t.Assert(j.Get("doc.a"), qn.Slice{"1", "2", "3"})
 		t.Assert(j.Get("doc.a.1"), 2)
 	})
 
@@ -103,9 +103,9 @@ m:
 		j, err := qn_parser.LoadContent(data)
 		t.Assert(err, nil)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m.k"), "v")
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
 		t.Assert(j.Get("a.1"), 2)
 	})
 	// YAML
@@ -116,9 +116,9 @@ m:
 		j, err := qn_parser.Load(path)
 		t.Assert(err, nil)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m.k"), "v")
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
 		t.Assert(j.Get("a.1"), 2)
 	})
 }
@@ -145,9 +145,9 @@ n = "123456789"
 		j, err := qn_parser.LoadContent(data)
 		t.Assert(err, nil)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m.k"), "v")
-		t.Assert(j.Get("a"), g.Slice{"1", "2", "3"})
+		t.Assert(j.Get("a"), qn.Slice{"1", "2", "3"})
 		t.Assert(j.Get("a.1"), 2)
 	})
 	// TOML
@@ -158,9 +158,9 @@ n = "123456789"
 		j, err := qn_parser.Load(path)
 		t.Assert(err, nil)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m.k"), "v")
-		t.Assert(j.Get("a"), g.Slice{"1", "2", "3"})
+		t.Assert(j.Get("a"), qn.Slice{"1", "2", "3"})
 		t.Assert(j.Get("a.1"), 2)
 	})
 }

@@ -11,7 +11,7 @@ package qn_uid_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/container/gset"
+	"github.com/qnsoft/common/container/qn_set"
 	"github.com/qnsoft/common/util/guid"
 
 	"github.com/qnsoft/common/test/qn_test"
@@ -19,7 +19,7 @@ import (
 
 func Test_S(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		set := gset.NewStrSet()
+		set := qn_set.NewStrSet()
 		for i := 0; i < 1000000; i++ {
 			s := guid.S()
 			t.Assert(set.AddIfNotExist(s), true)

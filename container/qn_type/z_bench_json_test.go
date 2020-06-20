@@ -9,25 +9,26 @@
 package qn_type_test
 
 import (
-	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/internal/json"
 	"testing"
+
+	"github.com/qnsoft/common/container/qn_type"
+	"github.com/qnsoft/common/internal/json"
 )
 
 var (
-	vBool      = gtype.NewBool()
-	vByte      = gtype.NewByte()
-	vBytes     = gtype.NewBytes()
-	vFloat32   = gtype.NewFloat32()
-	vFloat64   = gtype.NewFloat64()
-	vInt       = gtype.NewInt()
-	vInt32     = gtype.NewInt32()
-	vInt64     = gtype.NewInt64()
-	vInterface = gtype.NewInterface()
-	vString    = gtype.NewString()
-	vUint      = gtype.NewUint()
-	vUint32    = gtype.NewUint32()
-	vUint64    = gtype.NewUint64()
+	vBool      = qn_type.NewBool()
+	vByte      = qn_type.NewByte()
+	vBytes     = qn_type.NewBytes()
+	vFloat32   = qn_type.NewFloat32()
+	vFloat64   = qn_type.NewFloat64()
+	vInt       = qn_type.NewInt()
+	vInt32     = qn_type.NewInt32()
+	vInt64     = qn_type.NewInt64()
+	vInterface = qn_type.NewInterface()
+	vString    = qn_type.NewString()
+	vUint      = qn_type.NewUint()
+	vUint32    = qn_type.NewUint32()
+	vUint64    = qn_type.NewUint64()
 )
 
 func Benchmark_Bool_Json(b *testing.B) {

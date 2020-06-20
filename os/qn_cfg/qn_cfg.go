@@ -12,17 +12,15 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/os/qn_res"
 
-	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/qn_array"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/encoding/qn_json"
 	"github.com/qnsoft/common/internal/cmdenv"
-	"github.com/qnsoft/common/os/gfsnotify"
-	"github.com/qnsoft/common/os/gspath"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_log"
+	"github.com/qnsoft/common/os/qn_snotify"
 )
 
 const (
@@ -34,7 +32,7 @@ const (
 type Config struct {
 	name  string             // Default configuration file name.
 	paths *qn_array.StrArray // Searching path array.
-	jsons *gmap.StrAnyMap    // The pared JSON objects for configuration files.
+	jsons *qn_map.StrAnyMap  // The pared JSON objects for configuration files.
 	vc    bool               // Whether do violence check in value index searching. It affects the performance when set true(false in default).
 }
 
@@ -52,7 +50,7 @@ func New(file ...string) *Config {
 	c := &Config{
 		name:  name,
 		paths: qn_array.NewStrArray(true),
-		jsons: gmap.NewStrAnyMap(true),
+		jsons: qn_map.NewStrAnyMap(true),
 	}
 	// Customized dir path from env/cmd.
 	if envPath := cmdenv.Get("gf.qn_cfg.path").String(); envPath != "" {
@@ -92,7 +90,7 @@ func (c *Config) filePath(file ...string) (path string) {
 			c.paths.RLockFunc(func(array []string) {
 				index := 1
 				for _, v := range array {
-					v = gstr.TrimRight(v, `\/`)
+					v = qn.str.TrimRight(v, `\/`)
 					buffer.WriteString(fmt.Sprintf("\n%d. %s", index, v))
 					index++
 					buffer.WriteString(fmt.Sprintf("\n%d. %s", index, v+qn_file.Separator+"config"))
@@ -125,7 +123,7 @@ func (c *Config) SetPath(path string) error {
 			// Relative path.
 			c.paths.RLockFunc(func(array []string) {
 				for _, v := range array {
-					if path, _ := gspath.Search(v, path); path != "" {
+					if path, _ := qn.spath.Search(v, path); path != "" {
 						realPath = path
 						break
 					}
@@ -202,7 +200,7 @@ func (c *Config) AddPath(path string) error {
 			// Relative path.
 			c.paths.RLockFunc(func(array []string) {
 				for _, v := range array {
-					if path, _ := gspath.Search(v, path); path != "" {
+					if path, _ := qn.spath.Search(v, path); path != "" {
 						realPath = path
 						break
 					}
@@ -278,11 +276,11 @@ func (c *Config) FilePath(file ...string) (path string) {
 	// Searching the file system.
 	c.paths.RLockFunc(func(array []string) {
 		for _, prefix := range array {
-			prefix = gstr.TrimRight(prefix, `\/`)
-			if path, _ = gspath.Search(prefix, name); path != "" {
+			prefix = qn.str.TrimRight(prefix, `\/`)
+			if path, _ = qn.spath.Search(prefix, name); path != "" {
 				return
 			}
-			if path, _ = gspath.Search(prefix+qn_file.Separator+"config", name); path != "" {
+			if path, _ = qn.spath.Search(prefix+qn_file.Separator+"config", name); path != "" {
 				return
 			}
 		}
@@ -346,7 +344,7 @@ func (c *Config) getJson(file ...string) *qn_json.Json {
 			// Add monitor for this configuration file,
 			// any changes of this file will refresh its cache in Config object.
 			if filePath != "" && !qn_res.Contains(filePath) {
-				_, err = gfsnotify.Add(filePath, func(event *gfsnotify.Event) {
+				_, err = qn_snotify.Add(filePath, func(event *qn_snotify.Event) {
 					c.jsons.Remove(name)
 				})
 				if err != nil && errorPrint() {

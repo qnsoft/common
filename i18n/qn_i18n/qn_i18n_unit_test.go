@@ -9,11 +9,10 @@ package qn_i18n_test
 import (
 	"testing"
 
+	"github.com/gogf/gf/frame/g"
 	"github.com/qnsoft/common/os/qn_res"
 	"github.com/qnsoft/common/os/qn_time"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
-
-	"github.com/qnsoft/common/frame/g"
 
 	"github.com/qnsoft/common/i18n/qn_i18n"
 

@@ -9,7 +9,6 @@ package qn_spath_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/os/gspath"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -20,17 +19,17 @@ func TestSPath_Api(t *testing.T) {
 		root := pwd
 		qn_file.Create(qn_file.Join(root, "gf_tmp", "gf.txt"))
 		defer qn_file.Remove(qn_file.Join(root, "gf_tmp"))
-		fp, isDir := gspath.Search(root, "gf_tmp")
+		fp, isDir := qn.spath.Search(root, "gf_tmp")
 		t.Assert(fp, qn_file.Join(root, "gf_tmp"))
 		t.Assert(isDir, true)
-		fp, isDir = gspath.Search(root, "gf_tmp", "gf.txt")
+		fp, isDir = qn.spath.Search(root, "gf_tmp", "gf.txt")
 		t.Assert(fp, qn_file.Join(root, "gf_tmp", "gf.txt"))
 		t.Assert(isDir, false)
 
-		fp, isDir = gspath.SearchWithCache(root, "gf_tmp")
+		fp, isDir = qn.spath.SearchWithCache(root, "gf_tmp")
 		t.Assert(fp, qn_file.Join(root, "gf_tmp"))
 		t.Assert(isDir, true)
-		fp, isDir = gspath.SearchWithCache(root, "gf_tmp", "gf.txt")
+		fp, isDir = qn.spath.SearchWithCache(root, "gf_tmp", "gf.txt")
 		t.Assert(fp, qn_file.Join(root, "gf_tmp", "gf.txt"))
 		t.Assert(isDir, false)
 	})
@@ -43,7 +42,7 @@ func TestSPath_Basic(t *testing.T) {
 
 		qn_file.Create(qn_file.Join(root, "gf_tmp", "gf.txt"))
 		defer qn_file.Remove(qn_file.Join(root, "gf_tmp"))
-		gsp := gspath.New(root, false)
+		gsp := qn.spath.New(root, false)
 		realPath, err := gsp.Add(qn_file.Join(root, "gf_tmp"))
 		t.Assert(err, nil)
 		t.Assert(realPath, qn_file.Join(root, "gf_tmp"))
@@ -78,7 +77,7 @@ func TestSPath_Basic(t *testing.T) {
 		t.Assert(fp, root)
 		t.Assert(isDir, true)
 
-		gsp = gspath.New(root, true)
+		gsp = qn.spath.New(root, true)
 		realPath, err = gsp.Add(qn_file.Join(root, "gf_tmp"))
 		t.Assert(err, nil)
 		t.Assert(realPath, qn_file.Join(root, "gf_tmp"))

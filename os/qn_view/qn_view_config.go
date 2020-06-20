@@ -12,7 +12,6 @@ import (
 
 	"github.com/qnsoft/common/i18n/qn_i18n"
 	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/os/gspath"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_res"
@@ -111,7 +110,7 @@ func (view *View) SetPath(path string) error {
 			// Relative path.
 			view.paths.RLockFunc(func(array []string) {
 				for _, v := range array {
-					if path, _ := gspath.Search(v, path); path != "" {
+					if path, _ := qn.spath.Search(v, path); path != "" {
 						realPath = path
 						break
 					}
@@ -124,7 +123,7 @@ func (view *View) SetPath(path string) error {
 	}
 	// Path not exist.
 	if realPath == "" {
-		err := errors.New(fmt.Sprintf(`[gview] SetPath failed: path "%s" does not exist`, path))
+		err := errors.New(fmt.Sprintf(`[qn_view] SetPath failed: path "%s" does not exist`, path))
 		if errorPrint() {
 			qn_log.Error(err)
 		}
@@ -132,7 +131,7 @@ func (view *View) SetPath(path string) error {
 	}
 	// Should be a directory.
 	if !isDir {
-		err := errors.New(fmt.Sprintf(`[gview] SetPath failed: path "%s" should be directory type`, path))
+		err := errors.New(fmt.Sprintf(`[qn_view] SetPath failed: path "%s" should be directory type`, path))
 		if errorPrint() {
 			qn_log.Error(err)
 		}
@@ -145,7 +144,7 @@ func (view *View) SetPath(path string) error {
 	view.paths.Clear()
 	view.paths.Append(realPath)
 	view.fileCacheMap.Clear()
-	//qn_log.Debug("[gview] SetPath:", realPath)
+	//qn_log.Debug("[qn_view] SetPath:", realPath)
 	return nil
 }
 
@@ -165,7 +164,7 @@ func (view *View) AddPath(path string) error {
 			// Relative path.
 			view.paths.RLockFunc(func(array []string) {
 				for _, v := range array {
-					if path, _ := gspath.Search(v, path); path != "" {
+					if path, _ := qn.spath.Search(v, path); path != "" {
 						realPath = path
 						break
 					}
@@ -178,7 +177,7 @@ func (view *View) AddPath(path string) error {
 	}
 	// Path not exist.
 	if realPath == "" {
-		err := errors.New(fmt.Sprintf(`[gview] AddPath failed: path "%s" does not exist`, path))
+		err := errors.New(fmt.Sprintf(`[qn_view] AddPath failed: path "%s" does not exist`, path))
 		if errorPrint() {
 			qn_log.Error(err)
 		}
@@ -186,7 +185,7 @@ func (view *View) AddPath(path string) error {
 	}
 	// realPath should be type of folder.
 	if !isDir {
-		err := errors.New(fmt.Sprintf(`[gview] AddPath failed: path "%s" should be directory type`, path))
+		err := errors.New(fmt.Sprintf(`[qn_view] AddPath failed: path "%s" should be directory type`, path))
 		if errorPrint() {
 			qn_log.Error(err)
 		}

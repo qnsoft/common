@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/util/qn_conv"
 
@@ -132,7 +132,7 @@ func TestStrArray_PushAndPop(t *testing.T) {
 
 func TestStrArray_PopLeft(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewStrArrayFrom(g.SliceStr{"1", "2", "3"})
+		array := qn_array.NewStrArrayFrom(qn.SliceStr{"1", "2", "3"})
 		v, ok := array.PopLeft()
 		t.Assert(v, 1)
 		t.Assert(ok, true)
@@ -150,7 +150,7 @@ func TestStrArray_PopLeft(t *testing.T) {
 
 func TestStrArray_PopRight(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewStrArrayFrom(g.SliceStr{"1", "2", "3"})
+		array := qn_array.NewStrArrayFrom(qn.SliceStr{"1", "2", "3"})
 
 		v, ok := array.PopRight()
 		t.Assert(v, 3)
@@ -171,20 +171,20 @@ func TestStrArray_PopRight(t *testing.T) {
 
 func TestStrArray_PopLefts(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewStrArrayFrom(g.SliceStr{"1", "2", "3"})
-		t.Assert(array.PopLefts(2), g.Slice{"1", "2"})
+		array := qn_array.NewStrArrayFrom(qn.SliceStr{"1", "2", "3"})
+		t.Assert(array.PopLefts(2), qn.Slice{"1", "2"})
 		t.Assert(array.Len(), 1)
-		t.Assert(array.PopLefts(2), g.Slice{"3"})
+		t.Assert(array.PopLefts(2), qn.Slice{"3"})
 		t.Assert(array.Len(), 0)
 	})
 }
 
 func TestStrArray_PopRights(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewStrArrayFrom(g.SliceStr{"1", "2", "3"})
-		t.Assert(array.PopRights(2), g.Slice{"2", "3"})
+		array := qn_array.NewStrArrayFrom(qn.SliceStr{"1", "2", "3"})
+		t.Assert(array.PopRights(2), qn.Slice{"2", "3"})
 		t.Assert(array.Len(), 1)
-		t.Assert(array.PopLefts(2), g.Slice{"1"})
+		t.Assert(array.PopLefts(2), qn.Slice{"1"})
 		t.Assert(array.Len(), 0)
 	})
 }
@@ -647,7 +647,7 @@ func TestStrArray_Json(t *testing.T) {
 			Name   string
 			Scores *qn_array.StrArray
 		}
-		data := g.Map{
+		data := qn.Map{
 			"Name":   "john",
 			"Scores": []string{"A+", "A", "A"},
 		}
@@ -666,7 +666,7 @@ func TestStrArray_Json(t *testing.T) {
 			Name   string
 			Scores qn_array.StrArray
 		}
-		data := g.Map{
+		data := qn.Map{
 			"Name":   "john",
 			"Scores": []string{"A+", "A", "A"},
 		}
@@ -682,7 +682,7 @@ func TestStrArray_Json(t *testing.T) {
 }
 
 func TestStrArray_Iterator(t *testing.T) {
-	slice := g.SliceStr{"a", "b", "d", "c"}
+	slice := qn.SliceStr{"a", "b", "d", "c"}
 	array := qn_array.NewStrArrayFrom(slice)
 	qn_test.C(t, func(t *qn_test.T) {
 		array.Iterator(func(k int, v string) bool {
@@ -729,7 +729,7 @@ func TestStrArray_Iterator(t *testing.T) {
 }
 
 func TestStrArray_RemoveValue(t *testing.T) {
-	slice := g.SliceStr{"a", "b", "d", "c"}
+	slice := qn.SliceStr{"a", "b", "d", "c"}
 	array := qn_array.NewStrArrayFrom(slice)
 	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(array.RemoveValue("e"), false)
@@ -748,43 +748,43 @@ func TestStrArray_UnmarshalValue(t *testing.T) {
 	// JSON
 	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := qn_conv.Struct(g.Map{
+		err := qn_conv.Struct(qn.Map{
 			"name":  "john",
 			"array": []byte(`["1","2","3"]`),
 		}, &v)
 		t.Assert(err, nil)
 		t.Assert(v.Name, "john")
-		t.Assert(v.Array.Slice(), g.SliceStr{"1", "2", "3"})
+		t.Assert(v.Array.Slice(), qn.SliceStr{"1", "2", "3"})
 	})
 	// Map
 	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := qn_conv.Struct(g.Map{
+		err := qn_conv.Struct(qn.Map{
 			"name":  "john",
-			"array": g.SliceStr{"1", "2", "3"},
+			"array": qn.SliceStr{"1", "2", "3"},
 		}, &v)
 		t.Assert(err, nil)
 		t.Assert(v.Name, "john")
-		t.Assert(v.Array.Slice(), g.SliceStr{"1", "2", "3"})
+		t.Assert(v.Array.Slice(), qn.SliceStr{"1", "2", "3"})
 	})
 }
 
 func TestStrArray_FilterEmpty(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewStrArrayFrom(g.SliceStr{"", "1", "2", "0"})
-		t.Assert(array.FilterEmpty(), g.SliceStr{"1", "2", "0"})
+		array := qn_array.NewStrArrayFrom(qn.SliceStr{"", "1", "2", "0"})
+		t.Assert(array.FilterEmpty(), qn.SliceStr{"1", "2", "0"})
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewStrArrayFrom(g.SliceStr{"1", "2"})
-		t.Assert(array.FilterEmpty(), g.SliceStr{"1", "2"})
+		array := qn_array.NewStrArrayFrom(qn.SliceStr{"1", "2"})
+		t.Assert(array.FilterEmpty(), qn.SliceStr{"1", "2"})
 	})
 }
 
 func TestStrArray_Walk(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewStrArrayFrom(g.SliceStr{"1", "2"})
+		array := qn_array.NewStrArrayFrom(qn.SliceStr{"1", "2"})
 		t.Assert(array.Walk(func(value string) string {
 			return "key-" + value
-		}), g.Slice{"key-1", "key-2"})
+		}), qn.Slice{"key-1", "key-2"})
 	})
 }

@@ -14,8 +14,8 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/os/genv"
+	"github.com/qnsoft/common/text/qn.str"
 	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/os/qn_file"
@@ -118,12 +118,12 @@ func parseCommand(cmd string) (args []string) {
 		return []string{cmd}
 	}
 	// Just for "cmd.exe" in windows.
-	var argStr string
+	var arqn.str string
 	var firstChar, prevChar, lastChar1, lastChar2 byte
-	array := gstr.SplitAndTrim(cmd, " ")
+	array := qn.str.SplitAndTrim(cmd, " ")
 	for _, v := range array {
-		if len(argStr) > 0 {
-			argStr += " "
+		if len(arqn.str) > 0 {
+			arqn.str += " "
 		}
 		firstChar = v[0]
 		lastChar1 = v[len(v)-1]
@@ -133,16 +133,16 @@ func parseCommand(cmd string) (args []string) {
 		}
 		if prevChar == 0 && (firstChar == '"' || firstChar == '\'') {
 			// It should remove the first quote char.
-			argStr += v[1:]
+			arqn.str += v[1:]
 			prevChar = firstChar
 		} else if prevChar != 0 && lastChar2 != '\\' && lastChar1 == prevChar {
 			// It should remove the last quote char.
-			argStr += v[:len(v)-1]
-			args = append(args, argStr)
-			argStr = ""
+			arqn.str += v[:len(v)-1]
+			args = append(args, arqn.str)
+			arqn.str = ""
 			prevChar = 0
-		} else if len(argStr) > 0 {
-			argStr += v
+		} else if len(arqn.str) > 0 {
+			arqn.str += v
 		} else {
 			args = append(args, v)
 		}
@@ -199,16 +199,16 @@ func SearchBinaryPath(file string) string {
 	switch runtime.GOOS {
 	case "windows":
 		envPath := genv.Get("PATH", genv.Get("Path"))
-		if gstr.Contains(envPath, ";") {
-			array = gstr.SplitAndTrim(envPath, ";")
-		} else if gstr.Contains(envPath, ":") {
-			array = gstr.SplitAndTrim(envPath, ":")
+		if qn.str.Contains(envPath, ";") {
+			array = qn.str.SplitAndTrim(envPath, ";")
+		} else if qn.str.Contains(envPath, ":") {
+			array = qn.str.SplitAndTrim(envPath, ":")
 		}
 		if qn_file.Ext(file) != ".exe" {
 			file += ".exe"
 		}
 	default:
-		array = gstr.SplitAndTrim(genv.Get("PATH"), ":")
+		array = qn.str.SplitAndTrim(genv.Get("PATH"), ":")
 	}
 	if len(array) > 0 {
 		path := ""

@@ -14,7 +14,6 @@ import (
 	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/test/qn_test"
-	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_Concurrent(t *testing.T) {
@@ -39,6 +38,6 @@ func Test_Concurrent(t *testing.T) {
 		close(ch)
 		wg.Wait()
 		content := qn_file.GetContents(qn_file.Join(p, f))
-		t.Assert(gstr.Count(content, s), c)
+		t.Assert(qn.str.Count(content, s), c)
 	})
 }

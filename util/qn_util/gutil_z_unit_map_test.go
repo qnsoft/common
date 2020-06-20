@@ -9,15 +9,14 @@ package qn_util_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/frame/g"
-
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/util/qn_util"
 )
 
 func Test_MapCopy(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m1 := g.Map{
+		m1 := qn.Map{
 			"k1": "v1",
 		}
 		m2 := qn_util.MapCopy(m1)
@@ -32,7 +31,7 @@ func Test_MapCopy(t *testing.T) {
 
 func Test_MapContains(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m1 := g.Map{
+		m1 := qn.Map{
 			"k1": "v1",
 		}
 		t.Assert(qn_util.MapContains(m1, "k1"), true)
@@ -43,13 +42,13 @@ func Test_MapContains(t *testing.T) {
 
 func Test_MapMerge(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m1 := g.Map{
+		m1 := qn.Map{
 			"k1": "v1",
 		}
-		m2 := g.Map{
+		m2 := qn.Map{
 			"k2": "v2",
 		}
-		m3 := g.Map{
+		m3 := qn.Map{
 			"k3": "v3",
 		}
 		qn_util.MapMerge(m1, m2, m3, nil)
@@ -63,13 +62,13 @@ func Test_MapMerge(t *testing.T) {
 
 func Test_MapMergeCopy(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m1 := g.Map{
+		m1 := qn.Map{
 			"k1": "v1",
 		}
-		m2 := g.Map{
+		m2 := qn.Map{
 			"k2": "v2",
 		}
-		m3 := g.Map{
+		m3 := qn.Map{
 			"k3": "v3",
 		}
 		m := qn_util.MapMergeCopy(m1, m2, m3, nil)
@@ -85,7 +84,7 @@ func Test_MapMergeCopy(t *testing.T) {
 
 func Test_MapPossibleItemByKey(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := g.Map{
+		m := qn.Map{
 			"name":     "guo",
 			"NickName": "john",
 		}
@@ -105,7 +104,7 @@ func Test_MapPossibleItemByKey(t *testing.T) {
 
 func Test_MapContainsPossibleKey(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := g.Map{
+		m := qn.Map{
 			"name":     "guo",
 			"NickName": "john",
 		}

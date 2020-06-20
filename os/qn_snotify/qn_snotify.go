@@ -12,24 +12,24 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/qnsoft/common/container/gset"
+	"github.com/qnsoft/common/container/qn_set"
 	"github.com/qnsoft/common/internal/intlog"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/qnsoft/common/container/glist"
-	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/gqueue"
-	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/os/gcache"
+	"github.com/qnsoft/common/container/qn_list"
+	"github.com/qnsoft/common/container/qn_map"
+	"github.com/qnsoft/common/container/qn_type"
+	"github.com/qnsoft/common/os/qn_cache"
 )
 
 // Watcher is the monitor for file changes.
 type Watcher struct {
 	watcher   *fsnotify.Watcher // Underlying fsnotify object.
 	events    *gqueue.Queue     // Used for internal event management.
-	cache     *gcache.Cache     // Used for repeated event filter.
-	nameSet   *gset.StrSet      // Used for AddOnce feature.
-	callbacks *gmap.StrAnyMap   // Path(file/folder) to callbacks mapping.
+	cache     *qn_cache.Cache   // Used for repeated event filter.
+	nameSet   *qn_set.StrSet    // Used for AddOnce feature.
+	callbacks *qn_map.StrAnyMap // Path(file/folder) to callbacks mapping.
 	closeChan chan struct{}     // Used for watcher closing notification.
 }
 
@@ -39,7 +39,7 @@ type Callback struct {
 	Func      func(event *Event) // Callback function.
 	Path      string             // Bound file path (absolute).
 	name      string             // Registered name for AddOnce.
-	elem      *glist.Element     // Element in the callbacks of watcher.
+	elem      *qn_list.Element   // Element in the callbacks of watcher.
 	recursive bool               // Is bound to path recursively or not.
 }
 
@@ -68,9 +68,9 @@ const (
 )
 
 var (
-	defaultWatcher      *Watcher                  // Default watcher.
-	callbackIdMap       = gmap.NewIntAnyMap(true) // Id to callback mapping.
-	callbackIdGenerator = gtype.NewInt()          // Atomic id generator for callback.
+	defaultWatcher      *Watcher                    // Default watcher.
+	callbackIdMap       = qn_map.NewIntAnyMap(true) // Id to callback mapping.
+	callbackIdGenerator = qn_type.NewInt()          // Atomic id generator for callback.
 )
 
 func init() {
@@ -87,11 +87,11 @@ func init() {
 // Eg: fs.inotify.max_user_instances system variable in linux systems.
 func New() (*Watcher, error) {
 	w := &Watcher{
-		cache:     gcache.New(),
+		cache:     qn_cache.New(),
 		events:    gqueue.New(),
-		nameSet:   gset.NewStrSet(true),
+		nameSet:   qn_set.NewStrSet(true),
 		closeChan: make(chan struct{}),
-		callbacks: gmap.NewStrAnyMap(true),
+		callbacks: qn_map.NewStrAnyMap(true),
 	}
 	if watcher, err := fsnotify.NewWatcher(); err == nil {
 		w.watcher = watcher

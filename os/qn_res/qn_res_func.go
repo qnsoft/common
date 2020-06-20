@@ -12,7 +12,6 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/encoding/qn_base64"
 	"github.com/qnsoft/common/encoding/qn_compress"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
@@ -80,7 +79,7 @@ func PackToGoFile(srcPath, goFilePath, pkgName string, keyPrefix ...string) erro
 	}
 	return qn_file.PutContents(
 		goFilePath,
-		fmt.Sprintf(gstr.TrimLeft(gPACKAGE_TEMPLATE), pkgName, qn_base64.EncodeToString(data)),
+		fmt.Sprintf(qn.str.TrimLeft(gPACKAGE_TEMPLATE), pkgName, qn_base64.EncodeToString(data)),
 	)
 }
 

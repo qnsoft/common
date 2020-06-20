@@ -11,8 +11,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/qnsoft/common/container/glist"
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_list"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/os/qn_timer"
 )
@@ -20,10 +20,10 @@ import (
 // Pool is an Object-Reusable Pool.
 type Pool struct {
 	// Available/idle items list.
-	list *glist.List
+	list *qn_list.List
 
 	// Whether the pool is closed.
-	closed *gtype.Bool
+	closed *qn_type.Bool
 
 	// Time To Live for pool items.
 	TTL time.Duration
@@ -59,8 +59,8 @@ type ExpireFunc func(interface{})
 // ttl > 0 : timeout expired;
 func New(ttl time.Duration, newFunc NewFunc, expireFunc ...ExpireFunc) *Pool {
 	r := &Pool{
-		list:    glist.New(true),
-		closed:  gtype.NewBool(),
+		list:    qn_list.New(true),
+		closed:  qn_type.NewBool(),
 		TTL:     ttl,
 		NewFunc: newFunc,
 	}

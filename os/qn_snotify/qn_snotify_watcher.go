@@ -9,9 +9,10 @@ package qn_snotify
 import (
 	"errors"
 	"fmt"
+
 	"github.com/qnsoft/common/internal/intlog"
 
-	"github.com/qnsoft/common/container/glist"
+	"github.com/qnsoft/common/container/qn_list"
 )
 
 // Add monitors <path> with callback function <callbackFunc> to the watcher.
@@ -81,12 +82,12 @@ func (w *Watcher) addWithCallbackFunc(name, path string, callbackFunc func(event
 	}
 	// Register the callback to watcher.
 	w.callbacks.LockFunc(func(m map[string]interface{}) {
-		list := (*glist.List)(nil)
+		list := (*qn_list.List)(nil)
 		if v, ok := m[path]; !ok {
-			list = glist.New(true)
+			list = qn_list.New(true)
 			m[path] = list
 		} else {
-			list = v.(*glist.List)
+			list = v.(*qn_list.List)
 		}
 		callback.elem = list.PushBack(callback)
 	})
@@ -116,7 +117,7 @@ func (w *Watcher) Close() {
 func (w *Watcher) Remove(path string) error {
 	// Firstly remove the callbacks of the path.
 	if r := w.callbacks.Remove(path); r != nil {
-		list := r.(*glist.List)
+		list := r.(*qn_list.List)
 		for {
 			if r := list.PopFront(); r != nil {
 				callbackIdMap.Remove(r.(*Callback).Id)
@@ -148,7 +149,7 @@ func (w *Watcher) checkPathCanBeRemoved(path string) bool {
 	// Secondly check its parent whether has callbacks.
 	dirPath := fileDir(path)
 	if v := w.callbacks.Get(dirPath); v != nil {
-		for _, c := range v.(*glist.List).FrontAll() {
+		for _, c := range v.(*qn_list.List).FrontAll() {
 			if c.(*Callback).recursive {
 				return false
 			}
@@ -163,7 +164,7 @@ func (w *Watcher) checkPathCanBeRemoved(path string) bool {
 			break
 		}
 		if v := w.callbacks.Get(parentDirPath); v != nil {
-			for _, c := range v.(*glist.List).FrontAll() {
+			for _, c := range v.(*qn_list.List).FrontAll() {
 				if c.(*Callback).recursive {
 					return false
 				}
@@ -183,7 +184,7 @@ func (w *Watcher) RemoveCallback(callbackId int) {
 	}
 	if callback != nil {
 		if r := w.callbacks.Get(callback.Path); r != nil {
-			r.(*glist.List).Remove(callback.elem)
+			r.(*qn_list.List).Remove(callback.elem)
 		}
 		callbackIdMap.Remove(callbackId)
 		if callback.name != "" {

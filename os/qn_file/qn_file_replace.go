@@ -6,11 +6,9 @@
 
 package qn_file
 
-import "github.com/gogf/gf/text/gstr"
-
 // ReplaceFile replaces content for file <path>.
 func ReplaceFile(search, replace, path string) error {
-	return PutContents(path, gstr.Replace(GetContents(path), search, replace))
+	return PutContents(path, qn.str.Replace(GetContents(path), search, replace))
 }
 
 // ReplaceFileFunc replaces content for file <path> with callback function <f>.

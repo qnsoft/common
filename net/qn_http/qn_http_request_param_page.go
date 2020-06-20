@@ -9,7 +9,6 @@ package qn_http
 import (
 	"fmt"
 
-	"github.com/qnsoft/common/text/gstr"
 	"github.com/qnsoft/common/text/qn_regex"
 	"github.com/qnsoft/common/util/gpage"
 )
@@ -55,7 +54,7 @@ func (r *Request) GetPage(totalSize, pageSize int) *gpage.Page {
 		values.Set(gpage.PAGE_NAME, gpage.PAGE_PLACE_HOLDER)
 		url.RawQuery = values.Encode()
 		// Replace the encoded "{.page}" to original "{.page}".
-		url.RawQuery = gstr.Replace(url.RawQuery, "%7B.page%7D", "{.page}")
+		url.RawQuery = qn.str.Replace(url.RawQuery, "%7B.page%7D", "{.page}")
 	}
 	if url.RawQuery != "" {
 		urlTemplate += "?" + url.RawQuery

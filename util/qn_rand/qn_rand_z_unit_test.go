@@ -11,7 +11,6 @@ package qn_rand_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/util/qn_rand"
 )
@@ -126,16 +125,16 @@ func Test_RandStr(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		for i := 0; i < 10; i++ {
 			s := qn_rand.Str(str, 100000)
-			t.Assert(gstr.Contains(s, "我"), true)
-			t.Assert(gstr.Contains(s, "爱"), true)
-			t.Assert(gstr.Contains(s, "G"), true)
-			t.Assert(gstr.Contains(s, "o"), true)
-			t.Assert(gstr.Contains(s, "F"), true)
-			t.Assert(gstr.Contains(s, "r"), true)
-			t.Assert(gstr.Contains(s, "a"), true)
-			t.Assert(gstr.Contains(s, "m"), true)
-			t.Assert(gstr.Contains(s, "e"), true)
-			t.Assert(gstr.Contains(s, "w"), false)
+			t.Assert(qn.str.Contains(s, "我"), true)
+			t.Assert(qn.str.Contains(s, "爱"), true)
+			t.Assert(qn.str.Contains(s, "G"), true)
+			t.Assert(qn.str.Contains(s, "o"), true)
+			t.Assert(qn.str.Contains(s, "F"), true)
+			t.Assert(qn.str.Contains(s, "r"), true)
+			t.Assert(qn.str.Contains(s, "a"), true)
+			t.Assert(qn.str.Contains(s, "m"), true)
+			t.Assert(qn.str.Contains(s, "e"), true)
+			t.Assert(qn.str.Contains(s, "w"), false)
 		}
 	})
 }

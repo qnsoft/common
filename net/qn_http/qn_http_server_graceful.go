@@ -16,7 +16,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/os/gproc"
 )
 
@@ -36,7 +35,7 @@ type gracefulServer struct {
 // The optional parameter <fd> specifies the file descriptor which is passed from parent server.
 func (s *Server) newGracefulServer(address string, fd ...int) *gracefulServer {
 	// Change port to address like: 80 -> :80
-	if gstr.IsNumeric(address) {
+	if qn.str.IsNumeric(address) {
 		address = ":" + address
 	}
 	gs := &gracefulServer{

@@ -10,19 +10,19 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/test/qn_test"
-	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/text/qn.str"
 )
 
 func Test_Rotate_Size(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		l := qn_log.New()
 		p := qn_file.TempDir(qn_time.TimestampNanoStr())
-		err := l.SetConfigWithMap(g.Map{
+		err := l.SetConfigWithMap(qn.Map{
 			"Path":                 p,
 			"File":                 "access.log",
 			"StdoutPrint":          false,
@@ -47,7 +47,7 @@ func Test_Rotate_Size(t *testing.T) {
 		t.Assert(len(files), 2)
 
 		content := qn_file.GetContents(qn_file.Join(p, "access.log"))
-		t.Assert(gstr.Count(content, s), 1)
+		t.Assert(qn.str.Count(content, s), 1)
 
 		time.Sleep(time.Second * 5)
 		files, err = qn_file.ScanDirFile(p, "*.gz")
@@ -60,7 +60,7 @@ func Test_Rotate_Expire(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		l := qn_log.New()
 		p := qn_file.TempDir(qn_time.TimestampNanoStr())
-		err := l.SetConfigWithMap(g.Map{
+		err := l.SetConfigWithMap(qn.Map{
 			"Path":                 p,
 			"File":                 "access.log",
 			"StdoutPrint":          false,
@@ -82,7 +82,7 @@ func Test_Rotate_Expire(t *testing.T) {
 		t.Assert(err, nil)
 		t.Assert(len(files), 0)
 
-		t.Assert(gstr.Count(qn_file.GetContents(qn_file.Join(p, "access.log")), s), 10)
+		t.Assert(qn.str.Count(qn_file.GetContents(qn_file.Join(p, "access.log")), s), 10)
 
 		time.Sleep(time.Second * 3)
 
@@ -90,7 +90,7 @@ func Test_Rotate_Expire(t *testing.T) {
 		t.Assert(err, nil)
 		t.Assert(len(files), 1)
 
-		t.Assert(gstr.Count(qn_file.GetContents(qn_file.Join(p, "access.log")), s), 0)
+		t.Assert(qn.str.Count(qn_file.GetContents(qn_file.Join(p, "access.log")), s), 0)
 
 		time.Sleep(time.Second * 5)
 		files, err = qn_file.ScanDirFile(p, "*.gz")

@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/util/qn_conv"
 )
@@ -19,9 +20,9 @@ func Test_Struct_Slice(t *testing.T) {
 		type User struct {
 			Scores []int
 		}
-		user := new(User)
+		user := nqn.Slser)
 		array := g.Slice{1, 2, 3}
-		err := qn_conv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(qn.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
@@ -29,9 +30,9 @@ func Test_Struct_Slice(t *testing.T) {
 		type User struct {
 			Scores []int32
 		}
-		user := new(User)
+		user := nqn.Slser)
 		array := g.Slice{1, 2, 3}
-		err := qn_conv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(qn.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
@@ -39,9 +40,9 @@ func Test_Struct_Slice(t *testing.T) {
 		type User struct {
 			Scores []int64
 		}
-		user := new(User)
+		user := nqn.Slser)
 		array := g.Slice{1, 2, 3}
-		err := qn_conv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(qn.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
@@ -49,9 +50,9 @@ func Test_Struct_Slice(t *testing.T) {
 		type User struct {
 			Scores []uint
 		}
-		user := new(User)
+		user := nqn.Slser)
 		array := g.Slice{1, 2, 3}
-		err := qn_conv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(qn.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
@@ -59,9 +60,9 @@ func Test_Struct_Slice(t *testing.T) {
 		type User struct {
 			Scores []uint32
 		}
-		user := new(User)
+		user := nqn.Slser)
 		array := g.Slice{1, 2, 3}
-		err := qn_conv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(qn.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
@@ -69,9 +70,9 @@ func Test_Struct_Slice(t *testing.T) {
 		type User struct {
 			Scores []uint64
 		}
-		user := new(User)
+		user := nqn.Slser)
 		array := g.Slice{1, 2, 3}
-		err := qn_conv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(qn.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
@@ -79,9 +80,9 @@ func Test_Struct_Slice(t *testing.T) {
 		type User struct {
 			Scores []float32
 		}
-		user := new(User)
+		user := nqn.Slser)
 		array := g.Slice{1, 2, 3}
-		err := qn_conv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(qn.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
@@ -89,9 +90,9 @@ func Test_Struct_Slice(t *testing.T) {
 		type User struct {
 			Scores []float64
 		}
-		user := new(User)
+		user := nqn.Slser)
 		array := g.Slice{1, 2, 3}
-		err := qn_conv.Struct(g.Map{"scores": array}, user)
+		err := qn_conv.Struct(qn.Map{"scores": array}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Scores, array)
 	})
@@ -103,13 +104,13 @@ func Test_Struct_SliceWithTag(t *testing.T) {
 		NickName string `json:"name"`
 	}
 	qn_test.C(t, func(t *qn_test.T) {
-		var users []User
+		var users qn.Sler
 		params := g.Slice{
-			g.Map{
+			qn.Map{
 				"id":   1,
 				"name": "name1",
 			},
-			g.Map{
+			qn.Map{
 				"id":   2,
 				"name": "name2",
 			},
@@ -123,13 +124,13 @@ func Test_Struct_SliceWithTag(t *testing.T) {
 		t.Assert(users[1].NickName, "name2")
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		var users []*User
+		var users qn.Slser
 		params := g.Slice{
-			g.Map{
+			qn.Map{
 				"id":   1,
 				"name": "name1",
 			},
-			g.Map{
+			qn.Map{
 				"id":   2,
 				"name": "name2",
 			},

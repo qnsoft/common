@@ -13,7 +13,7 @@ import (
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -21,7 +21,7 @@ func Test_Byte(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		var wg sync.WaitGroup
 		addTimes := 127
-		i := gtype.NewByte(byte(0))
+		i := qn_type.NewByte(byte(0))
 		iClone := i.Clone()
 		t.AssertEQ(iClone.Set(byte(1)), byte(0))
 		t.AssertEQ(iClone.Val(), byte(1))
@@ -36,14 +36,14 @@ func Test_Byte(t *testing.T) {
 		t.AssertEQ(byte(addTimes), i.Val())
 
 		//空参测试
-		i1 := gtype.NewByte()
+		i1 := qn_type.NewByte()
 		t.AssertEQ(i1.Val(), byte(0))
 	})
 }
 
 func Test_Byte_JSON(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		i := gtype.NewByte(49)
+		i := qn_type.NewByte(49)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
 		t.Assert(err1, nil)
@@ -53,7 +53,7 @@ func Test_Byte_JSON(t *testing.T) {
 	// Unmarshal
 	qn_test.C(t, func(t *qn_test.T) {
 		var err error
-		i := gtype.NewByte()
+		i := qn_type.NewByte()
 		err = json.Unmarshal([]byte("49"), &i)
 		t.Assert(err, nil)
 		t.Assert(i.Val(), "49")
@@ -63,7 +63,7 @@ func Test_Byte_JSON(t *testing.T) {
 func Test_Byte_UnmarshalValue(t *testing.T) {
 	type V struct {
 		Name string
-		Var  *gtype.Byte
+		Var  *qn_type.Byte
 	}
 	qn_test.C(t, func(t *qn_test.T) {
 		var v *V

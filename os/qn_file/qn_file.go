@@ -14,8 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gogf/gf/text/gstr"
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
@@ -33,7 +32,7 @@ var (
 
 	// The absolute file path for main package.
 	// It can be only checked and set once.
-	mainPkgPath = gtype.NewString()
+	mainPkgPath = qn_type.NewString()
 
 	// selfPath is the current running binary path.
 	// As it is most commonly used, it is so defined as an internal package variable.
@@ -120,7 +119,7 @@ func Join(paths ...string) string {
 		if s != "" {
 			s += Separator
 		}
-		s += gstr.TrimRight(path, Separator)
+		s += qn.str.TrimRight(path, Separator)
 	}
 	return s
 }

@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/qnsoft/common/text/gstr"
 	"github.com/qnsoft/common/text/qn_regex"
 )
 
@@ -93,7 +92,7 @@ func (c *Client) SetContentType(contentType string) *Client {
 
 // SetHeaderRaw sets custom HTTP header using raw string.
 func (c *Client) SetHeaderRaw(headers string) *Client {
-	for _, line := range gstr.SplitAndTrim(headers, "\n") {
+	for _, line := range qn.str.SplitAndTrim(headers, "\n") {
 		array, _ := qn_regex.MatchString(`^([\w\-]+):\s*(.+)`, line)
 		if len(array) >= 3 {
 			c.header[array[1]] = array[2]

@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/os/gproc"
-	"github.com/qnsoft/common/os/gview"
 	"github.com/qnsoft/common/os/qn_timer"
+	"github.com/qnsoft/common/os/qn_view"
 )
 
 // utilAdmin is the controller for administration.
@@ -25,7 +25,7 @@ func (p *utilAdmin) Index(r *Request) {
 		"pid": gproc.Pid(),
 		"uri": strings.TrimRight(r.URL.Path, "/"),
 	}
-	buffer, _ := gview.ParseContent(`
+	buffer, _ := qn_view.ParseContent(`
             <html>
             <head>
                 <title>GoFrame Web Server Admin</title>

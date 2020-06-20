@@ -4,7 +4,7 @@
 // If a copy of the MIT was not distributed with gm file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-// Package gmap provides most commonly used map container which also support concurrent-safe/unsafe switch feature.
+// Package qn_map provides most commonly used map container which also support concurrent-safe/unsafe switch feature.
 package qn_map
 
 type (

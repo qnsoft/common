@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/util/qn_conv"
 )
 
@@ -35,7 +34,7 @@ var (
 )
 
 func init() {
-	array := gstr.SplitAndTrim(defaultAllowHeaders, ",")
+	array := qn.str.SplitAndTrim(defaultAllowHeaders, ",")
 	for _, header := range array {
 		defaultAllowHeadersMap[header] = struct{}{}
 	}
@@ -53,7 +52,7 @@ func (r *Response) DefaultCORSOptions() CORSOptions {
 	}
 	// Allow all client's custom headers in default.
 	if headers := r.Request.Header.Get("Access-Control-Request-Headers"); headers != "" {
-		array := gstr.SplitAndTrim(headers, ",")
+		array := qn.str.SplitAndTrim(headers, ",")
 		for _, header := range array {
 			if _, ok := defaultAllowHeadersMap[header]; !ok {
 				options.AllowHeaders += header + ","
@@ -64,7 +63,7 @@ func (r *Response) DefaultCORSOptions() CORSOptions {
 	if origin := r.Request.Header.Get("Origin"); origin != "" {
 		options.AllowOrigin = origin
 	} else if referer := r.Request.Referer(); referer != "" {
-		if p := gstr.PosR(referer, "/", 6); p != -1 {
+		if p := qn.str.PosR(referer, "/", 6); p != -1 {
 			options.AllowOrigin = referer[:p]
 		} else {
 			options.AllowOrigin = referer
@@ -97,7 +96,7 @@ func (r *Response) CORS(options CORSOptions) {
 	// No continue service handling if it's OPTIONS request.
 	// Note that there's special checks in previous router searching,
 	// so if it goes to here it means there's already serving handler exist.
-	if gstr.Equal(r.Request.Method, "OPTIONS") {
+	if qn.str.Equal(r.Request.Method, "OPTIONS") {
 		if r.Status == 0 {
 			r.Status = http.StatusOK
 		}
@@ -120,7 +119,7 @@ func (r *Response) CORSAllowedOrigin(options CORSOptions) bool {
 		return false
 	}
 	for _, v := range options.AllowDomain {
-		if gstr.IsSubDomain(parsed.Host, v) {
+		if qn.str.IsSubDomain(parsed.Host, v) {
 			return true
 		}
 	}

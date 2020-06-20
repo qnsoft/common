@@ -12,7 +12,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/internal/rwmutex"
 	"github.com/qnsoft/common/util/gconv"
 )
@@ -40,7 +39,7 @@ func (j *Json) setValue(pattern string, value interface{}, removed bool) error {
 	value = j.convertValue(value)
 	// Initialization checks.
 	if *j.p == nil {
-		if gstr.IsNumeric(array[0]) {
+		if qn.str.IsNumeric(array[0]) {
 			*j.p = make([]interface{}, 0)
 		} else {
 			*j.p = make(map[string]interface{})
@@ -67,7 +66,7 @@ func (j *Json) setValue(pattern string, value interface{}, removed bool) error {
 						goto done
 					}
 					// Creating new node.
-					if gstr.IsNumeric(array[i+1]) {
+					if qn.str.IsNumeric(array[i+1]) {
 						// Creating array node.
 						n, _ := strconv.Atoi(array[i+1])
 						var v interface{} = make([]interface{}, n+1)
@@ -86,7 +85,7 @@ func (j *Json) setValue(pattern string, value interface{}, removed bool) error {
 			}
 
 		case []interface{}:
-			if !gstr.IsNumeric(array[i]) {
+			if !qn.str.IsNumeric(array[i]) {
 				if i == length-1 {
 					*pointer = map[string]interface{}{array[i]: value}
 				} else {
@@ -131,7 +130,7 @@ func (j *Json) setValue(pattern string, value interface{}, removed bool) error {
 					}
 				}
 			} else {
-				if gstr.IsNumeric(array[i+1]) {
+				if qn.str.IsNumeric(array[i+1]) {
 					n, _ := strconv.Atoi(array[i+1])
 					if len((*pointer).([]interface{})) > valn {
 						(*pointer).([]interface{})[valn] = make([]interface{}, n+1)
@@ -164,7 +163,7 @@ func (j *Json) setValue(pattern string, value interface{}, removed bool) error {
 			if removed && value == nil {
 				goto done
 			}
-			if gstr.IsNumeric(array[i]) {
+			if qn.str.IsNumeric(array[i]) {
 				n, _ := strconv.Atoi(array[i])
 				s := make([]interface{}, n+1)
 				if i == length-1 {
@@ -336,7 +335,7 @@ func (j *Json) checkPatternByPointer(key string, pointer *interface{}) *interfac
 			return &v
 		}
 	case []interface{}:
-		if gstr.IsNumeric(key) {
+		if qn.str.IsNumeric(key) {
 			n, err := strconv.Atoi(key)
 			if err == nil && len((*pointer).([]interface{})) > n {
 				return &(*pointer).([]interface{})[n]

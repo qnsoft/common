@@ -7,13 +7,13 @@
 package qn_test
 
 import (
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/net/qn_http"
 )
 
 func ExampleServer() {
 	// A hello world example.
-	s := g.Server()
+	s := qn.Server()
 	s.BindHandler("/", func(r *qn_http.Request) {
 		r.Response.Write("hello world")
 	})

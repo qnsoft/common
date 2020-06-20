@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/container/gpool"
-	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/os/gfsnotify"
+	"github.com/qnsoft/common/container/qn_type"
+	"github.com/qnsoft/common/os/qn_snotify"
 )
 
 // New creates and returns a file pointer pool with given file path, flag and opening permission.
@@ -28,9 +28,9 @@ func New(path string, flag int, perm os.FileMode, ttl ...time.Duration) *Pool {
 		fpTTL = ttl[0]
 	}
 	p := &Pool{
-		id:   gtype.NewInt(),
+		id:   qn_type.NewInt(),
 		ttl:  fpTTL,
-		init: gtype.NewBool(),
+		init: qn_type.NewBool(),
 	}
 	p.pool = newFilePool(p, path, flag, perm, fpTTL)
 	return p
@@ -98,7 +98,7 @@ func (p *Pool) File() (*File, error) {
 		}
 		// It firstly checks using !p.init.Val() for performance purpose.
 		if !p.init.Val() && p.init.Cas(false, true) {
-			_, _ = gfsnotify.Add(f.path, func(event *gfsnotify.Event) {
+			_, _ = qn_snotify.Add(f.path, func(event *qn_snotify.Event) {
 				// If teh file is removed or renamed, recreates the pool by increasing the pool id.
 				if event.IsRemove() || event.IsRename() {
 					// It drops the old pool.

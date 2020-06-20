@@ -9,7 +9,6 @@ package qn_ins
 import (
 	"fmt"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/internal/intlog"
 	qn_util "github.com/qnsoft/common/util/qn_util"
 
@@ -117,8 +116,8 @@ func parseDBConfigNode(value interface{}) *gdb.ConfigNode {
 	if node.LinkInfo != "" && node.Type == "" {
 		match, _ := qn_regex.MatchString(`([a-z]+):(.+)`, node.LinkInfo)
 		if len(match) == 3 {
-			node.Type = gstr.Trim(match[1])
-			node.LinkInfo = gstr.Trim(match[2])
+			node.Type = qn.str.Trim(match[1])
+			node.LinkInfo = qn.str.Trim(match[2])
 		}
 	}
 	return node

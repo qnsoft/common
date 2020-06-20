@@ -11,7 +11,6 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/debug/qn_debug"
 
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
@@ -151,7 +150,7 @@ func (g *RouterGroup) Bind(items []GroupItem) *RouterGroup {
 		if len(item) < 3 {
 			g.server.Logger().Fatalf("invalid router item: %s", item)
 		}
-		bindType := gstr.ToUpper(qn_conv.String(item[0]))
+		bindType := qn.str.ToUpper(qn_conv.String(item[0]))
 		switch bindType {
 		case "REST":
 			group.preBindToLocalArray("REST", qn_conv.String(item[0])+":"+qn_conv.String(item[1]), item[2])
@@ -293,7 +292,7 @@ func (g *RouterGroup) doBindRoutersToServer(item *preBindItem) *RouterGroup {
 		}
 	}
 	// Filter repeated char '/'.
-	pattern = gstr.Replace(pattern, "//", "/")
+	pattern = qn.str.Replace(pattern, "//", "/")
 	// Convert params to string array.
 	extras := qn_conv.Strings(params)
 	// Check whether it's a hook handler.
@@ -311,7 +310,7 @@ func (g *RouterGroup) doBindRoutersToServer(item *preBindItem) *RouterGroup {
 		} else if g.isController(object) {
 			if len(extras) > 0 {
 				if g.server != nil {
-					if gstr.Contains(extras[0], ",") {
+					if qn.str.Contains(extras[0], ",") {
 						g.server.doBindController(
 							pattern, object.(Controller), extras[0], g.middleware, source,
 						)
@@ -321,7 +320,7 @@ func (g *RouterGroup) doBindRoutersToServer(item *preBindItem) *RouterGroup {
 						)
 					}
 				} else {
-					if gstr.Contains(extras[0], ",") {
+					if qn.str.Contains(extras[0], ",") {
 						g.domain.doBindController(
 							pattern, object.(Controller), extras[0], g.middleware, source,
 						)
@@ -345,7 +344,7 @@ func (g *RouterGroup) doBindRoutersToServer(item *preBindItem) *RouterGroup {
 		} else {
 			if len(extras) > 0 {
 				if g.server != nil {
-					if gstr.Contains(extras[0], ",") {
+					if qn.str.Contains(extras[0], ",") {
 						g.server.doBindObject(
 							pattern, object, extras[0], g.middleware, source,
 						)
@@ -355,7 +354,7 @@ func (g *RouterGroup) doBindRoutersToServer(item *preBindItem) *RouterGroup {
 						)
 					}
 				} else {
-					if gstr.Contains(extras[0], ",") {
+					if qn.str.Contains(extras[0], ",") {
 						g.domain.doBindObject(
 							pattern, object, extras[0], g.middleware, source,
 						)

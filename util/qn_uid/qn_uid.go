@@ -17,7 +17,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/encoding/qn_hash"
 	"github.com/qnsoft/common/net/qn_ipv4"
 	"github.com/qnsoft/common/util/qn_conv"
@@ -25,7 +25,7 @@ import (
 )
 
 var (
-	sequence      gtype.Uint32                             // Sequence for unique purpose of current process.
+	sequence      qn_type.Uint32                           // Sequence for unique purpose of current process.
 	sequenceMax   = uint32(46655)                          // Sequence max("zzz").
 	randomStrBase = "0123456789abcdefghijklmnopqrstuvwxyz" // Random chars string(36 bytes).
 	macAddrStr    = "0000000"                              // MAC addresses hash result in 7 bytes.

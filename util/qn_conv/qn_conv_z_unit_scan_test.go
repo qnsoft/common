@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/util/qn_conv"
 )
@@ -24,7 +25,7 @@ func Test_Scan(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		var (
 			user   = new(User)
-			params = g.Map{
+			params = qn.Map{
 				"uid":   1,
 				"name":  "john",
 				"PASS1": "123",
@@ -42,15 +43,15 @@ func Test_Scan(t *testing.T) {
 	})
 	qn_test.C(t, func(t *qn_test.T) {
 		var (
-			users  []User
+			users  []qn.Sl
 			params = g.Slice{
-				g.Map{
+				qn.Map{
 					"uid":   1,
 					"name":  "john1",
 					"PASS1": "111",
 					"PASS2": "222",
 				},
-				g.Map{
+				qn.Map{
 					"uid":   2,
 					"name":  "john2",
 					"PASS1": "333",
@@ -59,7 +60,7 @@ func Test_Scan(t *testing.T) {
 			}
 		)
 		err := qn_conv.Scan(params, &users)
-		t.Assert(err, nil)
+		t.Assert(err, niqn.Sl
 		t.Assert(users, g.Slice{
 			&User{
 				Uid:   1,
@@ -107,7 +108,7 @@ func Test_ScanStr(t *testing.T) {
 ]`
 		)
 		err := qn_conv.Scan(params, &users)
-		t.Assert(err, nil)
+		t.Assert(err, niqn.Sl
 		t.Assert(users, g.Slice{
 			&User{
 				Uid:   1,

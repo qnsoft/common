@@ -15,16 +15,16 @@ import (
 
 	"github.com/qnsoft/common/debug/qn_debug"
 	"github.com/qnsoft/common/encoding/qn_html"
-	"github.com/qnsoft/common/os/gview"
-
 	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/os/qn_view"
+
 	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Template_Basic(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New(qn_debug.TestDataPath("template", "basic"))
+		v := qn_view.New(qn_debug.TestDataPath("template", "basic"))
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.SetView(v)
@@ -49,7 +49,7 @@ func Test_Template_Basic(t *testing.T) {
 
 func Test_Template_Encode(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New(qn_debug.TestDataPath("template", "basic"))
+		v := qn_view.New(qn_debug.TestDataPath("template", "basic"))
 		v.SetAutoEncode(true)
 		p, _ := ports.PopRand()
 		s := g.Server(p)
@@ -75,7 +75,7 @@ func Test_Template_Encode(t *testing.T) {
 
 func Test_Template_Layout1(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New(qn_debug.TestDataPath("template", "layout1"))
+		v := qn_view.New(qn_debug.TestDataPath("template", "layout1"))
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.SetView(v)
@@ -105,7 +105,7 @@ func Test_Template_Layout1(t *testing.T) {
 
 func Test_Template_Layout2(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New(qn_debug.TestDataPath("template", "layout2"))
+		v := qn_view.New(qn_debug.TestDataPath("template", "layout2"))
 		p, _ := ports.PopRand()
 		s := g.Server(p)
 		s.SetView(v)
@@ -142,7 +142,7 @@ func Test_Template_Layout2(t *testing.T) {
 
 func Test_Template_XSS(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		v := gview.New()
+		v := qn_view.New()
 		v.SetAutoEncode(true)
 		c := "<br>"
 		p, _ := ports.PopRand()

@@ -11,14 +11,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/os/qn_time"
 
 	"github.com/qnsoft/common/crypto/gaes"
 
-	"github.com/qnsoft/common/container/gset"
+	"github.com/qnsoft/common/container/qn_set"
 	"github.com/qnsoft/common/encoding/qn_binary"
 
 	"github.com/qnsoft/common/os/qn_file"
@@ -30,7 +30,7 @@ type StorageFile struct {
 	path          string
 	cryptoKey     []byte
 	cryptoEnabled bool
-	updatingIdSet *gset.StrSet
+	updatingIdSet *qn_set.StrSet
 }
 
 var (
@@ -61,7 +61,7 @@ func NewStorageFile(path ...string) *StorageFile {
 		path:          storagePath,
 		cryptoKey:     DefaultStorageFileCryptoKey,
 		cryptoEnabled: DefaultStorageFileCryptoEnabled,
-		updatingIdSet: gset.NewStrSet(true),
+		updatingIdSet: qn_set.NewStrSet(true),
 	}
 	// Batch updates the TTL for session ids timely.
 	qn_timer.AddSingleton(DefaultStorageFileLoopInterval, func() {
@@ -141,14 +141,14 @@ func (s *StorageFile) RemoveAll(id string) error {
 	return ErrorDisabled
 }
 
-// GetSession returns the session data as *gmap.StrAnyMap for given session id from storage.
+// GetSession returns the session data as *qn_map.StrAnyMap for given session id from storage.
 //
 // The parameter <ttl> specifies the TTL for this session, and it returns nil if the TTL is exceeded.
 // The parameter <data> is the current old session data stored in memory,
 // and for some storage it might be nil if memory storage is disabled.
 //
 // This function is called ever when session starts.
-func (s *StorageFile) GetSession(id string, ttl time.Duration, data *gmap.StrAnyMap) (*gmap.StrAnyMap, error) {
+func (s *StorageFile) GetSession(id string, ttl time.Duration, data *qn_map.StrAnyMap) (*qn_map.StrAnyMap, error) {
 	if data != nil {
 		return data, nil
 	}
@@ -176,7 +176,7 @@ func (s *StorageFile) GetSession(id string, ttl time.Duration, data *gmap.StrAny
 		if m == nil {
 			return nil, nil
 		}
-		return gmap.NewStrAnyMapFrom(m, true), nil
+		return qn_map.NewStrAnyMapFrom(m, true), nil
 	}
 	return nil, nil
 }
@@ -184,7 +184,7 @@ func (s *StorageFile) GetSession(id string, ttl time.Duration, data *gmap.StrAny
 // SetSession updates the data map for specified session id.
 // This function is called ever after session, which is changed dirty, is closed.
 // This copy all session data map from memory to storage.
-func (s *StorageFile) SetSession(id string, data *gmap.StrAnyMap, ttl time.Duration) error {
+func (s *StorageFile) SetSession(id string, data *qn_map.StrAnyMap, ttl time.Duration) error {
 	intlog.Printf("StorageFile.SetSession: %s, %v, %v", id, data, ttl)
 	path := s.sessionFilePath(id)
 	content, err := json.Marshal(data)

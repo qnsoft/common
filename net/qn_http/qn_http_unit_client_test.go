@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -103,7 +104,7 @@ func Test_Client_MapParam(t *testing.T) {
 		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
-		t.Assert(c.GetContent("/map", g.Map{"test": "1234567890"}), "1234567890")
+		t.Assert(c.GetContent("/map", qn.Map{"test": "1234567890"}), "1234567890")
 	})
 }
 
@@ -159,7 +160,7 @@ func Test_Client_Chain_Header(t *testing.T) {
 		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
-		t.Assert(c.Header(g.MapStrStr{"test1": "1234567890"}).GetContent("/header1"), "1234567890")
+		t.Assert(c.Header(qn.MapStrStr{"test1": "1234567890"}).GetContent("/header1"), "1234567890")
 		t.Assert(c.HeaderRaw("test1: 1234567890\ntest2: abcdefg").GetContent("/header1"), "1234567890")
 		t.Assert(c.HeaderRaw("test1: 1234567890\ntest2: abcdefg").GetContent("/header2"), "abcdefg")
 	})
@@ -226,7 +227,7 @@ func Test_Client_Chain_ContentJson(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
-		t.Assert(c.ContentJson().PostContent("/json", g.Map{
+		t.Assert(c.ContentJson().PostContent("/json", qn.Map{
 			"name":  "john",
 			"score": 100,
 		}), "john100")
@@ -255,7 +256,7 @@ func Test_Client_Chain_ContentXml(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		c := qn_http.NewClient()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
-		t.Assert(c.ContentXml().PostContent("/xml", g.Map{
+		t.Assert(c.ContentXml().PostContent("/xml", qn.Map{
 			"name":  "john",
 			"score": 100,
 		}), "john100")

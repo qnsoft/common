@@ -40,8 +40,8 @@ var defaultLevelPrefixes = map[int]string{
 	LEVEL_FATA: "FATA",
 }
 
-// levelStringMap defines level string name to its level mapping.
-var levelStringMap = map[string]int{
+// levelStrinqn_map defines level string name to its level mapping.
+var levelStrinqn_map = map[string]int{
 	"ALL":      LEVEL_DEBU | LEVEL_INFO | LEVEL_NOTI | LEVEL_WARN | LEVEL_ERRO | LEVEL_CRIT,
 	"DEV":      LEVEL_DEBU | LEVEL_INFO | LEVEL_NOTI | LEVEL_WARN | LEVEL_ERRO | LEVEL_CRIT,
 	"DEVELOP":  LEVEL_DEBU | LEVEL_INFO | LEVEL_NOTI | LEVEL_WARN | LEVEL_ERRO | LEVEL_CRIT,
@@ -72,7 +72,7 @@ func (l *Logger) GetLevel() int {
 
 // SetLevelStr sets the logging level by level string.
 func (l *Logger) SetLevelStr(levelStr string) error {
-	if level, ok := levelStringMap[strings.ToUpper(levelStr)]; ok {
+	if level, ok := levelStrinqn_map[strings.ToUpper(levelStr)]; ok {
 		l.config.Level = level
 	} else {
 		return errors.New(fmt.Sprintf(`invalid level string: %s`, levelStr))

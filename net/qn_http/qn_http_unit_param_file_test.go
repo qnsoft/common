@@ -11,12 +11,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/debug/qn_debug"
+	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/text/qn.str"
 
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -48,7 +49,7 @@ func Test_Params_File_Single(t *testing.T) {
 
 		srcPath := qn_debug.TestDataPath("upload", "file1.txt")
 		dstPath := qn_file.Join(dstDirPath, "file1.txt")
-		content := client.PostContent("/upload/single", g.Map{
+		content := client.PostContent("/upload/single", qn.Map{
 			"file": "@file:" + srcPath,
 		})
 		t.AssertNE(content, "")
@@ -63,7 +64,7 @@ func Test_Params_File_Single(t *testing.T) {
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		srcPath := qn_debug.TestDataPath("upload", "file2.txt")
-		content := client.PostContent("/upload/single", g.Map{
+		content := client.PostContent("/upload/single", qn.Map{
 			"file":           "@file:" + srcPath,
 			"randomlyRename": true,
 		})
@@ -101,7 +102,7 @@ func Test_Params_File_CustomName(t *testing.T) {
 
 		srcPath := qn_debug.TestDataPath("upload", "file1.txt")
 		dstPath := qn_file.Join(dstDirPath, "my.txt")
-		content := client.PostContent("/upload/single", g.Map{
+		content := client.PostContent("/upload/single", qn.Map{
 			"file": "@file:" + srcPath,
 		})
 		t.AssertNE(content, "")
@@ -122,7 +123,7 @@ func Test_Params_File_Batch(t *testing.T) {
 			r.Response.WriteExit("upload file cannot be empty")
 		}
 		if names, err := files.Save(dstDirPath, r.GetBool("randomlyRename")); err == nil {
-			r.Response.WriteExit(gstr.Join(names, ","))
+			r.Response.WriteExit(qn.str.Join(names, ","))
 		}
 		r.Response.WriteExit("upload failed")
 	})
@@ -140,7 +141,7 @@ func Test_Params_File_Batch(t *testing.T) {
 		srcPath2 := qn_debug.TestDataPath("upload", "file2.txt")
 		dstPath1 := qn_file.Join(dstDirPath, "file1.txt")
 		dstPath2 := qn_file.Join(dstDirPath, "file2.txt")
-		content := client.PostContent("/upload/batch", g.Map{
+		content := client.PostContent("/upload/batch", qn.Map{
 			"file[0]": "@file:" + srcPath1,
 			"file[1]": "@file:" + srcPath2,
 		})
@@ -158,7 +159,7 @@ func Test_Params_File_Batch(t *testing.T) {
 
 		srcPath1 := qn_debug.TestDataPath("upload", "file1.txt")
 		srcPath2 := qn_debug.TestDataPath("upload", "file2.txt")
-		content := client.PostContent("/upload/batch", g.Map{
+		content := client.PostContent("/upload/batch", qn.Map{
 			"file[0]":        "@file:" + srcPath1,
 			"file[1]":        "@file:" + srcPath2,
 			"randomlyRename": true,
@@ -167,7 +168,7 @@ func Test_Params_File_Batch(t *testing.T) {
 		t.AssertNE(content, "upload file cannot be empty")
 		t.AssertNE(content, "upload failed")
 
-		array := gstr.SplitAndTrim(content, ",")
+		array := qn.str.SplitAndTrim(content, ",")
 		t.Assert(len(array), 2)
 		dstPath1 := qn_file.Join(dstDirPath, array[0])
 		dstPath2 := qn_file.Join(dstDirPath, array[1])

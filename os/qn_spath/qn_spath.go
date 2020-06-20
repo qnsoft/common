@@ -19,17 +19,16 @@ import (
 	"strings"
 
 	"github.com/qnsoft/common/internal/intlog"
-	"github.com/qnsoft/common/text/gstr"
 
-	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/qn_array"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/os/qn_file"
 )
 
 // SPath manages the path searching feature.
 type SPath struct {
 	paths *qn_array.StrArray // The searching directories array.
-	cache *gmap.StrStrMap    // Searching cache map, it is not enabled if it's nil.
+	cache *qn_map.StrStrMap  // Searching cache map, it is not enabled if it's nil.
 }
 
 // SPathCacheItem is a cache item for searching.
@@ -40,7 +39,7 @@ type SPathCacheItem struct {
 
 var (
 	// Path to searching object mapping, used for instance management.
-	pathsMap = gmap.NewStrAnyMap(true)
+	pathsMap = qn_map.NewStrAnyMap(true)
 )
 
 // New creates and returns a new path searching manager.
@@ -49,7 +48,7 @@ func New(path string, cache bool) *SPath {
 		paths: qn_array.NewStrArray(true),
 	}
 	if cache {
-		sp.cache = gmap.NewStrStrMap(true)
+		sp.cache = qn_map.NewStrStrMap(true)
 	}
 	if len(path) > 0 {
 		if _, err := sp.Add(path); err != nil {
@@ -143,7 +142,7 @@ func (sp *SPath) Add(path string) (realPath string, err error) {
 	}
 	// The added path must be a directory.
 	if qn_file.IsDir(realPath) {
-		//fmt.Println("gspath:", realPath, sp.paths.Search(realPath))
+		//fmt.Println("qn.spath:", realPath, sp.paths.Search(realPath))
 		// It will not add twice for the same directory.
 		if sp.paths.Search(realPath) < 0 {
 			realPath = strings.TrimRight(realPath, qn_file.Separator)
@@ -222,7 +221,7 @@ func (sp *SPath) Remove(path string) {
 	}
 	if qn_file.Exists(path) {
 		for _, v := range sp.paths.Slice() {
-			name := gstr.Replace(path, v, "")
+			name := qn.str.Replace(path, v, "")
 			name = sp.formatCacheName(name)
 			sp.cache.Remove(name)
 		}

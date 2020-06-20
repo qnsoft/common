@@ -10,13 +10,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/qnsoft/common/container/glist"
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_list"
+	"github.com/qnsoft/common/container/qn_type"
 )
 
 // Timer is a Hierarchical Timing Wheel manager for timing jobs.
 type Timer struct {
-	status     *gtype.Int // Timer status.
+	status     *qn_type.Int // Timer status.
 	wheels     []*wheel   // The underlying wheels.
 	length     int        // Max level of the wheels.
 	number     int        // Slot Number of each wheel.
@@ -27,9 +27,9 @@ type Timer struct {
 type wheel struct {
 	timer      *Timer        // Belonged timer.
 	level      int           // The level in the timer.
-	slots      []*glist.List // Slot array.
+	slots      []*qn_list.List // Slot array.
 	number     int64         // Slot Number=len(slots).
-	ticks      *gtype.Int64  // Ticked count of the wheel, one tick is one of its interval passed.
+	ticks      *qn_type.Int64  // Ticked count of the wheel, one tick is one of its interval passed.
 	totalMs    int64         // Total duration in milliseconds=number*interval.
 	createMs   int64         // Created timestamp in milliseconds.
 	intervalMs int64         // Interval in milliseconds, which is the duration of one slot.
@@ -48,7 +48,7 @@ func New(slot int, interval time.Duration, level ...int) *Timer {
 		length = level[0]
 	}
 	t := &Timer{
-		status:     gtype.NewInt(STATUS_RUNNING),
+		status:     qn_type.NewInt(STATUS_RUNNING),
 		wheels:     make([]*wheel, length),
 		length:     length,
 		number:     slot,
@@ -76,15 +76,15 @@ func (t *Timer) newWheel(level int, slot int, interval time.Duration) *wheel {
 	w := &wheel{
 		timer:      t,
 		level:      level,
-		slots:      make([]*glist.List, slot),
+		slots:      make([]*qn_list.List, slot),
 		number:     int64(slot),
-		ticks:      gtype.NewInt64(),
+		ticks:      qn_type.NewInt64(),
 		totalMs:    int64(slot) * interval.Nanoseconds() / 1e6,
 		createMs:   time.Now().UnixNano() / 1e6,
 		intervalMs: interval.Nanoseconds() / 1e6,
 	}
 	for i := int64(0); i < w.number; i++ {
-		w.slots[i] = glist.New(true)
+		w.slots[i] = qn_list.New(true)
 	}
 	return w
 }

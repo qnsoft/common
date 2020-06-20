@@ -10,13 +10,13 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Map(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := g.Map{
+		m := qn.Map{
 			"k1": "v1",
 			"k2": "v2",
 		}

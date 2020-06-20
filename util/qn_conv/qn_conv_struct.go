@@ -124,11 +124,11 @@ func Struct(params interface{}, pointer interface{}, mapping ...map[string]strin
 		return nil
 	}
 
-	// The key of the tagMap is the attribute name of the struct,
+	// The key of the taqn_map is the attribute name of the struct,
 	// and the value is its replaced tag name for later comparison to improve performance.
-	tagMap := make(map[string]string)
-	for k, v := range structs.TagMapName(pointer, structTagPriority, true) {
-		tagMap[v] = replaceCharReg.ReplaceAllString(k, "")
+	taqn_map := make(map[string]string)
+	for k, v := range structs.Taqn_mapName(pointer, structTagPriority, true) {
+		taqn_map[v] = replaceCharReg.ReplaceAllString(k, "")
 	}
 
 	var (
@@ -143,7 +143,7 @@ func Struct(params interface{}, pointer interface{}, mapping ...map[string]strin
 
 		// Matching the parameters to struct tag names.
 		// The <tagV> is the attribute name of the struct.
-		for attrKey, cmpKey := range tagMap {
+		for attrKey, cmpKey := range taqn_map {
 			if strings.EqualFold(checkName, cmpKey) {
 				attrName = attrKey
 				break

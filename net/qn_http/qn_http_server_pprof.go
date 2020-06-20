@@ -12,7 +12,7 @@ import (
 	runpprof "runtime/pprof"
 	"strings"
 
-	"github.com/qnsoft/common/os/gview"
+	"github.com/qnsoft/common/os/qn_view"
 )
 
 // utilPProf is the PProf interface implementer.
@@ -49,7 +49,7 @@ func (p *utilPProf) Index(r *Request) {
 		"profiles": profiles,
 	}
 	if len(action) == 0 {
-		buffer, _ := gview.ParseContent(`
+		buffer, _ := qn_view.ParseContent(`
             <html>
             <head>
                 <title>gf qn_http pprof</title>

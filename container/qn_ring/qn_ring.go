@@ -10,17 +10,17 @@ package qn_ring
 import (
 	"container/ring"
 
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/internal/rwmutex"
 )
 
 // Ring is a struct of ring structure.
 type Ring struct {
 	mu    *rwmutex.RWMutex
-	ring  *ring.Ring  // Underlying ring.
-	len   *gtype.Int  // Length(already used size).
-	cap   *gtype.Int  // Capability(>=len).
-	dirty *gtype.Bool // Dirty, which means the len and cap should be recalculated. It's marked dirty when the size of ring changes.
+	ring  *ring.Ring    // Underlying ring.
+	len   *qn_type.Int  // Length(already used size).
+	cap   *qn_type.Int  // Capability(>=len).
+	dirty *qn_type.Bool // Dirty, which means the len and cap should be recalculated. It's marked dirty when the size of ring changes.
 }
 
 // New creates and returns a Ring structure of <cap> elements.
@@ -30,9 +30,9 @@ func New(cap int, safe ...bool) *Ring {
 	return &Ring{
 		mu:    rwmutex.New(safe...),
 		ring:  ring.New(cap),
-		len:   gtype.NewInt(),
-		cap:   gtype.NewInt(cap),
-		dirty: gtype.NewBool(),
+		len:   qn_type.NewInt(),
+		cap:   qn_type.NewInt(cap),
+		dirty: qn_type.NewBool(),
 	}
 }
 

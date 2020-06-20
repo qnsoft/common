@@ -11,12 +11,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gogf/gf/text/gstr"
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 
 	"github.com/qnsoft/common/debug/qn_debug"
 
-	"github.com/qnsoft/common/container/glist"
+	"github.com/qnsoft/common/container/qn_list"
 	"github.com/qnsoft/common/text/qn_regex"
 )
 
@@ -26,7 +25,7 @@ const (
 
 var (
 	// handlerIdGenerator is handler item id generator.
-	handlerIdGenerator = gtype.NewInt()
+	handlerIdGenerator = qn_type.NewInt()
 )
 
 // routerMapKey creates and returns an unique router key for given parameters.
@@ -110,7 +109,7 @@ func (s *Server) setHandler(pattern string, handler *handlerItem) {
 	}
 	// List array, very important for router registering.
 	// There may be multiple lists adding into this array when searching from root to leaf.
-	lists := make([]*glist.List, 0)
+	lists := make([]*qn_list.List, 0)
 	array := ([]string)(nil)
 	if strings.EqualFold("/", uri) {
 		array = []string{"/"}
@@ -140,11 +139,11 @@ func (s *Server) setHandler(pattern string, handler *handlerItem) {
 			// If it's a fuzzy node, it creates a "*list" item - which is a list - in the hash map.
 			// All the sub router items from this fuzzy node will also be added to its "*list" item.
 			if v, ok := p.(map[string]interface{})["*list"]; !ok {
-				newListForFuzzy := glist.New()
+				newListForFuzzy := qn_list.New()
 				p.(map[string]interface{})["*list"] = newListForFuzzy
 				lists = append(lists, newListForFuzzy)
 			} else {
-				lists = append(lists, v.(*glist.List))
+				lists = append(lists, v.(*qn_list.List))
 			}
 		}
 		// Make a new bucket for current node.
@@ -159,11 +158,11 @@ func (s *Server) setHandler(pattern string, handler *handlerItem) {
 		// fuzzy checks.
 		if i == len(array)-1 && part != "*fuzz" {
 			if v, ok := p.(map[string]interface{})["*list"]; !ok {
-				leafList := glist.New()
+				leafList := qn_list.New()
 				p.(map[string]interface{})["*list"] = leafList
 				lists = append(lists, leafList)
 			} else {
-				lists = append(lists, v.(*glist.List))
+				lists = append(lists, v.(*qn_list.List))
 			}
 		}
 	}
@@ -361,7 +360,7 @@ func (s *Server) patternToRegular(rule string) (regular string, names []string) 
 			}
 		default:
 			// Special chars replacement.
-			v = gstr.ReplaceByMap(v, map[string]string{
+			v = qn.str.ReplaceByMap(v, map[string]string{
 				`.`: `\.`,
 				`+`: `\+`,
 				`*`: `.*`,

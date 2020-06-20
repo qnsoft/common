@@ -5,7 +5,7 @@
 // You can obtain one at https://github.com/qnsoft/common.
 //
 
-// Package glist provides most commonly used doubly linked list container which also supports concurrent-safe/unsafe switch feature.
+// Package qn_list provides most commonly used doubly linked list container which also supports concurrent-safe/unsafe switch feature.
 package qn_list
 
 import (

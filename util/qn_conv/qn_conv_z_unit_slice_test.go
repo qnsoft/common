@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/util/qn_conv"
 )
@@ -31,7 +32,7 @@ func Test_Slice_PrivateAttribute(t *testing.T) {
 		name string
 	}
 	qn_test.C(t, func(t *qn_test.T) {
-		user := &User{1, "john"}
+		user := &User{1, "john"}qn.Sl
 		t.Assert(qn_conv.Interfaces(user), g.Slice{1})
 	})
 }
@@ -48,7 +49,7 @@ func Test_Slice_Structs(t *testing.T) {
 
 	qn_test.C(t, func(t *qn_test.T) {
 		users := make([]User, 0)
-		params := []g.Map{
+		params := []qn.Map{
 			{"id": 1, "name": "john", "age": 18},
 			{"id": 2, "name": "smith", "age": 20},
 		}
@@ -66,7 +67,7 @@ func Test_Slice_Structs(t *testing.T) {
 
 	qn_test.C(t, func(t *qn_test.T) {
 		users := make([]User, 0)
-		params := []g.Map{
+		params := []qn.Map{
 			{"id": 1, "name": "john", "age": 18},
 			{"id": 2, "name": "smith", "age": 20},
 		}

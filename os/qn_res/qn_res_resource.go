@@ -15,12 +15,12 @@ import (
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/qn_time"
 
-	"github.com/qnsoft/common/container/gtree"
+	"github.com/qnsoft/common/container/qn_tree"
 	"github.com/qnsoft/common/os/qn_file"
 )
 
 type Resource struct {
-	tree *gtree.BTree
+	tree *qn_tree.BTree
 }
 
 const (
@@ -30,7 +30,7 @@ const (
 // New creates and returns a new resource object.
 func New() *Resource {
 	return &Resource{
-		tree: gtree.NewBTree(gDEFAULT_TREE_M, func(v1, v2 interface{}) int {
+		tree: qn_tree.NewBTree(gDEFAULT_TREE_M, func(v1, v2 interface{}) int {
 			return strings.Compare(v1.(string), v2.(string))
 		}),
 	}

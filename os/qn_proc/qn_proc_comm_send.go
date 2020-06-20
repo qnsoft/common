@@ -11,7 +11,7 @@ import (
 	"io"
 
 	"github.com/qnsoft/common/internal/json"
-	"github.com/qnsoft/common/net/gtcp"
+	"github.com/qnsoft/common/net/qn_tcp"
 )
 
 // Send sends data to specified process of given pid.
@@ -29,7 +29,7 @@ func Send(pid int, data []byte, group ...string) error {
 	if err != nil {
 		return err
 	}
-	var conn *gtcp.PoolConn
+	var conn *qn_tcp.PoolConn
 	conn, err = getConnByPid(pid)
 	if err != nil {
 		return err
@@ -37,8 +37,8 @@ func Send(pid int, data []byte, group ...string) error {
 	defer conn.Close()
 	// Do the sending.
 	var result []byte
-	result, err = conn.SendRecvPkg(msgBytes, gtcp.PkgOption{
-		Retry: gtcp.Retry{
+	result, err = conn.SendRecvPkg(msgBytes, qn_tcp.PkgOption{
+		Retry: qn_tcp.Retry{
 			Count: 3,
 		},
 	})

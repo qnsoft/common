@@ -13,9 +13,8 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/qnsoft/common/os/gfsnotify"
 	"github.com/qnsoft/common/os/qn_file"
-	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/os/qn_snotify"
 )
 
 // updateCacheByPath adds all files under <path> recursively.
@@ -31,14 +30,14 @@ func (sp *SPath) updateCacheByPath(path string) {
 // 2. The name should be started with '/' (similar as HTTP URI).
 func (sp *SPath) formatCacheName(name string) string {
 	if runtime.GOOS != "linux" {
-		name = gstr.Replace(name, "\\", "/")
+		name = qn.str.Replace(name, "\\", "/")
 	}
 	return "/" + strings.Trim(name, "./")
 }
 
 // nameFromPath converts <filePath> to cache name.
 func (sp *SPath) nameFromPath(filePath, rootPath string) string {
-	name := gstr.Replace(filePath, rootPath, "")
+	name := qn.str.Replace(filePath, rootPath, "")
 	name = sp.formatCacheName(name)
 	return name
 }
@@ -71,7 +70,7 @@ func (sp *SPath) addToCache(filePath, rootPath string) {
 	// If it's a directory, it adds its all sub files/directories recursively.
 	if idDir {
 		if files, err := qn_file.ScanDir(filePath, "*", true); err == nil {
-			//fmt.Println("gspath add to cache:", filePath, files)
+			//fmt.Println("qn.spath add to cache:", filePath, files)
 			for _, path := range files {
 				sp.cache.SetIfNotExist(sp.nameFromPath(path, rootPath), sp.makeCacheValue(path, qn_file.IsDir(path)))
 			}
@@ -81,7 +80,7 @@ func (sp *SPath) addToCache(filePath, rootPath string) {
 	}
 }
 
-// addMonitorByPath adds gfsnotify monitoring recursively.
+// addMonitorByPath adds qn_snotify monitoring recursively.
 // When the files under the directory are updated, the cache will be updated meanwhile.
 // Note that since the listener is added recursively, if you delete a directory, the files (including the directory)
 // under the directory will also generate delete events, which means it will generate N+1 events in total
@@ -90,7 +89,7 @@ func (sp *SPath) addMonitorByPath(path string) {
 	if sp.cache == nil {
 		return
 	}
-	_, _ = gfsnotify.Add(path, func(event *gfsnotify.Event) {
+	_, _ = qn_snotify.Add(path, func(event *qn_snotify.Event) {
 		//qn_log.Debug(event.String())
 		switch {
 		case event.IsRemove():
@@ -107,10 +106,10 @@ func (sp *SPath) addMonitorByPath(path string) {
 	}, true)
 }
 
-// removeMonitorByPath removes gfsnotify monitoring of <path> recursively.
+// removeMonitorByPath removes qn_snotify monitoring of <path> recursively.
 func (sp *SPath) removeMonitorByPath(path string) {
 	if sp.cache == nil {
 		return
 	}
-	_ = gfsnotify.Remove(path)
+	_ = qn_snotify.Remove(path)
 }

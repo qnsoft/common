@@ -7,8 +7,9 @@
 package qn_session
 
 import (
-	"github.com/qnsoft/common/container/gmap"
 	"time"
+
+	"github.com/qnsoft/common/container/qn_map"
 )
 
 // Storage is the interface definition for session storage.
@@ -41,19 +42,19 @@ type Storage interface {
 	// RemoveAll deletes all key-value pairs from storage.
 	RemoveAll(id string) error
 
-	// GetSession returns the session data as *gmap.StrAnyMap for given session id from storage.
+	// GetSession returns the session data as *qn_map.StrAnyMap for given session id from storage.
 	//
 	// The parameter <ttl> specifies the TTL for this session.
 	// The parameter <data> is the current old session data stored in memory,
 	// and for some storage it might be nil if memory storage is disabled.
 	//
 	// This function is called ever when session starts. It returns nil if the TTL is exceeded.
-	GetSession(id string, ttl time.Duration, data *gmap.StrAnyMap) (*gmap.StrAnyMap, error)
+	GetSession(id string, ttl time.Duration, data *qn_map.StrAnyMap) (*qn_map.StrAnyMap, error)
 
 	// SetSession updates the data for specified session id.
 	// This function is called ever after session, which is changed dirty, is closed.
 	// This copy all session data map from memory to storage.
-	SetSession(id string, data *gmap.StrAnyMap, ttl time.Duration) error
+	SetSession(id string, data *qn_map.StrAnyMap, ttl time.Duration) error
 
 	// UpdateTTL updates the TTL for specified session id.
 	// This function is called ever after session, which is not dirty, is closed.

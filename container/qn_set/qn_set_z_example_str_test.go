@@ -9,12 +9,12 @@ package qn_set_test
 import (
 	"fmt"
 
-	"github.com/qnsoft/common/container/gset"
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/container/qn_set"
+	"github.com/qnsoft/common/frame/qn"
 )
 
 func ExampleStrSet_Contains() {
-	var set gset.StrSet
+	var set qn_set.StrSet
 	set.Add("a")
 	fmt.Println(set.Contains("a"))
 	fmt.Println(set.Contains("A"))
@@ -28,8 +28,8 @@ func ExampleStrSet_Contains() {
 
 func ExampleStrSet_Walk() {
 	var (
-		set    gset.StrSet
-		names  = g.SliceStr{"user", "user_detail"}
+		set    qn_set.StrSet
+		names  = qn.SliceStr{"user", "user_detail"}
 		prefix = "gf_"
 	)
 	set.Add(names...)

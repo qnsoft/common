@@ -12,10 +12,11 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/debug/qn_debug"
-	"github.com/qnsoft/common/os/qn_time"
-	"github.com/qnsoft/common/text/gstr"
-
 	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
+	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/text/qn.str"
+
 	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -43,8 +44,8 @@ func Test_HTTPS_Basic(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		c := g.Client()
 		c.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
-		t.AssertIN(gstr.Trim(c.GetContent("/")), g.Slice{"", "Client sent an HTTP request to an HTTPS server."})
-		t.AssertIN(gstr.Trim(c.GetContent("/test")), g.Slice{"", "Client sent an HTTP request to an HTTPS server."})
+		t.AssertIN(qn.str.Trim(c.GetContent("/")), qn.Slice{"", "Client sent an HTTP request to an HTTPS server."})
+		t.AssertIN(qn.str.Trim(c.GetContent("/test")), qn.Slice{"", "Client sent an HTTP request to an HTTPS server."})
 	})
 	// HTTPS
 	qn_test.C(t, func(t *qn_test.T) {

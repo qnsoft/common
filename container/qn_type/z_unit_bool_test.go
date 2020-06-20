@@ -12,24 +12,24 @@ import (
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Bool(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		i := gtype.NewBool(true)
+		i := qn_type.NewBool(true)
 		iClone := i.Clone()
 		t.AssertEQ(iClone.Set(false), true)
 		t.AssertEQ(iClone.Val(), false)
 
-		i1 := gtype.NewBool(false)
+		i1 := qn_type.NewBool(false)
 		iClone1 := i1.Clone()
 		t.AssertEQ(iClone1.Set(true), false)
 		t.AssertEQ(iClone1.Val(), true)
 
 		//空参测试
-		i2 := gtype.NewBool()
+		i2 := qn_type.NewBool()
 		t.AssertEQ(i2.Val(), false)
 	})
 }
@@ -37,7 +37,7 @@ func Test_Bool(t *testing.T) {
 func Test_Bool_JSON(t *testing.T) {
 	// Marshal
 	qn_test.C(t, func(t *qn_test.T) {
-		i := gtype.NewBool(true)
+		i := qn_type.NewBool(true)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
 		t.Assert(err1, nil)
@@ -45,7 +45,7 @@ func Test_Bool_JSON(t *testing.T) {
 		t.Assert(b1, b2)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		i := gtype.NewBool(false)
+		i := qn_type.NewBool(false)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
 		t.Assert(err1, nil)
@@ -55,7 +55,7 @@ func Test_Bool_JSON(t *testing.T) {
 	// Unmarshal
 	qn_test.C(t, func(t *qn_test.T) {
 		var err error
-		i := gtype.NewBool()
+		i := qn_type.NewBool()
 		err = json.Unmarshal([]byte("true"), &i)
 		t.Assert(err, nil)
 		t.Assert(i.Val(), true)
@@ -71,27 +71,27 @@ func Test_Bool_JSON(t *testing.T) {
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
-		i := gtype.NewBool(true)
+		i := qn_type.NewBool(true)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
 		t.Assert(err1, nil)
 		t.Assert(err2, nil)
 		t.Assert(b1, b2)
 
-		i2 := gtype.NewBool()
+		i2 := qn_type.NewBool()
 		err := json.Unmarshal(b2, &i2)
 		t.Assert(err, nil)
 		t.Assert(i2.Val(), i.Val())
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		i := gtype.NewBool(false)
+		i := qn_type.NewBool(false)
 		b1, err1 := json.Marshal(i)
 		b2, err2 := json.Marshal(i.Val())
 		t.Assert(err1, nil)
 		t.Assert(err2, nil)
 		t.Assert(b1, b2)
 
-		i2 := gtype.NewBool()
+		i2 := qn_type.NewBool()
 		err := json.Unmarshal(b2, &i2)
 		t.Assert(err, nil)
 		t.Assert(i2.Val(), i.Val())
@@ -101,7 +101,7 @@ func Test_Bool_JSON(t *testing.T) {
 func Test_Bool_UnmarshalValue(t *testing.T) {
 	type V struct {
 		Name string
-		Var  *gtype.Bool
+		Var  *qn_type.Bool
 	}
 	qn_test.C(t, func(t *qn_test.T) {
 		var v *V

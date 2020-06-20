@@ -6,7 +6,7 @@
 
 package qn_view
 
-import "github.com/qnsoft/common/container/gmap"
+import "github.com/qnsoft/common/container/qn_map"
 
 const (
 	// Default group name for instance usage.
@@ -15,7 +15,7 @@ const (
 
 var (
 	// Instances map.
-	instances = gmap.NewStrAnyMap(true)
+	instances = qn_map.NewStrAnyMap(true)
 )
 
 // Instance returns an instance of View with default settings.

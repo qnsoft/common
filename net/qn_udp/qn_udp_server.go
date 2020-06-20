@@ -10,7 +10,7 @@ import (
 	"errors"
 	"net"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/os/qn_log"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
@@ -28,7 +28,7 @@ type Server struct {
 
 var (
 	// serverMapping is used for instance name to its UDP server mappings.
-	serverMapping = gmap.NewStrAnyMap(true)
+	serverMapping = qn_map.NewStrAnyMap(true)
 )
 
 // GetServer creates and returns a UDP server instance with given name.

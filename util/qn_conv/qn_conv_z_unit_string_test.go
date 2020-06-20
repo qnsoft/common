@@ -13,15 +13,15 @@ import (
 	"github.com/qnsoft/common/util/qn_conv"
 )
 
-type stringStruct1 struct {
+type strinqn.struct1 struct {
 	Name string
 }
 
-type stringStruct2 struct {
+type strinqn.struct2 struct {
 	Name string
 }
 
-func (s *stringStruct1) String() string {
+func (s *strinqn.struct1) String() string {
 	return s.Name
 }
 
@@ -56,10 +56,10 @@ func Test_String(t *testing.T) {
 
 		t.AssertEQ(qn_conv.String([]byte("bytes")), "bytes")
 
-		t.AssertEQ(qn_conv.String(stringStruct1{"john"}), `{"Name":"john"}`)
-		t.AssertEQ(qn_conv.String(&stringStruct1{"john"}), "john")
+		t.AssertEQ(qn_conv.String(strinqn.struct1{"john"}), `{"Name":"john"}`)
+		t.AssertEQ(qn_conv.String(&strinqn.struct1{"john"}), "john")
 
-		t.AssertEQ(qn_conv.String(stringStruct2{"john"}), `{"Name":"john"}`)
-		t.AssertEQ(qn_conv.String(&stringStruct2{"john"}), `{"Name":"john"}`)
+		t.AssertEQ(qn_conv.String(strinqn.struct2{"john"}), `{"Name":"john"}`)
+		t.AssertEQ(qn_conv.String(&strinqn.struct2{"john"}), `{"Name":"john"}`)
 	})
 }

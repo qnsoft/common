@@ -12,7 +12,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/internal/json"
 
 	"errors"
@@ -147,7 +146,7 @@ func (p *Parser) isOptionNeedArgument(name string) bool {
 // setOptionValue sets the option value for name and according alias.
 func (p *Parser) setOptionValue(name, value string) {
 	for optionName, _ := range p.passedOptions {
-		array := gstr.SplitAndTrim(optionName, ",")
+		array := qn.str.SplitAndTrim(optionName, ",")
 		for _, v := range array {
 			if strings.EqualFold(v, name) {
 				for _, v := range array {

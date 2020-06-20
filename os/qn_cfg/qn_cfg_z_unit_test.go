@@ -13,10 +13,10 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/debug/qn_debug"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/os/qn_time"
 
 	"github.com/qnsoft/common/encoding/qn_json"
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/os/qn_cfg"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/test/qn_test"
@@ -412,11 +412,11 @@ func TestCfg_Get(t *testing.T) {
 		c.Clear()
 
 		arr, _ := qn_json.Encode(
-			g.Map{
+			qn.Map{
 				"name":   "gf",
 				"time":   "2019-06-12",
-				"person": g.Map{"name": "gf"},
-				"floats": g.Slice{1, 2, 3},
+				"person": qn.Map{"name": "gf"},
+				"floats": qn.Slice{1, 2, 3},
 			},
 		)
 		err = qn_file.PutBytes(

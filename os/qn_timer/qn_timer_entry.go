@@ -9,21 +9,21 @@ package qn_timer
 import (
 	"time"
 
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 )
 
 // Entry is the timing job entry to wheel.
 type Entry struct {
-	wheel         *wheel      // Belonged wheel.
-	job           JobFunc     // The job function.
-	singleton     *gtype.Bool // Singleton mode.
-	status        *gtype.Int  // Job status.
-	times         *gtype.Int  // Limit running times.
-	create        int64       // Timer ticks when the job installed.
-	interval      int64       // The interval ticks of the job.
-	createMs      int64       // The timestamp in milliseconds when job installed.
-	intervalMs    int64       // The interval milliseconds of the job.
-	rawIntervalMs int64       // Raw input interval in milliseconds.
+	wheel         *wheel        // Belonged wheel.
+	job           JobFunc       // The job function.
+	singleton     *qn_type.Bool // Singleton mode.
+	status        *qn_type.Int  // Job status.
+	times         *qn_type.Int  // Limit running times.
+	create        int64         // Timer ticks when the job installed.
+	interval      int64         // The interval ticks of the job.
+	createMs      int64         // The timestamp in milliseconds when job installed.
+	intervalMs    int64         // The interval milliseconds of the job.
+	rawIntervalMs int64         // Raw input interval in milliseconds.
 }
 
 // JobFunc is the job function.
@@ -48,11 +48,11 @@ func (w *wheel) addEntry(interval time.Duration, job JobFunc, singleton bool, ti
 	entry := &Entry{
 		wheel:         w,
 		job:           job,
-		times:         gtype.NewInt(times),
-		status:        gtype.NewInt(status),
+		times:         qn_type.NewInt(times),
+		status:        qn_type.NewInt(status),
 		create:        ticks,
 		interval:      num,
-		singleton:     gtype.NewBool(singleton),
+		singleton:     qn_type.NewBool(singleton),
 		createMs:      nowMs,
 		intervalMs:    ms,
 		rawIntervalMs: ms,

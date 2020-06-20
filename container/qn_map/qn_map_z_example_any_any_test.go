@@ -9,13 +9,13 @@ package qn_map_test
 import (
 	"fmt"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 )
 
 func ExampleNew() {
-	m := gmap.New()
+	m := qn_map.New()
 
 	// Add data.
 	m.Set("key1", "val1")
@@ -76,8 +76,8 @@ func ExampleNew() {
 }
 
 func ExampleAnyAnyMap_Keys() {
-	var m gmap.Map
-	m.Sets(g.MapAnyAny{
+	var m qn_map.Map
+	m.Sets(qn.MapAnyAny{
 		"k1": "v1",
 		"k2": "v2",
 		"k3": "v3",
@@ -92,8 +92,8 @@ func ExampleAnyAnyMap_Keys() {
 }
 
 func ExampleAnyAnyMap_Values() {
-	var m gmap.Map
-	m.Sets(g.MapAnyAny{
+	var m qn_map.Map
+	m.Sets(qn.MapAnyAny{
 		"k1": "v1",
 		"k2": "v2",
 		"k3": "v3",
@@ -108,8 +108,8 @@ func ExampleAnyAnyMap_Values() {
 }
 
 func ExampleAnyAnyMap_Flip() {
-	var m gmap.Map
-	m.Sets(g.MapAnyAny{
+	var m qn_map.Map
+	m.Sets(qn.MapAnyAny{
 		"k1": "v1",
 		"k2": "v2",
 	})
@@ -121,8 +121,8 @@ func ExampleAnyAnyMap_Flip() {
 }
 
 func ExampleAnyAnyMap_Pop() {
-	var m gmap.Map
-	m.Sets(g.MapAnyAny{
+	var m qn_map.Map
+	m.Sets(qn.MapAnyAny{
 		"k1": "v1",
 		"k2": "v2",
 		"k3": "v3",
@@ -139,8 +139,8 @@ func ExampleAnyAnyMap_Pop() {
 }
 
 func ExampleAnyAnyMap_Pops() {
-	var m gmap.Map
-	m.Sets(g.MapAnyAny{
+	var m qn_map.Map
+	m.Sets(qn.MapAnyAny{
 		"k1": "v1",
 		"k2": "v2",
 		"k3": "v3",
@@ -157,7 +157,7 @@ func ExampleAnyAnyMap_Pops() {
 }
 
 func ExampleAnyAnyMap_FilterEmpty() {
-	m := gmap.NewFrom(g.MapAnyAny{
+	m := qn_map.NewFrom(qn.MapAnyAny{
 		"k1": "",
 		"k2": nil,
 		"k3": 0,
@@ -171,7 +171,7 @@ func ExampleAnyAnyMap_FilterEmpty() {
 }
 
 func ExampleAnyAnyMap_FilterNil() {
-	m := gmap.NewFrom(g.MapAnyAny{
+	m := qn_map.NewFrom(qn.MapAnyAny{
 		"k1": "",
 		"k2": nil,
 		"k3": 0,
@@ -185,7 +185,7 @@ func ExampleAnyAnyMap_FilterNil() {
 }
 
 func ExampleAnyAnyMap_SetIfNotExist() {
-	var m gmap.Map
+	var m qn_map.Map
 	fmt.Println(m.SetIfNotExist("k1", "v1"))
 	fmt.Println(m.SetIfNotExist("k1", "v1"))
 	fmt.Println(m.Map())
@@ -197,7 +197,7 @@ func ExampleAnyAnyMap_SetIfNotExist() {
 }
 
 func ExampleAnyAnyMap_Merge() {
-	var m1, m2 gmap.Map
+	var m1, m2 qn_map.Map
 	m1.Set("key1", "val1")
 	m2.Set("key2", "val2")
 	m1.Merge(&m2)

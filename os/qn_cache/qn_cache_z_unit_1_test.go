@@ -12,25 +12,25 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/container/gset"
-	"github.com/qnsoft/common/frame/g"
-	"github.com/qnsoft/common/os/gcache"
+	"github.com/qnsoft/common/container/qn_set"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/os/grpool"
+	"github.com/qnsoft/common/os/qn_cache"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
-func TestCache_GCache_Set(t *testing.T) {
+func TestCache_qn_cache_Set(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		gcache.Set(1, 11, 0)
-		defer gcache.Removes(g.Slice{1, 2, 3})
-		t.Assert(gcache.Get(1), 11)
-		t.Assert(gcache.Contains(1), true)
+		qn_cache.Set(1, 11, 0)
+		defer qn_cache.Removes(qn.Slice{1, 2, 3})
+		t.Assert(qn_cache.Get(1), 11)
+		t.Assert(qn_cache.Contains(1), true)
 	})
 }
 
 func TestCache_Set(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		c := gcache.New()
+		c := qn_cache.New()
 		defer c.Close()
 		c.Set(1, 11, 0)
 		t.Assert(c.Get(1), 11)
@@ -40,7 +40,7 @@ func TestCache_Set(t *testing.T) {
 
 func TestCache_GetVar(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		c := gcache.New()
+		c := qn_cache.New()
 		defer c.Close()
 		c.Set(1, 11, 0)
 		t.Assert(c.Get(1), 11)
@@ -54,7 +54,7 @@ func TestCache_GetVar(t *testing.T) {
 
 func TestCache_Set_Expire(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New()
+		cache := qn_cache.New()
 		cache.Set(2, 22, 100*time.Millisecond)
 		t.Assert(cache.Get(2), 22)
 		time.Sleep(200 * time.Millisecond)
@@ -65,7 +65,7 @@ func TestCache_Set_Expire(t *testing.T) {
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New()
+		cache := qn_cache.New()
 		cache.Set(1, 11, 100*time.Millisecond)
 		t.Assert(cache.Get(1), 11)
 		time.Sleep(200 * time.Millisecond)
@@ -75,7 +75,7 @@ func TestCache_Set_Expire(t *testing.T) {
 
 func TestCache_Keys_Values(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New()
+		cache := qn_cache.New()
 		for i := 0; i < 10; i++ {
 			cache.Set(i, i*10, 0)
 		}
@@ -88,7 +88,7 @@ func TestCache_Keys_Values(t *testing.T) {
 
 func TestCache_LRU(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New(2)
+		cache := qn_cache.New(2)
 		for i := 0; i < 10; i++ {
 			cache.Set(i, i, 0)
 		}
@@ -104,7 +104,7 @@ func TestCache_LRU(t *testing.T) {
 
 func TestCache_LRU_expire(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New(2)
+		cache := qn_cache.New(2)
 		cache.Set(1, nil, 1000)
 		t.Assert(cache.Size(), 1)
 		t.Assert(cache.Get(1), nil)
@@ -113,7 +113,7 @@ func TestCache_LRU_expire(t *testing.T) {
 
 func TestCache_SetIfNotExist(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New()
+		cache := qn_cache.New()
 		cache.SetIfNotExist(1, 11, 0)
 		t.Assert(cache.Get(1), 11)
 		cache.SetIfNotExist(1, 22, 0)
@@ -121,45 +121,45 @@ func TestCache_SetIfNotExist(t *testing.T) {
 		cache.SetIfNotExist(2, 22, 0)
 		t.Assert(cache.Get(2), 22)
 
-		gcache.Removes(g.Slice{1, 2, 3})
-		gcache.SetIfNotExist(1, 11, 0)
-		t.Assert(gcache.Get(1), 11)
-		gcache.SetIfNotExist(1, 22, 0)
-		t.Assert(gcache.Get(1), 11)
+		qn_cache.Removes(qn.Slice{1, 2, 3})
+		qn_cache.SetIfNotExist(1, 11, 0)
+		t.Assert(qn_cache.Get(1), 11)
+		qn_cache.SetIfNotExist(1, 22, 0)
+		t.Assert(qn_cache.Get(1), 11)
 	})
 }
 
 func TestCache_Sets(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New()
-		cache.Sets(g.MapAnyAny{1: 11, 2: 22}, 0)
+		cache := qn_cache.New()
+		cache.Sets(qn.MapAnyAny{1: 11, 2: 22}, 0)
 		t.Assert(cache.Get(1), 11)
 
-		gcache.Removes(g.Slice{1, 2, 3})
-		gcache.Sets(g.MapAnyAny{1: 11, 2: 22}, 0)
-		t.Assert(gcache.Get(1), 11)
+		qn_cache.Removes(qn.Slice{1, 2, 3})
+		qn_cache.Sets(qn.MapAnyAny{1: 11, 2: 22}, 0)
+		t.Assert(qn_cache.Get(1), 11)
 	})
 }
 
 func TestCache_GetOrSet(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New()
+		cache := qn_cache.New()
 		cache.GetOrSet(1, 11, 0)
 		t.Assert(cache.Get(1), 11)
 		cache.GetOrSet(1, 111, 0)
 		t.Assert(cache.Get(1), 11)
 
-		gcache.Removes(g.Slice{1, 2, 3})
-		gcache.GetOrSet(1, 11, 0)
-		t.Assert(gcache.Get(1), 11)
-		gcache.GetOrSet(1, 111, 0)
-		t.Assert(gcache.Get(1), 11)
+		qn_cache.Removes(qn.Slice{1, 2, 3})
+		qn_cache.GetOrSet(1, 11, 0)
+		t.Assert(qn_cache.Get(1), 11)
+		qn_cache.GetOrSet(1, 111, 0)
+		t.Assert(qn_cache.Get(1), 11)
 	})
 }
 
 func TestCache_GetOrSetFunc(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New()
+		cache := qn_cache.New()
 		cache.GetOrSetFunc(1, func() interface{} {
 			return 11
 		}, 0)
@@ -169,21 +169,21 @@ func TestCache_GetOrSetFunc(t *testing.T) {
 		}, 0)
 		t.Assert(cache.Get(1), 11)
 
-		gcache.Removes(g.Slice{1, 2, 3})
-		gcache.GetOrSetFunc(1, func() interface{} {
+		qn_cache.Removes(qn.Slice{1, 2, 3})
+		qn_cache.GetOrSetFunc(1, func() interface{} {
 			return 11
 		}, 0)
-		t.Assert(gcache.Get(1), 11)
-		gcache.GetOrSetFunc(1, func() interface{} {
+		t.Assert(qn_cache.Get(1), 11)
+		qn_cache.GetOrSetFunc(1, func() interface{} {
 			return 111
 		}, 0)
-		t.Assert(gcache.Get(1), 11)
+		t.Assert(qn_cache.Get(1), 11)
 	})
 }
 
 func TestCache_GetOrSetFuncLock(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New()
+		cache := qn_cache.New()
 		cache.GetOrSetFuncLock(1, func() interface{} {
 			return 11
 		}, 0)
@@ -193,22 +193,22 @@ func TestCache_GetOrSetFuncLock(t *testing.T) {
 		}, 0)
 		t.Assert(cache.Get(1), 11)
 
-		gcache.Removes(g.Slice{1, 2, 3})
-		gcache.GetOrSetFuncLock(1, func() interface{} {
+		qn_cache.Removes(qn.Slice{1, 2, 3})
+		qn_cache.GetOrSetFuncLock(1, func() interface{} {
 			return 11
 		}, 0)
-		t.Assert(gcache.Get(1), 11)
-		gcache.GetOrSetFuncLock(1, func() interface{} {
+		t.Assert(qn_cache.Get(1), 11)
+		qn_cache.GetOrSetFuncLock(1, func() interface{} {
 			return 111
 		}, 0)
-		t.Assert(gcache.Get(1), 11)
+		t.Assert(qn_cache.Get(1), 11)
 	})
 }
 
 func TestCache_Clear(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New()
-		cache.Sets(g.MapAnyAny{1: 11, 2: 22}, 0)
+		cache := qn_cache.New()
+		cache.Sets(qn.MapAnyAny{1: 11, 2: 22}, 0)
 		cache.Clear()
 		t.Assert(cache.Size(), 0)
 	})
@@ -216,7 +216,7 @@ func TestCache_Clear(t *testing.T) {
 
 func TestCache_SetConcurrency(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		cache := gcache.New()
+		cache := qn_cache.New()
 		pool := grpool.New(4)
 		go func() {
 			for {
@@ -247,8 +247,8 @@ func TestCache_SetConcurrency(t *testing.T) {
 func TestCache_Basic(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		{
-			cache := gcache.New()
-			cache.Sets(g.MapAnyAny{1: 11, 2: 22}, 0)
+			cache := qn_cache.New()
+			cache.Sets(qn.MapAnyAny{1: 11, 2: 22}, 0)
 			t.Assert(cache.Contains(1), true)
 			t.Assert(cache.Get(1), 11)
 			data := cache.Data()
@@ -257,39 +257,39 @@ func TestCache_Basic(t *testing.T) {
 			t.Assert(data[3], nil)
 			t.Assert(cache.Size(), 2)
 			keys := cache.Keys()
-			t.Assert(gset.NewFrom(g.Slice{1, 2}).Equal(gset.NewFrom(keys)), true)
+			t.Assert(qn_set.NewFrom(qn.Slice{1, 2}).Equal(qn_set.NewFrom(keys)), true)
 			keyStrs := cache.KeyStrings()
-			t.Assert(gset.NewFrom(g.Slice{"1", "2"}).Equal(gset.NewFrom(keyStrs)), true)
+			t.Assert(qn_set.NewFrom(qn.Slice{"1", "2"}).Equal(qn_set.NewFrom(keyStrs)), true)
 			values := cache.Values()
-			t.Assert(gset.NewFrom(g.Slice{11, 22}).Equal(gset.NewFrom(values)), true)
+			t.Assert(qn_set.NewFrom(qn.Slice{11, 22}).Equal(qn_set.NewFrom(values)), true)
 			removeData1 := cache.Remove(1)
 			t.Assert(removeData1, 11)
 			t.Assert(cache.Size(), 1)
-			cache.Removes(g.Slice{2})
+			cache.Removes(qn.Slice{2})
 			t.Assert(cache.Size(), 0)
 		}
 
-		gcache.Removes(g.Slice{1, 2, 3})
+		qn_cache.Removes(qn.Slice{1, 2, 3})
 		{
-			gcache.Sets(g.MapAnyAny{1: 11, 2: 22}, 0)
-			t.Assert(gcache.Contains(1), true)
-			t.Assert(gcache.Get(1), 11)
-			data := gcache.Data()
+			qn_cache.Sets(qn.MapAnyAny{1: 11, 2: 22}, 0)
+			t.Assert(qn_cache.Contains(1), true)
+			t.Assert(qn_cache.Get(1), 11)
+			data := qn_cache.Data()
 			t.Assert(data[1], 11)
 			t.Assert(data[2], 22)
 			t.Assert(data[3], nil)
-			t.Assert(gcache.Size(), 2)
-			keys := gcache.Keys()
-			t.Assert(gset.NewFrom(g.Slice{1, 2}).Equal(gset.NewFrom(keys)), true)
-			keyStrs := gcache.KeyStrings()
-			t.Assert(gset.NewFrom(g.Slice{"1", "2"}).Equal(gset.NewFrom(keyStrs)), true)
-			values := gcache.Values()
-			t.Assert(gset.NewFrom(g.Slice{11, 22}).Equal(gset.NewFrom(values)), true)
-			removeData1 := gcache.Remove(1)
+			t.Assert(qn_cache.Size(), 2)
+			keys := qn_cache.Keys()
+			t.Assert(qn_set.NewFrom(qn.Slice{1, 2}).Equal(qn_set.NewFrom(keys)), true)
+			keyStrs := qn_cache.KeyStrings()
+			t.Assert(qn_set.NewFrom(qn.Slice{"1", "2"}).Equal(qn_set.NewFrom(keyStrs)), true)
+			values := qn_cache.Values()
+			t.Assert(qn_set.NewFrom(qn.Slice{11, 22}).Equal(qn_set.NewFrom(values)), true)
+			removeData1 := qn_cache.Remove(1)
 			t.Assert(removeData1, 11)
-			t.Assert(gcache.Size(), 1)
-			gcache.Removes(g.Slice{2})
-			t.Assert(gcache.Size(), 0)
+			t.Assert(qn_cache.Size(), 1)
+			qn_cache.Removes(qn.Slice{2})
+			t.Assert(qn_cache.Size(), 0)
 		}
 	})
 }

@@ -9,7 +9,7 @@ package qn_valid_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/util/qn_valid"
 )
@@ -244,8 +244,8 @@ func Test_CheckStruct_With_Inherit(t *testing.T) {
 		}
 		err := qn_valid.CheckStruct(user, nil)
 		t.AssertNE(err, nil)
-		t.Assert(err.Maps()["name"], g.Map{"required": "请输入您的姓名"})
-		t.Assert(err.Maps()["password1"], g.Map{"same": "您两次输入的密码不一致"})
-		t.Assert(err.Maps()["password2"], g.Map{"same": "您两次输入的密码不一致"})
+		t.Assert(err.Maps()["name"], qn.Map{"required": "请输入您的姓名"})
+		t.Assert(err.Maps()["password1"], qn.Map{"same": "您两次输入的密码不一致"})
+		t.Assert(err.Maps()["password2"], qn.Map{"same": "您两次输入的密码不一致"})
 	})
 }

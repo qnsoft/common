@@ -15,9 +15,9 @@ import (
 
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/gsession"
-	"github.com/qnsoft/common/os/gview"
 	"github.com/qnsoft/common/os/qn_res"
 	"github.com/qnsoft/common/os/qn_time"
+	"github.com/qnsoft/common/os/qn_view"
 	"github.com/qnsoft/common/util/guid"
 
 	"github.com/qnsoft/common/text/qn_regex"
@@ -53,8 +53,8 @@ type Request struct {
 	clientIp        string                 // The parsed client ip for current host used by GetClientIp function.
 	bodyContent     []byte                 // Request body content.
 	isFileRequest   bool                   // A bool marking whether current request is file serving.
-	viewObject      *gview.View            // Custom template view engine object for this response.
-	viewParams      gview.Params           // Custom template view variables for this response.
+	viewObject      *qn_view.View            // Custom template view engine object for this response.
+	viewParams      qn_view.Params           // Custom template view variables for this response.
 }
 
 // StaticFile is the file struct for static file service.

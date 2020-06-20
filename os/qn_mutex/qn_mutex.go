@@ -11,24 +11,24 @@ import (
 	"math"
 	"runtime"
 
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 )
 
 // The high level Mutex, which implements more rich features for mutex.
 type Mutex struct {
-	state   *gtype.Int32  // Indicates the state of mutex.
-	writer  *gtype.Int32  // Pending writer count.
-	reader  *gtype.Int32  // Pending reader count.
-	writing chan struct{} // Channel for writer blocking.
-	reading chan struct{} // Channel for reader blocking.
+	state   *qn_type.Int32 // Indicates the state of mutex.
+	writer  *qn_type.Int32 // Pending writer count.
+	reader  *qn_type.Int32 // Pending reader count.
+	writing chan struct{}  // Channel for writer blocking.
+	reading chan struct{}  // Channel for reader blocking.
 }
 
 // New creates and returns a new mutex.
 func New() *Mutex {
 	return &Mutex{
-		state:   gtype.NewInt32(),
-		writer:  gtype.NewInt32(),
-		reader:  gtype.NewInt32(),
+		state:   qn_type.NewInt32(),
+		writer:  qn_type.NewInt32(),
+		reader:  qn_type.NewInt32(),
 		writing: make(chan struct{}, 1),
 		reading: make(chan struct{}, math.MaxInt32),
 	}

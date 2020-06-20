@@ -16,7 +16,7 @@ import (
 
 	"github.com/qnsoft/common/os/qn_log"
 
-	"github.com/qnsoft/common/os/gfsnotify"
+	"github.com/qnsoft/common/os/qn_snotify"
 
 	"github.com/qnsoft/common/text/qn_regex"
 
@@ -255,12 +255,12 @@ func (m *Manager) init() {
 			}
 		}
 		// Monitor changes of i18n files for hot reload feature.
-		_, _ = gfsnotify.Add(path, func(event *gfsnotify.Event) {
+		_, _ = qn_snotify.Add(path, func(event *qn_snotify.Event) {
 			// Any changes of i18n files, clear the data.
 			m.mu.Lock()
 			m.data = nil
 			m.mu.Unlock()
-			gfsnotify.Exit()
+			qn_snotify.Exit()
 		})
 	}
 }

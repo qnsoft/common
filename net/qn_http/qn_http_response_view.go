@@ -8,15 +8,15 @@
 package qn_http
 
 import (
-	"github.com/qnsoft/common/os/gview"
 	"github.com/qnsoft/common/os/qn_cfg"
+	"github.com/qnsoft/common/os/qn_view"
 	"github.com/qnsoft/common/util/gmode"
 	qn_util "github.com/qnsoft/common/util/qn_util"
 )
 
 // WriteTpl parses and responses given template file.
 // The parameter <params> specifies the template variables for parsing.
-func (r *Response) WriteTpl(tpl string, params ...gview.Params) error {
+func (r *Response) WriteTpl(tpl string, params ...qn_view.Params) error {
 	if b, err := r.ParseTpl(tpl, params...); err != nil {
 		if !gmode.IsProduct() {
 			r.Write("Template Parsing Error: " + err.Error())
@@ -30,7 +30,7 @@ func (r *Response) WriteTpl(tpl string, params ...gview.Params) error {
 
 // WriteTplDefault parses and responses the default template file.
 // The parameter <params> specifies the template variables for parsing.
-func (r *Response) WriteTplDefault(params ...gview.Params) error {
+func (r *Response) WriteTplDefault(params ...qn_view.Params) error {
 	if b, err := r.ParseTplDefault(params...); err != nil {
 		if !gmode.IsProduct() {
 			r.Write("Template Parsing Error: " + err.Error())
@@ -44,7 +44,7 @@ func (r *Response) WriteTplDefault(params ...gview.Params) error {
 
 // WriteTplContent parses and responses the template content.
 // The parameter <params> specifies the template variables for parsing.
-func (r *Response) WriteTplContent(content string, params ...gview.Params) error {
+func (r *Response) WriteTplContent(content string, params ...qn_view.Params) error {
 	if b, err := r.ParseTplContent(content, params...); err != nil {
 		if !gmode.IsProduct() {
 			r.Write("Template Parsing Error: " + err.Error())
@@ -58,18 +58,18 @@ func (r *Response) WriteTplContent(content string, params ...gview.Params) error
 
 // ParseTpl parses given template file <tpl> with given template variables <params>
 // and returns the parsed template content.
-func (r *Response) ParseTpl(tpl string, params ...gview.Params) (string, error) {
+func (r *Response) ParseTpl(tpl string, params ...qn_view.Params) (string, error) {
 	return r.Request.GetView().Parse(tpl, r.buildInVars(params...))
 }
 
 // ParseDefault parses the default template file with params.
-func (r *Response) ParseTplDefault(params ...gview.Params) (string, error) {
+func (r *Response) ParseTplDefault(params ...qn_view.Params) (string, error) {
 	return r.Request.GetView().ParseDefault(r.buildInVars(params...))
 }
 
 // ParseTplContent parses given template file <file> with given template parameters <params>
 // and returns the parsed template content.
-func (r *Response) ParseTplContent(content string, params ...gview.Params) (string, error) {
+func (r *Response) ParseTplContent(content string, params ...qn_view.Params) (string, error) {
 	return r.Request.GetView().ParseContent(content, r.buildInVars(params...))
 }
 

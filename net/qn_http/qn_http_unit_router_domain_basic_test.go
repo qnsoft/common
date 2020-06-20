@@ -11,9 +11,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/internal/intlog"
 
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )

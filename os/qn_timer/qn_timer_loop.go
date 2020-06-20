@@ -9,7 +9,7 @@ package qn_timer
 import (
 	"time"
 
-	"github.com/qnsoft/common/container/glist"
+	"github.com/qnsoft/common/container/qn_list"
 )
 
 // start starts the ticker using a standalone goroutine.
@@ -43,7 +43,7 @@ func (w *wheel) proceed() {
 	l := w.slots[int(n%w.number)]
 	length := l.Len()
 	if length > 0 {
-		go func(l *glist.List, nowTicks int64) {
+		go func(l *qn_list.List, nowTicks int64) {
 			entry := (*Entry)(nil)
 			nowMs := time.Now().UnixNano() / 1e6
 			for i := length; i > 0; i-- {

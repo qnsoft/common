@@ -9,11 +9,11 @@ package qn_set_test
 import (
 	"fmt"
 
-	"github.com/qnsoft/common/container/gset"
+	"github.com/qnsoft/common/container/qn_set"
 )
 
 func ExampleIntSet_Contains() {
-	var set gset.IntSet
+	var set qn_set.IntSet
 	set.Add(1)
 	fmt.Println(set.Contains(1))
 	fmt.Println(set.Contains(2))

@@ -11,12 +11,11 @@ package qn_str_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_OctStr(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gstr.OctStr(`\346\200\241`), "怡")
+		t.Assert(qn.str.OctStr(`\346\200\241`), "怡")
 	})
 }

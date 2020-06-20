@@ -8,7 +8,8 @@ package qn_log_test
 
 import (
 	"context"
-	"github.com/qnsoft/common/frame/g"
+
+	"github.com/gogf/gf/frame/g"
 )
 
 func Example_context() {

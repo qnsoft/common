@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/internal/cmdenv"
-	"github.com/qnsoft/common/os/gcache"
-	"github.com/qnsoft/common/os/gfsnotify"
+	"github.com/qnsoft/common/os/qn_cache"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_snotify"
 )
 
 const (
@@ -42,14 +42,14 @@ func GetBinContents(path string, duration ...time.Duration) []byte {
 	if len(duration) > 0 {
 		expire = duration[0]
 	}
-	r := gcache.GetOrSetFuncLock(key, func() interface{} {
+	r := qn_cache.GetOrSetFuncLock(key, func() interface{} {
 		b := qn_file.GetBytes(path)
 		if b != nil {
-			// Adding this <path> to gfsnotify,
+			// Adding this <path> to qn_snotify,
 			// it will clear its cache if there's any changes of the file.
-			_, _ = gfsnotify.Add(path, func(event *gfsnotify.Event) {
-				gcache.Remove(key)
-				gfsnotify.Exit()
+			_, _ = qn_snotify.Add(path, func(event *qn_snotify.Event) {
+				qn_cache.Remove(key)
+				qn_snotify.Exit()
 			})
 		}
 		return b
@@ -60,7 +60,7 @@ func GetBinContents(path string, duration ...time.Duration) []byte {
 	return nil
 }
 
-// cacheKey produces the cache key for gcache.
+// cacheKey produces the cache key for qn_cache.
 func cacheKey(path string) string {
 	return "qn.qncache:" + path
 }

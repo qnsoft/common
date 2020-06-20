@@ -13,22 +13,22 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 
 	"github.com/qnsoft/common/encoding/qn_binary"
 )
 
 var (
-	it     = gtype.NewInt()
-	it32   = gtype.NewInt32()
-	it64   = gtype.NewInt64()
-	uit    = gtype.NewUint()
-	uit32  = gtype.NewUint32()
-	uit64  = gtype.NewUint64()
-	bl     = gtype.NewBool()
-	vbytes = gtype.NewBytes()
-	str    = gtype.NewString()
-	inf    = gtype.NewInterface()
+	it     = qn_type.NewInt()
+	it32   = qn_type.NewInt32()
+	it64   = qn_type.NewInt64()
+	uit    = qn_type.NewUint()
+	uit32  = qn_type.NewUint32()
+	uit64  = qn_type.NewUint64()
+	bl     = qn_type.NewBool()
+	vbytes = qn_type.NewBytes()
+	str    = qn_type.NewString()
+	inf    = qn_type.NewInterface()
 	at     = atomic.Value{}
 )
 

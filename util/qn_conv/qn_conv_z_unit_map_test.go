@@ -9,10 +9,11 @@ package qn_conv_test
 import (
 	"testing"
 
+	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/util/qn_conv"
 	"github.com/qnsoft/common/util/qn_util"
 
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -27,39 +28,39 @@ func Test_Map_Basic(t *testing.T) {
 		m3 := map[float64]float32{
 			1.22: 3.1,
 		}
-		t.Assert(qn_conv.Map(m1), g.Map{
+		t.Assert(qn_conv.Map(m1), qn.Map{
 			"k": "v",
 		})
-		t.Assert(qn_conv.Map(m2), g.Map{
+		t.Assert(qn_conv.Map(m2), qn.Map{
 			"3": "v",
 		})
-		t.Assert(qn_conv.Map(m3), g.Map{
+		t.Assert(qn_conv.Map(m3), qn.Map{
 			"1.22": "3.1",
 		})
 	})
 }
 
 func Test_Map_Slice(t *testing.T) {
-	qn_test.C(t, func(t *qn_test.T) {
-		slice1 := g.Slice{"1", "2", "3", "4"}
-		slice2 := g.Slice{"1", "2", "3"}
+	qn_test.C(tqn.Slnc(t *qn_test.T) {
+		slice1 := qn.Slice{"1", "2", "3", "4"}
+		slice2 := qn.Slice{"1", "2", "3"}
 		slice3 := g.Slice{}
-		t.Assert(qn_conv.Map(slice1), g.Map{
+		t.Assert(qn_conv.Map(slice1), qn.Map{
 			"1": "2",
 			"3": "4",
 		})
-		t.Assert(qn_conv.Map(slice2), g.Map{
+		t.Assert(qn_conv.Map(slice2), qn.Map{
 			"1": "2",
 			"3": nil,
 		})
-		t.Assert(qn_conv.Map(slice3), g.Map{})
+		t.Assert(qn_conv.Map(slice3), qn.Map{})
 	})
 }
 
-func Test_Maps_Basic(t *testing.T) {
+func Test_Mqn.SlBasic(t *testing.T) {
 	params := g.Slice{
-		g.Map{"id": 100, "name": "john"},
-		g.Map{"id": 200, "name": "smith"},
+		qn.Map{"id": 100, "name": "john"},
+		qn.Map{"id": 200, "name": "smith"},
 	}
 	qn_test.C(t, func(t *qn_test.T) {
 		list := qn_conv.Maps(params)
@@ -200,7 +201,7 @@ func Test_Map_PrivateAttribute(t *testing.T) {
 	}
 	qn_test.C(t, func(t *qn_test.T) {
 		user := &User{1, "john"}
-		t.Assert(qn_conv.Map(user), g.Map{"Id": 1})
+		t.Assert(qn_conv.Map(user), qn.Map{"Id": 1})
 	})
 }
 

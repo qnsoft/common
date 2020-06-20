@@ -9,7 +9,7 @@ package qn_cfg_test
 import (
 	"fmt"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/gogf/gf/frame/g"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/qn_cfg"
 )

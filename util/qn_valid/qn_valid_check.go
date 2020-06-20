@@ -135,15 +135,15 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 	}
 	// Custom error messages handling.
 	var (
-		msgArray     = make([]string, 0)
-		customMsgMap = make(map[string]string)
+		msgArray       = make([]string, 0)
+		customMsqn_map = make(map[string]string)
 	)
 	switch v := messages.(type) {
 	case string:
 		msgArray = strings.Split(v, "|")
 	default:
 		for k, v := range qn_conv.Map(messages) {
-			customMsgMap[k] = qn_conv.String(v)
+			customMsqn_map[k] = qn_conv.String(v)
 		}
 	}
 	// Handle the char '|' in the rule,
@@ -177,7 +177,7 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 			ruleVal = strings.TrimSpace(results[2])
 		)
 		if len(msgArray) > index {
-			customMsgMap[ruleKey] = strings.TrimSpace(msgArray[index])
+			customMsqn_map[ruleKey] = strings.TrimSpace(msgArray[index])
 		}
 		switch ruleKey {
 		// Required rules.
@@ -197,7 +197,7 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 			"length",
 			"min-length",
 			"max-length":
-			if msg := checkLength(val, ruleKey, ruleVal, customMsgMap); msg != "" {
+			if msg := checkLength(val, ruleKey, ruleVal, customMsqn_map); msg != "" {
 				errorMsgs[ruleKey] = msg
 			} else {
 				match = true
@@ -208,7 +208,7 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 			"min",
 			"max",
 			"between":
-			if msg := checkRange(val, ruleKey, ruleVal, customMsgMap); msg != "" {
+			if msg := checkRange(val, ruleKey, ruleVal, customMsqn_map); msg != "" {
 				errorMsgs[ruleKey] = msg
 			} else {
 				match = true
@@ -244,7 +244,7 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 				match = true
 			} else {
 				var msg string
-				msg = getErrorMessageByRule(ruleKey, customMsgMap)
+				msg = getErrorMessageByRule(ruleKey, customMsqn_map)
 				msg = strings.Replace(msg, ":format", ruleVal, -1)
 				errorMsgs[ruleKey] = msg
 			}
@@ -258,7 +258,7 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 			}
 			if !match {
 				var msg string
-				msg = getErrorMessageByRule(ruleKey, customMsgMap)
+				msg = getErrorMessageByRule(ruleKey, customMsqn_map)
 				msg = strings.Replace(msg, ":field", ruleVal, -1)
 				errorMsgs[ruleKey] = msg
 			}
@@ -273,7 +273,7 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 			}
 			if !match {
 				var msg string
-				msg = getErrorMessageByRule(ruleKey, customMsgMap)
+				msg = getErrorMessageByRule(ruleKey, customMsqn_map)
 				msg = strings.Replace(msg, ":field", ruleVal, -1)
 				errorMsgs[ruleKey] = msg
 			}
@@ -452,7 +452,7 @@ func doCheck(key string, value interface{}, rules string, messages interface{}, 
 			// It does nothing if the error message for this rule
 			// is already set in previous validation.
 			if _, ok := errorMsgs[ruleKey]; !ok {
-				errorMsgs[ruleKey] = getErrorMessageByRule(ruleKey, customMsgMap)
+				errorMsgs[ruleKey] = getErrorMessageByRule(ruleKey, customMsqn_map)
 			}
 		}
 		index++

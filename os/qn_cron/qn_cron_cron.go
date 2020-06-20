@@ -11,29 +11,29 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/container/qn_array"
+	"github.com/qnsoft/common/container/qn_map"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_timer"
 )
 
 type Cron struct {
-	idGen    *gtype.Int64    // Used for unique name generation.
-	status   *gtype.Int      // Timed task status(0: Not Start; 1: Running; 2: Stopped; -1: Closed)
-	entries  *gmap.StrAnyMap // All timed task entries.
-	logPath  *gtype.String   // Logging path(folder).
-	logLevel *gtype.Int      // Logging level.
+	idGen    *qn_type.Int64    // Used for unique name generation.
+	status   *qn_type.Int      // Timed task status(0: Not Start; 1: Running; 2: Stopped; -1: Closed)
+	entries  *qn_map.StrAnyMap // All timed task entries.
+	logPath  *qn_type.String   // Logging path(folder).
+	logLevel *qn_type.Int      // Logging level.
 }
 
 // New returns a new Cron object with default settings.
 func New() *Cron {
 	return &Cron{
-		idGen:    gtype.NewInt64(),
-		status:   gtype.NewInt(STATUS_RUNNING),
-		entries:  gmap.NewStrAnyMap(true),
-		logPath:  gtype.NewString(),
-		logLevel: gtype.NewInt(qn_log.LEVEL_PROD),
+		idGen:    qn_type.NewInt64(),
+		status:   qn_type.NewInt(STATUS_RUNNING),
+		entries:  qn_map.NewStrAnyMap(true),
+		logPath:  qn_type.NewString(),
+		logLevel: qn_type.NewInt(qn_log.LEVEL_PROD),
 	}
 }
 

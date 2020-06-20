@@ -11,12 +11,12 @@ package qn_cache_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/os/gcache"
+	"github.com/qnsoft/common/os/qn_cache"
 )
 
 var (
-	cache    = gcache.New()
-	cacheLru = gcache.New(10000)
+	cache    = qn_cache.New()
+	cacheLru = qn_cache.New(10000)
 )
 
 func Benchmark_CacheSet(b *testing.B) {

@@ -11,16 +11,16 @@ import (
 	"os"
 	"time"
 
-	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/gpool"
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_map"
+	"github.com/qnsoft/common/container/qn_type"
 )
 
 // File pointer pool.
 type Pool struct {
-	id   *gtype.Int    // Pool id, which is used to mark this pool whether recreated.
+	id   *qn_type.Int    // Pool id, which is used to mark this pool whether recreated.
 	pool *gpool.Pool   // Underlying pool.
-	init *gtype.Bool   // Whether initialized, used for marking this file added to fsnotify, and it can only be added just once.
+	init *qn_type.Bool   // Whether initialized, used for marking this file added to fsnotify, and it can only be added just once.
 	ttl  time.Duration // Time to live for file pointer items.
 }
 
@@ -37,5 +37,5 @@ type File struct {
 
 var (
 	// Global file pointer pool.
-	pools = gmap.NewStrAnyMap(true)
+	pools = qn_map.NewStrAnyMap(true)
 )

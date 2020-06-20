@@ -12,16 +12,16 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 )
 
-var anyAnyMap = gmap.NewAnyAnyMap(true)
-var intIntMap = gmap.NewIntIntMap(true)
-var intAnyMap = gmap.NewIntAnyMap(true)
-var intStrMap = gmap.NewIntStrMap(true)
-var strIntMap = gmap.NewStrIntMap(true)
-var strAnyMap = gmap.NewStrAnyMap(true)
-var strStrMap = gmap.NewStrStrMap(true)
+var anyAnyMap = qn_map.NewAnyAnyMap(true)
+var intIntMap = qn_map.NewIntIntMap(true)
+var intAnyMap = qn_map.NewIntAnyMap(true)
+var intStrMap = qn_map.NewIntStrMap(true)
+var strIntMap = qn_map.NewStrIntMap(true)
+var strAnyMap = qn_map.NewStrAnyMap(true)
+var strStrMap = qn_map.NewStrStrMap(true)
 
 func Benchmark_IntIntMap_Set(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {

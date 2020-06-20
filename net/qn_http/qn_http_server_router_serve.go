@@ -12,7 +12,7 @@ import (
 
 	"github.com/qnsoft/common/internal/json"
 
-	"github.com/qnsoft/common/container/glist"
+	"github.com/qnsoft/common/container/qn_list"
 	"github.com/qnsoft/common/text/qn_regex"
 )
 
@@ -72,8 +72,8 @@ func (s *Server) searchHandlers(method, path, domain string) (parsedItems []*han
 	} else {
 		array = strings.Split(path[1:], "/")
 	}
-	parsedItemList := glist.New()
-	lastMiddlewareElem := (*glist.Element)(nil)
+	parsedItemList := qn_list.New()
+	lastMiddlewareElem := (*qn_list.Element)(nil)
 	repeatHandlerCheckMap := make(map[int]struct{}, 16)
 	// Default domain has the most priority when iteration.
 	for _, domain := range []string{gDEFAULT_DOMAIN, domain} {
@@ -82,7 +82,7 @@ func (s *Server) searchHandlers(method, path, domain string) (parsedItems []*han
 			continue
 		}
 		// Make a list array with capacity of 16.
-		lists := make([]*glist.List, 0, 16)
+		lists := make([]*qn_list.List, 0, 16)
 		for i, part := range array {
 			// In case of double '/' URI, eg: /user//index
 			if part == "" {
@@ -90,14 +90,14 @@ func (s *Server) searchHandlers(method, path, domain string) (parsedItems []*han
 			}
 			// Add all list of each node to the list array.
 			if v, ok := p.(map[string]interface{})["*list"]; ok {
-				lists = append(lists, v.(*glist.List))
+				lists = append(lists, v.(*qn_list.List))
 			}
 			if v, ok := p.(map[string]interface{})[part]; ok {
 				// Loop to the next node by certain key name.
 				p = v
 				if i == len(array)-1 {
 					if v, ok := p.(map[string]interface{})["*list"]; ok {
-						lists = append(lists, v.(*glist.List))
+						lists = append(lists, v.(*qn_list.List))
 						break
 					}
 				}
@@ -113,7 +113,7 @@ func (s *Server) searchHandlers(method, path, domain string) (parsedItems []*han
 				}
 				// The leaf must have a list item. It adds the list to the list array.
 				if v, ok := p.(map[string]interface{})["*list"]; ok {
-					lists = append(lists, v.(*glist.List))
+					lists = append(lists, v.(*qn_list.List))
 				}
 			}
 		}

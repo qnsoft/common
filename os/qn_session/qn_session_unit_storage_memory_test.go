@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/os/gsession"
 
 	"github.com/qnsoft/common/test/qn_test"
@@ -25,7 +25,7 @@ func Test_StorageMemory(t *testing.T) {
 		defer s.Close()
 		s.Set("k1", "v1")
 		s.Set("k2", "v2")
-		s.Sets(g.Map{
+		s.Sets(qn.Map{
 			"k3": "v3",
 			"k4": "v4",
 		})
@@ -56,7 +56,7 @@ func Test_StorageMemory(t *testing.T) {
 		t.Assert(s.Size(), 0)
 		t.Assert(s.Contains("k1"), false)
 		t.Assert(s.Contains("k2"), false)
-		s.Sets(g.Map{
+		s.Sets(qn.Map{
 			"k5": "v5",
 			"k6": "v6",
 		})

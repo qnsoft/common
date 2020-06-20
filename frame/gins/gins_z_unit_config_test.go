@@ -58,7 +58,7 @@ func Test_Config2(t *testing.T) {
 		t.Assert(qn_ins.Config().Get("database.default.1.host"), "127.0.0.1")
 		t.Assert(qn_ins.Config().Get("redis.disk"), "127.0.0.1:6379,0")
 	})
-	// for gfsnotify callbacks to refresh cache of config file
+	// for qn_snotify callbacks to refresh cache of config file
 	time.Sleep(500 * time.Millisecond)
 
 	// relative path, config folder
@@ -82,7 +82,7 @@ func Test_Config2(t *testing.T) {
 		t.Assert(qn_ins.Config().Get("database.default.1.host"), "127.0.0.1")
 		t.Assert(qn_ins.Config().Get("redis.disk"), "127.0.0.1:6379,0")
 
-		// for gfsnotify callbacks to refresh cache of config file
+		// for qn_snotify callbacks to refresh cache of config file
 		time.Sleep(500 * time.Millisecond)
 	})
 }
@@ -109,7 +109,7 @@ func Test_Config3(t *testing.T) {
 		t.Assert(qn_ins.Config("test").Get("database.default.1.host"), "127.0.0.1")
 		t.Assert(qn_ins.Config("test").Get("redis.disk"), "127.0.0.1:6379,0")
 	})
-	// for gfsnotify callbacks to refresh cache of config file
+	// for qn_snotify callbacks to refresh cache of config file
 	time.Sleep(500 * time.Millisecond)
 
 	qn_test.C(t, func(t *qn_test.T) {
@@ -133,7 +133,7 @@ func Test_Config3(t *testing.T) {
 		t.Assert(qn_ins.Config("test").Get("database.default.1.host"), "127.0.0.1")
 		t.Assert(qn_ins.Config("test").Get("redis.disk"), "127.0.0.1:6379,0")
 	})
-	// for gfsnotify callbacks to refresh cache of config file for next unit testing case.
+	// for qn_snotify callbacks to refresh cache of config file for next unit testing case.
 	time.Sleep(500 * time.Millisecond)
 }
 

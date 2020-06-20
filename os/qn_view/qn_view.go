@@ -12,7 +12,7 @@ package qn_view
 
 import (
 	"github.com/gogf/gf"
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/internal/intlog"
 
 	"github.com/qnsoft/common/container/qn_array"
@@ -26,7 +26,7 @@ type View struct {
 	paths        *qn_array.StrArray     // Searching array for path, NOT concurrent-safe for performance purpose.
 	data         map[string]interface{} // Global template variables.
 	funcMap      map[string]interface{} // Global template function map.
-	fileCacheMap *gmap.StrAnyMap        // File cache map.
+	fileCacheMap *qn_map.StrAnyMap      // File cache map.
 	config       Config                 // Extra configuration for the view.
 }
 
@@ -62,7 +62,7 @@ func New(path ...string) *View {
 		paths:        qn_array.NewStrArray(),
 		data:         make(map[string]interface{}),
 		funcMap:      make(map[string]interface{}),
-		fileCacheMap: gmap.NewStrAnyMap(true),
+		fileCacheMap: qn_map.NewStrAnyMap(true),
 		config:       DefaultConfig(),
 	}
 	if len(path) > 0 && len(path[0]) > 0 {
@@ -71,7 +71,7 @@ func New(path ...string) *View {
 		}
 	} else {
 		// Customized dir path from env/cmd.
-		if envPath := cmdenv.Get("gf.gview.path").String(); envPath != "" {
+		if envPath := cmdenv.Get("gf.qn_view.path").String(); envPath != "" {
 			if qn_file.Exists(envPath) {
 				if err := view.SetPath(envPath); err != nil {
 					intlog.Error(err)

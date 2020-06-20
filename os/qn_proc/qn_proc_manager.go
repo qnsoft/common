@@ -9,18 +9,18 @@ package qn_proc
 import (
 	"os"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 )
 
 // 进程管理器
 type Manager struct {
-	processes *gmap.IntAnyMap // 所管理的子进程map
+	processes *qn_map.IntAnyMap // 所管理的子进程map
 }
 
 // 创建一个进程管理器
 func NewManager() *Manager {
 	return &Manager{
-		processes: gmap.NewIntAnyMap(true),
+		processes: qn_map.NewIntAnyMap(true),
 	}
 }
 

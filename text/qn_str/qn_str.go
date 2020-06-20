@@ -4,7 +4,7 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-// Package gstr provides functions for string handling.
+// Package qn.str provides functions for string handling.
 package qn_str
 
 import (

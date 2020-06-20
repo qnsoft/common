@@ -9,14 +9,14 @@ package qn_set_test
 import (
 	"fmt"
 
-	"github.com/qnsoft/common/container/gset"
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/container/qn_set"
+	"github.com/qnsoft/common/frame/qn"
 )
 
 func ExampleSet_Intersect() {
-	s1 := gset.NewFrom(g.Slice{1, 2, 3})
-	s2 := gset.NewFrom(g.Slice{4, 5, 6})
-	s3 := gset.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7})
+	s1 := qn_set.NewFrom(qn.Slice{1, 2, 3})
+	s2 := qn_set.NewFrom(qn.Slice{4, 5, 6})
+	s3 := qn_set.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7})
 
 	fmt.Println(s3.Intersect(s1).Slice())
 	fmt.Println(s3.Diff(s1).Slice())
@@ -31,9 +31,9 @@ func ExampleSet_Intersect() {
 }
 
 func ExampleSet_Diff() {
-	s1 := gset.NewFrom(g.Slice{1, 2, 3})
-	s2 := gset.NewFrom(g.Slice{4, 5, 6})
-	s3 := gset.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7})
+	s1 := qn_set.NewFrom(qn.Slice{1, 2, 3})
+	s2 := qn_set.NewFrom(qn.Slice{4, 5, 6})
+	s3 := qn_set.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7})
 
 	fmt.Println(s3.Intersect(s1).Slice())
 	fmt.Println(s3.Diff(s1).Slice())
@@ -48,9 +48,9 @@ func ExampleSet_Diff() {
 }
 
 func ExampleSet_Union() {
-	s1 := gset.NewFrom(g.Slice{1, 2, 3})
-	s2 := gset.NewFrom(g.Slice{4, 5, 6})
-	s3 := gset.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7})
+	s1 := qn_set.NewFrom(qn.Slice{1, 2, 3})
+	s2 := qn_set.NewFrom(qn.Slice{4, 5, 6})
+	s3 := qn_set.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7})
 
 	fmt.Println(s3.Intersect(s1).Slice())
 	fmt.Println(s3.Diff(s1).Slice())
@@ -65,9 +65,9 @@ func ExampleSet_Union() {
 }
 
 func ExampleSet_Complement() {
-	s1 := gset.NewFrom(g.Slice{1, 2, 3})
-	s2 := gset.NewFrom(g.Slice{4, 5, 6})
-	s3 := gset.NewFrom(g.Slice{1, 2, 3, 4, 5, 6, 7})
+	s1 := qn_set.NewFrom(qn.Slice{1, 2, 3})
+	s2 := qn_set.NewFrom(qn.Slice{4, 5, 6})
+	s3 := qn_set.NewFrom(qn.Slice{1, 2, 3, 4, 5, 6, 7})
 
 	fmt.Println(s3.Intersect(s1).Slice())
 	fmt.Println(s3.Diff(s1).Slice())
@@ -82,9 +82,9 @@ func ExampleSet_Complement() {
 }
 
 func ExampleSet_IsSubsetOf() {
-	var s1, s2 gset.Set
-	s1.Add(g.Slice{1, 2, 3}...)
-	s2.Add(g.Slice{2, 3}...)
+	var s1, s2 qn_set.Set
+	s1.Add(qn.Slice{1, 2, 3}...)
+	s2.Add(qn.Slice{2, 3}...)
 	fmt.Println(s1.IsSubsetOf(&s2))
 	fmt.Println(s2.IsSubsetOf(&s1))
 
@@ -94,7 +94,7 @@ func ExampleSet_IsSubsetOf() {
 }
 
 func ExampleSet_AddIfNotExist() {
-	var set gset.Set
+	var set qn_set.Set
 	fmt.Println(set.AddIfNotExist(1))
 	fmt.Println(set.AddIfNotExist(1))
 	fmt.Println(set.Slice())
@@ -106,7 +106,7 @@ func ExampleSet_AddIfNotExist() {
 }
 
 func ExampleSet_Pop() {
-	var set gset.Set
+	var set qn_set.Set
 	set.Add(1, 2, 3, 4)
 	fmt.Println(set.Pop())
 	fmt.Println(set.Pops(2))
@@ -119,7 +119,7 @@ func ExampleSet_Pop() {
 }
 
 func ExampleSet_Pops() {
-	var set gset.Set
+	var set qn_set.Set
 	set.Add(1, 2, 3, 4)
 	fmt.Println(set.Pop())
 	fmt.Println(set.Pops(2))
@@ -132,7 +132,7 @@ func ExampleSet_Pops() {
 }
 
 func ExampleSet_Join() {
-	var set gset.Set
+	var set qn_set.Set
 	set.Add("a", "b", "c", "d")
 	fmt.Println(set.Join(","))
 
@@ -141,7 +141,7 @@ func ExampleSet_Join() {
 }
 
 func ExampleSet_Contains() {
-	var set gset.StrSet
+	var set qn_set.StrSet
 	set.Add("a")
 	fmt.Println(set.Contains("a"))
 	fmt.Println(set.Contains("A"))
@@ -154,7 +154,7 @@ func ExampleSet_Contains() {
 }
 
 func ExampleSet_ContainsI() {
-	var set gset.StrSet
+	var set qn_set.StrSet
 	set.Add("a")
 	fmt.Println(set.Contains("a"))
 	fmt.Println(set.Contains("A"))

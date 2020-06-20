@@ -20,7 +20,7 @@ import (
 
 	"github.com/qnsoft/common/os/gsession"
 
-	"github.com/qnsoft/common/os/gview"
+	"github.com/qnsoft/common/os/qn_view"
 
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_log"
@@ -104,7 +104,7 @@ type ServerConfig struct {
 	ServerAgent string
 
 	// View specifies the default template view object for the server.
-	View *gview.View
+	View *qn_view.View
 
 	// ==================================
 	// Static.
@@ -434,7 +434,7 @@ func (s *Server) SetKeepAlive(enabled bool) {
 }
 
 // SetView sets the View for the server.
-func (s *Server) SetView(view *gview.View) {
+func (s *Server) SetView(view *qn_view.View) {
 	s.config.View = view
 }
 

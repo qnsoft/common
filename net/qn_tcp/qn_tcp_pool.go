@@ -9,8 +9,8 @@ package qn_tcp
 import (
 	"time"
 
-	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/gpool"
+	"github.com/qnsoft/common/container/qn_map"
 )
 
 // PoolConn is a connection with pool feature for TCP.
@@ -31,7 +31,7 @@ const (
 
 var (
 	// addressPoolMap is a mapping for address to its pool object.
-	addressPoolMap = gmap.NewStrAnyMap(true)
+	addressPoolMap = qn_map.NewStrAnyMap(true)
 )
 
 // NewPoolConn creates and returns a connection with pool feature.

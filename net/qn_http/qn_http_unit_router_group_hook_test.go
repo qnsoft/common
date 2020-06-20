@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -78,7 +79,7 @@ func Test_Router_Group_Hook2(t *testing.T) {
 func Test_Router_Group_Hook3(t *testing.T) {
 	p, _ := ports.PopRand()
 	s := g.Server(p)
-	s.Group("/api").Bind([]g.Slice{
+	s.Group("/api").Bind([]qn.Slice{
 		{"ALL", "handler", func(r *qn_http.Request) {
 			r.Response.Write("1")
 		}},

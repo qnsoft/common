@@ -11,9 +11,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/internal/json"
 
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -167,13 +168,13 @@ func Test_Params_Json_Response(t *testing.T) {
 		t.Assert(err3, nil)
 		t.Assert(len(map3), 2)
 		t.Assert(map3["success"], "true")
-		t.Assert(map3["message"], g.Map{"body": "测试", "code": 3, "error": "error"})
+		t.Assert(map3["message"], qn.Map{"body": "测试", "code": 3, "error": "error"})
 
 		map4 := make(map[string]interface{})
 		err4 := json.Unmarshal([]byte(client.GetContent("/json4")), &map4)
 		t.Assert(err4, nil)
 		t.Assert(len(map4), 2)
 		t.Assert(map4["success"], "true")
-		t.Assert(map4["message"], g.Map{"body": "测试", "code": 3, "error": "error"})
+		t.Assert(map4["message"], qn.Map{"body": "测试", "code": 3, "error": "error"})
 	})
 }

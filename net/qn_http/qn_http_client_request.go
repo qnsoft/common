@@ -23,7 +23,6 @@ import (
 	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/encoding/qn_parser"
-	"github.com/qnsoft/common/text/gstr"
 	"github.com/qnsoft/common/text/qn_regex"
 
 	"github.com/qnsoft/common/os/qn_file"
@@ -93,7 +92,7 @@ func (c *Client) Trace(url string, data ...interface{}) (*ClientResponse, error)
 func (c *Client) DoRequest(method, url string, data ...interface{}) (resp *ClientResponse, err error) {
 	method = strings.ToUpper(method)
 	if len(c.prefix) > 0 {
-		url = c.prefix + gstr.Trim(url)
+		url = c.prefix + qn.str.Trim(url)
 	}
 	param := ""
 	if len(data) > 0 {

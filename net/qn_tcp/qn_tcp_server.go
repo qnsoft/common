@@ -12,7 +12,7 @@ import (
 	"net"
 	"sync"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/os/qn_log"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
@@ -32,7 +32,7 @@ type Server struct {
 }
 
 // Map for name to server, for singleton purpose.
-var serverMapping = gmap.NewStrAnyMap(true)
+var serverMapping = qn_map.NewStrAnyMap(true)
 
 // GetServer returns the TCP server with specified <name>,
 // or it returns a new normal TCP server named <name> if it does not exist.

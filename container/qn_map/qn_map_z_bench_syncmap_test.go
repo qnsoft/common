@@ -12,13 +12,13 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 )
 
-var gm = gmap.NewIntIntMap(true)
+var gm = qn_map.NewIntIntMap(true)
 var sm = sync.Map{}
 
-func Benchmark_GMapSet(b *testing.B) {
+func Benchmark_qn_mapSet(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		i := 0
 		for pb.Next() {
@@ -38,7 +38,7 @@ func Benchmark_SyncMapSet(b *testing.B) {
 	})
 }
 
-func Benchmark_GMapGet(b *testing.B) {
+func Benchmark_qn_mapGet(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		i := 0
 		for pb.Next() {
@@ -58,7 +58,7 @@ func Benchmark_SyncMapGet(b *testing.B) {
 	})
 }
 
-func Benchmark_GMapRemove(b *testing.B) {
+func Benchmark_qn_mapRemove(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		i := 0
 		for pb.Next() {

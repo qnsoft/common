@@ -6,29 +6,29 @@
 
 package qn_http
 
-import "github.com/qnsoft/common/os/gview"
+import "github.com/qnsoft/common/os/qn_view"
 
 // SetView sets template view engine object for this request.
-func (r *Request) SetView(view *gview.View) {
+func (r *Request) SetView(view *qn_view.View) {
 	r.viewObject = view
 }
 
 // GetView returns the template view engine object for this request.
-func (r *Request) GetView() *gview.View {
+func (r *Request) GetView() *qn_view.View {
 	view := r.viewObject
 	if view == nil {
 		view = r.Server.config.View
 	}
 	if view == nil {
-		view = gview.Instance()
+		view = qn_view.Instance()
 	}
 	return view
 }
 
 // Assigns binds multiple template variables to current request.
-func (r *Request) Assigns(data gview.Params) {
+func (r *Request) Assigns(data qn_view.Params) {
 	if r.viewParams == nil {
-		r.viewParams = make(gview.Params, len(data))
+		r.viewParams = make(qn_view.Params, len(data))
 	}
 	for k, v := range data {
 		r.viewParams[k] = v
@@ -38,7 +38,7 @@ func (r *Request) Assigns(data gview.Params) {
 // Assign binds a template variable to current request.
 func (r *Request) Assign(key string, value interface{}) {
 	if r.viewParams == nil {
-		r.viewParams = make(gview.Params)
+		r.viewParams = make(qn_view.Params)
 	}
 	r.viewParams[key] = value
 }

@@ -10,8 +10,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/net/gtcp"
+	"github.com/qnsoft/common/container/qn_map"
+	"github.com/qnsoft/common/net/qn_tcp"
 	"github.com/qnsoft/common/os/gfcache"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/util/qn_conv"
@@ -41,7 +41,7 @@ const (
 var (
 	// commReceiveQueues is the group name to queue map for storing received data.
 	// The value of the map is type of *gqueue.Queue.
-	commReceiveQueues = gmap.NewStrAnyMap(true)
+	commReceiveQueues = qn_map.NewStrAnyMap(true)
 
 	// commPidFolderPath specifies the folder path storing pid to port mapping files.
 	commPidFolderPath = qn_file.TempDir("gproc")
@@ -58,10 +58,10 @@ func init() {
 }
 
 // getConnByPid creates and returns a TCP connection for specified pid.
-func getConnByPid(pid int) (*gtcp.PoolConn, error) {
+func getConnByPid(pid int) (*qn_tcp.PoolConn, error) {
 	port := getPortByPid(pid)
 	if port > 0 {
-		if conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", port)); err == nil {
+		if conn, err := qn_tcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", port)); err == nil {
 			return conn, nil
 		} else {
 			return nil, err

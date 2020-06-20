@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/util/qn_conv"
 )
 
@@ -207,7 +206,7 @@ func (p *Page) GetContent(mode int) string {
 // Note that the UrlTemplate attribute can be either an URL or a URI string with "{.page}"
 // place holder specifying the page number position.
 func (p *Page) GetUrl(page int) string {
-	return gstr.Replace(p.UrlTemplate, PAGE_PLACE_HOLDER, qn_conv.String(page))
+	return qn.str.Replace(p.UrlTemplate, PAGE_PLACE_HOLDER, qn_conv.String(page))
 }
 
 // GetLink returns the HTML link tag <a> content for given page number.

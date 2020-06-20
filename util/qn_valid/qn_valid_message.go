@@ -62,8 +62,8 @@ var defaultMessages = map[string]string{
 // getErrorMessageByRule retrieves and returns the error message for specified rule.
 // It firstly retrieves the message from custom message map, and then checks i18n manager,
 // it returns the default error message if it's not found in custom message map or i18n manager.
-func getErrorMessageByRule(ruleKey string, customMsgMap map[string]string) string {
-	content := customMsgMap[ruleKey]
+func getErrorMessageByRule(ruleKey string, customMsqn_map map[string]string) string {
+	content := customMsqn_map[ruleKey]
 	if content != "" {
 		return content
 	}

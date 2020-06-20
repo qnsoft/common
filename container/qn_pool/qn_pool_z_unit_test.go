@@ -11,9 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/frame/g"
-
 	"github.com/qnsoft/common/container/gpool"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -38,7 +37,7 @@ func Test_Gpool(t *testing.T) {
 		//test won't be timeout
 		v1, err1 := p1.Get()
 		t.Assert(err1, nil)
-		t.AssertIN(v1, g.Slice{1, 2})
+		t.AssertIN(v1, qn.Slice{1, 2})
 		//test clear
 		p1.Clear()
 		t.Assert(p1.Size(), 0)
@@ -51,7 +50,7 @@ func Test_Gpool(t *testing.T) {
 		p1.Put(4)
 		v1, err1 = p1.Get()
 		t.Assert(err1, nil)
-		t.AssertIN(v1, g.Slice{3, 4})
+		t.AssertIN(v1, qn.Slice{3, 4})
 		//test close
 		p1.Close()
 		v1, err1 = p1.Get()

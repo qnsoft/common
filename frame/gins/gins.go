@@ -8,12 +8,12 @@
 package qn_ins
 
 import (
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 )
 
 var (
 	// instances is the instance map for common used components.
-	instances = gmap.NewStrAnyMap(true)
+	instances = qn_map.NewStrAnyMap(true)
 )
 
 // Get returns the instance by given name.

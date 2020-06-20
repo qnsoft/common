@@ -12,7 +12,6 @@ import (
 	"strings"
 
 	"github.com/qnsoft/common/os/qn_file"
-	"github.com/qnsoft/common/text/gstr"
 	"github.com/qnsoft/common/text/qn_regex"
 )
 
@@ -87,7 +86,7 @@ func (s *Server) doBindController(
 		if methodName == "Init" || methodName == "Shut" || methodName == "Exit" {
 			continue
 		}
-		ctlName := gstr.Replace(t.String(), fmt.Sprintf(`%s.`, pkgName), "")
+		ctlName := qn.str.Replace(t.String(), fmt.Sprintf(`%s.`, pkgName), "")
 		if ctlName[0] == '*' {
 			ctlName = fmt.Sprintf(`(%s)`, ctlName)
 		}
@@ -126,7 +125,7 @@ func (s *Server) doBindController(
 		// Note that if there's built-in variables in pattern, this route will not be added
 		// automatically.
 		if strings.EqualFold(methodName, "Index") && !qn_regex.IsMatchString(`\{\.\w+\}`, pattern) {
-			p := gstr.PosRI(key, "/index")
+			p := qn.str.PosRI(key, "/index")
 			k := key[0:p] + key[p+6:]
 			if len(k) == 0 || k[0] == '@' {
 				k = "/" + k
@@ -165,7 +164,7 @@ func (s *Server) doBindControllerMethod(
 	}
 	pkgPath := t.Elem().PkgPath()
 	pkgName := qn_file.Basename(pkgPath)
-	ctlName := gstr.Replace(t.String(), fmt.Sprintf(`%s.`, pkgName), "")
+	ctlName := qn.str.Replace(t.String(), fmt.Sprintf(`%s.`, pkgName), "")
 	if ctlName[0] == '*' {
 		ctlName = fmt.Sprintf(`(%s)`, ctlName)
 	}
@@ -205,7 +204,7 @@ func (s *Server) doBindControllerRest(
 			continue
 		}
 		pkgName := qn_file.Basename(pkgPath)
-		ctlName := gstr.Replace(t.String(), fmt.Sprintf(`%s.`, pkgName), "")
+		ctlName := qn.str.Replace(t.String(), fmt.Sprintf(`%s.`, pkgName), "")
 		if ctlName[0] == '*' {
 			ctlName = fmt.Sprintf(`(%s)`, ctlName)
 		}

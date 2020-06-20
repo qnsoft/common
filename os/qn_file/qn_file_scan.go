@@ -10,8 +10,6 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
-
-	"github.com/gogf/gf/text/gstr"
 )
 
 // ScanDir returns all sub-files with absolute paths of given <path>,
@@ -111,7 +109,7 @@ func doScanDir(path string, pattern string, recursive bool, handler func(path st
 	}
 	var (
 		filePath = ""
-		patterns = gstr.SplitAndTrim(pattern, ",")
+		patterns = qn.str.SplitAndTrim(pattern, ",")
 	)
 	for _, name := range names {
 		filePath = path + Separator + name

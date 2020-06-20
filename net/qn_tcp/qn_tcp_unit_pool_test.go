@@ -11,13 +11,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/net/gtcp"
+	"github.com/qnsoft/common/net/qn_tcp"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Pool_Basic1(t *testing.T) {
 	p, _ := ports.PopRand()
-	s := gtcp.NewServer(fmt.Sprintf(`:%d`, p), func(conn *gtcp.Conn) {
+	s := qn_tcp.NewServer(fmt.Sprintf(`:%d`, p), func(conn *qn_tcp.Conn) {
 		defer conn.Close()
 		for {
 			data, err := conn.RecvPkg()
@@ -31,7 +31,7 @@ func Test_Pool_Basic1(t *testing.T) {
 	defer s.Close()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
+		conn, err := qn_tcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()
 		data := []byte("9999")
@@ -44,14 +44,14 @@ func Test_Pool_Basic1(t *testing.T) {
 
 func Test_Pool_Basic2(t *testing.T) {
 	p, _ := ports.PopRand()
-	s := gtcp.NewServer(fmt.Sprintf(`:%d`, p), func(conn *gtcp.Conn) {
+	s := qn_tcp.NewServer(fmt.Sprintf(`:%d`, p), func(conn *qn_tcp.Conn) {
 		conn.Close()
 	})
 	go s.Run()
 	defer s.Close()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		conn, err := gtcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
+		conn, err := qn_tcp.NewPoolConn(fmt.Sprintf("127.0.0.1:%d", p))
 		t.Assert(err, nil)
 		defer conn.Close()
 		data := []byte("9999")

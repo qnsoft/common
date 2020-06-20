@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/util/qn_conv"
 
@@ -134,7 +134,7 @@ func TestSortedIntArray_PopLeft(t *testing.T) {
 		t.Assert(array1.Search(1), -1)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewSortedIntArrayFrom(g.SliceInt{1, 2, 3})
+		array := qn_array.NewSortedIntArrayFrom(qn.SliceInt{1, 2, 3})
 		v, ok := array.PopLeft()
 		t.Assert(v, 1)
 		t.Assert(ok, true)
@@ -161,7 +161,7 @@ func TestSortedIntArray_PopRight(t *testing.T) {
 		t.Assert(array1.Search(5), -1)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewSortedIntArrayFrom(g.SliceInt{1, 2, 3})
+		array := qn_array.NewSortedIntArrayFrom(qn.SliceInt{1, 2, 3})
 		v, ok := array.PopRight()
 		t.Assert(v, 3)
 		t.Assert(ok, true)
@@ -580,7 +580,7 @@ func TestSortedIntArray_Json(t *testing.T) {
 			Name   string
 			Scores *qn_array.SortedIntArray
 		}
-		data := g.Map{
+		data := qn.Map{
 			"Name":   "john",
 			"Scores": []int{99, 100, 98},
 		}
@@ -599,7 +599,7 @@ func TestSortedIntArray_Json(t *testing.T) {
 			Name   string
 			Scores qn_array.SortedIntArray
 		}
-		data := g.Map{
+		data := qn.Map{
 			"Name":   "john",
 			"Scores": []int{99, 100, 98},
 		}
@@ -615,7 +615,7 @@ func TestSortedIntArray_Json(t *testing.T) {
 }
 
 func TestSortedIntArray_Iterator(t *testing.T) {
-	slice := g.SliceInt{10, 20, 30, 40}
+	slice := qn.SliceInt{10, 20, 30, 40}
 	array := qn_array.NewSortedIntArrayFrom(slice)
 	qn_test.C(t, func(t *qn_test.T) {
 		array.Iterator(func(k int, v int) bool {
@@ -662,7 +662,7 @@ func TestSortedIntArray_Iterator(t *testing.T) {
 }
 
 func TestSortedIntArray_RemoveValue(t *testing.T) {
-	slice := g.SliceInt{10, 20, 30, 40}
+	slice := qn.SliceInt{10, 20, 30, 40}
 	array := qn_array.NewSortedIntArrayFrom(slice)
 	qn_test.C(t, func(t *qn_test.T) {
 		t.Assert(array.RemoveValue(99), false)
@@ -682,43 +682,43 @@ func TestSortedIntArray_UnmarshalValue(t *testing.T) {
 	// JSON
 	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := qn_conv.Struct(g.Map{
+		err := qn_conv.Struct(qn.Map{
 			"name":  "john",
 			"array": []byte(`[2,3,1]`),
 		}, &v)
 		t.Assert(err, nil)
 		t.Assert(v.Name, "john")
-		t.Assert(v.Array.Slice(), g.Slice{1, 2, 3})
+		t.Assert(v.Array.Slice(), qn.Slice{1, 2, 3})
 	})
 	// Map
 	qn_test.C(t, func(t *qn_test.T) {
 		var v *V
-		err := qn_conv.Struct(g.Map{
+		err := qn_conv.Struct(qn.Map{
 			"name":  "john",
-			"array": g.Slice{2, 3, 1},
+			"array": qn.Slice{2, 3, 1},
 		}, &v)
 		t.Assert(err, nil)
 		t.Assert(v.Name, "john")
-		t.Assert(v.Array.Slice(), g.Slice{1, 2, 3})
+		t.Assert(v.Array.Slice(), qn.Slice{1, 2, 3})
 	})
 }
 
 func TestSortedIntArray_FilterEmpty(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewSortedIntArrayFrom(g.SliceInt{0, 1, 2, 3, 4, 0})
-		t.Assert(array.FilterEmpty(), g.SliceInt{1, 2, 3, 4})
+		array := qn_array.NewSortedIntArrayFrom(qn.SliceInt{0, 1, 2, 3, 4, 0})
+		t.Assert(array.FilterEmpty(), qn.SliceInt{1, 2, 3, 4})
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewSortedIntArrayFrom(g.SliceInt{1, 2, 3, 4})
-		t.Assert(array.FilterEmpty(), g.SliceInt{1, 2, 3, 4})
+		array := qn_array.NewSortedIntArrayFrom(qn.SliceInt{1, 2, 3, 4})
+		t.Assert(array.FilterEmpty(), qn.SliceInt{1, 2, 3, 4})
 	})
 }
 
 func TestSortedIntArray_Walk(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		array := qn_array.NewSortedIntArrayFrom(g.SliceInt{1, 2})
+		array := qn_array.NewSortedIntArrayFrom(qn.SliceInt{1, 2})
 		t.Assert(array.Walk(func(value int) int {
 			return 10 + value
-		}), g.Slice{11, 12})
+		}), qn.Slice{11, 12})
 	})
 }

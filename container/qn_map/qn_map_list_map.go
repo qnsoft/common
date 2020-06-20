@@ -12,18 +12,18 @@ import (
 
 	"github.com/qnsoft/common/internal/empty"
 
-	"github.com/qnsoft/common/container/glist"
+	"github.com/qnsoft/common/container/qn_list"
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/internal/rwmutex"
 )
 
 type ListMap struct {
 	mu   rwmutex.RWMutex
-	data map[interface{}]*glist.Element
-	list *glist.List
+	data map[interface{}]*qn_list.Element
+	list *qn_list.List
 }
 
-type gListMapNode struct {
+type qn_listMapNode struct {
 	key   interface{}
 	value interface{}
 }
@@ -35,8 +35,8 @@ type gListMapNode struct {
 func NewListMap(safe ...bool) *ListMap {
 	return &ListMap{
 		mu:   rwmutex.Create(safe...),
-		data: make(map[interface{}]*glist.Element),
-		list: glist.New(),
+		data: make(map[interface{}]*qn_list.Element),
+		list: qn_list.New(),
 	}
 }
 
@@ -60,9 +60,9 @@ func (m *ListMap) IteratorAsc(f func(key interface{}, value interface{}) bool) {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 	if m.list != nil {
-		node := (*gListMapNode)(nil)
-		m.list.IteratorAsc(func(e *glist.Element) bool {
-			node = e.Value.(*gListMapNode)
+		node := (*qn_listMapNode)(nil)
+		m.list.IteratorAsc(func(e *qn_list.Element) bool {
+			node = e.Value.(*qn_listMapNode)
 			return f(node.key, node.value)
 		})
 	}
@@ -74,9 +74,9 @@ func (m *ListMap) IteratorDesc(f func(key interface{}, value interface{}) bool) 
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 	if m.list != nil {
-		node := (*gListMapNode)(nil)
-		m.list.IteratorDesc(func(e *glist.Element) bool {
-			node = e.Value.(*gListMapNode)
+		node := (*qn_listMapNode)(nil)
+		m.list.IteratorDesc(func(e *qn_list.Element) bool {
+			node = e.Value.(*qn_listMapNode)
 			return f(node.key, node.value)
 		})
 	}
@@ -90,21 +90,21 @@ func (m *ListMap) Clone(safe ...bool) *ListMap {
 // Clear deletes all data of the map, it will remake a new underlying data map.
 func (m *ListMap) Clear() {
 	m.mu.Lock()
-	m.data = make(map[interface{}]*glist.Element)
-	m.list = glist.New()
+	m.data = make(map[interface{}]*qn_list.Element)
+	m.list = qn_list.New()
 	m.mu.Unlock()
 }
 
 // Replace the data of the map with given <data>.
 func (m *ListMap) Replace(data map[interface{}]interface{}) {
 	m.mu.Lock()
-	m.data = make(map[interface{}]*glist.Element)
-	m.list = glist.New()
+	m.data = make(map[interface{}]*qn_list.Element)
+	m.list = qn_list.New()
 	for key, value := range data {
 		if e, ok := m.data[key]; !ok {
-			m.data[key] = m.list.PushBack(&gListMapNode{key, value})
+			m.data[key] = m.list.PushBack(&qn_listMapNode{key, value})
 		} else {
-			e.Value = &gListMapNode{key, value}
+			e.Value = &qn_listMapNode{key, value}
 		}
 	}
 	m.mu.Unlock()
@@ -113,12 +113,12 @@ func (m *ListMap) Replace(data map[interface{}]interface{}) {
 // Map returns a copy of the underlying data of the map.
 func (m *ListMap) Map() map[interface{}]interface{} {
 	m.mu.RLock()
-	var node *gListMapNode
+	var node *qn_listMapNode
 	var data map[interface{}]interface{}
 	if m.list != nil {
 		data = make(map[interface{}]interface{}, len(m.data))
-		m.list.IteratorAsc(func(e *glist.Element) bool {
-			node = e.Value.(*gListMapNode)
+		m.list.IteratorAsc(func(e *qn_list.Element) bool {
+			node = e.Value.(*qn_listMapNode)
 			data[node.key] = node.value
 			return true
 		})
@@ -130,12 +130,12 @@ func (m *ListMap) Map() map[interface{}]interface{} {
 // MapStrAny returns a copy of the underlying data of the map as map[string]interface{}.
 func (m *ListMap) MapStrAny() map[string]interface{} {
 	m.mu.RLock()
-	var node *gListMapNode
+	var node *qn_listMapNode
 	var data map[string]interface{}
 	if m.list != nil {
 		data = make(map[string]interface{}, len(m.data))
-		m.list.IteratorAsc(func(e *glist.Element) bool {
-			node = e.Value.(*gListMapNode)
+		m.list.IteratorAsc(func(e *qn_list.Element) bool {
+			node = e.Value.(*qn_listMapNode)
 			data[qn_conv.String(node.key)] = node.value
 			return true
 		})
@@ -149,9 +149,9 @@ func (m *ListMap) FilterEmpty() {
 	m.mu.Lock()
 	if m.list != nil {
 		keys := make([]interface{}, 0)
-		node := (*gListMapNode)(nil)
-		m.list.IteratorAsc(func(e *glist.Element) bool {
-			node = e.Value.(*gListMapNode)
+		node := (*qn_listMapNode)(nil)
+		m.list.IteratorAsc(func(e *qn_list.Element) bool {
+			node = e.Value.(*qn_listMapNode)
 			if empty.IsEmpty(node.value) {
 				keys = append(keys, node.key)
 			}
@@ -173,13 +173,13 @@ func (m *ListMap) FilterEmpty() {
 func (m *ListMap) Set(key interface{}, value interface{}) {
 	m.mu.Lock()
 	if m.data == nil {
-		m.data = make(map[interface{}]*glist.Element)
-		m.list = glist.New()
+		m.data = make(map[interface{}]*qn_list.Element)
+		m.list = qn_list.New()
 	}
 	if e, ok := m.data[key]; !ok {
-		m.data[key] = m.list.PushBack(&gListMapNode{key, value})
+		m.data[key] = m.list.PushBack(&qn_listMapNode{key, value})
 	} else {
-		e.Value = &gListMapNode{key, value}
+		e.Value = &qn_listMapNode{key, value}
 	}
 	m.mu.Unlock()
 }
@@ -188,14 +188,14 @@ func (m *ListMap) Set(key interface{}, value interface{}) {
 func (m *ListMap) Sets(data map[interface{}]interface{}) {
 	m.mu.Lock()
 	if m.data == nil {
-		m.data = make(map[interface{}]*glist.Element)
-		m.list = glist.New()
+		m.data = make(map[interface{}]*qn_list.Element)
+		m.list = qn_list.New()
 	}
 	for key, value := range data {
 		if e, ok := m.data[key]; !ok {
-			m.data[key] = m.list.PushBack(&gListMapNode{key, value})
+			m.data[key] = m.list.PushBack(&qn_listMapNode{key, value})
 		} else {
-			e.Value = &gListMapNode{key, value}
+			e.Value = &qn_listMapNode{key, value}
 		}
 	}
 	m.mu.Unlock()
@@ -207,7 +207,7 @@ func (m *ListMap) Search(key interface{}) (value interface{}, found bool) {
 	m.mu.RLock()
 	if m.data != nil {
 		if e, ok := m.data[key]; ok {
-			value = e.Value.(*gListMapNode).value
+			value = e.Value.(*qn_listMapNode).value
 			found = ok
 		}
 	}
@@ -220,7 +220,7 @@ func (m *ListMap) Get(key interface{}) (value interface{}) {
 	m.mu.RLock()
 	if m.data != nil {
 		if e, ok := m.data[key]; ok {
-			value = e.Value.(*gListMapNode).value
+			value = e.Value.(*qn_listMapNode).value
 		}
 	}
 	m.mu.RUnlock()
@@ -232,7 +232,7 @@ func (m *ListMap) Pop() (key, value interface{}) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	for k, e := range m.data {
-		value = e.Value.(*gListMapNode).value
+		value = e.Value.(*qn_listMapNode).value
 		delete(m.data, k)
 		m.list.Remove(e)
 		return k, value
@@ -254,7 +254,7 @@ func (m *ListMap) Pops(size int) map[interface{}]interface{} {
 	index := 0
 	newMap := make(map[interface{}]interface{}, size)
 	for k, e := range m.data {
-		value := e.Value.(*gListMapNode).value
+		value := e.Value.(*qn_listMapNode).value
 		delete(m.data, k)
 		m.list.Remove(e)
 		newMap[k] = value
@@ -279,17 +279,17 @@ func (m *ListMap) doSetWithLockCheck(key interface{}, value interface{}) interfa
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if m.data == nil {
-		m.data = make(map[interface{}]*glist.Element)
-		m.list = glist.New()
+		m.data = make(map[interface{}]*qn_list.Element)
+		m.list = qn_list.New()
 	}
 	if e, ok := m.data[key]; ok {
-		return e.Value.(*gListMapNode).value
+		return e.Value.(*qn_listMapNode).value
 	}
 	if f, ok := value.(func() interface{}); ok {
 		value = f()
 	}
 	if value != nil {
-		m.data[key] = m.list.PushBack(&gListMapNode{key, value})
+		m.data[key] = m.list.PushBack(&qn_listMapNode{key, value})
 	}
 	return value
 }
@@ -391,7 +391,7 @@ func (m *ListMap) Remove(key interface{}) (value interface{}) {
 	m.mu.Lock()
 	if m.data != nil {
 		if e, ok := m.data[key]; ok {
-			value = e.Value.(*gListMapNode).value
+			value = e.Value.(*qn_listMapNode).value
 			delete(m.data, key)
 			m.list.Remove(e)
 		}
@@ -422,8 +422,8 @@ func (m *ListMap) Keys() []interface{} {
 		index = 0
 	)
 	if m.list != nil {
-		m.list.IteratorAsc(func(e *glist.Element) bool {
-			keys[index] = e.Value.(*gListMapNode).key
+		m.list.IteratorAsc(func(e *qn_list.Element) bool {
+			keys[index] = e.Value.(*qn_listMapNode).key
 			index++
 			return true
 		})
@@ -440,8 +440,8 @@ func (m *ListMap) Values() []interface{} {
 		index  = 0
 	)
 	if m.list != nil {
-		m.list.IteratorAsc(func(e *glist.Element) bool {
-			values[index] = e.Value.(*gListMapNode).value
+		m.list.IteratorAsc(func(e *qn_list.Element) bool {
+			values[index] = e.Value.(*qn_listMapNode).value
 			index++
 			return true
 		})
@@ -490,20 +490,20 @@ func (m *ListMap) Merge(other *ListMap) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if m.data == nil {
-		m.data = make(map[interface{}]*glist.Element)
-		m.list = glist.New()
+		m.data = make(map[interface{}]*qn_list.Element)
+		m.list = qn_list.New()
 	}
 	if other != m {
 		other.mu.RLock()
 		defer other.mu.RUnlock()
 	}
-	node := (*gListMapNode)(nil)
-	other.list.IteratorAsc(func(e *glist.Element) bool {
-		node = e.Value.(*gListMapNode)
+	node := (*qn_listMapNode)(nil)
+	other.list.IteratorAsc(func(e *qn_list.Element) bool {
+		node = e.Value.(*qn_listMapNode)
 		if e, ok := m.data[node.key]; !ok {
-			m.data[node.key] = m.list.PushBack(&gListMapNode{node.key, node.value})
+			m.data[node.key] = m.list.PushBack(&qn_listMapNode{node.key, node.value})
 		} else {
-			e.Value = &gListMapNode{node.key, node.value}
+			e.Value = &qn_listMapNode{node.key, node.value}
 		}
 		return true
 	})
@@ -519,8 +519,8 @@ func (m *ListMap) UnmarshalJSON(b []byte) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if m.data == nil {
-		m.data = make(map[interface{}]*glist.Element)
-		m.list = glist.New()
+		m.data = make(map[interface{}]*qn_list.Element)
+		m.list = qn_list.New()
 	}
 	var data map[string]interface{}
 	if err := json.Unmarshal(b, &data); err != nil {
@@ -528,9 +528,9 @@ func (m *ListMap) UnmarshalJSON(b []byte) error {
 	}
 	for key, value := range data {
 		if e, ok := m.data[key]; !ok {
-			m.data[key] = m.list.PushBack(&gListMapNode{key, value})
+			m.data[key] = m.list.PushBack(&qn_listMapNode{key, value})
 		} else {
-			e.Value = &gListMapNode{key, value}
+			e.Value = &qn_listMapNode{key, value}
 		}
 	}
 	return nil
@@ -541,14 +541,14 @@ func (m *ListMap) UnmarshalValue(value interface{}) (err error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if m.data == nil {
-		m.data = make(map[interface{}]*glist.Element)
-		m.list = glist.New()
+		m.data = make(map[interface{}]*qn_list.Element)
+		m.list = qn_list.New()
 	}
 	for k, v := range qn_conv.Map(value) {
 		if e, ok := m.data[k]; !ok {
-			m.data[k] = m.list.PushBack(&gListMapNode{k, v})
+			m.data[k] = m.list.PushBack(&qn_listMapNode{k, v})
 		} else {
-			e.Value = &gListMapNode{k, v}
+			e.Value = &qn_listMapNode{k, v}
 		}
 	}
 	return

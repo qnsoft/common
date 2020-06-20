@@ -12,14 +12,12 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/errors/qn_error"
 	"github.com/qnsoft/common/os/qn_time"
 
 	"github.com/qnsoft/common/os/qn_res"
 
 	"github.com/qnsoft/common/encoding/qn_html"
-	"github.com/qnsoft/common/os/gspath"
 	"github.com/qnsoft/common/os/qn_file"
 )
 
@@ -187,7 +185,7 @@ func (s *Server) searchStaticFile(uri string) *StaticFile {
 						IsDir: file.FileInfo().IsDir(),
 					}
 				}
-				path, dir = gspath.Search(item.path, uri[len(item.prefix):], s.config.IndexFiles...)
+				path, dir = qn.spath.Search(item.path, uri[len(item.prefix):], s.config.IndexFiles...)
 				if path != "" {
 					return &StaticFile{
 						Path:  path,
@@ -208,7 +206,7 @@ func (s *Server) searchStaticFile(uri string) *StaticFile {
 					IsDir: file.FileInfo().IsDir(),
 				}
 			}
-			if path, dir = gspath.Search(p, uri, s.config.IndexFiles...); path != "" {
+			if path, dir = qn.spath.Search(p, uri, s.config.IndexFiles...); path != "" {
 				return &StaticFile{
 					Path:  path,
 					IsDir: dir,
@@ -308,7 +306,7 @@ func (s *Server) listDir(r *Request, f http.File) {
 	}
 	name := ""
 	size := ""
-	prefix := gstr.TrimRight(r.URL.Path, "/")
+	prefix := qn.str.TrimRight(r.URL.Path, "/")
 	for _, file := range files {
 		name = file.Name()
 		size = qn_file.FormatSize(file.Size())

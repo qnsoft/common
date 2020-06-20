@@ -16,7 +16,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/encoding/qn_json"
 	"github.com/qnsoft/common/os/gproc"
 	"github.com/qnsoft/common/os/qn_log"
@@ -40,10 +40,10 @@ const (
 var serverActionLocker sync.Mutex
 
 // serverActionLastTime is timestamp in milliseconds of last administration operation.
-var serverActionLastTime = gtype.NewInt64(qn_time.TimestampMilli())
+var serverActionLastTime = qn_type.NewInt64(qn_time.TimestampMilli())
 
 // serverProcessStatus is the server status for operation of current process.
-var serverProcessStatus = gtype.NewInt()
+var serverProcessStatus = qn_type.NewInt()
 
 // RestartAllServer restarts all the servers of the process.
 // The optional parameter <newExeFilePath> specifies the new binary file for creating process.

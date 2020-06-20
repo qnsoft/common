@@ -88,7 +88,7 @@ func (l *Logger) SetConfigWithMap(m map[string]interface{}) error {
 	// Change string configuration to int value for level.
 	levelKey, levelValue := qn_util.MapPossibleItemByKey(m, "Level")
 	if levelValue != nil {
-		if level, ok := levelStringMap[strings.ToUpper(qn_conv.String(levelValue))]; ok {
+		if level, ok := levelStrinqn_map[strings.ToUpper(qn_conv.String(levelValue))]; ok {
 			m[levelKey] = level
 		} else {
 			return errors.New(fmt.Sprintf(`invalid level string: %v`, levelValue))

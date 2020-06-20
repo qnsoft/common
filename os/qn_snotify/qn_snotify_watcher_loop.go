@@ -7,7 +7,7 @@
 package qn_snotify
 
 import (
-	"github.com/qnsoft/common/container/glist"
+	"github.com/qnsoft/common/container/qn_list"
 	"github.com/qnsoft/common/internal/intlog"
 )
 
@@ -45,7 +45,7 @@ func (w *Watcher) startWatchLoop() {
 func (w *Watcher) getCallbacks(path string) (callbacks []*Callback) {
 	// Firstly add the callbacks of itself.
 	if v := w.callbacks.Get(path); v != nil {
-		for _, v := range v.(*glist.List).FrontAll() {
+		for _, v := range v.(*qn_list.List).FrontAll() {
 			callback := v.(*Callback)
 			callbacks = append(callbacks, callback)
 		}
@@ -53,7 +53,7 @@ func (w *Watcher) getCallbacks(path string) (callbacks []*Callback) {
 	// Secondly searches its parent for callbacks.
 	dirPath := fileDir(path)
 	if v := w.callbacks.Get(dirPath); v != nil {
-		for _, v := range v.(*glist.List).FrontAll() {
+		for _, v := range v.(*qn_list.List).FrontAll() {
 			callback := v.(*Callback)
 			if callback.recursive {
 				callbacks = append(callbacks, callback)
@@ -67,7 +67,7 @@ func (w *Watcher) getCallbacks(path string) (callbacks []*Callback) {
 			break
 		}
 		if v := w.callbacks.Get(parentDirPath); v != nil {
-			for _, v := range v.(*glist.List).FrontAll() {
+			for _, v := range v.(*qn_list.List).FrontAll() {
 				callback := v.(*Callback)
 				if callback.recursive {
 					callbacks = append(callbacks, callback)

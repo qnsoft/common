@@ -9,7 +9,8 @@ package qn_conv_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/gogf/gf/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/util/qn_conv"
 )
@@ -18,51 +19,51 @@ func Test_MapToMap1(t *testing.T) {
 	// map[int]int -> map[string]string
 	// empty original map.
 	qn_test.C(t, func(t *qn_test.T) {
-		m1 := g.MapIntInt{}
-		m2 := g.MapStrStr{}
+		m1 := qn.MapIntInt{}
+		m2 := qn.MapStrStr{}
 		t.Assert(qn_conv.MapToMap(m1, &m2), nil)
 		t.Assert(len(m1), len(m2))
 	})
 	// map[int]int -> map[string]string
 	qn_test.C(t, func(t *qn_test.T) {
-		m1 := g.MapIntInt{
+		m1 := qn.MapIntInt{
 			1: 100,
 			2: 200,
 		}
-		m2 := g.MapStrStr{}
+		m2 := qn.MapStrStr{}
 		t.Assert(qn_conv.MapToMap(m1, &m2), nil)
 		t.Assert(m2["1"], m1[1])
 		t.Assert(m2["2"], m1[2])
 	})
 	// map[string]interface{} -> map[string]string
 	qn_test.C(t, func(t *qn_test.T) {
-		m1 := g.Map{
+		m1 := qn.Map{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		m2 := g.MapStrStr{}
+		m2 := qn.MapStrStr{}
 		t.Assert(qn_conv.MapToMap(m1, &m2), nil)
 		t.Assert(m2["k1"], m1["k1"])
 		t.Assert(m2["k2"], m1["k2"])
 	})
 	// map[string]string -> map[string]interface{}
 	qn_test.C(t, func(t *qn_test.T) {
-		m1 := g.MapStrStr{
+		m1 := qn.MapStrStr{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		m2 := g.Map{}
+		m2 := qn.Map{}
 		t.Assert(qn_conv.MapToMap(m1, &m2), nil)
 		t.Assert(m2["k1"], m1["k1"])
 		t.Assert(m2["k2"], m1["k2"])
 	})
 	// map[string]interface{} -> map[interface{}]interface{}
 	qn_test.C(t, func(t *qn_test.T) {
-		m1 := g.MapStrStr{
+		m1 := qn.MapStrStr{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		m2 := g.MapAnyAny{}
+		m2 := qn.MapAnyAny{}
 		t.Assert(qn_conv.MapToMap(m1, &m2), nil)
 		t.Assert(m2["k1"], m1["k1"])
 		t.Assert(m2["k2"], m1["k2"])
@@ -74,8 +75,8 @@ func Test_MapToMap2(t *testing.T) {
 		Id   int
 		Name string
 	}
-	params := g.Map{
-		"key": g.Map{
+	params := qn.Map{
+		"key": qn.Map{
 			"id":   1,
 			"name": "john",
 		},
@@ -127,8 +128,8 @@ func Test_MapToMapDeep(t *testing.T) {
 		Base
 		Name string
 	}
-	params := g.Map{
-		"key": g.Map{
+	params := qn.Map{
+		"key": qn.Map{
 			"id":   1,
 			"name": "john",
 		},
@@ -156,14 +157,14 @@ func Test_MapToMaps1(t *testing.T) {
 		Id   int
 		Name int
 	}
-	params := g.Map{
+	params :=qn.SlMap{
 		"key1": g.Slice{
-			g.Map{"id": 1, "name": "john"},
-			g.Map{"id": 2, "name": "smith"},
-		},
+			qn.Map{"id": 1, "name": "john"},
+			qn.Map{"id": 2, "name": "smith"},
+		},qn.Sl
 		"key2": g.Slice{
-			g.Map{"id": 3, "name": "green"},
-			g.Map{"id": 4, "name": "jim"},
+			qn.Map{"id": 3, "name": "green"},
+			qn.Map{"id": 4, "name": "jim"},
 		},
 	}
 	qn_test.C(t, func(t *qn_test.T) {
@@ -213,14 +214,14 @@ func Test_MapToMaps2(t *testing.T) {
 		Id   int
 		Name int
 	}
-	params := g.MapIntAny{
+	paramsqn.Slqn.MapIntAny{
 		100: g.Slice{
-			g.Map{"id": 1, "name": "john"},
-			g.Map{"id": 2, "name": "smith"},
-		},
+			qn.Map{"id": 1, "name": "john"},
+			qn.Map{"id": 2, "name": "smith"},
+		},qn.Sl
 		200: g.Slice{
-			g.Map{"id": 3, "name": "green"},
-			g.Map{"id": 4, "name": "jim"},
+			qn.Map{"id": 3, "name": "green"},
+			qn.Map{"id": 4, "name": "jim"},
 		},
 	}
 	qn_test.C(t, func(t *qn_test.T) {
@@ -268,14 +269,14 @@ func Test_MapToMapsDeep(t *testing.T) {
 		Base
 		Name string
 	}
-	params := g.MapIntAny{
+	paramsqn.Slqn.MapIntAny{
 		100: g.Slice{
-			g.Map{"id": 1, "name": "john"},
-			g.Map{"id": 2, "name": "smith"},
-		},
+			qn.Map{"id": 1, "name": "john"},
+			qn.Map{"id": 2, "name": "smith"},
+		},qn.Sl
 		200: g.Slice{
-			g.Map{"id": 3, "name": "green"},
-			g.Map{"id": 4, "name": "jim"},
+			qn.Map{"id": 3, "name": "green"},
+			qn.Map{"id": 4, "name": "jim"},
 		},
 	}
 	qn_test.C(t, func(t *qn_test.T) {
@@ -321,14 +322,14 @@ func Test_MapToMapsDeepWithTag(t *testing.T) {
 		Base `json:"base"`
 		Name string
 	}
-	params := g.MapIntAny{
+	paramsqn.Slqn.MapIntAny{
 		100: g.Slice{
-			g.Map{"id": 1, "name": "john"},
-			g.Map{"id": 2, "name": "smith"},
-		},
+			qn.Map{"id": 1, "name": "john"},
+			qn.Map{"id": 2, "name": "smith"},
+		},qn.Sl
 		200: g.Slice{
-			g.Map{"id": 3, "name": "green"},
-			g.Map{"id": 4, "name": "jim"},
+			qn.Map{"id": 3, "name": "green"},
+			qn.Map{"id": 4, "name": "jim"},
 		},
 	}
 	qn_test.C(t, func(t *qn_test.T) {

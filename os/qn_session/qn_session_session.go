@@ -13,7 +13,7 @@ import (
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/qn_time"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/container/qn_var"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
@@ -21,11 +21,11 @@ import (
 // Session struct for storing single session data,
 // which is bound to a single request.
 type Session struct {
-	id      string          // Session id.
-	data    *gmap.StrAnyMap // Session data.
-	dirty   bool            // Used to mark session is modified.
-	start   bool            // Used to mark session is started.
-	manager *Manager        // Parent manager.
+	id      string            // Session id.
+	data    *qn_map.StrAnyMap // Session data.
+	dirty   bool              // Used to mark session is modified.
+	start   bool              // Used to mark session is started.
+	manager *Manager          // Parent manager.
 
 	// idFunc is a callback function used for creating custom session id.
 	// This is called if session id is empty ever when session starts.
@@ -42,7 +42,7 @@ func (s *Session) init() {
 		var err error
 		// Retrieve memory session data from manager.
 		if r := s.manager.sessionData.Get(s.id); r != nil {
-			s.data = r.(*gmap.StrAnyMap)
+			s.data = r.(*qn_map.StrAnyMap)
 			intlog.Print("session init data:", s.data)
 		}
 		// Retrieve stored session data from storage.
@@ -70,7 +70,7 @@ func (s *Session) init() {
 		s.id = NewSessionId()
 	}
 	if s.data == nil {
-		s.data = gmap.NewStrAnyMap(true)
+		s.data = qn_map.NewStrAnyMap(true)
 	}
 	s.start = true
 }

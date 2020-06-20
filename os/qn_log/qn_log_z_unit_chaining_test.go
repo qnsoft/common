@@ -15,7 +15,6 @@ import (
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/test/qn_test"
-	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_To(t *testing.T) {
@@ -23,8 +22,8 @@ func Test_To(t *testing.T) {
 		w := bytes.NewBuffer(nil)
 		To(w).Error(1, 2, 3)
 		To(w).Errorf("%d %d %d", 1, 2, 3)
-		t.Assert(gstr.Count(w.String(), defaultLevelPrefixes[LEVEL_ERRO]), 2)
-		t.Assert(gstr.Count(w.String(), "1 2 3"), 2)
+		t.Assert(qn.str.Count(w.String(), defaultLevelPrefixes[LEVEL_ERRO]), 2)
+		t.Assert(qn.str.Count(w.String(), "1 2 3"), 2)
 	})
 }
 
@@ -40,8 +39,8 @@ func Test_Path(t *testing.T) {
 		Path(path).File(file).Stdout(false).Error(1, 2, 3)
 		Path(path).File(file).Stdout(false).Errorf("%d %d %d", 1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
-		t.Assert(gstr.Count(content, "1 2 3"), 2)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
+		t.Assert(qn.str.Count(content, "1 2 3"), 2)
 	})
 }
 
@@ -58,8 +57,8 @@ func Test_Cat(t *testing.T) {
 		Path(path).File(file).Cat(cat).Stdout(false).Error(1, 2, 3)
 		Path(path).File(file).Cat(cat).Stdout(false).Errorf("%d %d %d", 1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, cat, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
-		t.Assert(gstr.Count(content, "1 2 3"), 2)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
+		t.Assert(qn.str.Count(content, "1 2 3"), 2)
 	})
 }
 
@@ -75,8 +74,8 @@ func Test_Level(t *testing.T) {
 		Path(path).File(file).Level(LEVEL_PROD).Stdout(false).Debug(1, 2, 3)
 		Path(path).File(file).Level(LEVEL_PROD).Stdout(false).Debug("%d %d %d", 1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 0)
-		t.Assert(gstr.Count(content, "1 2 3"), 0)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 0)
+		t.Assert(qn.str.Count(content, "1 2 3"), 0)
 	})
 }
 
@@ -92,9 +91,9 @@ func Test_Skip(t *testing.T) {
 		Path(path).File(file).Skip(10).Stdout(false).Error(1, 2, 3)
 		Path(path).File(file).Stdout(false).Errorf("%d %d %d", 1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
-		t.Assert(gstr.Count(content, "1 2 3"), 2)
-		t.Assert(gstr.Count(content, "Stack"), 1)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
+		t.Assert(qn.str.Count(content, "1 2 3"), 2)
+		t.Assert(qn.str.Count(content, "Stack"), 1)
 	})
 }
 
@@ -110,9 +109,9 @@ func Test_Stack(t *testing.T) {
 		Path(path).File(file).Stack(false).Stdout(false).Error(1, 2, 3)
 		Path(path).File(file).Stdout(false).Errorf("%d %d %d", 1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
-		t.Assert(gstr.Count(content, "1 2 3"), 2)
-		t.Assert(gstr.Count(content, "Stack"), 1)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 2)
+		t.Assert(qn.str.Count(content, "1 2 3"), 2)
+		t.Assert(qn.str.Count(content, "Stack"), 1)
 	})
 }
 
@@ -127,9 +126,9 @@ func Test_StackWithFilter(t *testing.T) {
 
 		Path(path).File(file).StackWithFilter("none").Stdout(false).Error(1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 1)
-		t.Assert(gstr.Count(content, "1 2 3"), 1)
-		t.Assert(gstr.Count(content, "Stack"), 1)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 1)
+		t.Assert(qn.str.Count(content, "1 2 3"), 1)
+		t.Assert(qn.str.Count(content, "Stack"), 1)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
 		path := qn_file.TempDir(qn_time.TimestampNanoStr())
@@ -141,9 +140,9 @@ func Test_StackWithFilter(t *testing.T) {
 
 		Path(path).File(file).StackWithFilter("gogf").Stdout(false).Error(1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 1)
-		t.Assert(gstr.Count(content, "1 2 3"), 1)
-		t.Assert(gstr.Count(content, "Stack"), 0)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 1)
+		t.Assert(qn.str.Count(content, "1 2 3"), 1)
+		t.Assert(qn.str.Count(content, "Stack"), 0)
 	})
 }
 
@@ -158,8 +157,8 @@ func Test_Header(t *testing.T) {
 
 		Path(path).File(file).Header(true).Stdout(false).Error(1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 1)
-		t.Assert(gstr.Count(content, "1 2 3"), 1)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 1)
+		t.Assert(qn.str.Count(content, "1 2 3"), 1)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
 		path := qn_file.TempDir(qn_time.TimestampNanoStr())
@@ -171,8 +170,8 @@ func Test_Header(t *testing.T) {
 
 		Path(path).File(file).Header(false).Stdout(false).Error(1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 0)
-		t.Assert(gstr.Count(content, "1 2 3"), 1)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_ERRO]), 0)
+		t.Assert(qn.str.Count(content, "1 2 3"), 1)
 	})
 }
 
@@ -187,10 +186,10 @@ func Test_Line(t *testing.T) {
 
 		Path(path).File(file).Line(true).Stdout(false).Debug(1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
-		t.Assert(gstr.Count(content, "1 2 3"), 1)
-		t.Assert(gstr.Count(content, ".go"), 1)
-		t.Assert(gstr.Contains(content, qn_file.Separator), true)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
+		t.Assert(qn.str.Count(content, "1 2 3"), 1)
+		t.Assert(qn.str.Count(content, ".go"), 1)
+		t.Assert(qn.str.Contains(content, qn_file.Separator), true)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
 		path := qn_file.TempDir(qn_time.TimestampNanoStr())
@@ -202,10 +201,10 @@ func Test_Line(t *testing.T) {
 
 		Path(path).File(file).Line(false).Stdout(false).Debug(1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
-		t.Assert(gstr.Count(content, "1 2 3"), 1)
-		t.Assert(gstr.Count(content, ".go"), 1)
-		t.Assert(gstr.Contains(content, qn_file.Separator), false)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
+		t.Assert(qn.str.Count(content, "1 2 3"), 1)
+		t.Assert(qn.str.Count(content, ".go"), 1)
+		t.Assert(qn.str.Contains(content, qn_file.Separator), false)
 	})
 }
 
@@ -224,8 +223,8 @@ func Test_Async(t *testing.T) {
 		time.Sleep(200 * time.Millisecond)
 
 		content = qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
-		t.Assert(gstr.Count(content, "1 2 3"), 1)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
+		t.Assert(qn.str.Count(content, "1 2 3"), 1)
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
@@ -238,7 +237,7 @@ func Test_Async(t *testing.T) {
 
 		Path(path).File(file).Async(false).Stdout(false).Debug(1, 2, 3)
 		content := qn_file.GetContents(qn_file.Join(path, file))
-		t.Assert(gstr.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
-		t.Assert(gstr.Count(content, "1 2 3"), 1)
+		t.Assert(qn.str.Count(content, defaultLevelPrefixes[LEVEL_DEBU]), 1)
+		t.Assert(qn.str.Count(content, "1 2 3"), 1)
 	})
 }

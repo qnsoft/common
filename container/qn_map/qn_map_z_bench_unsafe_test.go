@@ -12,16 +12,16 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 )
 
-var anyAnyMapUnsafe = gmap.New()
-var intIntMapUnsafe = gmap.NewIntIntMap()
-var intAnyMapUnsafe = gmap.NewIntAnyMap()
-var intStrMapUnsafe = gmap.NewIntStrMap()
-var strIntMapUnsafe = gmap.NewStrIntMap()
-var strAnyMapUnsafe = gmap.NewStrAnyMap()
-var strStrMapUnsafe = gmap.NewStrStrMap()
+var anyAnyMapUnsafe = qn_map.New()
+var intIntMapUnsafe = qn_map.NewIntIntMap()
+var intAnyMapUnsafe = qn_map.NewIntAnyMap()
+var intStrMapUnsafe = qn_map.NewIntStrMap()
+var strIntMapUnsafe = qn_map.NewStrIntMap()
+var strAnyMapUnsafe = qn_map.NewStrAnyMap()
+var strStrMapUnsafe = qn_map.NewStrStrMap()
 
 // Writing benchmarks.
 

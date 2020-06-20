@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/debug/qn_debug"
 )
 
@@ -85,7 +84,7 @@ func (s *Server) nameToUri(name string) string {
 
 	case URI_TYPE_CAMEL:
 		part := bytes.NewBuffer(nil)
-		if gstr.IsLetterUpper(name[0]) {
+		if qn.str.IsLetterUpper(name[0]) {
 			part.WriteByte(name[0] + 32)
 		} else {
 			part.WriteByte(name[0])
@@ -98,10 +97,10 @@ func (s *Server) nameToUri(name string) string {
 	default:
 		part := bytes.NewBuffer(nil)
 		for i := 0; i < len(name); i++ {
-			if i > 0 && gstr.IsLetterUpper(name[i]) {
+			if i > 0 && qn.str.IsLetterUpper(name[i]) {
 				part.WriteByte('-')
 			}
-			if gstr.IsLetterUpper(name[i]) {
+			if qn.str.IsLetterUpper(name[i]) {
 				part.WriteByte(name[i] + 32)
 			} else {
 				part.WriteByte(name[i])

@@ -14,15 +14,15 @@ import (
 	"github.com/qnsoft/common/util/qn_conv"
 
 	"github.com/qnsoft/common/container/gqueue"
-	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/net/gtcp"
+	"github.com/qnsoft/common/container/qn_type"
+	"github.com/qnsoft/common/net/qn_tcp"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_log"
 )
 
 var (
 	// tcpListened marks whether the receiving listening service started.
-	tcpListened = gtype.NewBool()
+	tcpListened = qn_type.NewBool()
 )
 
 // Receive blocks and receives message from other process using local TCP listening.
@@ -73,13 +73,13 @@ func receiveTcpListening() {
 		if conn, err := listen.Accept(); err != nil {
 			qn_log.Error(err)
 		} else if conn != nil {
-			go receiveTcpHandler(gtcp.NewConnByNetConn(conn))
+			go receiveTcpHandler(qn_tcp.NewConnByNetConn(conn))
 		}
 	}
 }
 
 // receiveTcpHandler is the connection handler for receiving data.
-func receiveTcpHandler(conn *gtcp.Conn) {
+func receiveTcpHandler(conn *qn_tcp.Conn) {
 	var result []byte
 	var response Msqn_response
 	for {

@@ -11,58 +11,57 @@ package qn_str_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
 func Test_Trim(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gstr.Trim(" 123456\n "), "123456")
-		t.Assert(gstr.Trim("#123456#;", "#;"), "123456")
+		t.Assert(qn.str.Trim(" 123456\n "), "123456")
+		t.Assert(qn.str.Trim("#123456#;", "#;"), "123456")
 	})
 }
 
 func Test_TrimStr(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gstr.TrimStr("gogo我爱gogo", "go"), "我爱")
+		t.Assert(qn.str.TrimStr("gogo我爱gogo", "go"), "我爱")
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gstr.TrimStr("啊我爱中国人啊", "啊"), "我爱中国人")
+		t.Assert(qn.str.TrimStr("啊我爱中国人啊", "啊"), "我爱中国人")
 	})
 }
 
 func Test_TrimRight(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gstr.TrimRight(" 123456\n "), " 123456")
-		t.Assert(gstr.TrimRight("#123456#;", "#;"), "#123456")
+		t.Assert(qn.str.TrimRight(" 123456\n "), " 123456")
+		t.Assert(qn.str.TrimRight("#123456#;", "#;"), "#123456")
 	})
 }
 
 func Test_TrimRightStr(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gstr.TrimRightStr("gogo我爱gogo", "go"), "gogo我爱")
-		t.Assert(gstr.TrimRightStr("gogo我爱gogo", "go我爱gogo"), "go")
+		t.Assert(qn.str.TrimRightStr("gogo我爱gogo", "go"), "gogo我爱")
+		t.Assert(qn.str.TrimRightStr("gogo我爱gogo", "go我爱gogo"), "go")
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gstr.TrimRightStr("我爱中国人", "人"), "我爱中国")
-		t.Assert(gstr.TrimRightStr("我爱中国人", "爱中国人"), "我")
+		t.Assert(qn.str.TrimRightStr("我爱中国人", "人"), "我爱中国")
+		t.Assert(qn.str.TrimRightStr("我爱中国人", "爱中国人"), "我")
 	})
 }
 
 func Test_TrimLeft(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gstr.TrimLeft(" \r123456\n "), "123456\n ")
-		t.Assert(gstr.TrimLeft("#;123456#;", "#;"), "123456#;")
+		t.Assert(qn.str.TrimLeft(" \r123456\n "), "123456\n ")
+		t.Assert(qn.str.TrimLeft("#;123456#;", "#;"), "123456#;")
 	})
 }
 
 func Test_TrimLeftStr(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gstr.TrimLeftStr("gogo我爱gogo", "go"), "我爱gogo")
-		t.Assert(gstr.TrimLeftStr("gogo我爱gogo", "gogo我爱go"), "go")
+		t.Assert(qn.str.TrimLeftStr("gogo我爱gogo", "go"), "我爱gogo")
+		t.Assert(qn.str.TrimLeftStr("gogo我爱gogo", "gogo我爱go"), "go")
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		t.Assert(gstr.TrimLeftStr("我爱中国人", "我爱"), "中国人")
-		t.Assert(gstr.TrimLeftStr("我爱中国人", "我爱中国"), "人")
+		t.Assert(qn.str.TrimLeftStr("我爱中国人", "我爱"), "中国人")
+		t.Assert(qn.str.TrimLeftStr("我爱中国人", "我爱中国"), "人")
 	})
 }

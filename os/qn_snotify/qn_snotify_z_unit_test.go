@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/container/gtype"
-	"github.com/qnsoft/common/os/gfsnotify"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/os/qn_file"
+	"github.com/qnsoft/common/os/qn_snotify"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/test/qn_test"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
@@ -20,18 +20,18 @@ import (
 
 func TestWatcher_AddOnce(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		value := gtype.New()
+		value := qn_type.New()
 		path := qn_file.TempDir(qn_conv.String(qn_time.TimestampNano()))
 		err := qn_file.PutContents(path, "init")
 		t.Assert(err, nil)
 		defer qn_file.Remove(path)
 
 		time.Sleep(100 * time.Millisecond)
-		callback1, err := gfsnotify.AddOnce("mywatch", path, func(event *gfsnotify.Event) {
+		callback1, err := qn_snotify.AddOnce("mywatch", path, func(event *qn_snotify.Event) {
 			value.Set(1)
 		})
 		t.Assert(err, nil)
-		callback2, err := gfsnotify.AddOnce("mywatch", path, func(event *gfsnotify.Event) {
+		callback2, err := qn_snotify.AddOnce("mywatch", path, func(event *qn_snotify.Event) {
 			value.Set(2)
 		})
 		t.Assert(err, nil)
@@ -43,7 +43,7 @@ func TestWatcher_AddOnce(t *testing.T) {
 		time.Sleep(100 * time.Millisecond)
 		t.Assert(value, 1)
 
-		err = gfsnotify.RemoveCallback(callback1.Id)
+		err = qn_snotify.RemoveCallback(callback1.Id)
 		t.Assert(err, nil)
 
 		err = qn_file.PutContents(path, "2")
@@ -63,15 +63,15 @@ func TestWatcher_AddRemove(t *testing.T) {
 			qn_file.Remove(path1)
 			qn_file.Remove(path2)
 		}()
-		v := gtype.NewInt(1)
-		callback, err := gfsnotify.Add(path1, func(event *gfsnotify.Event) {
+		v := qn_type.NewInt(1)
+		callback, err := qn_snotify.Add(path1, func(event *qn_snotify.Event) {
 			if event.IsWrite() {
 				v.Set(2)
 				return
 			}
 			if event.IsRename() {
 				v.Set(3)
-				gfsnotify.Exit()
+				qn_snotify.Exit()
 				return
 			}
 		})
@@ -93,8 +93,8 @@ func TestWatcher_AddRemove(t *testing.T) {
 		defer func() {
 			qn_file.Remove(path1)
 		}()
-		v := gtype.NewInt(1)
-		callback, err := gfsnotify.Add(path1, func(event *gfsnotify.Event) {
+		v := qn_type.NewInt(1)
+		callback, err := qn_snotify.Add(path1, func(event *qn_snotify.Event) {
 			if event.IsWrite() {
 				v.Set(2)
 				return
@@ -128,8 +128,8 @@ func TestWatcher_Callback1(t *testing.T) {
 		defer func() {
 			qn_file.Remove(path1)
 		}()
-		v := gtype.NewInt(1)
-		callback, err := gfsnotify.Add(path1, func(event *gfsnotify.Event) {
+		v := qn_type.NewInt(1)
+		callback, err := qn_snotify.Add(path1, func(event *qn_snotify.Event) {
 			if event.IsWrite() {
 				v.Set(2)
 				return
@@ -143,7 +143,7 @@ func TestWatcher_Callback1(t *testing.T) {
 		t.Assert(v.Val(), 2)
 
 		v.Set(3)
-		gfsnotify.RemoveCallback(callback.Id)
+		qn_snotify.RemoveCallback(callback.Id)
 		qn_file.PutContents(path1, "3")
 		time.Sleep(100 * time.Millisecond)
 		t.Assert(v.Val(), 3)
@@ -158,15 +158,15 @@ func TestWatcher_Callback2(t *testing.T) {
 		defer func() {
 			qn_file.Remove(path1)
 		}()
-		v1 := gtype.NewInt(1)
-		v2 := gtype.NewInt(1)
-		callback1, err1 := gfsnotify.Add(path1, func(event *gfsnotify.Event) {
+		v1 := qn_type.NewInt(1)
+		v2 := qn_type.NewInt(1)
+		callback1, err1 := qn_snotify.Add(path1, func(event *qn_snotify.Event) {
 			if event.IsWrite() {
 				v1.Set(2)
 				return
 			}
 		})
-		callback2, err2 := gfsnotify.Add(path1, func(event *gfsnotify.Event) {
+		callback2, err2 := qn_snotify.Add(path1, func(event *qn_snotify.Event) {
 			if event.IsWrite() {
 				v2.Set(2)
 				return
@@ -184,7 +184,7 @@ func TestWatcher_Callback2(t *testing.T) {
 
 		v1.Set(3)
 		v2.Set(3)
-		gfsnotify.RemoveCallback(callback1.Id)
+		qn_snotify.RemoveCallback(callback1.Id)
 		t.Assert(qn_file.PutContents(path1, "3"), nil)
 		time.Sleep(100 * time.Millisecond)
 		t.Assert(v1.Val(), 3)

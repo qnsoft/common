@@ -13,6 +13,7 @@ import (
 
 	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/frame/gmvc"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -123,7 +124,7 @@ func Test_Router_GroupBasic2(t *testing.T) {
 	obj := new(GroupObject)
 	ctl := new(GroupController)
 	// 分组路由批量注册
-	s.Group("/api").Bind([]g.Slice{
+	s.Group("/api").Bind([]qn.Slice{
 		{"ALL", "/handler", Handler},
 		{"ALL", "/ctl", ctl},
 		{"GET", "/ctl/my-show", ctl, "Show"},

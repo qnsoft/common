@@ -15,9 +15,9 @@ import (
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/os/qn_timer"
 
-	"github.com/qnsoft/common/container/glist"
-	"github.com/qnsoft/common/container/gset"
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_list"
+	"github.com/qnsoft/common/container/qn_set"
+	"github.com/qnsoft/common/container/qn_type"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
@@ -47,19 +47,19 @@ type memCache struct {
 
 	// expireSets is the expiring timestamp to its key set mapping,
 	// which is used for quick indexing and deleting.
-	expireSets map[int64]*gset.Set
+	expireSets map[int64]*qn_set.Set
 
 	// lru is the LRU manager, which is enabled when attribute cap > 0.
 	lru *memCacheLru
 
 	// lruGetList is the LRU history according with Get function.
-	lruGetList *glist.List
+	lruGetList *qn_list.List
 
 	// eventList is the asynchronous event list for internal data synchronization.
-	eventList *glist.List
+	eventList *qn_list.List
 
 	// closed controls the cache closed or not.
-	closed *gtype.Bool
+	closed *qn_type.Bool
 }
 
 // Internal cache item.
@@ -83,12 +83,12 @@ const (
 // newMemCache creates and returns a new memory cache object.
 func newMemCache(lruCap ...int) *memCache {
 	c := &memCache{
-		lruGetList:  glist.New(true),
+		lruGetList:  qn_list.New(true),
 		data:        make(map[interface{}]memCacheItem),
 		expireTimes: make(map[interface{}]int64),
-		expireSets:  make(map[int64]*gset.Set),
-		eventList:   glist.New(true),
-		closed:      gtype.NewBool(),
+		expireSets:  make(map[int64]*qn_set.Set),
+		eventList:   qn_list.New(true),
+		closed:      qn_type.NewBool(),
 	}
 	if len(lruCap) > 0 {
 		c.cap = lruCap[0]
@@ -156,7 +156,7 @@ func (c *memCache) makeExpireKey(expire int64) int64 {
 }
 
 // getExpireSet returns the expire set for given <expire> in seconds.
-func (c *memCache) getExpireSet(expire int64) (expireSet *gset.Set) {
+func (c *memCache) getExpireSet(expire int64) (expireSet *qn_set.Set) {
 	c.expireSetMu.RLock()
 	expireSet, _ = c.expireSets[expire]
 	c.expireSetMu.RUnlock()
@@ -165,9 +165,9 @@ func (c *memCache) getExpireSet(expire int64) (expireSet *gset.Set) {
 
 // getOrNewExpireSet returns the expire set for given <expire> in seconds.
 // It creates and returns a new set for <expire> if it does not exist.
-func (c *memCache) getOrNewExpireSet(expire int64) (expireSet *gset.Set) {
+func (c *memCache) getOrNewExpireSet(expire int64) (expireSet *qn_set.Set) {
 	if expireSet = c.getExpireSet(expire); expireSet == nil {
-		expireSet = gset.New(true)
+		expireSet = qn_set.New(true)
 		c.expireSetMu.Lock()
 		if es, ok := c.expireSets[expire]; ok {
 			expireSet = es
@@ -418,7 +418,7 @@ func (c *memCache) syncEventAndClearExpired() {
 	// Data Cleaning up.
 	// ========================
 	var (
-		expireSet *gset.Set
+		expireSet *qn_set.Set
 		ek        = c.makeExpireKey(qn_time.TimestampMilli())
 		eks       = []int64{ek - 1000, ek - 2000, ek - 3000, ek - 4000, ek - 5000}
 	)

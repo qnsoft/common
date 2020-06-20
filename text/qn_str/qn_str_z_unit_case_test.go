@@ -10,8 +10,6 @@ package qn_str_test
 
 import (
 	"testing"
-
-	"github.com/gogf/gf/text/gstr"
 )
 
 func Test_CamelCase(t *testing.T) {
@@ -30,7 +28,7 @@ func Test_CamelCase(t *testing.T) {
 	for _, i := range cases {
 		in := i[0]
 		out := i[1]
-		result := gstr.CamelCase(in)
+		result := qn.str.CamelCase(in)
 		if result != out {
 			t.Error("'" + result + "' != '" + out + "'")
 		}
@@ -47,7 +45,7 @@ func Test_CamelLowerCase(t *testing.T) {
 	for _, i := range cases {
 		in := i[0]
 		out := i[1]
-		result := gstr.CamelLowerCase(in)
+		result := qn.str.CamelLowerCase(in)
 		if result != out {
 			t.Error("'" + result + "' != '" + out + "'")
 		}
@@ -77,7 +75,7 @@ func Test_SnakeCase(t *testing.T) {
 	for _, i := range cases {
 		in := i[0]
 		out := i[1]
-		result := gstr.SnakeCase(in)
+		result := qn.str.SnakeCase(in)
 		if result != out {
 			t.Error("'" + in + "'('" + result + "' != '" + out + "')")
 		}
@@ -108,7 +106,7 @@ func Test_DelimitedCase(t *testing.T) {
 	for _, i := range cases {
 		in := i[0]
 		out := i[1]
-		result := gstr.DelimitedCase(in, '@')
+		result := qn.str.DelimitedCase(in, '@')
 		if result != out {
 			t.Error("'" + in + "' ('" + result + "' != '" + out + "')")
 		}
@@ -122,7 +120,7 @@ func Test_SnakeScreamingCase(t *testing.T) {
 	for _, i := range cases {
 		in := i[0]
 		out := i[1]
-		result := gstr.SnakeScreamingCase(in)
+		result := qn.str.SnakeScreamingCase(in)
 		if result != out {
 			t.Error("'" + result + "' != '" + out + "'")
 		}
@@ -136,7 +134,7 @@ func Test_KebabCase(t *testing.T) {
 	for _, i := range cases {
 		in := i[0]
 		out := i[1]
-		result := gstr.KebabCase(in)
+		result := qn.str.KebabCase(in)
 		if result != out {
 			t.Error("'" + result + "' != '" + out + "'")
 		}
@@ -150,7 +148,7 @@ func Test_KebabScreamingCase(t *testing.T) {
 	for _, i := range cases {
 		in := i[0]
 		out := i[1]
-		result := gstr.KebabScreamingCase(in)
+		result := qn.str.KebabScreamingCase(in)
 		if result != out {
 			t.Error("'" + result + "' != '" + out + "'")
 		}
@@ -164,7 +162,7 @@ func Test_DelimitedScreamingCase(t *testing.T) {
 	for _, i := range cases {
 		in := i[0]
 		out := i[1]
-		result := gstr.DelimitedScreamingCase(in, '.', true)
+		result := qn.str.DelimitedScreamingCase(in, '.', true)
 		if result != out {
 			t.Error("'" + result + "' != '" + out + "'")
 		}

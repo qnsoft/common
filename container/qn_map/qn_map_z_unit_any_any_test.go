@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/container/gmap"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/container/qn_map"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/test/qn_test"
 	"github.com/qnsoft/common/util/qn_conv"
@@ -20,7 +20,7 @@ import (
 
 func Test_AnyAnyMap_Var(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		var m gmap.AnyAnyMap
+		var m qn_map.AnyAnyMap
 		m.Set(1, 1)
 
 		t.Assert(m.Get(1), 1)
@@ -50,7 +50,7 @@ func Test_AnyAnyMap_Var(t *testing.T) {
 
 func Test_AnyAnyMap_Basic(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gmap.NewAnyAnyMap()
+		m := qn_map.NewAnyAnyMap()
 		m.Set(1, 1)
 
 		t.Assert(m.Get(1), 1)
@@ -76,14 +76,14 @@ func Test_AnyAnyMap_Basic(t *testing.T) {
 		t.Assert(m.Size(), 0)
 		t.Assert(m.IsEmpty(), true)
 
-		m2 := gmap.NewAnyAnyMapFrom(map[interface{}]interface{}{1: 1, 2: "2"})
+		m2 := qn_map.NewAnyAnyMapFrom(map[interface{}]interface{}{1: 1, 2: "2"})
 		t.Assert(m2.Map(), map[interface{}]interface{}{1: 1, 2: "2"})
 	})
 }
 
 func Test_AnyAnyMap_Set_Fun(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gmap.NewAnyAnyMap()
+		m := qn_map.NewAnyAnyMap()
 
 		m.GetOrSetFunc(1, getAny)
 		m.GetOrSetFuncLock(2, getAny)
@@ -101,7 +101,7 @@ func Test_AnyAnyMap_Set_Fun(t *testing.T) {
 
 func Test_AnyAnyMap_Batch(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gmap.NewAnyAnyMap()
+		m := qn_map.NewAnyAnyMap()
 
 		m.Sets(map[interface{}]interface{}{1: 1, 2: "2", 3: 3})
 		t.Assert(m.Map(), map[interface{}]interface{}{1: 1, 2: "2", 3: 3})
@@ -113,7 +113,7 @@ func Test_AnyAnyMap_Batch(t *testing.T) {
 func Test_AnyAnyMap_Iterator(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[interface{}]interface{}{1: 1, 2: "2"}
-		m := gmap.NewAnyAnyMapFrom(expect)
+		m := qn_map.NewAnyAnyMapFrom(expect)
 		m.Iterator(func(k interface{}, v interface{}) bool {
 			t.Assert(expect[k], v)
 			return true
@@ -137,7 +137,7 @@ func Test_AnyAnyMap_Iterator(t *testing.T) {
 func Test_AnyAnyMap_Lock(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		expect := map[interface{}]interface{}{1: 1, 2: "2"}
-		m := gmap.NewAnyAnyMapFrom(expect)
+		m := qn_map.NewAnyAnyMapFrom(expect)
 		m.LockFunc(func(m map[interface{}]interface{}) {
 			t.Assert(m, expect)
 		})
@@ -150,7 +150,7 @@ func Test_AnyAnyMap_Lock(t *testing.T) {
 func Test_AnyAnyMap_Clone(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		//clone 方法是深克隆
-		m := gmap.NewAnyAnyMapFrom(map[interface{}]interface{}{1: 1, 2: "2"})
+		m := qn_map.NewAnyAnyMapFrom(map[interface{}]interface{}{1: 1, 2: "2"})
 
 		m_clone := m.Clone()
 		m.Remove(1)
@@ -165,8 +165,8 @@ func Test_AnyAnyMap_Clone(t *testing.T) {
 
 func Test_AnyAnyMap_Merge(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m1 := gmap.NewAnyAnyMap()
-		m2 := gmap.NewAnyAnyMap()
+		m1 := qn_map.NewAnyAnyMap()
+		m2 := qn_map.NewAnyAnyMap()
 		m1.Set(1, 1)
 		m2.Set(2, "2")
 		m1.Merge(m2)
@@ -176,7 +176,7 @@ func Test_AnyAnyMap_Merge(t *testing.T) {
 
 func Test_AnyAnyMap_Map(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gmap.NewAnyAnyMap()
+		m := qn_map.NewAnyAnyMap()
 		m.Set(1, 0)
 		m.Set(2, 2)
 		t.Assert(m.Get(1), 0)
@@ -193,7 +193,7 @@ func Test_AnyAnyMap_Map(t *testing.T) {
 
 func Test_AnyAnyMap_MapCopy(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gmap.NewAnyAnyMap()
+		m := qn_map.NewAnyAnyMap()
 		m.Set(1, 0)
 		m.Set(2, 2)
 		t.Assert(m.Get(1), 0)
@@ -210,7 +210,7 @@ func Test_AnyAnyMap_MapCopy(t *testing.T) {
 
 func Test_AnyAnyMap_FilterEmpty(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gmap.NewAnyAnyMap()
+		m := qn_map.NewAnyAnyMap()
 		m.Set(1, 0)
 		m.Set(2, 2)
 		t.Assert(m.Get(1), 0)
@@ -220,7 +220,7 @@ func Test_AnyAnyMap_FilterEmpty(t *testing.T) {
 		t.Assert(m.Get(2), 2)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gmap.NewAnyAnyMap()
+		m := qn_map.NewAnyAnyMap()
 		m.Set(1, 0)
 		m.Set("time1", time.Time{})
 		m.Set("time2", time.Now())
@@ -236,11 +236,11 @@ func Test_AnyAnyMap_FilterEmpty(t *testing.T) {
 func Test_AnyAnyMap_Json(t *testing.T) {
 	// Marshal
 	qn_test.C(t, func(t *qn_test.T) {
-		data := g.MapAnyAny{
+		data := qn.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
-		m1 := gmap.NewAnyAnyMapFrom(data)
+		m1 := qn_map.NewAnyAnyMapFrom(data)
 		b1, err1 := json.Marshal(m1)
 		b2, err2 := json.Marshal(qn_conv.Map(data))
 		t.Assert(err1, err2)
@@ -248,28 +248,28 @@ func Test_AnyAnyMap_Json(t *testing.T) {
 	})
 	// Unmarshal
 	qn_test.C(t, func(t *qn_test.T) {
-		data := g.MapAnyAny{
+		data := qn.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
 		b, err := json.Marshal(qn_conv.Map(data))
 		t.Assert(err, nil)
 
-		m := gmap.New()
+		m := qn_map.New()
 		err = json.Unmarshal(b, m)
 		t.Assert(err, nil)
 		t.Assert(m.Get("k1"), data["k1"])
 		t.Assert(m.Get("k2"), data["k2"])
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		data := g.MapAnyAny{
+		data := qn.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		}
 		b, err := json.Marshal(qn_conv.Map(data))
 		t.Assert(err, nil)
 
-		var m gmap.Map
+		var m qn_map.Map
 		err = json.Unmarshal(b, &m)
 		t.Assert(err, nil)
 		t.Assert(m.Get("k1"), data["k1"])
@@ -279,19 +279,19 @@ func Test_AnyAnyMap_Json(t *testing.T) {
 
 func Test_AnyAnyMap_Pop(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gmap.NewAnyAnyMapFrom(g.MapAnyAny{
+		m := qn_map.NewAnyAnyMapFrom(qn.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		})
 		t.Assert(m.Size(), 2)
 
 		k1, v1 := m.Pop()
-		t.AssertIN(k1, g.Slice{"k1", "k2"})
-		t.AssertIN(v1, g.Slice{"v1", "v2"})
+		t.AssertIN(k1, qn.Slice{"k1", "k2"})
+		t.AssertIN(v1, qn.Slice{"v1", "v2"})
 		t.Assert(m.Size(), 1)
 		k2, v2 := m.Pop()
-		t.AssertIN(k2, g.Slice{"k1", "k2"})
-		t.AssertIN(v2, g.Slice{"v1", "v2"})
+		t.AssertIN(k2, qn.Slice{"k1", "k2"})
+		t.AssertIN(v2, qn.Slice{"v1", "v2"})
 		t.Assert(m.Size(), 0)
 
 		t.AssertNE(k1, k2)
@@ -301,7 +301,7 @@ func Test_AnyAnyMap_Pop(t *testing.T) {
 
 func Test_AnyAnyMap_Pops(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gmap.NewAnyAnyMapFrom(g.MapAnyAny{
+		m := qn_map.NewAnyAnyMapFrom(qn.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 			"k3": "v3",
@@ -311,15 +311,15 @@ func Test_AnyAnyMap_Pops(t *testing.T) {
 		kArray := qn_array.New()
 		vArray := qn_array.New()
 		for k, v := range m.Pops(1) {
-			t.AssertIN(k, g.Slice{"k1", "k2", "k3"})
-			t.AssertIN(v, g.Slice{"v1", "v2", "v3"})
+			t.AssertIN(k, qn.Slice{"k1", "k2", "k3"})
+			t.AssertIN(v, qn.Slice{"v1", "v2", "v3"})
 			kArray.Append(k)
 			vArray.Append(v)
 		}
 		t.Assert(m.Size(), 2)
 		for k, v := range m.Pops(2) {
-			t.AssertIN(k, g.Slice{"k1", "k2", "k3"})
-			t.AssertIN(v, g.Slice{"v1", "v2", "v3"})
+			t.AssertIN(k, qn.Slice{"k1", "k2", "k3"})
+			t.AssertIN(v, qn.Slice{"v1", "v2", "v3"})
 			kArray.Append(k)
 			vArray.Append(v)
 		}
@@ -333,7 +333,7 @@ func Test_AnyAnyMap_Pops(t *testing.T) {
 func TestAnyAnyMap_UnmarshalValue(t *testing.T) {
 	type V struct {
 		Name string
-		Map  *gmap.Map
+		Map  *qn_map.Map
 	}
 	// JSON
 	qn_test.C(t, func(t *qn_test.T) {
@@ -353,7 +353,7 @@ func TestAnyAnyMap_UnmarshalValue(t *testing.T) {
 		var v *V
 		err := qn_conv.Struct(map[string]interface{}{
 			"name": "john",
-			"map": g.Map{
+			"map": qn.Map{
 				"k1": "v1",
 				"k2": "v2",
 			},

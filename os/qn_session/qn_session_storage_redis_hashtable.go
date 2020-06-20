@@ -9,7 +9,7 @@ package qn_session
 import (
 	"time"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/database/gredis"
 	"github.com/qnsoft/common/internal/intlog"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
@@ -111,21 +111,21 @@ func (s *StorageRedisHashTable) RemoveAll(id string) error {
 	return err
 }
 
-// GetSession returns the session data as *gmap.StrAnyMap for given session id from storage.
+// GetSession returns the session data as *qn_map.StrAnyMap for given session id from storage.
 //
 // The parameter <ttl> specifies the TTL for this session, and it returns nil if the TTL is exceeded.
 // The parameter <data> is the current old session data stored in memory,
 // and for some storage it might be nil if memory storage is disabled.
 //
 // This function is called ever when session starts.
-func (s *StorageRedisHashTable) GetSession(id string, ttl time.Duration, data *gmap.StrAnyMap) (*gmap.StrAnyMap, error) {
+func (s *StorageRedisHashTable) GetSession(id string, ttl time.Duration, data *qn_map.StrAnyMap) (*qn_map.StrAnyMap, error) {
 	intlog.Printf("StorageRedisHashTable.GetSession: %s, %v", id, ttl)
 	r, err := s.redis.DoVar("EXISTS", s.key(id))
 	if err != nil {
 		return nil, err
 	}
 	if r.Bool() {
-		return gmap.NewStrAnyMap(true), nil
+		return qn_map.NewStrAnyMap(true), nil
 	}
 	return nil, nil
 }
@@ -133,7 +133,7 @@ func (s *StorageRedisHashTable) GetSession(id string, ttl time.Duration, data *g
 // SetSession updates the data map for specified session id.
 // This function is called ever after session, which is changed dirty, is closed.
 // This copy all session data map from memory to storage.
-func (s *StorageRedisHashTable) SetSession(id string, data *gmap.StrAnyMap, ttl time.Duration) error {
+func (s *StorageRedisHashTable) SetSession(id string, data *qn_map.StrAnyMap, ttl time.Duration) error {
 	intlog.Printf("StorageRedisHashTable.SetSession: %s, %v", id, ttl)
 	_, err := s.redis.Do("EXPIRE", s.key(id), int64(ttl.Seconds()))
 	return err

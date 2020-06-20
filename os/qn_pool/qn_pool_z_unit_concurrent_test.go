@@ -4,7 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/os/gfpool"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_time"
@@ -40,7 +39,7 @@ func Test_ConcurrentOS(t *testing.T) {
 			_, err = f2.Write([]byte("@1234567890#"))
 			t.Assert(err, nil)
 		}
-		t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2200)
+		t.Assert(qn.str.Count(qn_file.GetContents(path), "@1234567890#"), 2200)
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
@@ -62,7 +61,7 @@ func Test_ConcurrentOS(t *testing.T) {
 			_, err = f2.Write([]byte("@1234567890#"))
 			t.Assert(err, nil)
 		}
-		t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
+		t.Assert(qn.str.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
 	})
 	qn_test.C(t, func(t *qn_test.T) {
 		path := qn_file.TempDir(qn_time.TimestampNanoStr())
@@ -89,7 +88,7 @@ func Test_ConcurrentOS(t *testing.T) {
 		_, err = f2.Write([]byte(s2))
 		t.Assert(err, nil)
 
-		t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
+		t.Assert(qn.str.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
 	})
 	// DATA RACE
 	//qn_test.C(t, func(t *qn_test.T) {
@@ -125,7 +124,7 @@ func Test_ConcurrentOS(t *testing.T) {
 	//	}
 	//	close(ch)
 	//	wg.Wait()
-	//	t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
+	//	t.Assert(qn.str.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
 	//})
 }
 
@@ -149,7 +148,7 @@ func Test_ConcurrentGFPool(t *testing.T) {
 			_, err = f2.Write([]byte("@1234567890#"))
 			t.Assert(err, nil)
 		}
-		t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
+		t.Assert(qn.str.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
 	})
 	// DATA RACE
 	//qn_test.C(t, func(t *qn_test.T) {
@@ -185,6 +184,6 @@ func Test_ConcurrentGFPool(t *testing.T) {
 	//	}
 	//	close(ch)
 	//	wg.Wait()
-	//	t.Assert(gstr.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
+	//	t.Assert(qn.str.Count(qn_file.GetContents(path), "@1234567890#"), 2000)
 	//})
 }

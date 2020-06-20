@@ -9,10 +9,11 @@ package qn_json_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/gogf/gf/frame/g"
+	"github.com/qnsoft/common/container/qn_map"
+	"github.com/qnsoft/common/frame/qn"
 
 	"github.com/qnsoft/common/encoding/qn_json"
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -21,12 +22,12 @@ func Test_New(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		j := qn_json.New(data)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
-		m := gmap.NewAnyAnyMapFrom(g.MapAnyAny{
+		m := qn_map.NewAnyAnyMapFrom(qn.MapAnyAny{
 			"k1": "v1",
 			"k2": "v2",
 		})
@@ -47,7 +48,7 @@ func Test_Valid(t *testing.T) {
 }
 
 func Test_Encode(t *testing.T) {
-	value := g.Slice{1, 2, 3}
+	value := qn.Slice{1, 2, 3}
 	qn_test.C(t, func(t *qn_test.T) {
 		b, err := qn_json.Encode(value)
 		t.Assert(err, nil)
@@ -60,10 +61,10 @@ func Test_Decode(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		v, err := qn_json.Decode(data)
 		t.Assert(err, nil)
-		t.Assert(v, g.Map{
+		t.Assert(v, qn.Map{
 			"n": 123456789,
-			"a": g.Slice{1, 2, 3},
-			"m": g.Map{
+			"a": qn.Slice{1, 2, 3},
+			"m": qn.Map{
 				"k": "v",
 			},
 		})
@@ -72,10 +73,10 @@ func Test_Decode(t *testing.T) {
 		var v interface{}
 		err := qn_json.DecodeTo(data, &v)
 		t.Assert(err, nil)
-		t.Assert(v, g.Map{
+		t.Assert(v, qn.Map{
 			"n": 123456789,
-			"a": g.Slice{1, 2, 3},
-			"m": g.Map{
+			"a": qn.Slice{1, 2, 3},
+			"m": qn.Map{
 				"k": "v",
 			},
 		})
@@ -84,9 +85,9 @@ func Test_Decode(t *testing.T) {
 		j, err := qn_json.DecodeToJson(data)
 		t.Assert(err, nil)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m.k"), "v")
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
 		t.Assert(j.Get("a.1"), 2)
 	})
 }
@@ -98,9 +99,9 @@ func Test_SplitChar(t *testing.T) {
 		j.SetSplitChar(byte('#'))
 		t.Assert(err, nil)
 		t.Assert(j.Get("n"), "123456789")
-		t.Assert(j.Get("m"), g.Map{"k": "v"})
+		t.Assert(j.Get("m"), qn.Map{"k": "v"})
 		t.Assert(j.Get("m#k"), "v")
-		t.Assert(j.Get("a"), g.Slice{1, 2, 3})
+		t.Assert(j.Get("a"), qn.Slice{1, 2, 3})
 		t.Assert(j.Get("a#1"), 2)
 	})
 }
@@ -123,10 +124,10 @@ func Test_GetVar(t *testing.T) {
 		j, err := qn_json.DecodeToJson(data)
 		t.Assert(err, nil)
 		t.Assert(j.GetVar("n").String(), "123456789")
-		t.Assert(j.GetVar("m").Map(), g.Map{"k": "v"})
-		t.Assert(j.GetVar("a").Interfaces(), g.Slice{1, 2, 3})
-		t.Assert(j.GetVar("a").Slice(), g.Slice{1, 2, 3})
-		t.Assert(j.GetVar("a").Array(), g.Slice{1, 2, 3})
+		t.Assert(j.GetVar("m").Map(), qn.Map{"k": "v"})
+		t.Assert(j.GetVar("a").Interfaces(), qn.Slice{1, 2, 3})
+		t.Assert(j.GetVar("a").Slice(), qn.Slice{1, 2, 3})
+		t.Assert(j.GetVar("a").Array(), qn.Slice{1, 2, 3})
 	})
 }
 
@@ -136,8 +137,8 @@ func Test_GetMap(t *testing.T) {
 		j, err := qn_json.DecodeToJson(data)
 		t.Assert(err, nil)
 		t.Assert(j.GetMap("n"), nil)
-		t.Assert(j.GetMap("m"), g.Map{"k": "v"})
-		t.Assert(j.GetMap("a"), g.Map{"1": "2", "3": nil})
+		t.Assert(j.GetMap("m"), qn.Map{"k": "v"})
+		t.Assert(j.GetMap("a"), qn.Map{"1": "2", "3": nil})
 	})
 }
 
@@ -160,7 +161,7 @@ func Test_GetArray(t *testing.T) {
 		j, err := qn_json.DecodeToJson(data)
 		t.Assert(err, nil)
 		t.Assert(j.GetArray("n"), g.Array{123456789})
-		t.Assert(j.GetArray("m"), g.Array{g.Map{"k": "v"}})
+		t.Assert(j.GetArray("m"), g.Array{qn.Map{"k": "v"}})
 		t.Assert(j.GetArray("a"), g.Array{1, 2, 3})
 	})
 }
@@ -182,9 +183,9 @@ func Test_GetStrings(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
 		j, err := qn_json.DecodeToJson(data)
 		t.Assert(err, nil)
-		t.AssertEQ(j.GetStrings("n"), g.SliceStr{"123456789"})
-		t.AssertEQ(j.GetStrings("m"), g.SliceStr{`{"k":"v"}`})
-		t.AssertEQ(j.GetStrings("a"), g.SliceStr{"1", "2", "3"})
+		t.AssertEQ(j.GetStrings("n"), qn.SliceStr{"123456789"})
+		t.AssertEQ(j.GetStrings("m"), qn.SliceStr{`{"k":"v"}`})
+		t.AssertEQ(j.GetStrings("a"), qn.SliceStr{"1", "2", "3"})
 		t.AssertEQ(j.GetStrings("i"), nil)
 	})
 }
@@ -195,7 +196,7 @@ func Test_GetInterfaces(t *testing.T) {
 		j, err := qn_json.DecodeToJson(data)
 		t.Assert(err, nil)
 		t.AssertEQ(j.GetInterfaces("n"), g.Array{123456789})
-		t.AssertEQ(j.GetInterfaces("m"), g.Array{g.Map{"k": "v"}})
+		t.AssertEQ(j.GetInterfaces("m"), g.Array{qn.Map{"k": "v"}})
 		t.AssertEQ(j.GetInterfaces("a"), g.Array{1, 2, 3})
 	})
 }
@@ -225,15 +226,15 @@ func Test_Append(t *testing.T) {
 		p := qn_json.New(nil)
 		p.Append("a", 1)
 		p.Append("a", 2)
-		t.Assert(p.Get("a"), g.Slice{1, 2})
+		t.Assert(p.Get("a"), qn.Slice{1, 2})
 	})
 	qn_test.C(t, func(t *qn_test.T) {
 		p := qn_json.New(nil)
 		p.Append("a.b", 1)
 		p.Append("a.c", 2)
-		t.Assert(p.Get("a"), g.Map{
-			"b": g.Slice{1},
-			"c": g.Slice{2},
+		t.Assert(p.Get("a"), qn.Map{
+			"b": qn.Slice{1},
+			"c": qn.Slice{2},
 		})
 	})
 	qn_test.C(t, func(t *qn_test.T) {
@@ -278,20 +279,20 @@ func TestJson_Default(t *testing.T) {
 		t.AssertEQ(j.GetUint64("no", 100), uint64(100))
 		t.AssertEQ(j.GetFloat32("no", 123.456), float32(123.456))
 		t.AssertEQ(j.GetFloat64("no", 123.456), float64(123.456))
-		t.AssertEQ(j.GetArray("no", g.Slice{1, 2, 3}), g.Slice{1, 2, 3})
-		t.AssertEQ(j.GetInts("no", g.Slice{1, 2, 3}), g.SliceInt{1, 2, 3})
-		t.AssertEQ(j.GetFloats("no", g.Slice{1, 2, 3}), []float64{1, 2, 3})
-		t.AssertEQ(j.GetMap("no", g.Map{"k": "v"}), g.Map{"k": "v"})
+		t.AssertEQ(j.GetArray("no", qn.Slice{1, 2, 3}), qn.Slice{1, 2, 3})
+		t.AssertEQ(j.GetInts("no", qn.Slice{1, 2, 3}), qn.SliceInt{1, 2, 3})
+		t.AssertEQ(j.GetFloats("no", qn.Slice{1, 2, 3}), []float64{1, 2, 3})
+		t.AssertEQ(j.GetMap("no", qn.Map{"k": "v"}), qn.Map{"k": "v"})
 		t.AssertEQ(j.GetVar("no", 123.456).Float64(), float64(123.456))
-		t.AssertEQ(j.GetJson("no", g.Map{"k": "v"}).Get("k"), "v")
-		t.AssertEQ(j.GetJsons("no", g.Slice{
-			g.Map{"k1": "v1"},
-			g.Map{"k2": "v2"},
-			g.Map{"k3": "v3"},
+		t.AssertEQ(j.GetJson("no", qn.Map{"k": "v"}).Get("k"), "v")
+		t.AssertEQ(j.GetJsons("no", qn.Slice{
+			qn.Map{"k1": "v1"},
+			qn.Map{"k2": "v2"},
+			qn.Map{"k3": "v3"},
 		})[0].Get("k1"), "v1")
-		t.AssertEQ(j.GetJsonMap("no", g.Map{
-			"m1": g.Map{"k1": "v1"},
-			"m2": g.Map{"k2": "v2"},
+		t.AssertEQ(j.GetJsonMap("no", qn.Map{
+			"m1": qn.Map{"k1": "v1"},
+			"m2": qn.Map{"k2": "v2"},
 		})["m2"].Get("k2"), "v2")
 	})
 }
@@ -341,7 +342,7 @@ func Test_Convert2(t *testing.T) {
 			Name string
 		}{}
 		j := qn_json.New(`{"name":"gf","time":"2019-06-12"}`)
-		t.Assert(j.Value().(g.Map)["name"], "gf")
+		t.Assert(j.Value().(qn.Map)["name"], "gf")
 		t.Assert(j.GetMap("name1"), nil)
 		t.AssertNE(j.GetJson("name1"), nil)
 		t.Assert(j.GetJsons("name1"), nil)
@@ -379,10 +380,10 @@ func Test_Basic(t *testing.T) {
 		j := qn_json.New(`{"name":"gf","time":"2019-06-12"}`)
 		j.SetViolenceCheck(true)
 		t.Assert(j.Get(""), nil)
-		t.Assert(j.Get(".").(g.Map)["name"], "gf")
-		t.Assert(j.Get(".").(g.Map)["name1"], nil)
+		t.Assert(j.Get(".").(qn.Map)["name"], "gf")
+		t.Assert(j.Get(".").(qn.Map)["name1"], nil)
 		j.SetViolenceCheck(false)
-		t.Assert(j.Get(".").(g.Map)["name"], "gf")
+		t.Assert(j.Get(".").(qn.Map)["name"], "gf")
 
 		err := j.Set("name", "gf1")
 		t.Assert(err, nil)
@@ -447,18 +448,18 @@ func Test_Basic(t *testing.T) {
 
 		j = qn_json.New(name)
 		t.Assert(j.Get("Name"), "gf")
-		err = j.Set("Name1", g.Map{"Name": "gf1"})
+		err = j.Set("Name1", qn.Map{"Name": "gf1"})
 		t.Assert(err, nil)
-		t.Assert(j.Get("Name1").(g.Map)["Name"], "gf1")
-		err = j.Set("Name2", g.Slice{1, 2, 3})
+		t.Assert(j.Get("Name1").(qn.Map)["Name"], "gf1")
+		err = j.Set("Name2", qn.Slice{1, 2, 3})
 		t.Assert(err, nil)
-		t.Assert(j.Get("Name2").(g.Slice)[0], 1)
+		t.Assert(j.Get("Name2").(qn.Slice)[0], 1)
 		err = j.Set("Name3", name)
 		t.Assert(err, nil)
-		t.Assert(j.Get("Name3").(g.Map)["Name"], "gf")
+		t.Assert(j.Get("Name3").(qn.Map)["Name"], "gf")
 		err = j.Set("Name4", &name)
 		t.Assert(err, nil)
-		t.Assert(j.Get("Name4").(g.Map)["Name"], "gf")
+		t.Assert(j.Get("Name4").(qn.Map)["Name"], "gf")
 		arr := [3]int{1, 2, 3}
 		err = j.Set("Name5", arr)
 		t.Assert(err, nil)

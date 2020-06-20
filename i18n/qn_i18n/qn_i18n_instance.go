@@ -6,7 +6,7 @@
 
 package qn_i18n
 
-import "github.com/qnsoft/common/container/gmap"
+import "github.com/qnsoft/common/container/qn_map"
 
 const (
 	// Default group name for instance usage.
@@ -16,7 +16,7 @@ const (
 var (
 	// instances is the instances map for management
 	// for multiple i18n instance by name.
-	instances = gmap.NewStrAnyMap(true)
+	instances = qn_map.NewStrAnyMap(true)
 )
 
 // Instance returns an instance of Resource.

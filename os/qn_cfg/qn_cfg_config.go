@@ -7,13 +7,13 @@
 package qn_cfg
 
 import (
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/internal/intlog"
 )
 
 var (
 	// Customized configuration content.
-	configs = gmap.NewStrStrMap(true)
+	configs = qn_map.NewStrStrMap(true)
 )
 
 // SetContent sets customized configuration content for specified <file>.

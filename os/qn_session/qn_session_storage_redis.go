@@ -9,7 +9,7 @@ package qn_session
 import (
 	"time"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/database/gredis"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/internal/json"
@@ -18,9 +18,9 @@ import (
 
 // StorageRedis implements the Session Storage interface with redis.
 type StorageRedis struct {
-	redis         *gredis.Redis   // Redis client for session storage.
-	prefix        string          // Redis key prefix for session id.
-	updatingIdMap *gmap.StrIntMap // Updating TTL set for session id.
+	redis         *gredis.Redis     // Redis client for session storage.
+	prefix        string            // Redis key prefix for session id.
+	updatingIdMap *qn_map.StrIntMap // Updating TTL set for session id.
 }
 
 var (
@@ -37,7 +37,7 @@ func NewStorageRedis(redis *gredis.Redis, prefix ...string) *StorageRedis {
 	}
 	s := &StorageRedis{
 		redis:         redis,
-		updatingIdMap: gmap.NewStrIntMap(true),
+		updatingIdMap: qn_map.NewStrIntMap(true),
 	}
 	if len(prefix) > 0 && prefix[0] != "" {
 		s.prefix = prefix[0]
@@ -106,14 +106,14 @@ func (s *StorageRedis) RemoveAll(id string) error {
 	return ErrorDisabled
 }
 
-// GetSession returns the session data as *gmap.StrAnyMap for given session id from storage.
+// GetSession returns the session data as *qn_map.StrAnyMap for given session id from storage.
 //
 // The parameter <ttl> specifies the TTL for this session, and it returns nil if the TTL is exceeded.
 // The parameter <data> is the current old session data stored in memory,
 // and for some storage it might be nil if memory storage is disabled.
 //
 // This function is called ever when session starts.
-func (s *StorageRedis) GetSession(id string, ttl time.Duration, data *gmap.StrAnyMap) (*gmap.StrAnyMap, error) {
+func (s *StorageRedis) GetSession(id string, ttl time.Duration, data *qn_map.StrAnyMap) (*qn_map.StrAnyMap, error) {
 	intlog.Printf("StorageRedis.GetSession: %s, %v", id, ttl)
 	r, err := s.redis.DoVar("GET", s.key(id))
 	if err != nil {
@@ -131,7 +131,7 @@ func (s *StorageRedis) GetSession(id string, ttl time.Duration, data *gmap.StrAn
 		return nil, nil
 	}
 	if data == nil {
-		return gmap.NewStrAnyMapFrom(m, true), nil
+		return qn_map.NewStrAnyMapFrom(m, true), nil
 	} else {
 		data.Replace(m)
 	}
@@ -141,7 +141,7 @@ func (s *StorageRedis) GetSession(id string, ttl time.Duration, data *gmap.StrAn
 // SetSession updates the data map for specified session id.
 // This function is called ever after session, which is changed dirty, is closed.
 // This copy all session data map from memory to storage.
-func (s *StorageRedis) SetSession(id string, data *gmap.StrAnyMap, ttl time.Duration) error {
+func (s *StorageRedis) SetSession(id string, data *qn_map.StrAnyMap, ttl time.Duration) error {
 	intlog.Printf("StorageRedis.SetSession: %s, %v, %v", id, data, ttl)
 	content, err := json.Marshal(data)
 	if err != nil {

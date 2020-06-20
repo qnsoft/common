@@ -12,15 +12,15 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/qnsoft/common/container/gset"
+	"github.com/qnsoft/common/container/qn_set"
 )
 
-var intSet = gset.NewIntSet(true)
-var anySet = gset.NewSet(true)
-var strSet = gset.NewStrSet(true)
-var intSetUnsafe = gset.NewIntSet()
-var anySetUnsafe = gset.NewSet()
-var strSetUnsafe = gset.NewStrSet()
+var intSet = qn_set.NewIntSet(true)
+var anySet = qn_set.NewSet(true)
+var strSet = qn_set.NewStrSet(true)
+var intSetUnsafe = qn_set.NewIntSet()
+var anySetUnsafe = qn_set.NewSet()
+var strSetUnsafe = qn_set.NewStrSet()
 
 func Benchmark_IntSet_Add(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {

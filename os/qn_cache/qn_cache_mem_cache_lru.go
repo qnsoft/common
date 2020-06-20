@@ -9,9 +9,9 @@ package qn_cache
 import (
 	"time"
 
-	"github.com/qnsoft/common/container/glist"
-	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_list"
+	"github.com/qnsoft/common/container/qn_map"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/os/qn_timer"
 )
 
@@ -19,20 +19,20 @@ import (
 // It uses list.List from stdlib for its underlying doubly linked list.
 type memCacheLru struct {
 	cache   *memCache   // Parent cache object.
-	data    *gmap.Map   // Key mapping to the item of the list.
-	list    *glist.List // Key list.
-	rawList *glist.List // History for key adding.
-	closed  *gtype.Bool // Closed or not.
+	data    *qn_map.Map   // Key mapping to the item of the list.
+	list    *qn_list.List // Key list.
+	rawList *qn_list.List // History for key adding.
+	closed  *qn_type.Bool // Closed or not.
 }
 
 // newMemCacheLru creates and returns a new LRU object.
 func newMemCacheLru(cache *memCache) *memCacheLru {
 	lru := &memCacheLru{
 		cache:   cache,
-		data:    gmap.New(true),
-		list:    glist.New(true),
-		rawList: glist.New(true),
-		closed:  gtype.NewBool(),
+		data:    qn_map.New(true),
+		list:    qn_list.New(true),
+		rawList: qn_list.New(true),
+		closed:  qn_type.NewBool(),
 	}
 	qn_timer.AddSingleton(time.Second, lru.SyncAndClear)
 	return lru
@@ -47,7 +47,7 @@ func (lru *memCacheLru) Close() {
 func (lru *memCacheLru) Remove(key interface{}) {
 	if v := lru.data.Get(key); v != nil {
 		lru.data.Remove(key)
-		lru.list.Remove(v.(*glist.Element))
+		lru.list.Remove(v.(*qn_list.Element))
 	}
 }
 
@@ -90,7 +90,7 @@ func (lru *memCacheLru) SyncAndClear() {
 		if v := lru.rawList.PopFront(); v != nil {
 			// Deleting the key from list.
 			if v := lru.data.Get(v); v != nil {
-				lru.list.Remove(v.(*glist.Element))
+				lru.list.Remove(v.(*qn_list.Element))
 			}
 			// Pushing key to the head of the list
 			// and setting its list item to hash table for quick indexing.

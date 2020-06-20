@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/os/qn_time"
 	qn_util "github.com/qnsoft/common/util/qn_util"
 
@@ -51,7 +50,7 @@ func (view *View) funcNe(value, other interface{}) bool {
 func (view *View) funcLt(value, other interface{}) bool {
 	s1 := qn_conv.String(value)
 	s2 := qn_conv.String(other)
-	if gstr.IsNumeric(s1) && gstr.IsNumeric(s2) {
+	if qn.str.IsNumeric(s1) && qn.str.IsNumeric(s2) {
 		return qn_conv.Int64(value) < qn_conv.Int64(other)
 	}
 	return strings.Compare(s1, s2) < 0
@@ -61,7 +60,7 @@ func (view *View) funcLt(value, other interface{}) bool {
 func (view *View) funcLe(value, other interface{}) bool {
 	s1 := qn_conv.String(value)
 	s2 := qn_conv.String(other)
-	if gstr.IsNumeric(s1) && gstr.IsNumeric(s2) {
+	if qn.str.IsNumeric(s1) && qn.str.IsNumeric(s2) {
 		return qn_conv.Int64(value) <= qn_conv.Int64(other)
 	}
 	return strings.Compare(s1, s2) <= 0
@@ -71,7 +70,7 @@ func (view *View) funcLe(value, other interface{}) bool {
 func (view *View) funcGt(value, other interface{}) bool {
 	s1 := qn_conv.String(value)
 	s2 := qn_conv.String(other)
-	if gstr.IsNumeric(s1) && gstr.IsNumeric(s2) {
+	if qn.str.IsNumeric(s1) && qn.str.IsNumeric(s2) {
 		return qn_conv.Int64(value) > qn_conv.Int64(other)
 	}
 	return strings.Compare(s1, s2) > 0
@@ -81,7 +80,7 @@ func (view *View) funcGt(value, other interface{}) bool {
 func (view *View) funcGe(value, other interface{}) bool {
 	s1 := qn_conv.String(value)
 	s2 := qn_conv.String(other)
-	if gstr.IsNumeric(s1) && gstr.IsNumeric(s2) {
+	if qn.str.IsNumeric(s1) && qn.str.IsNumeric(s2) {
 		return qn_conv.Int64(value) >= qn_conv.Int64(other)
 	}
 	return strings.Compare(s1, s2) >= 0
@@ -154,12 +153,12 @@ func (view *View) funcCompare(value1, value2 interface{}) int {
 
 // funcSubStr implements build-in template function: substr
 func (view *View) funcSubStr(start, end, str interface{}) string {
-	return gstr.SubStrRune(qn_conv.String(str), qn_conv.Int(start), qn_conv.Int(end))
+	return qn.str.SubStrRune(qn_conv.String(str), qn_conv.Int(start), qn_conv.Int(end))
 }
 
 // funcStrLimit implements build-in template function: strlimit
 func (view *View) funcStrLimit(length, suffix, str interface{}) string {
-	return gstr.StrLimitRune(qn_conv.String(str), qn_conv.Int(length), qn_conv.String(suffix))
+	return qn.str.StrLimitRune(qn_conv.String(str), qn_conv.Int(length), qn_conv.String(suffix))
 }
 
 // funcConcat implements build-in template function: concat
@@ -173,30 +172,30 @@ func (view *View) funcConcat(str ...interface{}) string {
 
 // funcReplace implements build-in template function: replace
 func (view *View) funcReplace(search, replace, str interface{}) string {
-	return gstr.Replace(qn_conv.String(str), qn_conv.String(search), qn_conv.String(replace), -1)
+	return qn.str.Replace(qn_conv.String(str), qn_conv.String(search), qn_conv.String(replace), -1)
 }
 
 // funcHighlight implements build-in template function: highlight
 func (view *View) funcHighlight(key, color, str interface{}) string {
-	return gstr.Replace(qn_conv.String(str), qn_conv.String(key), fmt.Sprintf(`<span style="color:%v;">%v</span>`, color, key))
+	return qn.str.Replace(qn_conv.String(str), qn_conv.String(key), fmt.Sprintf(`<span style="color:%v;">%v</span>`, color, key))
 }
 
 // funcHideStr implements build-in template function: hidestr
 func (view *View) funcHideStr(percent, hide, str interface{}) string {
-	return gstr.HideStr(qn_conv.String(str), qn_conv.Int(percent), qn_conv.String(hide))
+	return qn.str.HideStr(qn_conv.String(str), qn_conv.Int(percent), qn_conv.String(hide))
 }
 
 // funcToUpper implements build-in template function: toupper
 func (view *View) funcToUpper(str interface{}) string {
-	return gstr.ToUpper(qn_conv.String(str))
+	return qn.str.ToUpper(qn_conv.String(str))
 }
 
 // funcToLower implements build-in template function: toupper
 func (view *View) funcToLower(str interface{}) string {
-	return gstr.ToLower(qn_conv.String(str))
+	return qn.str.ToLower(qn_conv.String(str))
 }
 
 // funcNl2Br implements build-in template function: nl2br
 func (view *View) funcNl2Br(str interface{}) string {
-	return gstr.Nl2Br(qn_conv.String(str))
+	return qn.str.Nl2Br(qn_conv.String(str))
 }

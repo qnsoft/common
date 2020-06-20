@@ -15,7 +15,6 @@ import (
 
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/test/qn_test"
-	"github.com/qnsoft/common/text/gstr"
 )
 
 func createTestFile(filename, content string) error {
@@ -49,7 +48,7 @@ func formatpath(paths string) string {
 }
 
 func testpath() string {
-	return gstr.TrimRight(os.TempDir(), "\\/")
+	return qn.str.TrimRight(os.TempDir(), "\\/")
 }
 
 func Test_GetContents(t *testing.T) {

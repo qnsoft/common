@@ -11,12 +11,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_time"
-	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/text/qn.str"
 	"github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/net/qn_http"
 
 	"github.com/qnsoft/common/test/qn_test"
@@ -24,9 +25,9 @@ import (
 
 func Test_ConfigFromMap(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := g.Map{
+		m := qn.Map{
 			"address":         ":8199",
-			"readTimeout":     "60s",
+			"readTimeout":     qn.Sl",
 			"indexFiles":      g.Slice{"index.php", "main.php"},
 			"errorLogEnabled": true,
 			"cookieMaxAge":    "1y",
@@ -45,9 +46,9 @@ func Test_ConfigFromMap(t *testing.T) {
 
 func Test_SetConfigWithMap(t *testing.T) {
 	qn_test.C(t, func(t *qn_test.T) {
-		m := g.Map{
+		m := qn.Map{
 			"Address": ":8199",
-			//"ServerRoot":       "/var/www/MyServerRoot",
+			//"ServerRoot":     qn.Slvar/www/MyServerRoot",
 			"IndexFiles":       g.Slice{"index.php", "main.php"},
 			"AccessLogEnabled": true,
 			"ErrorLogEnabled":  true,
@@ -71,7 +72,7 @@ func Test_ClientMaxBodySize(t *testing.T) {
 			r.Response.Write(r.GetBodyString())
 		})
 	})
-	m := g.Map{
+	m := qn.Map{
 		"Address":           p,
 		"ClientMaxBodySize": "1k",
 	}
@@ -92,7 +93,7 @@ func Test_ClientMaxBodySize(t *testing.T) {
 			data[i] = 'a'
 		}
 		t.Assert(
-			gstr.Trim(c.PostContent("/", data)),
+			qn.str.Trim(c.PostContent("/", data)),
 			data[:1024],
 		)
 	})
@@ -107,7 +108,7 @@ func Test_ClientMaxBodySize_File(t *testing.T) {
 			r.Response.Write("ok")
 		})
 	})
-	m := g.Map{
+	m := qn.Map{
 		"Address":           p,
 		"ErrorLogEnabled":   false,
 		"ClientMaxBodySize": "1k",
@@ -133,7 +134,7 @@ func Test_ClientMaxBodySize_File(t *testing.T) {
 		t.Assert(qn_file.PutBytes(path, data), nil)
 		defer qn_file.Remove(path)
 		t.Assert(
-			gstr.Trim(c.PostContent("/", "name=john&file=@file:"+path)),
+			qn.str.Trim(c.PostContent("/", "name=john&file=@file:"+path)),
 			"ok",
 		)
 	})
@@ -151,7 +152,7 @@ func Test_ClientMaxBodySize_File(t *testing.T) {
 		t.Assert(qn_file.PutBytes(path, data), nil)
 		defer qn_file.Remove(path)
 		t.Assert(
-			gstr.Trim(c.PostContent("/", "name=john&file=@file:"+path)),
+			qn.str.Trim(c.PostContent("/", "name=john&file=@file:"+path)),
 			"http: request body too large",
 		)
 	})

@@ -10,11 +10,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/os/qn_time"
 	"github.com/qnsoft/common/util/qn_conv"
 
-	"github.com/qnsoft/common/frame/g"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -29,7 +30,7 @@ func Test_Struct_Basic1(t *testing.T) {
 			Pass2    string `qn_conv:"password2"`
 		}
 		user := new(User)
-		params1 := g.Map{
+		params1 := qn.Map{
 			"uid":       1,
 			"Name":      "john",
 			"siteurl":   "https://goframe.org",
@@ -50,7 +51,7 @@ func Test_Struct_Basic1(t *testing.T) {
 		})
 
 		user = new(User)
-		params2 := g.Map{
+		params2 := qn.Map{
 			"uid":       2,
 			"name":      "smith",
 			"site-url":  "https://goframe.org",
@@ -82,7 +83,7 @@ func Test_Struct_Basic2(t *testing.T) {
 			Pass2   string
 		}
 		user := new(User)
-		params := g.Map{
+		params := qn.Map{
 			"uid":      1,
 			"Name":     "john",
 			"site_url": "https://goframe.org",
@@ -109,7 +110,7 @@ func Test_Struct_Attr_Pointer(t *testing.T) {
 			Name *string
 		}
 		user := new(User)
-		params := g.Map{
+		params := qn.Map{
 			"uid":  "1",
 			"Name": "john",
 		}
@@ -128,7 +129,7 @@ func Test_Struct_Attr_Slice1(t *testing.T) {
 		}
 		scores := []interface{}{99, 100, 60, 140}
 		user := new(User)
-		if err := qn_conv.Struct(g.Map{"Scores": scores}, user); err != nil {
+		if err := qn_conv.Struct(qn.Map{"Scores": scores}, user); err != nil {
 			t.Error(err)
 		} else {
 			t.Assert(user, &User{
@@ -146,7 +147,7 @@ func Test_Struct_Attr_Slice1(t *testing.T) {
 //		}
 //		scores := []interface{}{[]interface{}{99, 100, 60, 140}}
 //		user := new(User)
-//		if err := qn_conv.Struct(g.Map{"Scores": scores}, user); err != nil {
+//		if err := qn_conv.Struct(qn.Map{"Scores": scores}, user); err != nil {
 //			t.Error(err)
 //		} else {
 //			t.Assert(user, &User{
@@ -339,7 +340,7 @@ func Test_Struct_Attr_CustomType1(t *testing.T) {
 	}
 	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
-		err := qn_conv.Struct(g.Map{"id": 1, "name": "john"}, user)
+		err := qn_conv.Struct(qn.Map{"id": 1, "name": "john"}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, 1)
 		t.Assert(user.Name, "john")
@@ -353,9 +354,9 @@ func Test_Struct_Attr_CustomType2(t *testing.T) {
 		Name string
 	}
 	qn_test.C(t, func(t *qn_test.T) {
-		user := new(User)
-		err := qn_conv.Struct(g.Map{"id": g.Slice{1, 2}, "name": "john"}, user)
-		t.Assert(err, nil)
+		user := new(User)qn.Sl
+		err := qn_conv.Struct(qn.Map{"id": g.Slice{1, 2}, "name": "john"}, user)
+		t.Assert(err, nil)qn.Sl
 		t.Assert(user.Id, g.Slice{1, 2})
 		t.Assert(user.Name, "john")
 	})
@@ -368,7 +369,7 @@ func Test_Struct_PrivateAttribute(t *testing.T) {
 	}
 	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
-		err := qn_conv.Struct(g.Map{"id": 1, "name": "john"}, user)
+		err := qn_conv.Struct(qn.Map{"id": 1, "name": "john"}, user)
 		t.Assert(err, nil)
 		t.Assert(user.Id, 1)
 		t.Assert(user.name, "")
@@ -386,7 +387,7 @@ func Test_StructDeep1(t *testing.T) {
 	}
 	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
-		params := g.Map{
+		params := qn.Map{
 			"id":   1,
 			"name": "john",
 			"age":  18,
@@ -400,7 +401,7 @@ func Test_StructDeep1(t *testing.T) {
 
 	qn_test.C(t, func(t *qn_test.T) {
 		user := new(User)
-		params := g.Map{
+		params := qn.Map{
 			"id":   1,
 			"name": "john",
 			"age":  18,
@@ -426,7 +427,7 @@ func Test_StructDeep2(t *testing.T) {
 		Base
 		Name string
 	}
-	params := g.Map{
+	params := qn.Map{
 		"id":   1,
 		"uid":  10,
 		"name": "john",
@@ -474,7 +475,7 @@ func Test_StructDeep3(t *testing.T) {
 			Password string `json:"password"`
 			Nickname string `json:"nickname"`
 		}
-		data := g.Map{
+		data := qn.Map{
 			"id":          100,
 			"uid":         101,
 			"passport":    "t1",
@@ -499,7 +500,7 @@ func Test_Struct_Time(t *testing.T) {
 		}
 		now := time.Now()
 		user := new(User)
-		qn_conv.Struct(g.Map{
+		qn_conv.Struct(qn.Map{
 			"create_time": now,
 		}, user)
 		t.Assert(user.CreateTime.UTC().String(), now.UTC().String())
@@ -511,7 +512,7 @@ func Test_Struct_Time(t *testing.T) {
 		}
 		now := time.Now()
 		user := new(User)
-		qn_conv.Struct(g.Map{
+		qn_conv.Struct(qn.Map{
 			"create_time": &now,
 		}, user)
 		t.Assert(user.CreateTime.UTC().String(), now.UTC().String())
@@ -523,7 +524,7 @@ func Test_Struct_Time(t *testing.T) {
 		}
 		now := time.Now()
 		user := new(User)
-		qn_conv.Struct(g.Map{
+		qn_conv.Struct(qn.Map{
 			"create_time": &now,
 		}, user)
 		t.Assert(user.CreateTime.Time.UTC().String(), now.UTC().String())
@@ -535,7 +536,7 @@ func Test_Struct_Time(t *testing.T) {
 		}
 		now := time.Now()
 		user := new(User)
-		qn_conv.Struct(g.Map{
+		qn_conv.Struct(qn.Map{
 			"create_time": &now,
 		}, user)
 		t.Assert(user.CreateTime.Time.UTC().String(), now.UTC().String())
@@ -547,7 +548,7 @@ func Test_Struct_Time(t *testing.T) {
 		}
 		now := time.Now()
 		user := new(User)
-		qn_conv.Struct(g.Map{
+		qn_conv.Struct(qn.Map{
 			"create_time": now,
 		}, user)
 		t.Assert(user.CreateTime.Time.UTC().String(), now.UTC().String())
@@ -562,7 +563,7 @@ func Test_Struct_Create(t *testing.T) {
 			Name string
 		}
 		user := (*User)(nil)
-		params := g.Map{
+		params := qn.Map{
 			"uid":  1,
 			"Name": "john",
 		}
@@ -578,7 +579,7 @@ func Test_Struct_Create(t *testing.T) {
 			Name string
 		}
 		user := (*User)(nil)
-		params := g.Map{
+		params := qn.Map{
 			"uid":  1,
 			"Name": "john",
 		}
@@ -595,7 +596,7 @@ func Test_Struct_Interface(t *testing.T) {
 			Name interface{}
 		}
 		user := (*User)(nil)
-		params := g.Map{
+		params := qn.Map{
 			"uid":  1,
 			"Name": nil,
 		}
@@ -620,9 +621,9 @@ func Test_Struct_NilAttribute(t *testing.T) {
 			Items []*Item                `json:"items"`
 		}
 		m := new(M)
-		err := qn_conv.Struct(g.Map{
+		err := qn_conv.Struct(qn.Map{
 			"id": "88888",
-			"me": g.Map{
+			"me": qn.Map{
 				"name": "mikey",
 				"day":  "20009",
 			},
@@ -770,7 +771,7 @@ func Test_Struct_Complex(t *testing.T) {
     "errorCode": null,
     "errorMsg": null
 }`
-		m := make(g.Map)
+		m := make(qn.Map)
 		err := json.Unmarshal([]byte(data), &m)
 		t.Assert(err, nil)
 

@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/qnsoft/common/container/gtype"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_timer"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
@@ -23,7 +23,7 @@ type Entry struct {
 	entry    *qn_timer.Entry // Associated qn_timer.Entry.
 	schedule *cronSchedule   // Timed schedule object.
 	jobName  string          // Callback function name(address info).
-	times    *gtype.Int      // Running times limit.
+	times    *qn_type.Int    // Running times limit.
 	Name     string          // Entry name.
 	Job      func()          `json:"-"` // Callback function.
 	Time     time.Time       // Registered time.
@@ -43,7 +43,7 @@ func (c *Cron) addEntry(pattern string, job func(), singleton bool, name ...stri
 		cron:     c,
 		schedule: schedule,
 		jobName:  runtime.FuncForPC(reflect.ValueOf(job).Pointer()).Name(),
-		times:    gtype.NewInt(gDEFAULT_TIMES),
+		times:    qn_type.NewInt(gDEFAULT_TIMES),
 		Job:      job,
 		Time:     time.Now(),
 	}

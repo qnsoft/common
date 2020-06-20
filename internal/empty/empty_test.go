@@ -9,7 +9,8 @@ package empty_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/gogf/gf/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/internal/empty"
 	"github.com/qnsoft/common/test/qn_test"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
@@ -56,8 +57,8 @@ func TestIsEmpty(t *testing.T) {
 		t.Assert(empty.IsEmpty(false), true)
 		t.Assert(empty.IsEmpty([]byte("")), true)
 		t.Assert(empty.IsEmpty(""), true)
-		t.Assert(empty.IsEmpty(g.Map{}), true)
-		t.Assert(empty.IsEmpty(g.Slice{}), true)
+		t.Assert(empty.IsEmpty(qn.Map{}), true)
+		t.Assert(empty.IsEmpty(qn.Slice{}), true)
 		t.Assert(empty.IsEmpty(g.Array{}), true)
 		t.Assert(empty.IsEmpty(tmpT2), true)
 		t.Assert(empty.IsEmpty(tmpT3), true)
@@ -80,8 +81,8 @@ func TestIsEmpty(t *testing.T) {
 		t.Assert(empty.IsEmpty(true), false)
 		t.Assert(empty.IsEmpty(tmpT1), false)
 		t.Assert(empty.IsEmpty([]byte("1")), false)
-		t.Assert(empty.IsEmpty(g.Map{"a": 1}), false)
-		t.Assert(empty.IsEmpty(g.Slice{"1"}), false)
+		t.Assert(empty.IsEmpty(qn.Map{"a": 1}), false)
+		t.Assert(empty.IsEmpty(qn.Slice{"1"}), false)
 		t.Assert(empty.IsEmpty(g.Array{"1"}), false)
 		t.Assert(empty.IsEmpty(tmpF2), false)
 		t.Assert(empty.IsEmpty(tmpF3), false)

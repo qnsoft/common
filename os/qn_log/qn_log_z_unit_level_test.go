@@ -11,7 +11,6 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/test/qn_test"
-	"github.com/qnsoft/common/text/gstr"
 )
 
 func Test_LevelPrefix(t *testing.T) {
@@ -40,21 +39,21 @@ func Test_LevelPrefix(t *testing.T) {
 		l := New()
 		l.SetWriter(buffer)
 		l.Debug("test1")
-		t.Assert(gstr.Contains(buffer.String(), defaultLevelPrefixes[LEVEL_DEBU]), true)
+		t.Assert(qn.str.Contains(buffer.String(), defaultLevelPrefixes[LEVEL_DEBU]), true)
 
 		buffer.Reset()
 
 		l.SetLevelPrefix(LEVEL_DEBU, "debug")
 		l.Debug("test2")
-		t.Assert(gstr.Contains(buffer.String(), defaultLevelPrefixes[LEVEL_DEBU]), false)
-		t.Assert(gstr.Contains(buffer.String(), "debug"), true)
+		t.Assert(qn.str.Contains(buffer.String(), defaultLevelPrefixes[LEVEL_DEBU]), false)
+		t.Assert(qn.str.Contains(buffer.String(), "debug"), true)
 
 		buffer.Reset()
 		l.SetLevelPrefixes(map[int]string{
 			LEVEL_ERRO: "error",
 		})
 		l.Error("test3")
-		t.Assert(gstr.Contains(buffer.String(), defaultLevelPrefixes[LEVEL_ERRO]), false)
-		t.Assert(gstr.Contains(buffer.String(), "error"), true)
+		t.Assert(qn.str.Contains(buffer.String(), defaultLevelPrefixes[LEVEL_ERRO]), false)
+		t.Assert(qn.str.Contains(buffer.String(), "error"), true)
 	})
 }

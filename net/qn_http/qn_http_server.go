@@ -25,12 +25,12 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/olekukonko/tablewriter"
-	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/container/gtype"
 	"github.com/qnsoft/common/container/qn_array"
-	"github.com/qnsoft/common/os/gcache"
+	"github.com/qnsoft/common/container/qn_map"
+	"github.com/qnsoft/common/container/qn_type"
 	"github.com/qnsoft/common/os/genv"
 	"github.com/qnsoft/common/os/gproc"
+	"github.com/qnsoft/common/os/qn_cache"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/text/qn_regex"
@@ -44,10 +44,10 @@ type (
 		config           ServerConfig                     // Configuration.
 		pluqn_ins        []Plugin                         // Plugin array.
 		servers          []*gracefulServer                // Underlying http.Server array.
-		serverCount      *gtype.Int                       // Underlying http.Server count.
+		serverCount      *qn_type.Int                     // Underlying http.Server count.
 		closeChan        chan struct{}                    // Used for underlying server closing event notification.
 		serveTree        map[string]interface{}           // The route map tree.
-		serveCache       *gcache.Cache                    // Server cache for internal usage.
+		serveCache       *qn_cache.Cache                  // Server cache for internal usage.
 		routesMap        map[string][]registeredRouteItem // Route map mainly for route dumps and repeated route checks.
 		statusHandlerMap map[string]HandlerFunc           // Custom status handler map.
 		sessionManager   *gsession.Manager                // Session manager.
@@ -148,11 +148,11 @@ var (
 
 	// serverMapping stores more than one server instances for current process.
 	// The key is the name of the server, and the value is its instance.
-	serverMapping = gmap.NewStrAnyMap(true)
+	serverMapping = qn_map.NewStrAnyMap(true)
 
 	// serverRunning marks the running server count.
 	// If there no successful server running or all servers shutdown, this value is 0.
-	serverRunning = gtype.NewInt()
+	serverRunning = qn_type.NewInt()
 
 	// wsUpgrader is the default up-grader configuration for websocket.
 	wsUpgrader = websocket.Upgrader{
@@ -167,7 +167,7 @@ var (
 
 	// serverProcessInited is used for lazy initialization for server.
 	// The process can only be initialized once.
-	serverProcessInited = gtype.NewBool()
+	serverProcessInited = qn_type.NewBool()
 
 	// gracefulEnabled is used for graceful reload feature, which is false in default.
 	gracefulEnabled = false
@@ -235,10 +235,10 @@ func GetServer(name ...interface{}) *Server {
 		pluqn_ins:        make([]Plugin, 0),
 		servers:          make([]*gracefulServer, 0),
 		closeChan:        make(chan struct{}, 10000),
-		serverCount:      gtype.NewInt(),
+		serverCount:      qn_type.NewInt(),
 		statusHandlerMap: make(map[string]HandlerFunc),
 		serveTree:        make(map[string]interface{}),
-		serveCache:       gcache.New(),
+		serveCache:       qn_cache.New(),
 		routesMap:        make(map[string][]registeredRouteItem),
 	}
 	// Initialize the server using default configurations.

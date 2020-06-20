@@ -9,10 +9,10 @@ package qn_json_test
 import (
 	"testing"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/encoding/qn_json"
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
+	"github.com/qnsoft/common/text/qn.str"
 )
 
 func Test_ToJson(t *testing.T) {
@@ -38,13 +38,13 @@ func Test_ToJson(t *testing.T) {
 		err := qn_json.DecodeTo(jsonContent, &info)
 		t.Assert(err, nil)
 		content := qn_json.New(info).MustToJsonString()
-		t.Assert(gstr.Contains(content, `"feed_id":""`), true)
-		t.Assert(gstr.Contains(content, `"fieldInfos":{`), true)
-		t.Assert(gstr.Contains(content, `"id":80079`), true)
-		t.Assert(gstr.Contains(content, `"om_level":{`), true)
-		t.Assert(gstr.Contains(content, `"id":2409,`), true)
-		t.Assert(gstr.Contains(content, `"id":"g0936lt1u0f"`), true)
-		t.Assert(gstr.Contains(content, `"new":"4"`), true)
+		t.Assert(qn.str.Contains(content, `"feed_id":""`), true)
+		t.Assert(qn.str.Contains(content, `"fieldInfos":{`), true)
+		t.Assert(qn.str.Contains(content, `"id":80079`), true)
+		t.Assert(qn.str.Contains(content, `"om_level":{`), true)
+		t.Assert(qn.str.Contains(content, `"id":2409,`), true)
+		t.Assert(qn.str.Contains(content, `"id":"g0936lt1u0f"`), true)
+		t.Assert(qn.str.Contains(content, `"new":"4"`), true)
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_MapAttributeConvert(t *testing.T) {
 
 		err = j.ToStruct(&tx)
 		qn_test.Assert(err, nil)
-		t.Assert(tx.Title, g.Map{
+		t.Assert(tx.Title, qn.Map{
 			"l1": "标签1", "l2": "标签2",
 		})
 	})
@@ -79,7 +79,7 @@ func Test_MapAttributeConvert(t *testing.T) {
 
 		err = j.ToStruct(&tx)
 		qn_test.Assert(err, nil)
-		t.Assert(tx.Title, g.Map{
+		t.Assert(tx.Title, qn.Map{
 			"l1": "标签1", "l2": "标签2",
 		})
 	})

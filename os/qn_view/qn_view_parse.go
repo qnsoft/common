@@ -18,16 +18,14 @@ import (
 	"github.com/qnsoft/common/encoding/qn_hash"
 	"github.com/qnsoft/common/internal/intlog"
 	"github.com/qnsoft/common/os/gfcache"
-	"github.com/qnsoft/common/os/gfsnotify"
 	"github.com/qnsoft/common/os/gmlock"
-	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/os/qn_snotify"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 	qn_util "github.com/qnsoft/common/util/qn_util"
 
 	"github.com/qnsoft/common/os/qn_res"
 
-	"github.com/qnsoft/common/container/gmap"
-	"github.com/qnsoft/common/os/gspath"
+	"github.com/qnsoft/common/container/qn_map"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/os/qn_log"
 )
@@ -47,7 +45,7 @@ type fileCacheItem struct {
 var (
 	// Templates cache map for template folder.
 	// Note that there's no expiring logic for this map.
-	templates = gmap.NewStrAnyMap(true)
+	templates = qn_map.NewStrAnyMap(true)
 
 	// Try-folders for resource template file searching.
 	resourceTryFolders = []string{"template/", "template", "/template", "/template/"}
@@ -73,11 +71,11 @@ func (view *View) Parse(file string, params ...Params) (result string, err error
 		}
 		// Monitor template files changes using fsnotify asynchronously.
 		if resource == nil {
-			if _, err := gfsnotify.AddOnce("gview.Parse:"+folder, folder, func(event *gfsnotify.Event) {
+			if _, err := qn_snotify.AddOnce("qn_view.Parse:"+folder, folder, func(event *qn_snotify.Event) {
 				// CLEAR THEM ALL.
 				view.fileCacheMap.Clear()
 				templates.Clear()
-				gfsnotify.Exit()
+				qn_snotify.Exit()
 			}); err != nil {
 				intlog.Error(err)
 			}
@@ -102,7 +100,7 @@ func (view *View) Parse(file string, params ...Params) (result string, err error
 		return "", err
 	}
 	// Using memory lock to ensure concurrent safety for template parsing.
-	gmlock.LockFunc("gview.Parse:"+item.path, func() {
+	gmlock.LockFunc("qn_view.Parse:"+item.path, func() {
 		if view.config.AutoEncode {
 			tpl, err = tpl.(*htmltpl.Template).Parse(item.content)
 		} else {
@@ -135,7 +133,7 @@ func (view *View) Parse(file string, params ...Params) (result string, err error
 	}
 
 	// TODO any graceful plan to replace "<no value>"?
-	result = gstr.Replace(buffer.String(), "<no value>", "")
+	result = qn.str.Replace(buffer.String(), "<no value>", "")
 	result = view.i18nTranslate(result, variables)
 	return result, nil
 }
@@ -168,7 +166,7 @@ func (view *View) ParseContent(content string, params ...Params) (string, error)
 	})
 	// Using memory lock to ensure concurrent safety for content parsing.
 	hash := strconv.FormatUint(qn_hash.DJBHash64([]byte(content)), 10)
-	gmlock.LockFunc("gview.ParseContent:"+hash, func() {
+	gmlock.LockFunc("qn_view.ParseContent:"+hash, func() {
 		if view.config.AutoEncode {
 			tpl, err = tpl.(*htmltpl.Template).Parse(content)
 		} else {
@@ -200,7 +198,7 @@ func (view *View) ParseContent(content string, params ...Params) (string, error)
 		}
 	}
 	// TODO any graceful plan to replace "<no value>"?
-	result := gstr.Replace(buffer.String(), "<no value>", "")
+	result := qn.str.Replace(buffer.String(), "<no value>", "")
 	result = view.i18nTranslate(result, variables)
 	return result, nil
 }
@@ -307,11 +305,11 @@ func (view *View) searchFile(file string) (path string, folder string, resource 
 		view.paths.RLockFunc(func(array []string) {
 			for _, folderPath := range array {
 				folderPath = strings.TrimRight(folderPath, qn_file.Separator)
-				if path, _ = gspath.Search(folderPath, file); path != "" {
+				if path, _ = qn.spath.Search(folderPath, file); path != "" {
 					folder = folderPath
 					break
 				}
-				if path, _ = gspath.Search(folderPath+qn_file.Separator+"template", file); path != "" {
+				if path, _ = qn.spath.Search(folderPath+qn_file.Separator+"template", file); path != "" {
 					folder = folderPath + qn_file.Separator + "template"
 					break
 				}
@@ -323,7 +321,7 @@ func (view *View) searchFile(file string) (path string, folder string, resource 
 	if path == "" {
 		buffer := bytes.NewBuffer(nil)
 		if view.paths.Len() > 0 {
-			buffer.WriteString(fmt.Sprintf("[gview] cannot find template file \"%s\" in following paths:", file))
+			buffer.WriteString(fmt.Sprintf("[qn_view] cannot find template file \"%s\" in following paths:", file))
 			view.paths.RLockFunc(func(array []string) {
 				index := 1
 				for _, folderPath := range array {
@@ -338,7 +336,7 @@ func (view *View) searchFile(file string) (path string, folder string, resource 
 				}
 			})
 		} else {
-			buffer.WriteString(fmt.Sprintf("[gview] cannot find template file \"%s\" with no path set/add", file))
+			buffer.WriteString(fmt.Sprintf("[qn_view] cannot find template file \"%s\" with no path set/add", file))
 		}
 		if errorPrint() {
 			qn_log.Error(buffer.String())

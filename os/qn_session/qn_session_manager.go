@@ -7,24 +7,25 @@
 package qn_session
 
 import (
-	"github.com/qnsoft/common/container/gmap"
 	"time"
 
-	"github.com/qnsoft/common/os/gcache"
+	"github.com/qnsoft/common/container/qn_map"
+
+	"github.com/qnsoft/common/os/qn_cache"
 )
 
 // Manager for sessions.
 type Manager struct {
-	ttl         time.Duration // TTL for sessions.
-	storage     Storage       // Storage interface for session storage.
-	sessionData *gcache.Cache // Session data cache for session TTL.
+	ttl         time.Duration   // TTL for sessions.
+	storage     Storage         // Storage interface for session storage.
+	sessionData *qn_cache.Cache // Session data cache for session TTL.
 }
 
 // New creates and returns a new session manager.
 func New(ttl time.Duration, storage ...Storage) *Manager {
 	m := &Manager{
 		ttl:         ttl,
-		sessionData: gcache.New(),
+		sessionData: qn_cache.New(),
 	}
 	if len(storage) > 0 && storage[0] != nil {
 		m.storage = storage[0]
@@ -64,6 +65,6 @@ func (m *Manager) TTL() time.Duration {
 }
 
 // UpdateSessionTTL updates the ttl for given session.
-func (m *Manager) UpdateSessionTTL(id string, data *gmap.StrAnyMap) {
+func (m *Manager) UpdateSessionTTL(id string, data *qn_map.StrAnyMap) {
 	m.sessionData.Set(id, data, m.ttl)
 }

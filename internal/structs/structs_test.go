@@ -9,9 +9,8 @@ package structs_test
 import (
 	"testing"
 
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/internal/structs"
-
-	"github.com/qnsoft/common/frame/g"
 
 	"github.com/qnsoft/common/test/qn_test"
 )
@@ -24,12 +23,12 @@ func Test_Basic(t *testing.T) {
 			Pass string `my-tag1:"pass1" my-tag2:"pass2" params:"pass"`
 		}
 		var user User
-		t.Assert(structs.TagMapName(user, []string{"params"}, true), g.Map{"name": "Name", "pass": "Pass"})
-		t.Assert(structs.TagMapName(&user, []string{"params"}, true), g.Map{"name": "Name", "pass": "Pass"})
+		t.Assert(structs.Taqn_mapName(user, []string{"params"}, true), qn.Map{"name": "Name", "pass": "Pass"})
+		t.Assert(structs.Taqn_mapName(&user, []string{"params"}, true), qn.Map{"name": "Name", "pass": "Pass"})
 
-		t.Assert(structs.TagMapName(&user, []string{"params", "my-tag1"}, true), g.Map{"name": "Name", "pass": "Pass"})
-		t.Assert(structs.TagMapName(&user, []string{"my-tag1", "params"}, true), g.Map{"name": "Name", "pass1": "Pass"})
-		t.Assert(structs.TagMapName(&user, []string{"my-tag2", "params"}, true), g.Map{"name": "Name", "pass2": "Pass"})
+		t.Assert(structs.Taqn_mapName(&user, []string{"params", "my-tag1"}, true), qn.Map{"name": "Name", "pass": "Pass"})
+		t.Assert(structs.Taqn_mapName(&user, []string{"my-tag1", "params"}, true), qn.Map{"name": "Name", "pass1": "Pass"})
+		t.Assert(structs.Taqn_mapName(&user, []string{"my-tag2", "params"}, true), qn.Map{"name": "Name", "pass2": "Pass"})
 	})
 
 	qn_test.C(t, func(t *qn_test.T) {
@@ -43,7 +42,7 @@ func Test_Basic(t *testing.T) {
 			Base `params:"base"`
 		}
 		user := new(UserWithBase)
-		t.Assert(structs.TagMapName(user, []string{"params"}, true), g.Map{
+		t.Assert(structs.Taqn_mapName(user, []string{"params"}, true), qn.Map{
 			"base":      "Base",
 			"password1": "Pass1",
 			"password2": "Pass2",
@@ -67,7 +66,7 @@ func Test_Basic(t *testing.T) {
 		}
 		user1 := new(UserWithBase1)
 		user2 := new(UserWithBase2)
-		t.Assert(structs.TagMapName(user1, []string{"params"}, true), g.Map{"password1": "Pass1", "password2": "Pass2"})
-		t.Assert(structs.TagMapName(user2, []string{"params"}, true), g.Map{"password1": "Pass1", "password2": "Pass2"})
+		t.Assert(structs.Taqn_mapName(user1, []string{"params"}, true), qn.Map{"password1": "Pass1", "password2": "Pass2"})
+		t.Assert(structs.Taqn_mapName(user2, []string{"params"}, true), qn.Map{"password1": "Pass1", "password2": "Pass2"})
 	})
 }

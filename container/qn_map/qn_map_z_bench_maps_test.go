@@ -11,13 +11,13 @@ package qn_map_test
 import (
 	"testing"
 
-	"github.com/qnsoft/common/container/gmap"
+	"github.com/qnsoft/common/container/qn_map"
 	qn_util "github.com/qnsoft/common/util/qn_util"
 )
 
-var hashMap = gmap.New(true)
-var listMap = gmap.NewListMap(true)
-var treeMap = gmap.NewTreeMap(qn_util.ComparatorInt, true)
+var hashMap = qn_map.New(true)
+var listMap = qn_map.NewListMap(true)
+var treeMap = qn_map.NewTreeMap(qn_util.ComparatorInt, true)
 
 func Benchmark_HashMap_Set(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {

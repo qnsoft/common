@@ -14,7 +14,6 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/container/qn_var"
 	"github.com/qnsoft/common/encoding/qn_json"
 	"github.com/qnsoft/common/encoding/qn_url"
@@ -263,7 +262,7 @@ func (r *Request) parseQuery() {
 	r.parsedQuery = true
 	if r.URL.RawQuery != "" {
 		var err error
-		r.queryMap, err = gstr.Parse(r.URL.RawQuery)
+		r.queryMap, err = qn.str.Parse(r.URL.RawQuery)
 		if err != nil {
 			panic(err)
 		}
@@ -293,7 +292,7 @@ func (r *Request) parseBody() {
 		}
 		// Default parameters decoding.
 		if r.bodyMap == nil {
-			r.bodyMap, _ = gstr.Parse(r.GetBodyString())
+			r.bodyMap, _ = qn.str.Parse(r.GetBodyString())
 		}
 	}
 }
@@ -309,12 +308,12 @@ func (r *Request) parseForm() {
 	r.parsedForm = true
 	if contentType := r.Header.Get("Content-Type"); contentType != "" {
 		var err error
-		if gstr.Contains(contentType, "multipart/") {
+		if qn.str.Contains(contentType, "multipart/") {
 			// multipart/form-data, multipart/mixed
 			if err = r.ParseMultipartForm(r.Server.config.FormParsingMemory); err != nil {
 				panic(err)
 			}
-		} else if gstr.Contains(contentType, "form") {
+		} else if qn.str.Contains(contentType, "form") {
 			// application/x-www-form-urlencoded
 			if err = r.Request.ParseForm(); err != nil {
 				panic(err)
@@ -328,7 +327,7 @@ func (r *Request) parseForm() {
 				// Only allow chars of: '\w', '[', ']', '-'.
 				if !qn_regex.IsMatchString(`^[\w\-\[\]]+$`, name) && len(r.PostForm) == 1 {
 					// It might be JSON/XML content.
-					if s := gstr.Trim(name + strings.Join(values, " ")); len(s) > 0 {
+					if s := qn.str.Trim(name + strings.Join(values, " ")); len(s) > 0 {
 						if s[0] == '{' && s[len(s)-1] == '}' || s[0] == '<' && s[len(s)-1] == '>' {
 							r.bodyContent = qn_conv.UnsafeStrToBytes(s)
 							params = ""
@@ -359,7 +358,7 @@ func (r *Request) parseForm() {
 				}
 			}
 			if params != "" {
-				if r.formMap, err = gstr.Parse(params); err != nil {
+				if r.formMap, err = qn.str.Parse(params); err != nil {
 					panic(err)
 				}
 			}

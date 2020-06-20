@@ -9,11 +9,10 @@ package qn_yaml_test
 import (
 	"testing"
 
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/internal/json"
 
 	"github.com/qnsoft/common/encoding/qn_parser"
-
-	"github.com/qnsoft/common/frame/g"
 
 	"github.com/qnsoft/common/encoding/qn_yaml"
 	"github.com/qnsoft/common/test/qn_test"
@@ -50,7 +49,7 @@ func Test_Decode(t *testing.T) {
 		t.Assert(ok, true)
 		t.Assert(m, map[string]interface{}{
 			"url":      "https://goframe.org",
-			"server":   g.Slice{"120.168.117.21", "120.168.117.22"},
+			"server":   qn.Slice{"120.168.117.21", "120.168.117.22"},
 			"pi":       3.14,
 			"hasChild": true,
 			"name":     "你好YAML",
@@ -65,7 +64,7 @@ func Test_DecodeTo(t *testing.T) {
 		t.Assert(err, nil)
 		t.Assert(result, map[string]interface{}{
 			"url":      "https://goframe.org",
-			"server":   g.Slice{"120.168.117.21", "120.168.117.22"},
+			"server":   qn.Slice{"120.168.117.21", "120.168.117.22"},
 			"pi":       3.14,
 			"hasChild": true,
 			"name":     "你好YAML",

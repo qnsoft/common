@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/qnsoft/common/container/qn_var"
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/test/qn_test"
 )
 
@@ -36,7 +36,7 @@ func Test_Struct(t *testing.T) {
 			Test int8
 		}
 		o := &StTest{}
-		v := qn_var.New(g.Slice{"Test", "-25"})
+		v := qn_var.New(qn.Slice{"Test", "-25"})
 		v.Struct(o)
 		t.Assert(o.Test, -25)
 	})

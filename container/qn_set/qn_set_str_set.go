@@ -13,7 +13,6 @@ import (
 
 	"github.com/qnsoft/common/internal/json"
 	"github.com/qnsoft/common/internal/rwmutex"
-	"github.com/qnsoft/common/text/gstr"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
 )
 
@@ -226,7 +225,7 @@ func (set *StrSet) String() string {
 		buffer = bytes.NewBuffer(nil)
 	)
 	for k, _ := range set.data {
-		buffer.WriteString(`"` + gstr.QuoteMeta(k, `"\`) + `"`)
+		buffer.WriteString(`"` + qn.str.QuoteMeta(k, `"\`) + `"`)
 		if i != l-1 {
 			buffer.WriteByte(',')
 		}

@@ -11,13 +11,13 @@ import (
 	"github.com/qnsoft/common/database/gredis"
 	"github.com/qnsoft/common/frame/qn_ins"
 	"github.com/qnsoft/common/i18n/qn_i18n"
-	"github.com/qnsoft/common/net/gtcp"
-	"github.com/qnsoft/common/net/gudp"
 	"github.com/qnsoft/common/net/qn_http"
-	"github.com/qnsoft/common/os/gview"
+	"github.com/qnsoft/common/net/qn_tcp"
+	"github.com/qnsoft/common/net/qn_udp"
 	"github.com/qnsoft/common/os/qn_cfg"
 	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/os/qn_res"
+	"github.com/qnsoft/common/os/qn_view"
 )
 
 // Client is a convenience function, that creates and returns a new HTTP client.
@@ -31,17 +31,17 @@ func Server(name ...interface{}) *qn_http.Server {
 }
 
 // TCPServer returns an instance of tcp server with specified name.
-func TCPServer(name ...interface{}) *gtcp.Server {
-	return gtcp.GetServer(name...)
+func TCPServer(name ...interface{}) *qn_tcp.Server {
+	return qn_tcp.GetServer(name...)
 }
 
 // UDPServer returns an instance of udp server with specified name.
-func UDPServer(name ...interface{}) *gudp.Server {
-	return gudp.GetServer(name...)
+func UDPServer(name ...interface{}) *qn_udp.Server {
+	return qn_udp.GetServer(name...)
 }
 
 // View returns an instance of template engine object with specified name.
-func View(name ...string) *gview.View {
+func View(name ...string) *qn_view.View {
 	return qn_ins.View(name...)
 }
 

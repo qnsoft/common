@@ -4,5 +4,5 @@
 // If a copy of the MIT was not distributed with this file,
 // You can obtain one at https://github.com/qnsoft/common.
 
-// Package gtree provides concurrent-safe/unsafe tree containers.
+// Package qn_tree provides concurrent-safe/unsafe tree containers.
 package qn_tree

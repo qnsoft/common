@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qnsoft/common/net/gudp"
+	"github.com/qnsoft/common/net/qn_udp"
 	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/test/qn_test"
 	qn_conv "github.com/qnsoft/common/util/qn_conv"
@@ -19,7 +19,7 @@ import (
 
 func Test_Basic(t *testing.T) {
 	p, _ := ports.PopRand()
-	s := gudp.NewServer(fmt.Sprintf("127.0.0.1:%d", p), func(conn *gudp.Conn) {
+	s := qn_udp.NewServer(fmt.Sprintf("127.0.0.1:%d", p), func(conn *qn_udp.Conn) {
 		defer conn.Close()
 		for {
 			data, err := conn.Recv(-1)
@@ -36,19 +36,19 @@ func Test_Basic(t *testing.T) {
 	go s.Run()
 	defer s.Close()
 	time.Sleep(100 * time.Millisecond)
-	// gudp.Conn.Send
+	// qn_udp.Conn.Send
 	qn_test.C(t, func(t *qn_test.T) {
 		for i := 0; i < 100; i++ {
-			conn, err := gudp.NewConn(fmt.Sprintf("127.0.0.1:%d", p))
+			conn, err := qn_udp.NewConn(fmt.Sprintf("127.0.0.1:%d", p))
 			t.Assert(err, nil)
 			t.Assert(conn.Send([]byte(qn_conv.String(i))), nil)
 			conn.Close()
 		}
 	})
-	// gudp.Conn.SendRecv
+	// qn_udp.Conn.SendRecv
 	qn_test.C(t, func(t *qn_test.T) {
 		for i := 0; i < 100; i++ {
-			conn, err := gudp.NewConn(fmt.Sprintf("127.0.0.1:%d", p))
+			conn, err := qn_udp.NewConn(fmt.Sprintf("127.0.0.1:%d", p))
 			t.Assert(err, nil)
 			result, err := conn.SendRecv([]byte(qn_conv.String(i)), -1)
 			t.Assert(err, nil)
@@ -56,17 +56,17 @@ func Test_Basic(t *testing.T) {
 			conn.Close()
 		}
 	})
-	// gudp.Send
+	// qn_udp.Send
 	qn_test.C(t, func(t *qn_test.T) {
 		for i := 0; i < 100; i++ {
-			err := gudp.Send(fmt.Sprintf("127.0.0.1:%d", p), []byte(qn_conv.String(i)))
+			err := qn_udp.Send(fmt.Sprintf("127.0.0.1:%d", p), []byte(qn_conv.String(i)))
 			t.Assert(err, nil)
 		}
 	})
-	// gudp.SendRecv
+	// qn_udp.SendRecv
 	qn_test.C(t, func(t *qn_test.T) {
 		for i := 0; i < 100; i++ {
-			result, err := gudp.SendRecv(fmt.Sprintf("127.0.0.1:%d", p), []byte(qn_conv.String(i)), -1)
+			result, err := qn_udp.SendRecv(fmt.Sprintf("127.0.0.1:%d", p), []byte(qn_conv.String(i)), -1)
 			t.Assert(err, nil)
 			t.Assert(string(result), fmt.Sprintf(`> %d`, i))
 		}
@@ -77,7 +77,7 @@ func Test_Basic(t *testing.T) {
 // the rest data would be dropped.
 func Test_Buffer(t *testing.T) {
 	p, _ := ports.PopRand()
-	s := gudp.NewServer(fmt.Sprintf("127.0.0.1:%d", p), func(conn *gudp.Conn) {
+	s := qn_udp.NewServer(fmt.Sprintf("127.0.0.1:%d", p), func(conn *qn_udp.Conn) {
 		defer conn.Close()
 		for {
 			data, err := conn.Recv(1)
@@ -95,12 +95,12 @@ func Test_Buffer(t *testing.T) {
 	defer s.Close()
 	time.Sleep(100 * time.Millisecond)
 	qn_test.C(t, func(t *qn_test.T) {
-		result, err := gudp.SendRecv(fmt.Sprintf("127.0.0.1:%d", p), []byte("123"), -1)
+		result, err := qn_udp.SendRecv(fmt.Sprintf("127.0.0.1:%d", p), []byte("123"), -1)
 		t.Assert(err, nil)
 		t.Assert(string(result), "1")
 	})
 	qn_test.C(t, func(t *qn_test.T) {
-		result, err := gudp.SendRecv(fmt.Sprintf("127.0.0.1:%d", p), []byte("456"), -1)
+		result, err := qn_udp.SendRecv(fmt.Sprintf("127.0.0.1:%d", p), []byte("456"), -1)
 		t.Assert(err, nil)
 		t.Assert(string(result), "4")
 	})

@@ -11,10 +11,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/qnsoft/common/frame/g"
+	"github.com/qnsoft/common/frame/qn"
 	"github.com/qnsoft/common/os/qn_log"
 	"github.com/qnsoft/common/test/qn_test"
-	"github.com/qnsoft/common/text/gstr"
+	"github.com/qnsoft/common/text/qn.str"
 )
 
 func Test_Ctx(t *testing.T) {
@@ -26,11 +26,11 @@ func Test_Ctx(t *testing.T) {
 		ctx = context.WithValue(ctx, "Span-Id", "abcdefg")
 
 		l.Ctx(ctx).Print(1, 2, 3)
-		t.Assert(gstr.Count(w.String(), "Trace-Id"), 1)
-		t.Assert(gstr.Count(w.String(), "1234567890"), 1)
-		t.Assert(gstr.Count(w.String(), "Span-Id"), 1)
-		t.Assert(gstr.Count(w.String(), "abcdefg"), 1)
-		t.Assert(gstr.Count(w.String(), "1 2 3"), 1)
+		t.Assert(qn.str.Count(w.String(), "Trace-Id"), 1)
+		t.Assert(qn.str.Count(w.String(), "1234567890"), 1)
+		t.Assert(qn.str.Count(w.String(), "Span-Id"), 1)
+		t.Assert(qn.str.Count(w.String(), "abcdefg"), 1)
+		t.Assert(qn.str.Count(w.String(), "1 2 3"), 1)
 	})
 }
 
@@ -39,7 +39,7 @@ func Test_Ctx_Config(t *testing.T) {
 		w := bytes.NewBuffer(nil)
 		l := qn_log.NewWithWriter(w)
 		m := map[string]interface{}{
-			"CtxKeys": g.SliceStr{"Trace-Id", "Span-Id", "Test"},
+			"CtxKeys": qn.SliceStr{"Trace-Id", "Span-Id", "Test"},
 		}
 		err := l.SetConfigWithMap(m)
 		t.Assert(err, nil)
@@ -47,10 +47,10 @@ func Test_Ctx_Config(t *testing.T) {
 		ctx = context.WithValue(ctx, "Span-Id", "abcdefg")
 
 		l.Ctx(ctx).Print(1, 2, 3)
-		t.Assert(gstr.Count(w.String(), "Trace-Id"), 1)
-		t.Assert(gstr.Count(w.String(), "1234567890"), 1)
-		t.Assert(gstr.Count(w.String(), "Span-Id"), 1)
-		t.Assert(gstr.Count(w.String(), "abcdefg"), 1)
-		t.Assert(gstr.Count(w.String(), "1 2 3"), 1)
+		t.Assert(qn.str.Count(w.String(), "Trace-Id"), 1)
+		t.Assert(qn.str.Count(w.String(), "1234567890"), 1)
+		t.Assert(qn.str.Count(w.String(), "Span-Id"), 1)
+		t.Assert(qn.str.Count(w.String(), "abcdefg"), 1)
+		t.Assert(qn.str.Count(w.String(), "1 2 3"), 1)
 	})
 }

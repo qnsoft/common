@@ -13,10 +13,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gogf/gf/text/gstr"
 	"github.com/qnsoft/common/debug/qn_debug"
-
 	"github.com/qnsoft/common/frame/g"
+
 	"github.com/qnsoft/common/net/qn_http"
 	"github.com/qnsoft/common/os/qn_file"
 	"github.com/qnsoft/common/test/qn_test"
@@ -121,7 +120,7 @@ func Test_Static_IndexFolder(t *testing.T) {
 		client.SetPrefix(fmt.Sprintf("http://127.0.0.1:%d", p))
 
 		t.AssertNE(client.GetContent("/"), "Forbidden")
-		t.AssertNE(gstr.Pos(client.GetContent("/"), `<a href="/test.html"`), -1)
+		t.AssertNE(qn.str.Pos(client.GetContent("/"), `<a href="/test.html"`), -1)
 		t.Assert(client.GetContent("/index.html"), "Not Found")
 		t.Assert(client.GetContent("/test.html"), "test")
 	})
